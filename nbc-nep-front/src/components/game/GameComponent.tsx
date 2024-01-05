@@ -16,8 +16,9 @@ const GameComponent = () => {
           debug: false,
         },
       },
-      scene: PhaserConfig,
+      scene: [PhaserConfig],
     };
+
     const game = new Phaser.Game(config);
 
     return () => {

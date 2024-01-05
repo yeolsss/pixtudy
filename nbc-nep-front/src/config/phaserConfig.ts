@@ -7,7 +7,6 @@ const WORK = 200;
 export class PhaserConfig extends Phaser.Scene {
   character?: Phaser.Physics.Arcade.Sprite;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
-  // characterSpeed
   isRunning: boolean = false;
   runKey?: Phaser.Input.Keyboard.Key;
   lastDirection?: string; // 마지막으로 바라본 방향을 추적하는 변수
@@ -32,7 +31,9 @@ export class PhaserConfig extends Phaser.Scene {
     this.physics.world.setBounds(-1024, -1024, 1024 * 2, 1024 * 2);
 
     this.add.image(400, 300, "apartment");
+
     this.character = this.physics.add.sprite(400, 300, "character", 0);
+
     this.anims.create({
       key: "left",
       frames: this.anims.generateFrameNumbers("character", {
@@ -42,6 +43,7 @@ export class PhaserConfig extends Phaser.Scene {
       frameRate: 5,
       repeat: -1,
     });
+
     this.anims.create({
       key: "right",
       frames: this.anims.generateFrameNumbers("character", {
@@ -72,6 +74,7 @@ export class PhaserConfig extends Phaser.Scene {
 
     this.character.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.character, true);
+
     if (this.cameras.main.deadzone) {
       const graphics = this.add.graphics().setScrollFactor(0);
       graphics.lineStyle(2, 0x00ff00, 1);
@@ -82,13 +85,12 @@ export class PhaserConfig extends Phaser.Scene {
         this.cameras.main.deadzone.height
       );
     }
+
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
   }
 
   update() {
-    const cam = this.cameras.main;
-
     if (this.runKey && Phaser.Input.Keyboard.JustDown(this.runKey)) {
       this.isRunning = !this.isRunning;
     }
