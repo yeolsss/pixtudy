@@ -2,8 +2,18 @@ const app = require("express")();
 const server = require("http").createServer(app);
 const cors = require("cors");
 
-const io = require("socket.io")(server);
-app.use(cors());
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+  },
+});
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
