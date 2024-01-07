@@ -1,16 +1,16 @@
 import { useEffect, useRef } from "react";
-import useSocket from "./useSocket";
+import { Socket } from "socket.io-client";
 
 const configuration = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 };
 
 interface Props {
+  socket: Socket;
   handleTrack: (event: RTCTrackEvent) => void;
 }
 
-export default function useVideoShare({ handleTrack }: Props) {
-  const { socket } = useSocket();
+export default function useVideoShare({ handleTrack, socket }: Props) {
   const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
 
   useEffect(() => {

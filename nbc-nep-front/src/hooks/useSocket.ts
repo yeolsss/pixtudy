@@ -9,7 +9,7 @@ export default function useSocket() {
   useEffect(() => {
     const socket = socketRef.current;
     socket.on("connect", () => {
-      console.log("connected");
+      console.log("connect socket in useSocket.ts");
     });
   }, []);
 

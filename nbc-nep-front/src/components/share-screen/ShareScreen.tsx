@@ -1,12 +1,11 @@
 import useSocket from "@/hooks/useSocket";
 import useVideoShare from "@/hooks/useVideoShare";
-import { CSSProperties, useRef, useState } from "react";
-import { Socket } from "socket.io-client";
+import { CSSProperties, useState } from "react";
 import ShareScreenButton from "./ShareScreenButton";
 export default function ShareScreen() {
   const [myVideos, setMyVideos] = useState<MediaStream[]>([]);
   const [otherVideos, setOtherVideos] = useState<MediaStream[]>([]);
-  const socketRef = useRef<Socket>(useSocket().socket);
+  const { socket } = useSocket();
 
   function handleTrack(event: RTCTrackEvent) {
     const { streams } = event;
@@ -16,7 +15,10 @@ export default function ShareScreen() {
     ]);
   }
 
-  const { peerConnection, makeCall } = useVideoShare({ handleTrack });
+  const { peerConnection, makeCall } = useVideoShare({
+    handleTrack,
+    socket,
+  });
 
   const handleStartCapture = (stream: MediaStream) => {
     const nextMyVideos = [...myVideos, stream];
