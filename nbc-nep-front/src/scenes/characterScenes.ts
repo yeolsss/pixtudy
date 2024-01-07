@@ -1,38 +1,38 @@
-import io, { Socket } from "socket.io-client";
 import Phaser from "phaser";
+import io, { Socket } from "socket.io-client";
 
 const RUN = 350;
-const WORK = 200;
-
-export class PhaserConfig extends Phaser.Scene {
+const WORK = 250;
+export class CharacterScenes extends Phaser.Scene {
   character?: Phaser.Physics.Arcade.Sprite;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
-  isRunning: boolean = false;
   runKey?: Phaser.Input.Keyboard.Key;
   lastDirection?: string; // 마지막으로 바라본 방향을 추적하는 변수
   private socket?: Socket;
+  isRunning: boolean = false;
 
   constructor() {
-    super({ key: "PhaserConfig" });
+    super({ key: "CharacterScenes" });
   }
-
-  preload() {
-    this.load.spritesheet("character", "/NPC11.png", {
-      frameWidth: 32,
-      frameHeight: 60,
-    });
-    this.load.image("apartment", "/Apartment.png");
-  }
-
+  preload() {}
   create() {
+    // map setting
+    const map = this.make.tilemap({
+      key: "basic_map",
+      tileWidth: 32,
+      tileHeight: 32,
+    });
+    const tileSet = map.addTilesetImage("tile1", "tiles");
+    const tileLayer = map.createLayer("tileLayer", tileSet!, 0, 0);
+    const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
+    objLayer?.setCollisionByProperty({ collides: true });
+
     this.socket = io("http://localhost:3001", { withCredentials: true });
-
-    this.cameras.main.setBounds(-1024, -1024, 1024 * 2, 1024 * 2);
-    this.physics.world.setBounds(-1024, -1024, 1024 * 2, 1024 * 2);
-
-    this.add.image(400, 300, "apartment");
-
-    this.character = this.physics.add.sprite(400, 300, "character", 0);
+    this.character = this.physics.add.sprite(400, 350, "character", 0);
+    // 몸체 크기
+    this.character.body?.setSize(32, 32);
+    // 몸체 위치
+    this.character.body?.setOffset(0, 25);
 
     this.anims.create({
       key: "left",
@@ -75,19 +75,10 @@ export class PhaserConfig extends Phaser.Scene {
     this.character.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.character, true);
 
-    if (this.cameras.main.deadzone) {
-      const graphics = this.add.graphics().setScrollFactor(0);
-      graphics.lineStyle(2, 0x00ff00, 1);
-      graphics.strokeRect(
-        200,
-        200,
-        this.cameras.main.deadzone.width,
-        this.cameras.main.deadzone.height
-      );
-    }
-
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+    // 지형 오브젝트
+    this.physics.add.collider(this.character, objLayer!);
   }
 
   update() {
