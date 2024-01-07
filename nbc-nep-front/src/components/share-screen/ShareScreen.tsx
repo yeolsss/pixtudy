@@ -1,76 +1,24 @@
-import { CSSProperties, useEffect, useRef } from "react";
-import { Socket, io } from "socket.io-client";
+import useVideoShare from "@/hooks/useVideoShare";
+import { CSSProperties, useRef } from "react";
 const configuration = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 };
 export default function ShareScreen() {
-  const socketRef = useRef<Socket | null>(null);
   const myVideoRef = useRef<HTMLVideoElement | null>(null);
   const otherVideoRef = useRef<HTMLVideoElement | null>(null);
-  const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
 
-  useEffect(() => {
-    const peerConnection = new RTCPeerConnection(configuration);
-    peerConnectionRef.current = peerConnection;
-
-    const handleTrack = async (event: RTCTrackEvent) => {
-      const [remoteStream] = event.streams;
-      otherVideoRef.current!.srcObject = remoteStream;
-    };
-    const handleIceCandidate = (data: RTCPeerConnectionIceEvent) => {
-      socketRef.current!.emit("ice", data.candidate);
-    };
-    const handleConnectionChange = () => {
-      const peerConnection = peerConnectionRef.current!;
-      if (peerConnection.connectionState === "connected") {
-        console.log("connected");
+  function handleTrack(event: RTCTrackEvent) {
+    const { streams, track } = event;
+    console.log("handle track", streams);
+    if (streams.length > 0) {
+      const [stream] = streams;
+      if (otherVideoRef.current) {
+        otherVideoRef.current.srcObject = stream;
       }
-    };
+    }
+  }
 
-    peerConnection.addEventListener("track", handleTrack);
-    peerConnection.addEventListener("icecandidate", handleIceCandidate);
-    peerConnection.addEventListener(
-      "connectionstatechange",
-      handleConnectionChange
-    );
-    return () => {
-      peerConnection.removeEventListener("track", handleTrack);
-      peerConnection.removeEventListener("icecandidate", handleIceCandidate);
-      peerConnection.removeEventListener(
-        "connectionstatechange",
-        handleConnectionChange
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    socketRef.current = io("http://localhost:3001", {
-      withCredentials: true,
-    });
-    const socket = socketRef.current;
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-    socket.on("offer", async (offer: RTCSessionDescription) => {
-      const peerConnection = peerConnectionRef.current!;
-      peerConnection.setRemoteDescription(offer);
-      const answer = await peerConnection.createAnswer();
-      peerConnection.setLocalDescription(new RTCSessionDescription(answer));
-      socket.emit("answer", answer);
-    });
-    socket.on("answer", async (answer: RTCSessionDescription) => {
-      const peerConnection = peerConnectionRef.current!;
-      await peerConnection.setRemoteDescription(answer);
-    });
-    socket.on("ice", async (iceCandidate: RTCIceCandidate) => {
-      const peerConnection = peerConnectionRef.current!;
-      await peerConnection.addIceCandidate(iceCandidate);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  const { peerConnection, makeCall } = useVideoShare({ handleTrack });
 
   const handleStartCapture = async () => {
     const displayMediaOptions = {
@@ -85,26 +33,22 @@ export default function ShareScreen() {
       const mediaStream: MediaStream =
         await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
       myVideoRef.current.srcObject = mediaStream;
-      makeCall(mediaStream, peerConnectionRef.current!);
+      makeCall(mediaStream);
     } catch (err) {
       console.error("handle start capture", err);
     }
   };
-
-  async function makeCall(
-    mediaStream: MediaStream,
-    peerConnection: RTCPeerConnection
-  ) {
-    addTracksToConnection(mediaStream, peerConnection);
-    const offer = await createAndSetOffer(peerConnection);
-    socketRef.current!.emit("offer", offer);
-  }
-
+  // A가 여러 화면을 공유한다
+  // B는 A가 공유한 여러 화면을 볼 수 있어야 한다
+  // 그럼 우선, A만 공유할 수 있다고 가정을 한다?
+  // 아니면 동적으로 추가될 수 있도록 한다.
+  // 근데 리액트에서 동적으로 한다고....?
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <button onClick={handleStartCapture}>Start Capture</button>
       <video ref={myVideoRef} style={videoStyle} autoPlay></video>
       <video ref={otherVideoRef} style={videoStyle} autoPlay></video>
+      {/* <ShareScreenViewer peerConnection={peerConnectionRef.current!} /> */}
     </div>
   );
 }
@@ -112,16 +56,3 @@ export default function ShareScreen() {
 const videoStyle: CSSProperties = {
   border: "1px solid black",
 };
-function addTracksToConnection(
-  mediaStream: MediaStream,
-  peerConnection: RTCPeerConnection
-) {
-  mediaStream.getTracks().forEach((track) => {
-    peerConnection.addTrack(track, mediaStream);
-  });
-}
-async function createAndSetOffer(peerConnection: RTCPeerConnection) {
-  const offer = await peerConnection.createOffer();
-  await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
-  return offer;
-}
