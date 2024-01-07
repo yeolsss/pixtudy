@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import io, { Socket } from "socket.io-client";
 
 const RUN = 350;
-const WORK = 200;
+const WORK = 250;
 export class CharacterScenes extends Phaser.Scene {
   character?: Phaser.Physics.Arcade.Sprite;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -23,7 +23,7 @@ export class CharacterScenes extends Phaser.Scene {
       tileHeight: 32,
     });
     const tileSet = map.addTilesetImage("tile1", "tiles");
-    const layer = map.createLayer("tileLayer", tileSet!, 0, 0);
+    const tileLayer = map.createLayer("tileLayer", tileSet!, 0, 0);
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
     objLayer?.setCollisionByProperty({ collides: true });
 
