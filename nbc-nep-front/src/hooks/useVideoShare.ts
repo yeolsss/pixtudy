@@ -28,6 +28,7 @@ export default function useVideoShare({ handleTrack }: Props) {
     };
 
     peerConnection.addEventListener("track", handleTrack);
+
     peerConnection.addEventListener("icecandidate", handleIceCandidate);
     peerConnection.addEventListener(
       "connectionstatechange",
@@ -67,9 +68,15 @@ export default function useVideoShare({ handleTrack }: Props) {
     };
   }, []);
 
-  async function makeCall(mediaStream: MediaStream) {
+  async function makeCall(mediaStreams: MediaStream[]) {
     const peerConnection = peerConnectionRef.current!;
-    addTracksToConnection(mediaStream, peerConnection);
+    const senders = peerConnection.getSenders();
+    if (senders) {
+      senders.forEach((sender) => peerConnection.removeTrack(sender));
+    }
+    mediaStreams.forEach((mediaStream) =>
+      addTracksToConnection(mediaStream, peerConnection)
+    );
     socket.emit("offer", await createAndSetOffer(peerConnection));
   }
 
@@ -80,6 +87,7 @@ function addTracksToConnection(
   peerConnection: RTCPeerConnection
 ) {
   mediaStream.getTracks().forEach((track) => {
+    console.log(track, mediaStream);
     peerConnection.addTrack(track, mediaStream);
   });
 }

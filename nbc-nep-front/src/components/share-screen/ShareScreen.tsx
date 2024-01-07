@@ -1,21 +1,14 @@
 import useVideoShare from "@/hooks/useVideoShare";
-import { CSSProperties, useRef } from "react";
-const configuration = {
-  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-};
+import { CSSProperties, useState } from "react";
 export default function ShareScreen() {
-  const myVideoRef = useRef<HTMLVideoElement | null>(null);
-  const otherVideoRef = useRef<HTMLVideoElement | null>(null);
-
+  const [myVideos, setMyVideos] = useState<MediaStream[]>([]);
+  const [otherVideos, setOtherVideos] = useState<MediaStream[]>([]);
   function handleTrack(event: RTCTrackEvent) {
-    const { streams, track } = event;
-    console.log("handle track", streams);
-    if (streams.length > 0) {
-      const [stream] = streams;
-      if (otherVideoRef.current) {
-        otherVideoRef.current.srcObject = stream;
-      }
-    }
+    const { streams } = event;
+    setOtherVideos((prev) => [
+      ...prev.filter((item) => item.active),
+      ...streams,
+    ]);
   }
 
   const { peerConnection, makeCall } = useVideoShare({ handleTrack });
@@ -27,32 +20,59 @@ export default function ShareScreen() {
       },
       audio: false,
     };
-    if (!myVideoRef.current) return;
 
     try {
       const mediaStream: MediaStream =
         await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-      myVideoRef.current.srcObject = mediaStream;
-      makeCall(mediaStream);
+      const nextMyVideos = [...myVideos, mediaStream];
+      setMyVideos(nextMyVideos);
+      makeCall(nextMyVideos);
     } catch (err) {
-      console.error("handle start capture", err);
+      console.error("on error when start capture", err);
     }
   };
-  // A가 여러 화면을 공유한다
-  // B는 A가 공유한 여러 화면을 볼 수 있어야 한다
-  // 그럼 우선, A만 공유할 수 있다고 가정을 한다?
-  // 아니면 동적으로 추가될 수 있도록 한다.
-  // 근데 리액트에서 동적으로 한다고....?
+
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div>
       <button onClick={handleStartCapture}>Start Capture</button>
-      <video ref={myVideoRef} style={videoStyle} autoPlay></video>
-      <video ref={otherVideoRef} style={videoStyle} autoPlay></video>
-      {/* <ShareScreenViewer peerConnection={peerConnectionRef.current!} /> */}
+      <section style={sectionStyle}>
+        <h1>my videos</h1>
+        {myVideos.map((stream) => (
+          <video
+            key={stream.id}
+            style={videoStyle}
+            ref={(video) => {
+              if (video) video.srcObject = stream;
+            }}
+            autoPlay
+          />
+        ))}
+      </section>
+      <section style={sectionStyle}>
+        <h2>other videos</h2>
+        {otherVideos.map((stream) => (
+          <video
+            key={stream.id}
+            style={videoStyle}
+            ref={(video) => {
+              if (video) video.srcObject = stream;
+            }}
+            autoPlay
+          />
+        ))}
+      </section>
     </div>
   );
 }
 
 const videoStyle: CSSProperties = {
   border: "1px solid black",
+  width: 400,
+  height: 300,
+};
+const sectionStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
 };
