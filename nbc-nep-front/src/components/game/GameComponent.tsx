@@ -1,22 +1,25 @@
 import { useEffect } from "react";
-import { PhaserConfig } from "@/config/phaserConfig";
 import Phaser from "phaser";
+import { ScenesMain } from "@/scenes/scenesMain";
+import { CharacterScenes } from "@/scenes/characterScenes";
 
 const GameComponent = () => {
   useEffect(() => {
     const config = {
       type: Phaser.AUTO,
-      width: 800,
-      height: 600,
+      width: "100%",
+      height: "100%",
       parent: "phaser-game",
       physics: {
         default: "arcade",
         arcade: {
           gravity: { y: 0 },
-          debug: false,
+          debug: true,
+          width: 1280,
+          height: 800,
         },
       },
-      scene: [PhaserConfig],
+      scene: [ScenesMain, CharacterScenes],
     };
 
     const game = new Phaser.Game(config);
