@@ -1,5 +1,6 @@
 import useVideoShare from "@/hooks/useVideoShare";
 import { CSSProperties, useState } from "react";
+import ShareScreenButton from "./ShareScreenButton";
 export default function ShareScreen() {
   const [myVideos, setMyVideos] = useState<MediaStream[]>([]);
   const [otherVideos, setOtherVideos] = useState<MediaStream[]>([]);
@@ -13,28 +14,15 @@ export default function ShareScreen() {
 
   const { peerConnection, makeCall } = useVideoShare({ handleTrack });
 
-  const handleStartCapture = async () => {
-    const displayMediaOptions = {
-      video: {
-        displaySurface: "window",
-      },
-      audio: false,
-    };
-
-    try {
-      const mediaStream: MediaStream =
-        await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-      const nextMyVideos = [...myVideos, mediaStream];
-      setMyVideos(nextMyVideos);
-      makeCall(nextMyVideos);
-    } catch (err) {
-      console.error("on error when start capture", err);
-    }
+  const handleStartCapture = (stream: MediaStream) => {
+    const nextMyVideos = [...myVideos, stream];
+    setMyVideos(nextMyVideos);
+    makeCall(nextMyVideos);
   };
 
   return (
     <div>
-      <button onClick={handleStartCapture}>Start Capture</button>
+      <ShareScreenButton onShareScreen={handleStartCapture} />
       <section style={sectionStyle}>
         <h1>my videos</h1>
         {myVideos.map((stream) => (
