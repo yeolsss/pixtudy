@@ -2,6 +2,7 @@ import { loginHandler } from "@/api/auth";
 import { validateEmail, validatePassword } from "@/utils/authFormValidate";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import AuthInput from "./AuthInput";
+import AuthSocialLogin from "./AuthSocialLogin";
 
 export default function AuthLoginMode({
   changeAuthMode,
@@ -67,6 +68,7 @@ export default function AuthLoginMode({
         })}
         <button type="submit">로그인</button>
       </form>
+      <AuthSocialLogin />
       <span>
         아직 회원이 아니신가요?{" "}
         <span onClick={changeAuthMode}>이메일로 회원가입</span>
