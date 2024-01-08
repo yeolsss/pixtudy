@@ -8,6 +8,8 @@ export default function Document() {
       <Head />
       <body>
         <Main />
+        {/* modal 생성 portal*/}
+        <div id="modal-root" />
         <NextScript />
       </body>
     </Html>
