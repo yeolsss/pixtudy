@@ -1,10 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
+import AuthLoginMode from "./AuthLoginMode";
+import AuthSignUpMode from "./AuthSignUpMode";
 
 type authModeType = "login" | "signUp";
 
 const AuthModalMainContainer = () => {
   const [authMode, setAuthMode] = useState<authModeType>("login");
+
   const changeAuthMode = () => {
     setAuthMode((prev) => (prev === "login" ? "signUp" : "login"));
   };
@@ -13,18 +16,13 @@ const AuthModalMainContainer = () => {
     case "login":
       return (
         <StModalContainer>
-          <span>
-            아직 회원이 아니신가요?{" "}
-            <span onClick={changeAuthMode}>회원가입</span>
-          </span>
+          <AuthLoginMode changeAuthMode={changeAuthMode} />
         </StModalContainer>
       );
     case "signUp":
       return (
         <StModalContainer>
-          <span>
-            이미 회원이신가요? <span onClick={changeAuthMode}>로그인</span>
-          </span>
+          <AuthSignUpMode changeAuthMode={changeAuthMode} />
         </StModalContainer>
       );
     default:
