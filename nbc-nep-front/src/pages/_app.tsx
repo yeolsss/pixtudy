@@ -1,9 +1,8 @@
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
-import { ReactElement } from "react";
-
-export type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactElement;
+import { ReactElement, ReactNode } from "react";
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
@@ -11,6 +10,8 @@ type AppPropsWithLayout = AppProps & {
 };
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
+
   return getLayout(<Component {...pageProps} />);
 }

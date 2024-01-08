@@ -29,17 +29,20 @@ export const signUpHandler = async ({
  * 로그인
  * 일반 로그인과 소셜로그인 통합
  */
-type loginHandlerArgs = {
+
+export type SocialLoginType = "email" | "google" | "kakao" | "github";
+
+type LoginHandlerArgs = {
   email?: string;
   password?: string;
-  platform: "email" | "google" | "kakao" | "github";
+  platform: SocialLoginType;
 };
 
 export const loginHandler = async ({
   email,
   password,
   platform,
-}: loginHandlerArgs) => {
+}: LoginHandlerArgs) => {
   let data, error;
 
   switch (platform) {
