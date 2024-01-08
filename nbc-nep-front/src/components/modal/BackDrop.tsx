@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-const BackDrop = () => {
-  return <StBackDrop></StBackDrop>;
+const BackDrop = ({ toggleLoginModal }: { toggleLoginModal: () => void }) => {
+  return <StBackDrop onClick={toggleLoginModal}></StBackDrop>;
 };
 
 const StBackDrop = styled.div`

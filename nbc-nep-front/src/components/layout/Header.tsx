@@ -21,7 +21,7 @@ const Header = () => {
       </header>
       {isLoginModalOpen && (
         <ModalPortal>
-          <AuthModal />
+          <AuthModal toggleLoginModal={toggleLoginModal} />
         </ModalPortal>
       )}
     </>

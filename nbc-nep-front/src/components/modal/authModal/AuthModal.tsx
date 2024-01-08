@@ -1,9 +1,11 @@
 import BackDrop from "../BackDrop";
+import AuthModalMainContainer from "./AuthModalMainContainer";
 
-const AuthModal = () => {
+const AuthModal = ({ toggleLoginModal }: { toggleLoginModal: () => void }) => {
   return (
     <>
-      <BackDrop />
+      <BackDrop toggleLoginModal={toggleLoginModal} />
+      <AuthModalMainContainer />
     </>
   );
 };
