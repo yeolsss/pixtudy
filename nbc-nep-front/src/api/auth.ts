@@ -1,5 +1,4 @@
 import { supabase } from "@/libs/supabase";
-
 /**
  * 회원가입
  */
@@ -22,30 +21,50 @@ export const signUpHandler = async ({
       },
     },
   });
-  if (signUpData) return signUpData;
   if (signUpError) return signUpError;
+  return signUpData;
 };
 
 /**
- * 일반 로그인
+ * 로그인
+ * 일반 로그인과 소셜로그인 통합
  */
 type loginHandlerArgs = {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
+  platform: "email" | "google" | "kakao" | "github";
 };
-export const loginHandler = async ({ email, password }: loginHandlerArgs) => {
-  const { data: loginData, error: loginError } =
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
 
-  // auth table 로그인 한 유저 정보 가져오기
-  const { data: userData, error: userError } = await supabase
-    .from("auth")
-    .select(`*`)
-    .eq("id", loginData.user?.id);
+export const loginHandler = async ({
+  email,
+  password,
+  platform,
+}: loginHandlerArgs) => {
+  let data, error;
 
-  if (userData) return userData;
-  if (userError) return userError;
+  switch (platform) {
+    case "email":
+      if (email && password)
+        ({ data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        }));
+      break;
+    case "google":
+    case "kakao":
+    case "github":
+      ({ data, error } = await supabase.auth.signInWithOAuth({
+        provider: platform,
+        options: {
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
+        },
+      }));
+      break;
+  }
+
+  if (error) throw error;
+  return data;
 };

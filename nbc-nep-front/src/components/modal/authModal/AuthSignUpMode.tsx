@@ -37,8 +37,9 @@ export default function AuthSignUpMode({
       password: values.signup_pw,
       nickname: values.signup_nickname,
     });
-    console.log(data);
-    reset();
+    if (data && "user" in data && data.user) {
+      reset();
+    }
   };
 
   // password check validation check function

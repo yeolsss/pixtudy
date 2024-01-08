@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 
-const Layout = ({ children }: PropsWithChildren) => {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <>
       <Header />
@@ -10,6 +10,4 @@ const Layout = ({ children }: PropsWithChildren) => {
       <Footer />
     </>
   );
-};
-
-export default Layout;
+}
