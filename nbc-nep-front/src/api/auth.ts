@@ -40,7 +40,11 @@ export const loginHandler = async ({ email, password }: loginHandlerArgs) => {
       password,
     });
 
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  // auth table 로그인 한 유저 정보 가져오기
+  const { data: userData, error: userError } = await supabase
+    .from("auth")
+    .select(`*`)
+    .eq("id", loginData.user?.id);
 
   if (userData) return userData;
   if (userError) return userError;
