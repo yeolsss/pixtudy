@@ -3,10 +3,10 @@ import styled from "styled-components";
 import AuthLoginMode from "./AuthLoginMode";
 import AuthSignUpMode from "./AuthSignUpMode";
 
-type authModeType = "login" | "signUp";
+type AuthModeType = "login" | "signUp";
 
-const AuthModalMainContainer = () => {
-  const [authMode, setAuthMode] = useState<authModeType>("login");
+export default function AuthModalMainContainer() {
+  const [authMode, setAuthMode] = useState<AuthModeType>("login");
 
   const changeAuthMode = () => {
     setAuthMode((prev) => (prev === "login" ? "signUp" : "login"));
@@ -28,7 +28,7 @@ const AuthModalMainContainer = () => {
     default:
       return <></>;
   }
-};
+}
 
 const StModalContainer = styled.div`
   position: fixed;
@@ -40,5 +40,3 @@ const StModalContainer = styled.div`
   width: 50rem;
   height: 50rem;
 `;
-
-export default AuthModalMainContainer;

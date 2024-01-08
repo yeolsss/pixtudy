@@ -19,13 +19,15 @@ export default function AuthLoginMode({
   });
 
   //   submit event
-  const onLogin: SubmitHandler<FieldValues> = async (values) => {
+  const handleLogin: SubmitHandler<FieldValues> = async (values) => {
     const data = await loginHandler({
       email: values.login_id,
       password: values.login_pw,
+      platform: "email",
     });
-    console.log(data);
-    reset();
+    if (data && "user" in data && data.user) {
+      reset();
+    }
   };
 
   const loginInput = [
@@ -44,10 +46,11 @@ export default function AuthLoginMode({
       validate: validatePassword,
     },
   ];
+
   return (
     <>
       <h2>로그인</h2>
-      <form onSubmit={handleSubmit(onLogin)}>
+      <form onSubmit={handleSubmit(handleLogin)}>
         {loginInput.map((input) => {
           return (
             <AuthInput

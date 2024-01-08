@@ -1,8 +1,12 @@
 import styled from "styled-components";
 
-const BackDrop = ({ toggleLoginModal }: { toggleLoginModal: () => void }) => {
+export default function BackDrop({
+  toggleLoginModal,
+}: {
+  toggleLoginModal: () => void;
+}) {
   return <StBackDrop onClick={toggleLoginModal}></StBackDrop>;
-};
+}
 
 const StBackDrop = styled.div`
   position: fixed;
@@ -12,4 +16,3 @@ const StBackDrop = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
 `;
-export default BackDrop;

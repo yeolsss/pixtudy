@@ -3,7 +3,7 @@ import { useState } from "react";
 import ModalPortal from "../modal/ModalPortal";
 import AuthModal from "../modal/authModal/AuthModal";
 
-const Header = () => {
+export default function Header() {
   const router = useRouter();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
@@ -26,6 +26,4 @@ const Header = () => {
       )}
     </>
   );
-};
-
-export default Header;
+}
