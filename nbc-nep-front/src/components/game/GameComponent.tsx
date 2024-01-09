@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import Phaser from "phaser";
-import { ScenesMain } from "@/scenes/scenesMain";
 import { CharacterScenes } from "@/scenes/characterScenes";
+import { ScenesMain } from "@/scenes/scenesMain";
+import Phaser from "phaser";
+import { useEffect } from "react";
 
 const GameComponent = () => {
   useEffect(() => {

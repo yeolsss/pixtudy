@@ -28,6 +28,7 @@ export class CharacterScenes extends Phaser.Scene {
     objLayer?.setCollisionByProperty({ collides: true });
 
     this.socket = io("http://localhost:3001", { withCredentials: true });
+
     this.character = this.physics.add.sprite(400, 350, "character", 0);
     // 몸체 크기
     this.character.body?.setSize(32, 32);
