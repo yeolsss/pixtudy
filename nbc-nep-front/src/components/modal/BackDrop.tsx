@@ -1,11 +1,8 @@
 import styled from "styled-components";
 
-export default function BackDrop({
-  toggleLoginModal,
-}: {
-  toggleLoginModal: () => void;
-}) {
-  return <StBackDrop onClick={toggleLoginModal}></StBackDrop>;
+export default function BackDrop() {
+  const HandleBackDropClose = () => {};
+  return <StBackDrop onClick={HandleBackDropClose} />;
 }
 
 const StBackDrop = styled.div`
