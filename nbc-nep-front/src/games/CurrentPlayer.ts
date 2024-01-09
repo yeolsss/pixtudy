@@ -1,6 +1,10 @@
-export class ExtendedSprite extends Phaser.Physics.Arcade.Sprite {
+export class CurrentPlayer extends Phaser.Physics.Arcade.Sprite {
   oldPosition?: { x: number; y: number };
-
+  playerId?: string;
+  movingLeft?: boolean;
+  movingRight?: boolean;
+  movingUp?: boolean;
+  movingDown?: boolean;
   constructor(
     scene: Phaser.Scene,
     x: number,

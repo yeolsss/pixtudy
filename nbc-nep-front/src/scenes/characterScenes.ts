@@ -1,17 +1,22 @@
 import { ExtendedSprite } from "@/games/ExtendedSprite";
 import Phaser from "phaser";
 import io, { Socket } from "socket.io-client";
+<<<<<<< HEAD
+=======
+import { CurrentPlayer } from "@/games/CurrentPlayer";
+import { OtherPlayersGroup } from "@/games/OtherPlayersGroup";
+>>>>>>> 196546e7fbfbd2cc24731f42335813fff2bcd0c9
 
 const RUN = 350;
 const WORK = 250;
 export class CharacterScenes extends Phaser.Scene {
-  character?: ExtendedSprite;
+  character?: CurrentPlayer;
+  otherPlayers?: OtherPlayersGroup;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   runKey?: Phaser.Input.Keyboard.Key;
   lastDirection?: string; // 마지막으로 바라본 방향을 추적하는 변수
   private socket?: Socket;
   isRunning: boolean = false;
-  otherPlayers?: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super({ key: "CharacterScenes" });
@@ -38,7 +43,7 @@ export class CharacterScenes extends Phaser.Scene {
     // 몸체 위치
     this.character.body?.setOffset(0, 25);
     // socket setting
-    this.otherPlayers = this.physics.add.group();
+    this.otherPlayers = new OtherPlayersGroup(this);
     this.socket = io("http://localhost:3003");
 
     // current player setting
@@ -53,14 +58,10 @@ export class CharacterScenes extends Phaser.Scene {
     });
 
     this.socket.on("newPlayer", (playerInfo: Player) => {
-      this.addOtherPlayers(playerInfo);
+      this.otherPlayers?.addPlayer(playerInfo);
     });
     this.socket.on("playerDisconnected", (playerId: string) => {
-      this.otherPlayers?.getChildren().forEach((otherPlayer) => {
-        if (playerId === otherPlayer.playerId) {
-          otherPlayer.destroy();
-        }
-      });
+      this.otherPlayers?.removePlayer(playerId);
     });
 
     this.anims.create({
@@ -103,19 +104,11 @@ export class CharacterScenes extends Phaser.Scene {
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
     this.socket.on("playerMoved", (playerInfo: Player) => {
-      this.otherPlayers?.getChildren().forEach((otherPlayer) => {
-        console.log(otherPlayer.playerId);
-        if (playerInfo.playerId === otherPlayer.playerId) {
-          otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-        }
-      });
+      this.otherPlayers?.movePlayer(playerInfo);
     });
   }
 
   addPlayer(playerInfo: Player, objLayer: Phaser.Tilemaps.TilemapLayer) {
-    /*this.character = this.physics.add.existing(
-      new ExtendedSprite(this, playerInfo.x, playerInfo.y, "character", 0)
-    );*/
     this.character = this.physics.add.sprite(
       playerInfo.x,
       playerInfo.y,
@@ -132,15 +125,7 @@ export class CharacterScenes extends Phaser.Scene {
   }
 
   addOtherPlayers(playerInfo: Player) {
-    const otherPlayer = this.physics.add
-      .sprite(playerInfo.x, playerInfo.y, "character", 0)
-      .setCollideWorldBounds(true);
-    // 몸체 크기
-    otherPlayer.body?.setSize(32, 32);
-    // 몸체 위치
-    otherPlayer.body?.setOffset(0, 25);
-    otherPlayer.playerId = playerInfo.playerId;
-    this.otherPlayers?.add(otherPlayer);
+    this.otherPlayers?.addPlayer(playerInfo);
   }
 
   update() {

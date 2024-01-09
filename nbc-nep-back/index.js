@@ -80,6 +80,10 @@ io.on("connection", function (socket) {
     x: 100,
     y: 100,
     playerId: socket.id,
+    movingLeft: false,
+    movingRight: false,
+    movingUp: false,
+    movingDown: false,
   };
   socket.emit("currentPlayers", players);
   socket.broadcast.emit("newPlayer", players[socket.id]);
