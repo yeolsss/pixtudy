@@ -84,6 +84,7 @@ io.on("connection", function (socket) {
     movingRight: false,
     movingUp: false,
     movingDown: false,
+    lastDirection: false,
   };
   socket.emit("currentPlayers", players);
   socket.broadcast.emit("newPlayer", players[socket.id]);
@@ -95,11 +96,16 @@ io.on("connection", function (socket) {
   });
 
   socket.on("playerMovement", function (movementData) {
-    players[socket.id].x = movementData.x;
-    players[socket.id].y = movementData.y;
-    players[socket.id].rotation = movementData.rotation;
-
-    socket.broadcast.emit("playerMoved", players[socket.id]);
+    const player = players[socket.id];
+    player.x = movementData.x;
+    player.y = movementData.y;
+    player.movingLeft = movementData.movingLeft;
+    player.movingRight = movementData.movingRight;
+    player.movingUp = movementData.movingUp;
+    player.movingDown = movementData.movingDown;
+    player.lastDirection = movementData.lastDirection;
+    console.log("playerMovement", player);
+    socket.broadcast.emit("playerMoved", player);
   });
 });
 

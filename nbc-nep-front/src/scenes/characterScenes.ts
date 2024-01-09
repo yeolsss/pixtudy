@@ -205,18 +205,22 @@ export class CharacterScenes extends Phaser.Scene {
     ) {
       // 캐릭터의 현재 위치 및 회전 정보를 가져옵니다.
       const currentPosition = {
-        x: this.character?.x,
-        y: this.character?.y,
+        x: this.character.x,
+        y: this.character.y,
+        movingLeft: this.cursors?.left.isDown,
+        movingRight: this.cursors?.right.isDown,
+        movingUp: this.cursors?.up.isDown,
+        movingDown: this.cursors?.down.isDown,
+        lastDirection: this.lastDirection,
       };
 
       // 이전 위치와 현재 위치를 비교합니다.
       if (
-        this.character?.oldPosition &&
-        (currentPosition.x !== this.character?.oldPosition.x ||
-          currentPosition.y !== this.character?.oldPosition.y)
+        this.character.oldPosition &&
+        (currentPosition.x !== this.character.oldPosition.x ||
+          currentPosition.y !== this.character.oldPosition.y)
       ) {
         // 위치가 바뀌었다면 서버에 전송합니다.
-        console.log("emitPlayerMovement");
         this.socket?.emit("playerMovement", currentPosition);
       }
 
