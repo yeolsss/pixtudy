@@ -1,11 +1,11 @@
 // email validation check function
-export function validateEmail(value: string) {
+export function handleValidateEmail(value: string) {
   const emailReg = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
   return emailReg.test(value) || "유효하지 않은 이메일 입니다.";
 }
 
 // password validation check function
-export function validatePassword(value: string) {
+export function handleValidatePassword(value: string) {
   const pwReg = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s]).{8,}$/);
   return (
     pwReg.test(value) ||
@@ -14,7 +14,7 @@ export function validatePassword(value: string) {
 }
 
 // nickname validation check function
-export function validateNickname(value: string) {
+export function handleValidateNickname(value: string) {
   const nicknameReg = new RegExp(/^.{2,8}$/);
   return nicknameReg.test(value) || "닉네임은 최소 2글자, 최대 8글자 입니다.";
 }

@@ -6,7 +6,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
-type InputProps = {
+interface Props {
   placeholder: string;
   labelTitle: string;
   id: string;
@@ -14,7 +14,7 @@ type InputProps = {
   register: UseFormRegister<FieldValues>;
   error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
   validate: (value: string) => boolean | string;
-};
+}
 
 export default function AuthInput({
   placeholder,
@@ -24,7 +24,7 @@ export default function AuthInput({
   register,
   error,
   validate,
-}: InputProps) {
+}: Props) {
   return (
     <section>
       <label htmlFor={id}>{labelTitle}</label>

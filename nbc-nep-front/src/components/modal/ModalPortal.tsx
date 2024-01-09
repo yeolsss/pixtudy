@@ -1,16 +1,16 @@
-import { ReactElement, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-export default function ModalPortal({ children }: { children: ReactElement }) {
+export default function ModalPortal({ children }: PropsWithChildren) {
   // 포탈의 마운트 상태 확인
-  const [mounted, setMounted] = useState<boolean>(false);
+  const [isMount, setIsMount] = useState<boolean>(false);
 
   useEffect(() => {
-    setMounted(true);
+    setIsMount(true);
   }, []);
 
   if (typeof window === "undefined") return null;
-  if (!mounted) return null;
+  if (!isMount) return null;
 
   return createPortal(children, document.getElementById("modal-root")!);
 }
