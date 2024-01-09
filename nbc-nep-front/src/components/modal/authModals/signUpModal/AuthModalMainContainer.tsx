@@ -1,4 +1,6 @@
 import { useSignUpUser } from "@/hooks/query/useSupabase";
+import { useAppDispatch } from "@/hooks/useReduxTK";
+import { closeModal, openLoginModal } from "@/redux/modules/modalSlice";
 import {
   handleValidateEmail,
   handleValidateNickname,
@@ -10,6 +12,7 @@ import AuthInput from "../AuthInput";
 
 export default function SignUpModalMainContainer() {
   const signUp = useSignUpUser();
+  const dispatch = useAppDispatch();
 
   const {
     handleSubmit,
@@ -32,6 +35,8 @@ export default function SignUpModalMainContainer() {
       {
         onSuccess: () => {
           reset();
+          dispatch(closeModal());
+          dispatch(openLoginModal());
         },
       }
     );

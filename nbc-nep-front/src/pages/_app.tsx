@@ -28,7 +28,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       if (session) {
         dispatch(login());
       }
-
       if (event === "INITIAL_SESSION") {
         // 구독을 시작할 때
       } else if (event === "SIGNED_IN") {
