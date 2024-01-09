@@ -11,7 +11,7 @@
     "fileStates": {
         "": {
             "scaleInDock": 1,
-            "scaleInEditor": 1.2487
+            "scaleInEditor": 1.26
         },
         "/Users/yeol/programing/project/nbc-nep/nbc-nep-front/public/assets/map/basic_map.tmx": {
             "scale": 0.5913,
@@ -23,10 +23,10 @@
         },
         "/Users/yeol/programing/project/nbc-nep/nbc-nep-front/public/assets/map/tile1.tmx": {
             "scale": 0.74,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 557.4324324324325,
-                "y": 168.24324324324323
+                "x": 604.7297297297297,
+                "y": 758.7837837837839
             }
         },
         "/Users/yeol/programing/project/nbc-nep/nbc-nep-front/public/assets/map/tile1.tmx#tile1": {
