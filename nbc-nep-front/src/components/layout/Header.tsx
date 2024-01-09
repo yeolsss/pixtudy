@@ -16,6 +16,7 @@ export default function Header() {
       <header>
         <h1 onClick={() => router.push("/")}>LOGO</h1>
         <button onClick={toggleLoginModal}>LOGIN</button>
+        <button onClick={toggleLoginModal}>SIGNUP</button>
         <button>LOGOUT</button>
         <button onClick={() => router.push("/dashboard")}>DASH BOARD</button>
       </header>
