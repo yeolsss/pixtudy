@@ -2,8 +2,10 @@ const { RTCPeerConnection, RTCIceCandidate } = require("werift");
 const configuration = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 };
+let receiverPCs = {};
+let senderPCs = {};
 let users = {};
-let peerConnectionReceiver = {};
+let socketToRoom = {};
 
 function handleJoinRoom(io) {
   return ({ socketId, roomId }) => {
@@ -35,7 +37,7 @@ function handleReceiveOffer(io, socket) {
     peerConnection.on("icecandidate", (ice) => {
       socket
         .to(socketId)
-        .emit("send-candidate-info", { candidate: ice.candidate });
+        .emit("receive-candidate-info", { candidate: ice.candidate });
     });
 
     io.to(socketId).emit("send-answer", answer);
@@ -59,4 +61,5 @@ function isInclude(array, value) {
 module.exports = {
   handleJoinRoom,
   handleReceiveOffer,
+  handleReceiveCandidateInfo,
 };
