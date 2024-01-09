@@ -1,4 +1,4 @@
-import { SocialLoginType, loginHandler } from "@/api/auth";
+import { LoginPlatformType, loginHandler } from "@/api/auth";
 
 const socialLoginButtons = [
   { text: "구글", platform: "google" },
@@ -7,7 +7,7 @@ const socialLoginButtons = [
 ];
 
 export default function SocialLogin() {
-  const HandleSocialLogin = (platform: SocialLoginType) => {
+  const handleSocialLogin = (platform: LoginPlatformType) => {
     loginHandler({ platform });
   };
 
@@ -17,7 +17,7 @@ export default function SocialLogin() {
         return (
           <button
             key={btn.platform}
-            onClick={() => HandleSocialLogin(btn.platform as SocialLoginType)}
+            onClick={() => handleSocialLogin(btn.platform as LoginPlatformType)}
           >
             {btn.text}
           </button>

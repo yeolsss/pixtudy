@@ -1,11 +1,16 @@
-import { loginHandler } from "@/api/auth";
-import { validateEmail, validatePassword } from "@/utils/authFormValidate";
+import { useLoginUser } from "@/hooks/query/useSupabase";
+import {
+  handleValidateEmail,
+  handleValidatePassword,
+} from "@/utils/authFormValidate";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import AuthInput from "../AuthInput";
 import SocialLogin from "./SocialLogin";
 
 export default function LoginModalMainContainer() {
+  const login = useLoginUser();
+
   // signUp hook form
   const {
     handleSubmit,
@@ -17,15 +22,19 @@ export default function LoginModalMainContainer() {
   });
 
   //   submit event
-  const handleLogin: SubmitHandler<FieldValues> = async (values) => {
-    const data = await loginHandler({
-      email: values.login_id,
-      password: values.login_pw,
-      platform: "email",
-    });
-    if (data && "user" in data && data.user) {
-      reset();
-    }
+  const handleLogin: SubmitHandler<FieldValues> = (values) => {
+    login(
+      {
+        email: values.login_id,
+        password: values.login_pw,
+        platform: "email",
+      },
+      {
+        onSuccess: () => {
+          reset();
+        },
+      }
+    );
   };
 
   const loginInput = [
@@ -34,14 +43,14 @@ export default function LoginModalMainContainer() {
       labelTitle: "이메일",
       placeholder: "이메일을 입력해주세요",
       type: "email",
-      validate: validateEmail,
+      validate: handleValidateEmail,
     },
     {
       id: "login_pw",
       labelTitle: "비밀번호",
       placeholder: "비밀번호를 입력해주세요",
       type: "password",
-      validate: validatePassword,
+      validate: handleValidatePassword,
     },
   ];
   return (

@@ -1,44 +1,56 @@
-import {
-  openLoginModal,
-  openSignUpModalOpen,
-} from "@/redux/modules/modalSlice";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useLogoutUser } from "@/hooks/query/useSupabase";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
 import ModalPortal from "../modal/ModalPortal";
 import LoginModal from "../modal/authModals/loginModal/LoginModal";
 import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
 
 export default function Header() {
   const router = useRouter();
+  const logout = useLogoutUser();
+  const isLogin = useAppSelector((state) => state.authSlice.isLogin);
 
-  const modalStatus = useSelector((state: RootState) => state.modalSlice);
+  const modalStatus = useAppSelector((state) => state.modalSlice);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const HandleOpenLoginModal = () => {
+  const handleOpenLoginModal = () => {
     dispatch(openLoginModal());
   };
 
-  const HandleOpenSignUpModal = () => {
-    dispatch(openSignUpModalOpen());
+  const handleOpenSignUpModal = () => {
+    dispatch(openSignUpModal());
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
   };
 
   return (
     <>
       <header>
         <h1 onClick={() => router.push("/")}>LOGO</h1>
-        <button onClick={HandleOpenLoginModal}>LOGIN</button>
-        <button onClick={HandleOpenSignUpModal}>SIGNUP</button>
-        <button>LOGOUT</button>
-        <button onClick={() => router.push("/dashboard")}>DASH BOARD</button>
+        {!isLogin && <button onClick={handleOpenLoginModal}>LOGIN</button>}
+        {isLogin && (
+          <>
+            <button onClick={handleOpenSignUpModal}>SIGNUP</button>
+            <button onClick={handleLogout}>LOGOUT</button>
+            <button onClick={() => router.push("/dashboard")}>
+              DASH BOARD
+            </button>
+          </>
+        )}
       </header>
-      {modalStatus.loginModalOpen && (
+      {/* login 모달 */}
+      {modalStatus.isLoginModalOpen && (
         <ModalPortal>
           <LoginModal />
         </ModalPortal>
       )}
-      {modalStatus.signUpModalOpen && (
+      {/* 회원가입 모달 */}
+      {modalStatus.isSignUpModalOpen && (
         <ModalPortal>
           <SignUpModal />
         </ModalPortal>

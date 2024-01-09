@@ -1,14 +1,16 @@
-import { signUpHandler } from "@/api/auth";
+import { useSignUpUser } from "@/hooks/query/useSupabase";
 import {
-  validateEmail,
-  validateNickname,
-  validatePassword,
+  handleValidateEmail,
+  handleValidateNickname,
+  handleValidatePassword,
 } from "@/utils/authFormValidate";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import AuthInput from "../AuthInput";
 
 export default function SignUpModalMainContainer() {
+  const signUp = useSignUpUser();
+
   const {
     handleSubmit,
     register,
@@ -20,19 +22,23 @@ export default function SignUpModalMainContainer() {
   });
 
   //   submit event
-  const onSignUp: SubmitHandler<FieldValues> = async (values) => {
-    const data = await signUpHandler({
-      email: values.signup_id,
-      password: values.signup_pw,
-      nickname: values.signup_nickname,
-    });
-    if (data && "user" in data && data.user) {
-      reset();
-    }
+  const handleSignUp: SubmitHandler<FieldValues> = async (values) => {
+    signUp(
+      {
+        email: values.signup_id,
+        password: values.signup_pw,
+        nickname: values.signup_nickname,
+      },
+      {
+        onSuccess: () => {
+          reset();
+        },
+      }
+    );
   };
 
   // password check validation check function
-  const validatePasswordMatch = (value: string) => {
+  const handleValidatePasswordMatch = (value: string) => {
     return value === watch("signup_pw") || "비밀번호가 일치하지 않습니다.";
   };
 
@@ -43,35 +49,35 @@ export default function SignUpModalMainContainer() {
       labelTitle: "이메일",
       placeholder: "이메일을 입력해주세요",
       type: "email",
-      validate: validateEmail,
+      validate: handleValidateEmail,
     },
     {
       id: "signup_pw",
       labelTitle: "비밀번호",
       placeholder: "비밀번호를 입력해주세요",
       type: "password",
-      validate: validatePassword,
+      validate: handleValidatePassword,
     },
     {
       id: "signup_check_pw",
       labelTitle: "비밀번호 확인",
       placeholder: "비밀번호를 다시 입력해주세요",
       type: "password",
-      validate: validatePasswordMatch,
+      validate: handleValidatePasswordMatch,
     },
     {
       id: "signup_nickname",
       labelTitle: "닉네임",
       placeholder: "닉네임을 입력해주세요",
       type: "text",
-      validate: validateNickname,
+      validate: handleValidateNickname,
     },
   ];
 
   return (
     <StModalContainer>
       <h1>회원가입</h1>
-      <form onSubmit={handleSubmit(onSignUp)}>
+      <form onSubmit={handleSubmit(handleSignUp)}>
         {signUpInput.map((inputInfo) => {
           inputInfo.type;
           return (
