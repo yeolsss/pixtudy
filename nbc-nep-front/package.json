@@ -9,13 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.0.1",
     "@supabase/supabase-js": "^2.39.2",
     "next": "14.0.4",
     "phaser": "^3.70.0",
+    "next-redux-wrapper": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
     "socket.io-client": "^4.7.3",
     "react-hook-form": "^7.49.2",
+    "react-redux": "^9.0.4",
     "styled-components": "^6.1.6"
   },
   "devDependencies": {
