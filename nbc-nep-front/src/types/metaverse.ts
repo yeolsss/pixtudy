@@ -3,6 +3,7 @@ type Player = {
   x: number;
   y: number;
   playerId: string;
+  frame: string;
 };
 
 type Players = {

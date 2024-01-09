@@ -1,5 +1,5 @@
 export class CurrentPlayer extends Phaser.Physics.Arcade.Sprite {
-  oldPosition?: { x: number; y: number };
+  oldPosition?: { x: number; y: number; frame: string };
   playerId?: string;
   movingLeft?: boolean;
   movingRight?: boolean;
@@ -10,9 +10,9 @@ export class CurrentPlayer extends Phaser.Physics.Arcade.Sprite {
     x: number,
     y: number,
     texture: string,
-    frame?: string | number
+    frame: string
   ) {
     super(scene, x, y, texture, frame);
-    this.oldPosition = { x: x, y: y };
+    this.oldPosition = { x: x, y: y, frame: frame };
   }
 }

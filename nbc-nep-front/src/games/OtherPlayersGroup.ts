@@ -38,6 +38,7 @@ export class OtherPlayersGroup {
         const otherPlayer = gameObject as CurrentPlayer;
         if (playerInfo.playerId === otherPlayer.playerId) {
           otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+          otherPlayer.setFrame(playerInfo.frame);
         }
       });
   }
