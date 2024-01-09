@@ -15,7 +15,7 @@ export const modalSlice = createSlice({
   initialState,
   reducers: {
     closeModal: (state) => {
-      state = initialState;
+      return (state = initialState);
     },
     openLoginModal: (state) => {
       state.loginModalOpen = !state.loginModalOpen;

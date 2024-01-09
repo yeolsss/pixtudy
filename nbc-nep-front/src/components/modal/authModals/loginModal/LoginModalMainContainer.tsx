@@ -1,14 +1,11 @@
 import { loginHandler } from "@/api/auth";
 import { validateEmail, validatePassword } from "@/utils/authFormValidate";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import AuthInput from "./AuthInput";
-import AuthSocialLogin from "./AuthSocialLogin";
+import styled from "styled-components";
+import AuthInput from "../AuthInput";
+import SocialLogin from "./SocialLogin";
 
-export default function AuthLoginMode({
-  changeAuthMode,
-}: {
-  changeAuthMode: () => void;
-}) {
+export default function LoginModalMainContainer() {
   // signUp hook form
   const {
     handleSubmit,
@@ -47,9 +44,8 @@ export default function AuthLoginMode({
       validate: validatePassword,
     },
   ];
-
   return (
-    <>
+    <StModalContainer>
       <h2>로그인</h2>
       <form onSubmit={handleSubmit(handleLogin)}>
         {loginInput.map((input) => {
@@ -68,11 +64,18 @@ export default function AuthLoginMode({
         })}
         <button type="submit">로그인</button>
       </form>
-      <AuthSocialLogin />
-      <span>
-        아직 회원이 아니신가요?{" "}
-        <span onClick={changeAuthMode}>이메일로 회원가입</span>
-      </span>
-    </>
+      <SocialLogin />
+    </StModalContainer>
   );
 }
+
+const StModalContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background: white;
+  width: 50rem;
+  height: 50rem;
+`;

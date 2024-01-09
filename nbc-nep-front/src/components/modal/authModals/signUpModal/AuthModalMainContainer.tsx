@@ -5,21 +5,10 @@ import {
   validatePassword,
 } from "@/utils/authFormValidate";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import AuthInput from "./AuthInput";
+import styled from "styled-components";
+import AuthInput from "../AuthInput";
 
-export type FormValues = {
-  signup_id: string;
-  signup_pw: string;
-  signup_check_pw: string;
-  signup_nickname: string;
-  [key: string]: any;
-};
-
-export default function AuthSignUpMode({
-  changeAuthMode,
-}: {
-  changeAuthMode: () => void;
-}) {
+export default function SignUpModalMainContainer() {
   const {
     handleSubmit,
     register,
@@ -78,8 +67,9 @@ export default function AuthSignUpMode({
       validate: validateNickname,
     },
   ];
+
   return (
-    <span>
+    <StModalContainer>
       <h1>회원가입</h1>
       <form onSubmit={handleSubmit(onSignUp)}>
         {signUpInput.map((inputInfo) => {
@@ -99,7 +89,17 @@ export default function AuthSignUpMode({
         })}
         <button type="submit">회원가입</button>
       </form>
-      이미 회원이신가요? <span onClick={changeAuthMode}>로그인</span>
-    </span>
+    </StModalContainer>
   );
 }
+
+const StModalContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background: white;
+  width: 50rem;
+  height: 50rem;
+`;

@@ -1,7 +1,15 @@
+import { closeModal } from "@/redux/modules/modalSlice";
+import { AppDispatch } from "@/redux/store";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 export default function BackDrop() {
-  const HandleBackDropClose = () => {};
+  const dispatch = useDispatch<AppDispatch>();
+
+  const HandleBackDropClose = () => {
+    dispatch(closeModal());
+  };
+
   return <StBackDrop onClick={HandleBackDropClose} />;
 }
 
