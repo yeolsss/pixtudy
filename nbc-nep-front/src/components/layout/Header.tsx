@@ -28,20 +28,30 @@ export default function Header() {
     router.push("/");
   };
 
+  const handleToDashboard = () => {
+    router.push("/dashboard");
+  };
+
+  const loginModeButton = [
+    { text: "LOGOUT", handler: handleLogout },
+    { text: "DASH BOARD", handler: handleToDashboard },
+  ];
+  const logoutModeButton = [
+    { text: "LOGIN", handler: handleOpenLoginModal },
+    { text: "SIGNUP", handler: handleOpenSignUpModal },
+  ];
+
+  const currentButton = isLogin ? loginModeButton : logoutModeButton;
+
   return (
     <>
       <header>
         <h1 onClick={() => router.push("/")}>LOGO</h1>
-        {!isLogin && <button onClick={handleOpenLoginModal}>LOGIN</button>}
-        {isLogin && (
-          <>
-            <button onClick={handleOpenSignUpModal}>SIGNUP</button>
-            <button onClick={handleLogout}>LOGOUT</button>
-            <button onClick={() => router.push("/dashboard")}>
-              DASH BOARD
-            </button>
-          </>
-        )}
+        {currentButton.map((btn, index) => (
+          <button key={index} onClick={btn.handler}>
+            {btn.text}
+          </button>
+        ))}
       </header>
       {/* login 모달 */}
       {modalStatus.isLoginModalOpen && (

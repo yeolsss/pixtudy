@@ -1,4 +1,6 @@
 import { useLoginUser } from "@/hooks/query/useSupabase";
+import { useAppDispatch } from "@/hooks/useReduxTK";
+import { closeModal } from "@/redux/modules/modalSlice";
 import {
   handleValidateEmail,
   handleValidatePassword,
@@ -10,7 +12,7 @@ import SocialLogin from "./SocialLogin";
 
 export default function LoginModalMainContainer() {
   const login = useLoginUser();
-
+  const dispatch = useAppDispatch();
   // signUp hook form
   const {
     handleSubmit,
@@ -32,6 +34,7 @@ export default function LoginModalMainContainer() {
       {
         onSuccess: () => {
           reset();
+          dispatch(closeModal());
         },
       }
     );
