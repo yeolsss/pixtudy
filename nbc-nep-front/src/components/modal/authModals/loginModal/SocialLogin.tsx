@@ -6,7 +6,7 @@ const socialLoginButtons = [
   { text: "카카오", platform: "kakao" },
 ];
 
-export default function AuthSocialLogin() {
+export default function SocialLogin() {
   const HandleSocialLogin = (platform: SocialLoginType) => {
     loginHandler({ platform });
   };
