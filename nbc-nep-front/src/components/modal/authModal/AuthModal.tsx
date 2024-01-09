@@ -1,14 +1,10 @@
 import BackDrop from "../BackDrop";
 import AuthModalMainContainer from "./AuthModalMainContainer";
 
-export default function AuthModal({
-  toggleLoginModal,
-}: {
-  toggleLoginModal: () => void;
-}) {
+export default function AuthModal() {
   return (
     <>
-      <BackDrop toggleLoginModal={toggleLoginModal} />
+      <BackDrop />
       <AuthModalMainContainer />
     </>
   );
