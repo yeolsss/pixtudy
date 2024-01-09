@@ -1,15 +1,17 @@
 import Phaser from "phaser";
 import io, { Socket } from "socket.io-client";
+import { ExtendedSprite } from "@/games/ExtendedSprite";
 
 const RUN = 350;
 const WORK = 250;
 export class CharacterScenes extends Phaser.Scene {
-  character?: Phaser.Physics.Arcade.Sprite;
+  character?: ExtendedSprite;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   runKey?: Phaser.Input.Keyboard.Key;
   lastDirection?: string; // 마지막으로 바라본 방향을 추적하는 변수
   private socket?: Socket;
   isRunning: boolean = false;
+  otherPlayers?: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super({ key: "CharacterScenes" });
@@ -27,12 +29,31 @@ export class CharacterScenes extends Phaser.Scene {
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
     objLayer?.setCollisionByProperty({ collides: true });
 
-    this.socket = io("http://localhost:3001", { withCredentials: true });
-    this.character = this.physics.add.sprite(400, 350, "character", 0);
-    // 몸체 크기
-    this.character.body?.setSize(32, 32);
-    // 몸체 위치
-    this.character.body?.setOffset(0, 25);
+    // socket setting
+    this.otherPlayers = this.physics.add.group();
+    this.socket = io("http://localhost:3003");
+
+    // current player setting
+    this.socket.on("currentPlayers", (players: Players) => {
+      Object.keys(players).forEach((id) => {
+        if (players[id].playerId === this.socket?.id) {
+          this.addPlayer(players[id], objLayer!);
+        } else {
+          this.addOtherPlayers(players[id]);
+        }
+      });
+    });
+
+    this.socket.on("newPlayer", (playerInfo: Player) => {
+      this.addOtherPlayers(playerInfo);
+    });
+    this.socket.on("playerDisconnected", (playerId: string) => {
+      this.otherPlayers?.getChildren().forEach((otherPlayer) => {
+        if (playerId === otherPlayer.playerId) {
+          otherPlayer.destroy();
+        }
+      });
+    });
 
     this.anims.create({
       key: "left",
@@ -43,7 +64,6 @@ export class CharacterScenes extends Phaser.Scene {
       frameRate: 5,
       repeat: -1,
     });
-
     this.anims.create({
       key: "right",
       frames: this.anims.generateFrameNumbers("character", {
@@ -72,13 +92,47 @@ export class CharacterScenes extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.character.setCollideWorldBounds(true);
-    this.cameras.main.startFollow(this.character, true);
-
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-    // 지형 오브젝트
+    this.socket.on("playerMoved", (playerInfo: Player) => {
+      this.otherPlayers?.getChildren().forEach((otherPlayer) => {
+        console.log(otherPlayer.playerId);
+        if (playerInfo.playerId === otherPlayer.playerId) {
+          otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+        }
+      });
+    });
+  }
+
+  addPlayer(playerInfo: Player, objLayer: Phaser.Tilemaps.TilemapLayer) {
+    /*this.character = this.physics.add.existing(
+      new ExtendedSprite(this, playerInfo.x, playerInfo.y, "character", 0)
+    );*/
+    this.character = this.physics.add.sprite(
+      playerInfo.x,
+      playerInfo.y,
+      "character",
+      0
+    );
+    // 몸체 크기
+    this.character.body?.setSize(32, 32);
+    // 몸체 위치
+    this.character.setCollideWorldBounds(true);
+    this.character.body?.setOffset(0, 25);
     this.physics.add.collider(this.character, objLayer!);
+    this.cameras.main.startFollow(this.character, true);
+  }
+
+  addOtherPlayers(playerInfo: Player) {
+    const otherPlayer = this.physics.add
+      .sprite(playerInfo.x, playerInfo.y, "character", 0)
+      .setCollideWorldBounds(true);
+    // 몸체 크기
+    otherPlayer.body?.setSize(32, 32);
+    // 몸체 위치
+    otherPlayer.body?.setOffset(0, 25);
+    otherPlayer.playerId = playerInfo.playerId;
+    this.otherPlayers?.add(otherPlayer);
   }
 
   update() {
@@ -119,11 +173,12 @@ export class CharacterScenes extends Phaser.Scene {
     // 벡터를 정규화하여 대각선 이동 시에도 일정한 속도를 유지하도록 합니다.
     velocity.normalize();
 
-    // 캐릭터의 속도를 설정합니다.
-    this.character?.setVelocity(
-      velocity.x * characterSpeed,
-      velocity.y * characterSpeed
-    );
+    if (this.character && this.character.body) {
+      this.character.setVelocity(
+        velocity.x * characterSpeed,
+        velocity.y * characterSpeed
+      );
+    }
 
     if (
       this.cursors?.left.isDown ||
@@ -159,10 +214,33 @@ export class CharacterScenes extends Phaser.Scene {
       }
       this.character?.setFrame(frameIndex);
     }
-    // 캐릭터의 속도를 설정합니다.
-    this.character?.setVelocity(
-      velocity.x * characterSpeed,
-      velocity.y * characterSpeed
-    );
+    this.emitPlayerMovement();
+  }
+  emitPlayerMovement() {
+    if (
+      this.character &&
+      this.character.x !== undefined &&
+      this.character.y !== undefined
+    ) {
+      // 캐릭터의 현재 위치 및 회전 정보를 가져옵니다.
+      const currentPosition = {
+        x: this.character?.x,
+        y: this.character?.y,
+      };
+
+      // 이전 위치와 현재 위치를 비교합니다.
+      if (
+        this.character?.oldPosition &&
+        (currentPosition.x !== this.character?.oldPosition.x ||
+          currentPosition.y !== this.character?.oldPosition.y)
+      ) {
+        // 위치가 바뀌었다면 서버에 전송합니다.
+        console.log("emitPlayerMovement");
+        this.socket?.emit("playerMovement", currentPosition);
+      }
+
+      // 현재 위치를 이전 위치로 저장합니다.
+      this.character.oldPosition = currentPosition;
+    }
   }
 }
