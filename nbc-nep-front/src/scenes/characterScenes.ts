@@ -6,6 +6,9 @@ import io, { Socket } from "socket.io-client";
 const RUN = 350;
 const WORK = 250;
 
+interface InitData {
+  mapData: MapData;
+}
 /**
  * CharacterScenes 클래스는 Phaser.Scene을 확장해서 게임 캐릭터의 동작을 관리한다.
  */
@@ -21,23 +24,25 @@ export class CharacterScenes extends Phaser.Scene {
   constructor() {
     super({ key: "CharacterScenes" });
   }
-  preload() {}
 
-  create(data: any) {
-    // const { map, tileSet, tileLayer, objLayer } = data;
+  /*
+  >>>  TODO - refactor (240111)
+  >>>  1. 관심사 분리 : 맵, 타일레이어, 오브젝트레이어 다른 scene 에서 생성해서 전달해준 거 받기 -> 안돼요... 
+  >>>  2. 함수로 빼기
+ */
+  create() {
     const map = this.make.tilemap({
       key: "basic_map",
       tileWidth: 32,
       tileHeight: 32,
     });
-
     const tileSet = map.addTilesetImage("tile1", "tiles");
     const tileLayer = map.createLayer("tileLayer", tileSet!, 0, 0);
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
     console.log(map.tileWidth);
+    console.log(objLayer);
     objLayer?.setCollisionByProperty({ collides: true });
 
-    console.log(objLayer);
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
     this.socket = io("http://localhost:3001");
@@ -78,103 +83,25 @@ export class CharacterScenes extends Phaser.Scene {
     if (this.runKey && Phaser.Input.Keyboard.JustDown(this.runKey)) {
       this.isRunning = !this.isRunning;
     }
+    // 이동 벡터를 초기화하고 animationKey 값을 설정한다.
+    const velocity = this.getMovementVector();
+    this.updateCharacterMovement(velocity);
+    this.updateLastDirection();
 
-    let characterSpeed = this.isRunning ? RUN : WORK;
+    let animationKey = this.lastDirection; // 마지막 방향을 기본값으로 설정한다.
 
-    // 이동 벡터를 초기화하고 animationKey 값을 설정합니다.
-    let velocity = new Phaser.Math.Vector2();
-    let animationKey = this.lastDirection; // 마지막 방향을 기본값으로 설정합니다.
-
-    if (this.cursors?.left.isDown) {
-      velocity.x = -1;
-      animationKey = "left";
-      this.lastDirection = animationKey; // 마지막 방향을 업데이트합니다.
-    } else if (this.cursors?.right.isDown) {
-      velocity.x = 1;
-      animationKey = "right";
-      this.lastDirection = animationKey; // 마지막 방향을 업데이트합니다.
-    }
-
-    if (this.cursors?.up.isDown) {
-      velocity.y = -1;
-      if (!this.cursors?.left.isDown && !this.cursors?.right.isDown) {
-        // 좌/우 입력이 없을 때만 상단 애니메이션을 설정합니다.
-        this.lastDirection = "up";
-      }
-    } else if (this.cursors?.down.isDown) {
-      velocity.y = 1;
-      if (!this.cursors?.left.isDown && !this.cursors?.right.isDown) {
-        // 좌/우 입력이 없을 때만 하단 애니메이션을 설정합니다.
-        this.lastDirection = "down";
-      }
-    }
-
-    // 벡터를 정규화하여 대각선 이동 시에도 일정한 속도를 유지하도록 합니다.
-    velocity.normalize();
-
-    if (this.character && this.character.body) {
-      this.character.setVelocity(
-        velocity.x * characterSpeed,
-        velocity.y * characterSpeed
-      );
-    }
-
-    if (
-      this.cursors?.left.isDown ||
-      this.cursors?.right.isDown ||
-      this.cursors?.up.isDown ||
-      this.cursors?.down.isDown
-    ) {
-      // 이동 중인 경우 이동 방향에 맞는 애니메이션을 재생합니다.
+    if (this.isAnyCursorKeyDown()) {
+      // 이동 중인 경우 이동 방향에 맞는 애니메이션을 재생한다.
       if (animationKey) {
         this.character?.anims.play(animationKey, true);
       }
     } else {
-      // 이동 입력이 없는 경우 멈춘 상태의 프레임을 설정합니다.
+      // 이동 입력이 없는 경우 멈춘 상태의 프레임을 설정한다.
       this.character?.anims.stop();
-
-      let frameIndex;
-      switch (this.lastDirection) {
-        case "left":
-          frameIndex = 3;
-          break;
-        case "right":
-          frameIndex = 9;
-          break;
-        case "up":
-          frameIndex = 6;
-          break;
-        case "down":
-          frameIndex = 0;
-          break;
-        default:
-          frameIndex = 0; // 기본값으로 하방향 설정
-          break;
-      }
+      let frameIndex = this.getFrameIndex(this.lastDirection ?? "down");
       this.character?.setFrame(frameIndex);
     }
     this.emitPlayerMovement();
-  }
-
-  /**
-   * 각 캐릭터별로 애니메이션을 추가한다.
-   */
-  createAnimations() {
-    const animations = [
-      { key: "left", start: 4, end: 5 },
-      { key: "right", start: 10, end: 11 },
-      { key: "up", start: 7, end: 8 },
-      { key: "down", start: 1, end: 2 },
-    ];
-
-    animations.forEach(({ key, start, end }) => {
-      this.anims.create({
-        key,
-        frames: this.anims.generateFrameNumbers("character", { start, end }),
-        frameRate: 5,
-        repeat: -1,
-      });
-    });
   }
 
   /**
@@ -210,6 +137,121 @@ export class CharacterScenes extends Phaser.Scene {
   }
 
   /**
+   * 각 캐릭터별로 애니메이션을 추가한다.
+   */
+  createAnimations() {
+    const animations = [
+      { key: "left", start: 4, end: 5 },
+      { key: "right", start: 10, end: 11 },
+      { key: "up", start: 7, end: 8 },
+      { key: "down", start: 1, end: 2 },
+    ];
+
+    animations.forEach(({ key, start, end }) => {
+      this.anims.create({
+        key,
+        frames: this.anims.generateFrameNumbers("character", { start, end }),
+        frameRate: 5,
+        repeat: -1,
+      });
+    });
+  }
+
+  /**
+   *
+   * @returns {number} 커서 입력에 따라 변경된 x축, y축의 변화를 반환한다.
+   */
+  getMovementVector() {
+    let velocity = new Phaser.Math.Vector2();
+
+    if (this.cursors?.left.isDown) {
+      velocity.x = -1;
+    } else if (this.cursors?.right.isDown) {
+      velocity.x = 1;
+    }
+
+    if (this.cursors?.up.isDown) {
+      velocity.y = -1;
+    } else if (this.cursors?.down.isDown) {
+      velocity.y = 1;
+    }
+
+    velocity.normalize();
+    return velocity;
+  }
+
+  /**
+   *
+   * @param {number} velocity 현재 캐릭터의 속도.
+   */
+  updateCharacterMovement(velocity: Phaser.Math.Vector2) {
+    const characterSpeed = this.isRunning ? RUN : WORK;
+
+    if (this.character && this.character.body) {
+      this.character.setVelocity(
+        velocity.x * characterSpeed,
+        velocity.y * characterSpeed
+      );
+    }
+  }
+
+  /**
+   *
+   */
+  updateLastDirection() {
+    if (this.cursors?.left.isDown) {
+      this.lastDirection = "left";
+    } else if (this.cursors?.right.isDown) {
+      this.lastDirection = "right";
+    } else if (
+      this.cursors?.up.isDown &&
+      !this.cursors?.left.isDown &&
+      !this.cursors?.right.isDown
+    ) {
+      this.lastDirection = "up";
+    } else if (
+      this.cursors?.down.isDown &&
+      !this.cursors?.left.isDown &&
+      !this.cursors?.right.isDown
+    ) {
+      this.lastDirection = "down";
+    }
+  }
+
+  /**
+   *
+   * @returns {boolean} 방향키중에 어떤 키가 눌렸는지 여부를 반환한다.
+   */
+  isAnyCursorKeyDown() {
+    return (
+      this.cursors?.left.isDown ||
+      this.cursors?.right.isDown ||
+      this.cursors?.up.isDown ||
+      this.cursors?.down.isDown
+    );
+  }
+
+  /**
+   *
+   * @param {string} lastDirection
+   * @returns {number} 마지막에 입력한 방향키에 맞는 frame을 반환한다.
+   */
+  getFrameIndex(lastDirection: string) {
+    switch (lastDirection) {
+      case "left":
+        return 3;
+      case "right":
+        return 9;
+      case "up":
+        return 6;
+      case "down":
+        return 0;
+      default:
+        return 0; // 기본값으로 하방향 설정
+    }
+  }
+
+  /**
    * 플레이어의 움직임을 서버에 전송한다.
    */
   emitPlayerMovement() {
@@ -219,6 +261,7 @@ export class CharacterScenes extends Phaser.Scene {
       this.character.y !== undefined &&
       this.character.frame.name !== undefined
     ) {
+      // this.character.anims.getFrameName() 도 긴 한데... 어느게 맞을지..
       // 캐릭터의 현재 위치 및 프레임 인덱스를 받아옵니다.
       const currentPosition = {
         x: this.character?.x,
