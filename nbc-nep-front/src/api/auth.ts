@@ -1,10 +1,11 @@
 import { supabase } from "@/libs/supabase";
+import { Space_members } from "@/types/supabase.tables.type";
 
 /**
  * Supabase 회원가입을 위한 함수
- * @param {string} email - 회원가입에 사용할 email
- * @param {string} password - 회원가입에 사용할 password
- * @param {string} nickname - 회원가입에 사용할 nickname
+ * @param string email - 회원가입에 사용할 email
+ * @param string password - 회원가입에 사용할 password
+ * @param string nickname - 회원가입에 사용할 nickname
  * @returns 유저정보
  */
 interface SignUpHandlerArgs {
@@ -32,9 +33,9 @@ export const signUpHandler = async ({
 
 /**
  * Supabase 로그인을 위한 함수
- * @param {string} email - 로그인에 사용할 email (선택적 입력가능)
- * @param {string} password - 로그인에 사용할 password (선택적 입력가능)
- * @param {LoginPlatformType(string union)} platform - 로그인 방식
+ * @param string email - 로그인에 사용할 email (선택적 입력가능)
+ * @param string password - 로그인에 사용할 password (선택적 입력가능)
+ * @param LoginPlatformType(string union) platform - 로그인 방식
  * @returns 유저정보
  */
 export type LoginPlatformType = "email" | "google" | "kakao" | "github";
@@ -82,8 +83,31 @@ export const loginHandler = async ({
 /**
  * Supabase 로그아웃을 위한 함수
  */
-// 로그아웃
 export const logoutHandler = async () => {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
+};
+
+/**
+ * Supabase 현재 로그인 된 유저 정보를 가져오는 함수
+ * @returns Session 현재 세션 유저 정보
+ */
+export const getUserSessionHandler = async () => {
+  const { data } = await supabase.auth.getSession();
+  return data?.session || null;
+};
+
+/**
+ *
+ * @returns
+ */
+
+export const getUserSpaces = async () => {
+  const currentUser = await getUserSessionHandler();
+  const { data } = await supabase
+    .from("space_members")
+    .select(`*,spaces(*)`)
+    .eq("user_id", currentUser?.user.id)
+    .returns<Space_members[]>();
+  return data;
 };
