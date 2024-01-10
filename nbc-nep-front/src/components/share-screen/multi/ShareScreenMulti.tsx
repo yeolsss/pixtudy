@@ -1,153 +1,151 @@
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import useVideoShareMultiReceiver from "@/hooks/useVideoShareMultiReceiver";
+import useVideoShareMultiSender from "@/hooks/useVideoShareMultiSender";
+import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
+import styled from "styled-components";
 import ShareScreenButton from "../ShareScreenButton";
-import ShareScreenInput from "./ShareScreenInput";
+import Video from "./Vidoe";
 
 type WebRTCUser = {
   id: string;
   stream: MediaStream;
 };
 
-const configuration = {
-  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-};
-
 export default function ShareScreenMulti() {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [users, setUsers] = useState<WebRTCUser[]>([]);
+  const localVideoRef = useRef<HTMLVideoElement>(null);
   const socketRef = useRef<Socket>(
     io("http://localhost:3001", { withCredentials: true })
   );
-  const localVideoRef = useRef<HTMLVideoElement>(null);
-  const [users, setUsers] = useState<WebRTCUser[]>([]);
-  const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
+  const {
+    createAndSetOffer,
+    addTracksToConnection,
+    getSenderAnswer,
+    getSenderCandidate,
+  } = useVideoShareMultiSender({
+    handleIceCandidate: handleSenderIceCandidate,
+  });
+  const {
+    createReceiverPeerConnection,
+    getReceiverAnswer,
+    getReceiverCandidate,
+  } = useVideoShareMultiReceiver({
+    socket: socketRef.current,
+    onIceCandidate: handleReceiverIceCandidate,
+    onTrack: handleReceiverTrack,
+  });
+
+  async function handleStartCapture(stream: MediaStream) {
+    const socket = socketRef.current;
+    if (!socket) return;
+    if (localVideoRef.current) localVideoRef.current.srcObject = stream;
+    addTracksToConnection(stream);
+    const offer = await createAndSetOffer();
+    socket.emit("senderOffer", { offer, senderUserId: socket.id });
+  }
+
+  function handleSenderIceCandidate(event: RTCPeerConnectionIceEvent) {
+    const socket = socketRef.current!;
+    const candidate = event.candidate;
+
+    if (!(candidate && socket)) return;
+
+    socket.emit("senderCandidate", {
+      candidate,
+      senderUserId: socket.id,
+    });
+  }
+
+  function handleReceiverIceCandidate(senderUserId: string) {
+    return (event: RTCPeerConnectionIceEvent) => {
+      const socket = socketRef.current;
+      const candidate = event.candidate;
+
+      socket.emit("receiverCandidate", {
+        candidate,
+        receiverUserId: socket.id,
+        senderUserId,
+      });
+    };
+  }
+
+  function handleReceiverTrack(senderUserId: string) {
+    return (event: RTCTrackEvent) => {
+      const [stream] = event.streams;
+      setUsers((prev) =>
+        prev
+          .filter((user) => user.id !== senderUserId)
+          .concat({ id: senderUserId, stream })
+      );
+    };
+  }
 
   useEffect(() => {
-    const socket = socketRef.current;
-    socket.on("connect", handleConnect);
-    socket.on("join-room", handleReceiveRoomUser);
-    socket.on("receive-answer", handleReceiveAnswer);
+    const socket = socketRef.current!;
 
-    function handleConnect() {
-      console.log("socket connected in Share Screen Multi");
-    }
+    socket.on("userEnter", (data: { userId: string }) => {
+      const { userId } = data;
+      createReceiverPeerConnection(userId);
+    });
 
-    function handleReceiveRoomUser(users: any[]) {
-      console.log("users", users);
-    }
+    socket.on(
+      "getSenderAnswer",
+      async (data: { answer: RTCSessionDescription }) => {
+        const { answer } = data;
+        console.log(
+          "서버 측에서 Receiver가 제대로 만들어졌고 answer를 받음",
+          answer
+        );
+        await getSenderAnswer(answer);
+      }
+    );
 
-    async function handleReceiveAnswer(answer: RTCSessionDescriptionInit) {
-      const peerConnection = peerConnectionRef.current!;
-      await peerConnection.setRemoteDescription(
-        new RTCSessionDescription(answer)
-      );
-    }
-    async function handleReceive() {}
+    socket.on(
+      "getSenderCandidate",
+      async (data: { candidate: RTCIceCandidateInit }) => {
+        const { candidate } = data;
+        await getSenderCandidate(candidate);
+      }
+    );
 
-    return () => {
-      socket.off("connect", handleConnect);
-      socket.off("join-room", handleReceiveRoomUser);
-    };
+    socket.on(
+      "getReceiverAnswer",
+      async (data: { id: string; answer: RTCSessionDescription }) => {
+        const { id, answer } = data;
+        await getReceiverAnswer(id, answer);
+      }
+    );
+    socket.on(
+      "getReceiverCandidate",
+      async (data: { id: string; candidate: RTCIceCandidateInit }) => {
+        const { id, candidate } = data;
+        await getReceiverCandidate(id, candidate);
+      }
+    );
   }, []);
 
-  function handleStartCapture(stream: MediaStream) {
-    if (localVideoRef.current) localVideoRef.current.srcObject = stream;
-
-    const peerConnection = new RTCPeerConnection(configuration);
-    peerConnectionRef.current = peerConnection;
-
-    const pc = peerConnection;
-    const socket = socketRef.current;
-
-    pc.addEventListener("icecandidate", (e) => {
-      if (!(e.candidate && socket)) return;
-      console.log("sender PC icecandidate 정보를 보낸다.");
-      socket.emit("send-candidate-info", {
-        candidate: e.candidate,
-        socketId: socket.id,
-      });
-    });
-    pc.addEventListener("iceconnectionstatechange", (e) => {
-      console.log("ice connection state change ", e);
-    });
-
-    stream.getTracks().forEach((track) => {
-      pc.addTrack(track, stream);
-    });
-
-    createOffer(peerConnection);
-  }
-  async function createOffer(peerConnection: RTCPeerConnection) {
-    // ? 자신의 Media Stream을 보내기 위한 RTC PeerConnection 이므로
-    // ? offerToReceiveAudio, offerToReceiveVideo는 모두 false로 둔다
-    const socket = socketRef.current!;
-    const offer = await peerConnection.createOffer({
-      offerToReceiveAudio: false,
-      offerToReceiveVideo: false,
-    });
-    peerConnection.setLocalDescription(new RTCSessionDescription(offer));
-    socketRef.current?.emit("send-offer", {
-      offer,
-      socketId: socket.id,
-      roomId: inputRef.current!.value,
-    });
-  }
-
   return (
-    <div style={StyleDiv}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-
-          const roomId = inputRef.current!.value;
-          const socket = socketRef.current!;
-
-          socket.emit("join-room", { socketId: socket.id, roomId });
-        }}
-      >
-        <ShareScreenInput inputRef={inputRef} />
-      </form>
+    <>
       <ShareScreenButton onShareScreen={handleStartCapture} />
-      <section style={StyleSection}>
-        <h1>My Video</h1>
-        <video
-          style={{ width: "100%", height: "100%" }}
-          ref={localVideoRef}
-          autoPlay
-        />
-      </section>
-      <section style={StyleSectionOther}>
-        <h1>Other Video</h1>
+      <StSection>
+        <h1>My Videos</h1>
+        <StVideo ref={localVideoRef} autoPlay />
+      </StSection>
+      <StSection>
+        <h1>other videos</h1>
         {users.map((user) => (
           <Video key={user.id} stream={user.stream} />
         ))}
-      </section>
-    </div>
+      </StSection>
+    </>
   );
 }
-const StyleDiv: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-};
-const StyleSection: CSSProperties = {
-  width: 400,
-  height: 300,
-};
-const StyleSectionOther: CSSProperties = {
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  height: 300,
-};
-
-interface Props {
-  stream: MediaStream;
-}
-function Video({ stream }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (videoRef.current) videoRef.current.srcObject = stream;
-  }, [stream]);
-
-  return <video ref={videoRef} autoPlay />;
-}
+const StSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const StVideo = styled.video`
+  width: 400px;
+  height: 300px;
+`;
