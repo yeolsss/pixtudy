@@ -101,6 +101,7 @@ export class CharacterScenes extends Phaser.Scene {
       let frameIndex = this.getFrameIndex(this.lastDirection ?? "down");
       this.character?.setFrame(frameIndex);
     }
+
     this.emitPlayerMovement();
   }
 
