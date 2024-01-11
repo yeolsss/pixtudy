@@ -26,11 +26,6 @@ export class CharacterScenes extends Phaser.Scene {
     super({ key: "CharacterScenes" });
   }
 
-  /*
-  >>>  TODO - refactor (240111)
-  >>>  1. 닉네임 표시
-  >>>  2. 
- */
   create() {
     const map = this.make.tilemap({
       key: "basic_map",
@@ -48,17 +43,12 @@ export class CharacterScenes extends Phaser.Scene {
     this.otherPlayers = new OtherPlayersGroup(this);
     this.socket = io("http://localhost:3001");
 
-    let characterContainer: Phaser.GameObjects.Container;
-
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
+      const playerCount = players.length;
       Object.keys(players).forEach((id) => {
         if (players[id].playerId === this.socket?.id) {
-          characterContainer = this.addPlayer(
-            players[id],
-            objLayer!,
-            "mycharacter"
-          );
+          this.addPlayer(players[id], objLayer!);
         } else {
           this.addOtherPlayers(players[id]);
         }
@@ -84,6 +74,7 @@ export class CharacterScenes extends Phaser.Scene {
 
   /**
    * 게임의 상태를 업데이트한다. Phaser 게임 루프에서 자동으로 호출된다.
+   * playerMovement 이벤트를 서버로 전송한다.
    */
 
   update() {
@@ -94,7 +85,6 @@ export class CharacterScenes extends Phaser.Scene {
     const velocity = this.getMovementVector();
     this.updateCharacterMovement(velocity);
     this.updateLastDirection();
-
     let animationKey = this.lastDirection; // 마지막 방향을 기본값으로 설정한다.
 
     if (this.isAnyCursorKeyDown()) {
@@ -109,6 +99,13 @@ export class CharacterScenes extends Phaser.Scene {
       this.character?.setFrame(frameIndex);
     }
 
+    if (this.character && this.characterName) {
+      // Update the position of characterName to be above the character
+      this.characterName.setPosition(
+        this.character.x,
+        this.character.y - this.character.displayHeight / 2
+      );
+    }
     this.emitPlayerMovement();
   }
 
@@ -117,31 +114,15 @@ export class CharacterScenes extends Phaser.Scene {
    * @param {Player} playerInfo - 플레이어 정보.
    * @param {Phaser.Tilemaps.TilemapLayer} objLayer - 충돌을 처리할 타일맵 레이어.
    */
-  addPlayer(
-    playerInfo: Player,
-    objLayer: Phaser.Tilemaps.TilemapLayer,
-    name: string
-  ) {
-    /*this.character = this.physics.add.existing(
-      new ExtendedSprite(this, playerInfo.x, playerInfo.y, "character", 0)
-    );*/
-    this.character = this.physics.add.sprite(
-      playerInfo.x,
-      playerInfo.y,
-      "character",
-      0
-    );
-
-    this.characterName = this.add.text(0, -50, name, {
-      fontSize: "10px",
-      color: "#000000",
-    });
-
-    const characterContainer = this.add.container(
-      this.character.x,
-      this.character.y,
-      [this.character, this.characterName]
-    );
+  addPlayer(playerInfo: Player, objLayer: Phaser.Tilemaps.TilemapLayer) {
+    this.characterName = this.add
+      .text(playerInfo.x, playerInfo.y, playerInfo.playerId, {
+        fontFamily: "PretendardVariable",
+      }) // 플레이어 이름 표시할 오브젝트 생성
+      .setOrigin(0.5, 0.5);
+    this.character = this.physics.add
+      .sprite(playerInfo.x, playerInfo.y, "character", 0)
+      .setDepth(1000);
 
     // 몸체 크기
     this.character.body?.setSize(32, 32);
@@ -149,9 +130,7 @@ export class CharacterScenes extends Phaser.Scene {
     this.character.setCollideWorldBounds(true);
     this.character.body?.setOffset(0, 25);
     this.physics.add.collider(this.character, objLayer!);
-    this.cameras.main.startFollow(characterContainer, true);
-
-    return characterContainer;
+    this.cameras.main.startFollow(this.characterName, true);
   }
 
   /**

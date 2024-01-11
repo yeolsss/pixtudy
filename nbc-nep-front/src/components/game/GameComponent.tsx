@@ -14,7 +14,7 @@ const GameComponent = () => {
         default: "arcade",
         arcade: {
           gravity: { y: 0 },
-          debug: true,
+          debug: false,
           width: 1280,
           height: 800,
         },
