@@ -1,4 +1,5 @@
 import {
+  getOtherUserHandler,
   getUserSessionHandler,
   loginHandler,
   logoutHandler,
@@ -50,6 +51,16 @@ export function useGetCurrentUser() {
     onError: () => {},
   });
   return getUser;
+}
+
+// 특정유저의 정보를 가져오는 함수
+export function useGetOtherUserInfo() {
+  const { mutate: getOtherUser } = useMutation({
+    mutationFn: getOtherUserHandler,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return getOtherUser;
 }
 
 /* spaces */

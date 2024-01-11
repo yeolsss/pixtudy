@@ -1,17 +1,20 @@
-import { useGetUserDMChannel } from "@/hooks/query/useSupabase";
-import { supabase } from "@/libs/supabase";
+import { useGetOtherUserInfo } from "@/hooks/query/useSupabase";
 import { Tables } from "@/types/supabase";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-export default function DMContainer() {
-  const router = useRouter();
-  const space_id = router.query.index;
-  const getDmChannel = useGetUserDMChannel();
-  const [messages, setMessages] = useState<Tables<"dm_messages">[]>([]);
-  const { handleSubmit, register, reset } = useForm();
+interface Props {
+  otherUserId: string;
+  handleCloseDmContainer: (id: string) => void;
+}
 
+export default function DmContainer({
+  otherUserId,
+  handleCloseDmContainer,
+}: Props) {
+  const { handleSubmit, register, reset } = useForm();
+  const getOtherUser = useGetOtherUserInfo();
+  const [otherUser, setOtherUser] = useState<Tables<"users">>();
   const sendHandler: SubmitHandler<FieldValues> = (values) => {
     console.log(values["send-input"]);
     // TODO: 로직 구현
@@ -19,51 +22,23 @@ export default function DMContainer() {
     reset();
   };
 
-  // 채널 생성 및 구독을 위한 useEffect
+  // 상대 유저의 정보를 불러오는 useEffect
   useEffect(() => {
-    if (typeof space_id === "string") {
-      //(1) 현재까지의 Talk 채널 들고오기
-      getDmChannel(
-        { space_id },
-        {
-          onSuccess: (dmChannelsInfo) => {
-            //(2) 현재까지의 Talk 채널을 기준으로 channel 생성
-            if (dmChannelsInfo) {
-              dmChannelsInfo?.forEach((dmChannel) => {
-                //(3) 현재기준 모든 채널 구독 실시
-                const testChannel = supabase.channel(`dm_${dmChannel?.id}`);
-                testChannel
-                  .on(
-                    "postgres_changes",
-                    {
-                      event: "INSERT",
-                      schema: "public",
-                      table: "dm_messages",
-                      filter: `dm_id=eq.${dmChannel.id}`,
-                    },
-                    (payload) => {
-                      console.log(payload);
-                    }
-                  )
-                  .subscribe();
-              });
-            }
-          },
-        }
-      );
-    }
+    getOtherUser(
+      { otherUserId },
+      {
+        onSuccess: (otherUserInfo) => {
+          if (otherUserInfo) setOtherUser(otherUserInfo);
+        },
+      }
+    );
   }, []);
+
   return (
     <section>
-      <ul>
-        {messages.map((message) => (
-          <li key={message.id}>
-            <h2>{message.message}</h2>
-            <p>{message.sender_id}</p>
-            <p>{message.created_at}</p>
-          </li>
-        ))}
-      </ul>
+      <button onClick={() => handleCloseDmContainer(otherUserId)}>close</button>
+      <h1>상대방 유저 정보 : {otherUser?.display_name}</h1>
+      <ul></ul>
       <form onSubmit={handleSubmit(sendHandler)}>
         <input
           id="send-input"

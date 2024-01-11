@@ -91,9 +91,36 @@ export const logoutHandler = async () => {
 
 /**
  * Supabase 현재 로그인 된 유저 정보를 가져오는 함수
- * @returns Session 현재 세션 유저 정보
+ * @returns user tables row
  */
 export const getUserSessionHandler = async () => {
-  const { data } = await supabase.auth.getSession();
-  return data?.session || null;
+  const { data: currentUsersSession } = await supabase.auth.getSession();
+  if (!currentUsersSession) {
+    return null;
+  } else {
+    const { data: currentUserInfo } = await supabase
+      .from("users")
+      .select(`*`)
+      .eq("id", currentUsersSession.session?.user.id!)
+      .single();
+    return currentUserInfo;
+  }
+};
+
+/**
+ * Supabase 특정 유저 정보를 가져오는 함수
+ * @returns user tables row
+ */
+interface getOtherUserHandlerArgs {
+  otherUserId: string;
+}
+export const getOtherUserHandler = async ({
+  otherUserId,
+}: getOtherUserHandlerArgs) => {
+  const { data: userInfo } = await supabase
+    .from("users")
+    .select(`*`)
+    .eq("id", otherUserId)
+    .single();
+  return userInfo;
 };

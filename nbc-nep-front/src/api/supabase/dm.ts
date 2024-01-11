@@ -8,12 +8,14 @@ import { getUserSessionHandler } from "./auth";
  */
 export const getUserSpaces = async () => {
   const currentUser = await getUserSessionHandler();
-  const { data } = await supabase
-    .from("space_members")
-    .select(`*,spaces(*)`)
-    .eq("user_id", currentUser?.user.id!)
-    .returns<Space_members[]>();
-  return data;
+  if (currentUser) {
+    const { data } = await supabase
+      .from("space_members")
+      .select(`*,spaces(*)`)
+      .eq("user_id", currentUser.id)
+      .returns<Space_members[]>();
+    return data;
+  }
 };
 
 interface GetUserDmChannelArgs {
@@ -26,13 +28,15 @@ interface GetUserDmChannelArgs {
  */
 export const getSpaceUsers = async ({ space_id }: GetUserDmChannelArgs) => {
   const currentUser = await getUserSessionHandler();
-  const { data } = await supabase
-    .from("space_members")
-    .select(`*, users(*)`)
-    .filter("space_id", "eq", space_id)
-    .filter("user_id", "neq", currentUser?.user.id)
-    .returns<Space_members[]>();
-  return data;
+  if (currentUser) {
+    const { data } = await supabase
+      .from("space_members")
+      .select(`*, users(*)`)
+      .filter("space_id", "eq", space_id)
+      .filter("user_id", "neq", currentUser.id)
+      .returns<Space_members[]>();
+    return data;
+  }
 };
 
 /**
@@ -40,12 +44,13 @@ export const getSpaceUsers = async ({ space_id }: GetUserDmChannelArgs) => {
  */
 export const getUserDmChannel = async ({ space_id }: GetUserDmChannelArgs) => {
   const currentUser = await getUserSessionHandler();
-  const { data } = await supabase
-    .from("dm_channels")
-    .select(`*`)
-    .filter("space_id", "eq", space_id)
-    .or(
-      `user.eq.${currentUser?.user.id},other_user.eq.${currentUser?.user.id}`
-    );
-  return data;
+
+  if (currentUser) {
+    const { data } = await supabase
+      .from("dm_channels")
+      .select(`*`)
+      .filter("space_id", "eq", space_id)
+      .or(`user.eq.${currentUser.id},other_user.eq.${currentUser.id}`);
+    return data;
+  }
 };
