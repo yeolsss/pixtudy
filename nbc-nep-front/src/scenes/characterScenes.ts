@@ -14,6 +14,7 @@ interface InitData {
  */
 export class CharacterScenes extends Phaser.Scene {
   character?: CurrentPlayer;
+  characterName?: Phaser.GameObjects.Text;
   otherPlayers?: OtherPlayersGroup;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   runKey?: Phaser.Input.Keyboard.Key;
@@ -27,8 +28,8 @@ export class CharacterScenes extends Phaser.Scene {
 
   /*
   >>>  TODO - refactor (240111)
-  >>>  1. 관심사 분리 : 맵, 타일레이어, 오브젝트레이어 다른 scene 에서 생성해서 전달해준 거 받기 -> 안돼요... 
-  >>>  2. 함수로 빼기 : createAnimations, getMovementVector, updateCharacterMovement, updateLastDirection, isAnyCursorKeyDown, getFrameIndex, emitPlayerMovement
+  >>>  1. 닉네임 표시
+  >>>  2. 
  */
   create() {
     const map = this.make.tilemap({
@@ -47,11 +48,17 @@ export class CharacterScenes extends Phaser.Scene {
     this.otherPlayers = new OtherPlayersGroup(this);
     this.socket = io("http://localhost:3001");
 
+    let characterContainer: Phaser.GameObjects.Container;
+
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
       Object.keys(players).forEach((id) => {
         if (players[id].playerId === this.socket?.id) {
-          this.addPlayer(players[id], objLayer!);
+          characterContainer = this.addPlayer(
+            players[id],
+            objLayer!,
+            "mycharacter"
+          );
         } else {
           this.addOtherPlayers(players[id]);
         }
@@ -110,7 +117,11 @@ export class CharacterScenes extends Phaser.Scene {
    * @param {Player} playerInfo - 플레이어 정보.
    * @param {Phaser.Tilemaps.TilemapLayer} objLayer - 충돌을 처리할 타일맵 레이어.
    */
-  addPlayer(playerInfo: Player, objLayer: Phaser.Tilemaps.TilemapLayer) {
+  addPlayer(
+    playerInfo: Player,
+    objLayer: Phaser.Tilemaps.TilemapLayer,
+    name: string
+  ) {
     /*this.character = this.physics.add.existing(
       new ExtendedSprite(this, playerInfo.x, playerInfo.y, "character", 0)
     );*/
@@ -120,13 +131,27 @@ export class CharacterScenes extends Phaser.Scene {
       "character",
       0
     );
+
+    this.characterName = this.add.text(0, -50, name, {
+      fontSize: "10px",
+      color: "#000000",
+    });
+
+    const characterContainer = this.add.container(
+      this.character.x,
+      this.character.y,
+      [this.character, this.characterName]
+    );
+
     // 몸체 크기
     this.character.body?.setSize(32, 32);
     // 몸체 위치
     this.character.setCollideWorldBounds(true);
     this.character.body?.setOffset(0, 25);
     this.physics.add.collider(this.character, objLayer!);
-    this.cameras.main.startFollow(this.character, true);
+    this.cameras.main.startFollow(characterContainer, true);
+
+    return characterContainer;
   }
 
   /**
