@@ -1,7 +1,13 @@
-import { Inter } from "next/font/google";
+import Layout from "@/components/layout/Layout";
+import { ReactElement } from "react";
+import { NextPageWithLayout } from "./_app";
 
-const inter = Inter({ subsets: ["latin"] });
+const Home: NextPageWithLayout = () => {
+  return <div>Home</div>;
+};
 
-export default function Home() {
-  return <>Home</>;
-}
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
+
+export default Home;

@@ -3,13 +3,15 @@ type Player = {
   x: number;
   y: number;
   playerId: string;
-  movingLeft?: boolean;
-  movingRight?: boolean;
-  movingUp?: boolean;
-  movingDown?: boolean;
-  lastDirection?: string;
+  frame: string;
 };
 
 type Players = {
   [id: string]: Player;
+};
+
+type MapData = {
+  objLayer: Phaser.Tilemaps.TilemapLayer | null;
+  tileLayer: Phaser.Tilemaps.TilemapLayer | null;
+  map: Phaser.Tilemaps.Tilemap;
 };
