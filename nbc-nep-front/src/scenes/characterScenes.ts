@@ -39,8 +39,6 @@ export class CharacterScenes extends Phaser.Scene {
     const tileSet = map.addTilesetImage("tile1", "tiles");
     const tileLayer = map.createLayer("tileLayer", tileSet!, 0, 0);
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
-    console.log(map.tileWidth);
-    console.log(objLayer);
     objLayer?.setCollisionByProperty({ collides: true });
 
     // socket setting
@@ -131,6 +129,7 @@ export class CharacterScenes extends Phaser.Scene {
    * @param {Player} playerInfo - 추가할 플레이어의 정보.
    */
   addOtherPlayers(playerInfo: Player) {
+    // db정보 호출.
     this.otherPlayers?.addPlayer(playerInfo);
   }
 
@@ -192,10 +191,6 @@ export class CharacterScenes extends Phaser.Scene {
       );
     }
   }
-
-  /**
-   *
-   */
   updateLastDirection() {
     if (this.cursors?.left.isDown) {
       this.lastDirection = "left";
@@ -265,6 +260,7 @@ export class CharacterScenes extends Phaser.Scene {
         x: this.character?.x,
         y: this.character?.y,
         frame: this.character.frame.name,
+        // 유저정보를 받아다가 여따 박아넣으면 되지않을까
       };
 
       // 이전 위치와 현재 위치를 비교합니다.
@@ -274,8 +270,11 @@ export class CharacterScenes extends Phaser.Scene {
           currentPosition.y !== this.character?.oldPosition.y ||
           currentPosition.frame !== this.character?.frame.name)
       ) {
-        // 위치가 바뀌었다면 서버에 전송합니다.
-        console.log("emitPlayerMovement");
+        // 위치가 바뀌었다면 서버에 전송합니다. 및 context에 전달
+        const event = new CustomEvent("playerMovement", {
+          detail: currentPosition,
+        });
+        window.dispatchEvent(event);
         this.socket?.emit("playerMovement", currentPosition);
       }
 

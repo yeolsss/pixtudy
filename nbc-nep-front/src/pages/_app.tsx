@@ -8,6 +8,7 @@ import { createWrapper } from "next-redux-wrapper";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode, useEffect } from "react";
 import { Provider } from "react-redux";
+import GlobalStyle from "@/styles/Globalstyle";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -54,6 +55,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
+        <GlobalStyle />
         {getLayout(<Component {...pageProps} />)}
       </Provider>
     </QueryClientProvider>
