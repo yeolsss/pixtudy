@@ -28,7 +28,7 @@ export class CharacterScenes extends Phaser.Scene {
   /*
   >>>  TODO - refactor (240111)
   >>>  1. 관심사 분리 : 맵, 타일레이어, 오브젝트레이어 다른 scene 에서 생성해서 전달해준 거 받기 -> 안돼요... 
-  >>>  2. 함수로 빼기
+  >>>  2. 함수로 빼기 : createAnimations, getMovementVector, updateCharacterMovement, updateLastDirection, isAnyCursorKeyDown, getFrameIndex, emitPlayerMovement
  */
   create() {
     const map = this.make.tilemap({
