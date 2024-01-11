@@ -1,10 +1,14 @@
 import {
   getUserSessionHandler,
-  getUserSpaces,
   loginHandler,
   logoutHandler,
   signUpHandler,
-} from "@/api/auth";
+} from "@/api/supabase/auth";
+import {
+  getSpaceUsers,
+  getUserDmChannel,
+  getUserSpaces,
+} from "@/api/supabase/dm";
 import { useMutation } from "@tanstack/react-query";
 
 /* Auth */
@@ -48,6 +52,7 @@ export function useGetCurrentUser() {
   return getUser;
 }
 
+/* spaces */
 // get current user spaces
 export function useGetUserSpaces() {
   const { mutate: getUserSpacesInfo } = useMutation({
@@ -56,4 +61,23 @@ export function useGetUserSpaces() {
     onError: () => {},
   });
   return getUserSpacesInfo;
+}
+
+export function useGetCurrentSpaceUsers() {
+  const { mutate: getCurrentSpaceUsers } = useMutation({
+    mutationFn: getSpaceUsers,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return getCurrentSpaceUsers;
+}
+
+// 유저의 활성화 된 모든 dm 채널 가져오기
+export function useGetUserDMChannel() {
+  const { mutate: getDmChannel } = useMutation({
+    mutationFn: getUserDmChannel,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return getDmChannel;
 }

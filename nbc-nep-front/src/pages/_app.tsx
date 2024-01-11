@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
 import { createWrapper } from "next-redux-wrapper";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect } from "react";
 import { Provider } from "react-redux";
 
@@ -44,7 +44,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       } else if (event === "PASSWORD_RECOVERY") {
         // 비밀번호 찾기 페이지 들어갈 시
       } else if (event === "TOKEN_REFRESHED") {
-        console.log("넌뭐야");
+        // 리프레시 토큰 작동시
       } else if (event === "USER_UPDATED") {
         // 유저 정보 업데이트 시
       }

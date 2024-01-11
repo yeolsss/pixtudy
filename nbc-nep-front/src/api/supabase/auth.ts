@@ -1,5 +1,4 @@
 import { supabase } from "@/libs/supabase";
-import { Space_members } from "@/types/supabase.tables.type";
 
 /**
  * Supabase 회원가입을 위한 함수
@@ -27,6 +26,8 @@ export const signUpHandler = async ({
       },
     },
   });
+  console.log(signUpData);
+  console.log(signUpError);
   if (signUpError) return signUpError;
   return signUpData;
 };
@@ -95,19 +96,4 @@ export const logoutHandler = async () => {
 export const getUserSessionHandler = async () => {
   const { data } = await supabase.auth.getSession();
   return data?.session || null;
-};
-
-/**
- *
- * @returns
- */
-
-export const getUserSpaces = async () => {
-  const currentUser = await getUserSessionHandler();
-  const { data } = await supabase
-    .from("space_members")
-    .select(`*,spaces(*)`)
-    .eq("user_id", currentUser?.user.id)
-    .returns<Space_members[]>();
-  return data;
 };

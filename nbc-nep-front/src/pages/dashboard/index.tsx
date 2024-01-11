@@ -1,7 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
 import { Space_members } from "@/types/supabase.tables.type";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import { NextPageWithLayout } from "../_app";
 
@@ -19,8 +19,8 @@ const Dashboard: NextPageWithLayout = () => {
     });
   }, []);
 
-  const handleToSpace = () => {
-    router.push("/chat");
+  const handleToSpace = (space_id: string) => {
+    router.push(`/dm/${space_id}`);
   };
   return (
     <div>
@@ -29,7 +29,9 @@ const Dashboard: NextPageWithLayout = () => {
           <h1>{space.spaces?.title}</h1>
           <h2>{space.spaces?.description}</h2>
           <span>{space.spaces?.created_at}</span>
-          <button onClick={handleToSpace}>space로 이동</button>
+          <button onClick={() => handleToSpace(space.spaces?.id!)}>
+            space로 이동
+          </button>
         </section>
       ))}
     </div>

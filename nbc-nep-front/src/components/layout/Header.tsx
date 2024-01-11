@@ -1,7 +1,7 @@
 import { useLogoutUser } from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import ModalPortal from "../modal/ModalPortal";
 import LoginModal from "../modal/authModals/loginModal/LoginModal";
 import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
