@@ -1,6 +1,7 @@
 import useSocket from "@/hooks/useSocket";
 import { Device, types } from "mediasoup-client";
 import { useEffect, useRef, useState } from "react";
+import ShareScreenButton from "./ShareScreenButton";
 
 export default function ScreenShare() {
   const { socket } = useSocket();
@@ -343,10 +344,16 @@ export default function ScreenShare() {
 
   return (
     <div>
-      <button onClick={handleStartCapture}>share screen</button>
-      <button onClick={handleWebCamCapture}>share web cam</button>
+      <ShareScreenButton onShare={handleStartCapture} mode="screen">
+        Share Screen
+      </ShareScreenButton>
+      <ShareScreenButton onShare={handleWebCamCapture} mode="webcam">
+        Share Web Cam
+      </ShareScreenButton>
+
       <video ref={localVideoRef} playsInline autoPlay />
       <video ref={webCamRef} playsInline autoPlay muted />
+
       <div id="remote-media-div">
         {videos.map((video) => (
           <video
