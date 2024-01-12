@@ -35,8 +35,6 @@ export class CharacterScenes extends Phaser.Scene {
     const tileSet = map.addTilesetImage("tile1", "tiles");
     const tileLayer = map.createLayer("tileLayer", tileSet!, 0, 0);
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
-    console.log(map.tileWidth);
-    console.log(objLayer);
     objLayer?.setCollisionByProperty({ collides: true });
 
     // socket setting
@@ -118,6 +116,8 @@ export class CharacterScenes extends Phaser.Scene {
     this.characterName = this.add
       .text(playerInfo.x, playerInfo.y, playerInfo.playerId, {
         fontFamily: "PretendardVariable",
+        // backgroundColor: "rgba(0, 0, 0, 0.33)",
+        // padding: { top: 6, bottom: 6, left: 8, right: 8 },
       }) // 플레이어 이름 표시할 오브젝트 생성
       .setOrigin(0.5, 0.5);
     this.character = this.physics.add
@@ -282,7 +282,6 @@ export class CharacterScenes extends Phaser.Scene {
           currentPosition.frame !== this.character?.frame.name)
       ) {
         // 위치가 바뀌었다면 서버에 전송합니다.
-        console.log("emitPlayerMovement");
         this.socket?.emit("playerMovement", currentPosition);
       }
 
