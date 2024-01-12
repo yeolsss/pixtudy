@@ -197,6 +197,7 @@ io.on("connection", (socket) => {
       const { roomName } = peers[socket.id];
       const userName = peers[socket.id].peerDetails.name;
 
+      // 서버 transport중 내가 consume할 trasnport를 찾는다
       const consumerTransport = transports.find(
         (transport) =>
           transport.consumer &&
@@ -253,7 +254,7 @@ io.on("connection", (socket) => {
 
         console.log("end- consume");
 
-        callback(params);
+        callback(par ams);
       } catch (error) {
         console.log("oops consume error", error);
       }

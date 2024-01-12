@@ -1,5 +1,5 @@
-import ShareScreenMulti from "@/components/share-screen/multi/ShareScreenMulti";
+import ScreenShare from "@/components/share-screen/ScreenShare";
 
 export default function Screen() {
-  return <ShareScreenMulti />;
+  return <ScreenShare />;
 }

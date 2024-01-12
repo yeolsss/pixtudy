@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "@supabase/supabase-js": "^2.39.2",
     "@tanstack/react-query": "^5.17.9",
+    "mediasoup-client": "^3.7.2",
     "next": "14.0.4",
     "next-redux-wrapper": "^8.1.0",
     "phaser": "^3.70.0",
