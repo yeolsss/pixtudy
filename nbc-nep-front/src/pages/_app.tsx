@@ -27,17 +27,17 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   /* 로그인 상태를 tracking*/
   useEffect(() => {
     const subscription = supabase.auth.onAuthStateChange((event, session) => {
-      // 최초 랜더시 상태 확인
-      if (session) {
-        dispatch(login());
-        router.push("/dashboard");
-      }
       if (event === "INITIAL_SESSION") {
-        // 구독을 시작할 때
+        // 최초 랜더링 시
+        if (session) {
+          dispatch(login());
+          router.push("/dashboard");
+        }
+        console.log("hi");
       } else if (event === "SIGNED_IN") {
         // 로그인 시
-        dispatch(login());
-        router.push("/dashboard");
+        // dispatch(login());
+        // router.push("/dashboard");
       } else if (event === "SIGNED_OUT") {
         // 로그아웃 시
         dispatch(logout());

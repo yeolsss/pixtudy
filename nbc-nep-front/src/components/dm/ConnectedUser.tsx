@@ -30,8 +30,9 @@ export default function ConnectedUser() {
             table: "dm_messages",
             filter: `receiver_id=eq.${response?.id}`,
           },
-          () => {
+          (payload) => {
             console.log("메시지가 도착했어");
+            console.log(payload.new);
           }
         );
       },

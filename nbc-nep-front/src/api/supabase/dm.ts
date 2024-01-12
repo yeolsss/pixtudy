@@ -24,7 +24,8 @@ interface GetUserDmChannelArgs {
 
 /**
  * 스페이스 별 전체 유저정보를 가져오는 함수
- * 테스트 용 입니다. (dm)
+ * @param space_id string
+ * @returns space_members & users join
  */
 export const getSpaceUsers = async ({ space_id }: GetUserDmChannelArgs) => {
   const currentUser = await getUserSessionHandler();
@@ -41,6 +42,7 @@ export const getSpaceUsers = async ({ space_id }: GetUserDmChannelArgs) => {
 
 /**
  * 유저별 dm 채널 가져오기
+ * @param space_id string
  * @returns dm_channels[]
  */
 export const getUserDmChannel = async ({ space_id }: GetUserDmChannelArgs) => {
@@ -57,9 +59,17 @@ export const getUserDmChannel = async ({ space_id }: GetUserDmChannelArgs) => {
 };
 
 /**
- * 채팅 보내기
- * 로직 구현 중입니다
+ * DM 메시지를 보내는 함수
+ * 조건부 처리
+ * (1) 기존 해당 유저와 channel이 없었을 때
+ *    - channel 생성 후 메시지 전송
+ * (2) 기존 해당 유저와 channel이 있었을 때
+ *    - 메시지 전송
+ * @param message string
+ * @param receiver_id string
+ * @param space_id string
  */
+
 interface sendMessageArgs {
   message: string;
   receiverId: string;
