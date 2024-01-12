@@ -203,7 +203,19 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_dm_channels: {
+        Args: {
+          p_space_id: string;
+          p_user_id: string;
+          p_receiver_id: string;
+        };
+        Returns: {
+          id: string;
+          other_user: string | null;
+          space_id: string;
+          user: string;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;

@@ -1,5 +1,7 @@
+import { sendMessage } from "@/api/supabase/dm";
 import { useGetOtherUserInfo } from "@/hooks/query/useSupabase";
 import { Tables } from "@/types/supabase";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
@@ -12,13 +14,21 @@ export default function DmContainer({
   otherUserId,
   handleCloseDmContainer,
 }: Props) {
+  const router = useRouter();
+  const currentSpaceId = router.query.index;
   const { handleSubmit, register, reset } = useForm();
   const getOtherUser = useGetOtherUserInfo();
   const [otherUser, setOtherUser] = useState<Tables<"users">>();
-  const sendHandler: SubmitHandler<FieldValues> = (values) => {
+
+  const sendHandler: SubmitHandler<FieldValues> = async (values) => {
     console.log(values["send-input"]);
+    if (typeof currentSpaceId === "string")
+      sendMessage({
+        message: values["send-input"],
+        receiverId: otherUserId,
+        spaceId: currentSpaceId,
+      });
     // TODO: 로직 구현
-    // (insert event)
     reset();
   };
 

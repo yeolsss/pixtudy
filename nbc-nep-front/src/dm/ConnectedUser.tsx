@@ -1,4 +1,8 @@
-import { useGetCurrentSpaceUsers } from "@/hooks/query/useSupabase";
+import {
+  useGetCurrentSpaceUsers,
+  useGetCurrentUser,
+} from "@/hooks/query/useSupabase";
+import { supabase } from "@/libs/supabase";
 import { Space_members } from "@/types/supabase.tables.type";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,8 +13,30 @@ export default function ConnectedUser() {
   const router = useRouter();
   const space_id = router.query.index;
   const getCurrentUsers = useGetCurrentSpaceUsers();
+  const getUser = useGetCurrentUser();
   const [currentUsers, setCurrentUsers] = useState<Space_members[]>([]);
   const [dmContainers, setDmContainers] = useState<string[]>([]);
+
+  // 나에게 오는 메시지를 tracking하는 채널
+  useEffect(() => {
+    const dmChannel = supabase.channel(`dm_channel_${space_id}`);
+    getUser(undefined, {
+      onSuccess: (response) => {
+        dmChannel.on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "dm_messages",
+            filter: `receiver_id=eq.${response?.id}`,
+          },
+          () => {
+            console.log("메시지가 도착했어");
+          }
+        );
+      },
+    });
+  }, []);
 
   useEffect(() => {
     if (typeof space_id === "string") {
