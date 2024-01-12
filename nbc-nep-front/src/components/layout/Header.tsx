@@ -1,24 +1,19 @@
-import { useGetCurrentUser, useLogoutUser } from "@/hooks/query/useSupabase";
+import { useLogoutUser } from "@/hooks/query/useSupabase";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
-import { Tables } from "@/types/supabase";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import ModalPortal from "../modal/ModalPortal";
 import LoginModal from "../modal/authModals/loginModal/LoginModal";
 import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 
 export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
-  const isLogin = useAppSelector((state) => state.authSlice.isLogin);
 
   const modalStatus = useAppSelector((state) => state.modalSlice);
-  const [currentUser, setCurrentUser] = useState<Tables<"users"> | null>(null);
+  const authStatus = useAppSelector((state) => state.authSlice);
 
   const dispatch = useAppDispatch();
-
-  const getCurrentUser = useGetCurrentUser();
 
   const handleOpenLoginModal = () => {
     dispatch(openLoginModal());
@@ -30,7 +25,6 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
-    setCurrentUser(null);
     router.push("/");
   };
 
@@ -47,15 +41,8 @@ export default function Header() {
     { text: "SIGNUP", handler: handleOpenSignUpModal },
   ];
 
-  const currentButton = isLogin ? loginModeButton : logoutModeButton;
+  const currentButton = authStatus.isLogin ? loginModeButton : logoutModeButton;
 
-  useEffect(() => {
-    getCurrentUser(undefined, {
-      onSuccess: (response) => {
-        setCurrentUser(response);
-      },
-    });
-  }, []);
   return (
     <>
       <header>
@@ -65,9 +52,9 @@ export default function Header() {
             {btn.text}
           </button>
         ))}
-        {currentUser && (
+        {authStatus.isLogin && (
           <span>
-            {currentUser.display_name}/{currentUser.email}
+            {authStatus.user.display_name}/{authStatus.user.email}
           </span>
         )}
       </header>

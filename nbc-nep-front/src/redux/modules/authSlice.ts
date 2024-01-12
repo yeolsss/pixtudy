@@ -1,22 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { Tables } from "@/types/supabase";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface AuthState {
   isLogin: boolean;
+  user: Tables<"users">;
 }
 
 const initialState: AuthState = {
   isLogin: false,
+  user: {
+    created_at: "",
+    display_name: "",
+    email: "",
+    id: "",
+  },
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state) => {
+    login: (state, action: PayloadAction<Tables<"users">>) => {
       state.isLogin = true;
+      state.user = action.payload;
     },
     logout: (state) => {
-      state.isLogin = false;
+      return (state = initialState);
     },
   },
 });
