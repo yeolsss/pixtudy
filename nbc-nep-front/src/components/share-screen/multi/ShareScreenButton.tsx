@@ -1,10 +1,16 @@
+import { PropsWithChildren } from "react";
+
 interface Props {
-  onShareScreen: (stream: MediaStream) => void;
+  onShare: (stream: MediaStream) => void;
   mode: "screen" | "webcam";
 }
 
-export default function ShareScreenButton({ onShareScreen, mode }: Props) {
-  const handleStartCapture = async () => {
+export default function ShareScreenButton({
+  onShare,
+  mode,
+  children,
+}: PropsWithChildren<Props>) {
+  const handleClickShareButton = async () => {
     const isScreenMode = mode === "screen";
 
     try {
@@ -12,13 +18,13 @@ export default function ShareScreenButton({ onShareScreen, mode }: Props) {
         ? getDisplayMedia()
         : getUserMedia());
 
-      onShareScreen(mediaStream);
+      onShare(mediaStream);
     } catch (err) {
       console.error("on error when start capture", err);
     }
   };
 
-  return <button onClick={handleStartCapture}>Start Capture</button>;
+  return <button onClick={handleClickShareButton}>{children}</button>;
 }
 
 const getDisplayMedia = () =>
