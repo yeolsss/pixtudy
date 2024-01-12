@@ -1,10 +1,12 @@
-import { useLogoutUser } from "@/hooks/query/useSupabase";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { useGetCurrentUser, useLogoutUser } from "@/hooks/query/useSupabase";
 import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
-import { useRouter } from "next/navigation";
+import { Tables } from "@/types/supabase";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import ModalPortal from "../modal/ModalPortal";
 import LoginModal from "../modal/authModals/loginModal/LoginModal";
 import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 
 export default function Header() {
   const router = useRouter();
@@ -12,8 +14,11 @@ export default function Header() {
   const isLogin = useAppSelector((state) => state.authSlice.isLogin);
 
   const modalStatus = useAppSelector((state) => state.modalSlice);
+  const [currentUser, setCurrentUser] = useState<Tables<"users"> | null>(null);
 
   const dispatch = useAppDispatch();
+
+  const getCurrentUser = useGetCurrentUser();
 
   const handleOpenLoginModal = () => {
     dispatch(openLoginModal());
@@ -25,6 +30,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    setCurrentUser(null);
     router.push("/");
   };
 
@@ -43,6 +49,13 @@ export default function Header() {
 
   const currentButton = isLogin ? loginModeButton : logoutModeButton;
 
+  useEffect(() => {
+    getCurrentUser(undefined, {
+      onSuccess: (response) => {
+        setCurrentUser(response);
+      },
+    });
+  }, []);
   return (
     <>
       <header>
@@ -52,6 +65,11 @@ export default function Header() {
             {btn.text}
           </button>
         ))}
+        {currentUser && (
+          <span>
+            {currentUser.display_name}/{currentUser.email}
+          </span>
+        )}
       </header>
       {/* login 모달 */}
       {modalStatus.isLoginModalOpen && (

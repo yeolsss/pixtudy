@@ -1,9 +1,41 @@
 import Layout from "@/components/layout/Layout";
-import { ReactElement } from "react";
+import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import { Space_members } from "@/types/supabase.tables.type";
+import { useRouter } from "next/router";
+import { ReactElement, useEffect, useState } from "react";
 import { NextPageWithLayout } from "../_app";
 
 const Dashboard: NextPageWithLayout = () => {
-  return <div>dashboard</div>;
+  const [userSpaces, setUserSpaces] = useState<Space_members[] | null>();
+
+  const getUserSpaces = useGetUserSpaces();
+  const router = useRouter();
+
+  useEffect(() => {
+    getUserSpaces(undefined, {
+      onSuccess: (response) => {
+        setUserSpaces(response);
+      },
+    });
+  }, []);
+
+  const handleToSpace = (space_id: string) => {
+    router.push(`/dm/${space_id}`);
+  };
+  return (
+    <div>
+      {userSpaces?.map((space) => (
+        <section key={space.id}>
+          <h1>{space.spaces?.title}</h1>
+          <h2>{space.spaces?.description}</h2>
+          <span>{space.spaces?.created_at}</span>
+          <button onClick={() => handleToSpace(space.spaces?.id!)}>
+            space로 이동
+          </button>
+        </section>
+      ))}
+    </div>
+  );
 };
 
 Dashboard.getLayout = function getLayout(page: ReactElement) {

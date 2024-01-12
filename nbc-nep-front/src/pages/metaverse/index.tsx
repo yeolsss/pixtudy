@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 
 const GameComponentWithNoSSR = dynamic(
-  () => import("@/components/game/GameComponent"),
+  () => import("@/components/metaverse/MetaverseComponent"),
   {
     ssr: false,
   }
