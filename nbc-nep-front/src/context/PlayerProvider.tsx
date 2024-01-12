@@ -1,3 +1,4 @@
+import { Player } from "@/types/metaverse";
 import {
   createContext,
   Dispatch,
@@ -7,7 +8,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Player } from "@/types/metaverse";
 
 type PlayerContextType = {
   player: Player | undefined;
@@ -36,7 +36,7 @@ export const PlayerProvider = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
-  console.log(player);
+  // console.log(player);
 
   const value = {
     player,

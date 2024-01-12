@@ -10,6 +10,8 @@ const WORK = 250;
 interface InitData {
   mapData: MapData;
 }
+
+type PlayerInfo = {};
 /**
  * CharacterScenes 클래스는 Phaser.Scene을 확장해서 게임 캐릭터의 동작을 관리한다.
  */
@@ -38,15 +40,21 @@ export class CharacterScenes extends Phaser.Scene {
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
     objLayer?.setCollisionByProperty({ collides: true });
 
+    const playerInfo = this.game.registry.get("player");
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
     this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
+    this.socket.on("connect", () => {
+      console.log("Connected to server, emitting userData");
+      this.socket?.emit("userData", playerInfo);
+    });
+
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
-      const playerCount = players.length;
       Object.keys(players).forEach((id) => {
-        if (players[id].playerId === this.socket?.id) {
+        console.log(id);
+        if (players[id].playerId === playerInfo.playerId) {
           this.addPlayer(players[id], objLayer!);
         } else {
           this.addOtherPlayers(players[id]);
@@ -62,7 +70,7 @@ export class CharacterScenes extends Phaser.Scene {
       this.otherPlayers?.removePlayer(playerId);
     });
 
-    this.createAnimations();
+    this.createAnimations(playerInfo.character);
 
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -89,6 +97,7 @@ export class CharacterScenes extends Phaser.Scene {
     if (this.isAnyCursorKeyDown()) {
       // 이동 중인 경우 이동 방향에 맞는 애니메이션을 재생한다.
       if (animationKey) {
+        this.character?.anims.getFrameName();
         this.character?.anims.play(animationKey, true);
       }
     } else {
@@ -115,18 +124,17 @@ export class CharacterScenes extends Phaser.Scene {
    */
   addPlayer(playerInfo: Player, objLayer: Phaser.Tilemaps.TilemapLayer) {
     this.characterName = this.add
-      .text(playerInfo.x, playerInfo.y, playerInfo.playerId, {
+      .text(playerInfo.x, playerInfo.y, playerInfo.nickname, {
         fontFamily: "PretendardVariable",
-        // backgroundColor: "rgba(0, 0, 0, 0.33)",
-        // padding: { top: 6, bottom: 6, left: 8, right: 8 },
       }) // 플레이어 이름 표시할 오브젝트 생성
       .setOrigin(0.5, 0.5);
     this.character = this.physics.add
-      .sprite(playerInfo.x, playerInfo.y, "character", 0)
+      .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
       .setDepth(1000);
 
     // 몸체 크기
     this.character.body?.setSize(32, 32);
+
     // 몸체 위치
     this.character.setCollideWorldBounds(true);
     this.character.body?.setOffset(0, 25);
@@ -146,18 +154,20 @@ export class CharacterScenes extends Phaser.Scene {
   /**
    * 각 캐릭터별로 애니메이션을 추가한다.
    */
-  createAnimations() {
+  createAnimations(spriteKey: string) {
     const animations = [
       { key: "left", start: 4, end: 5 },
       { key: "right", start: 10, end: 11 },
       { key: "up", start: 7, end: 8 },
       { key: "down", start: 1, end: 2 },
     ];
-
     animations.forEach(({ key, start, end }) => {
       this.anims.create({
         key,
-        frames: this.anims.generateFrameNumbers("character", { start, end }),
+        frames: this.anims.generateFrameNumbers(spriteKey, {
+          start,
+          end,
+        }),
         frameRate: 5,
         repeat: -1,
       });
@@ -201,6 +211,7 @@ export class CharacterScenes extends Phaser.Scene {
       );
     }
   }
+
   updateLastDirection() {
     if (this.cursors?.left.isDown) {
       this.lastDirection = "left";

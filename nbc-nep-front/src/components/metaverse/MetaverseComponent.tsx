@@ -1,10 +1,10 @@
+import MetaverseChat from "@/components/metaverseChat/MetaverseChat";
+import { PlayerProvider } from "@/context/PlayerProvider";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
-import { PlayerProvider } from "@/context/PlayerProvider";
 import styled from "styled-components";
-import MetaverseChat from "@/components/metaverseChat/MetaverseChat";
 
 const MetaverseComponent = () => {
   useEffect(() => {
@@ -33,6 +33,11 @@ const MetaverseComponent = () => {
     };
 
     game = new Phaser.Game(config);
+    game.registry.set("player", {
+      playerId: "yongseung",
+      nickname: "스님",
+      character: "pinkybonz",
+    });
 
     window.addEventListener("resize", resize);
 

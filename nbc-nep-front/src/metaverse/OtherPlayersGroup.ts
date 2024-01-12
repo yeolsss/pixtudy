@@ -1,6 +1,6 @@
-import Phaser from "phaser";
-import { Player } from "@/types/metaverse";
 import { CurrentPlayer } from "@/metaverse/CurrentPlayer";
+import { Player } from "@/types/metaverse";
+import Phaser from "phaser";
 
 export class OtherPlayersGroup {
   group: Phaser.Physics.Arcade.Group;
@@ -15,12 +15,12 @@ export class OtherPlayersGroup {
 
   addPlayer(playerInfo: Player) {
     const otherPlayerName = this.scene.add
-      .text(playerInfo.x, playerInfo.y - 30, playerInfo.playerId, {
+      .text(playerInfo.x, playerInfo.y - 30, playerInfo.nickname, {
         fontFamily: "PretendardVariable",
       })
       .setOrigin(0.5, 0.5);
     const otherPlayer = this.scene.physics.add
-      .sprite(playerInfo.x, playerInfo.y, "character", 0)
+      .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
       .setCollideWorldBounds(true) as CurrentPlayer;
     otherPlayer.body?.setSize(32, 32);
     otherPlayer.body?.setOffset(0, 25);
