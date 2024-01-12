@@ -308,9 +308,11 @@ server.listen(3001, () => {
 });
 
 function getTransportProduce(socketId) {
-  return transports.find(
-    (transport) => transport.socketId === socketId && !transport.consumer
-  ).transport;
+  return transports
+    .filter(
+      (transport) => transport.socketId === socketId && !transport.consumer
+    )
+    .at(-1).transport;
 }
 
 function addProducer(producer, roomName, socketId, socketName) {

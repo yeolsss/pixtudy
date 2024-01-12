@@ -52,7 +52,7 @@ export default function ScreenShare() {
   }
   async function handleWebCamCapture() {
     const webCamStream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
+      audio: true,
       video: true,
     });
 
@@ -94,6 +94,7 @@ export default function ScreenShare() {
             ...videoParams,
             appData: { trackId: videoTrack.id },
           });
+
           console.log(
             "video send producer track id : ",
             videoTrack.id,
