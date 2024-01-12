@@ -41,17 +41,6 @@ export default function ScreenShare() {
     signalNewConsumerTransport(data);
   }
 
-  function handleShare(HTMLElementRef: RefObject<HTMLVideoElement>) {
-    return (stream: MediaStream, type: ShareType) => {
-      HTMLElementRef.current!.srcObject = stream;
-      socket.emit(
-        "join-room",
-        { roomId: "test", type },
-        setDeviceAndCreateTransport
-      );
-    };
-  }
-
   function handleCreateSendTransport(device: Device) {
     return async function (params: TransPortType, type: ShareType) {
       const stream =
@@ -315,7 +304,7 @@ export default function ScreenShare() {
   }
 
   // setDevice -> socket.emit('createWebRtcTransport',{consumer: false});
-  async function setDeviceAndCreateTransport(
+  async function setDeviceAndCreateTransportCallback(
     rtpCapabilities: RtpCapabilities,
     type: ShareType
   ) {
@@ -333,6 +322,16 @@ export default function ScreenShare() {
     socket.emit("createWebRtcTransport", { consumer: false, type });
   }
 
+  function handleShare(HTMLElementRef: RefObject<HTMLVideoElement>) {
+    return (stream: MediaStream, type: ShareType) => {
+      HTMLElementRef.current!.srcObject = stream;
+      socket.emit(
+        "join-room",
+        { roomId: "test", type },
+        setDeviceAndCreateTransportCallback
+      );
+    };
+  }
   return (
     <div>
       <ShareScreenButton onShare={handleShare(localVideoRef)} mode="screen">
