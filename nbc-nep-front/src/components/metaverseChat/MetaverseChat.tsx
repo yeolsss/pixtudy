@@ -56,12 +56,12 @@ export default function MetaverseChat() {
 }
 const StMetaverseChatWrapper = styled.div`
   position: absolute;
-  bottom: -67px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
   width: 500px;
-  height: 300px;
+  height: auto;
 `;
 
 const StMetaverseChatList = styled.div`
@@ -70,8 +70,15 @@ const StMetaverseChatList = styled.div`
   background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: 10px;
-  > span {
-    font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  > div > span {
+    font-size: 1.6rem;
   }
 `;
 
