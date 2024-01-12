@@ -59,6 +59,55 @@ export const getUserDmChannel = async ({ space_id }: GetUserDmChannelArgs) => {
 };
 
 /**
+ * 상대 유저와 DM 채널 확인
+ */
+interface checkDmChannelArgs {
+  receiverId: string;
+  spaceId: string;
+}
+export const checkDmChannel = async ({
+  receiverId,
+  spaceId,
+}: checkDmChannelArgs) => {
+  const currentUser = await getUserSessionHandler();
+  // 채팅방 여부 확인
+  const dm_channel = await supabase.rpc("get_dm_channels", {
+    p_space_id: spaceId,
+    p_user_id: currentUser?.id!,
+    p_receiver_id: receiverId,
+  });
+
+  return dm_channel.data?.length ? dm_channel.data[0].id : null;
+};
+
+/**
+ * 상대 유저 DM 채널에 따른 기존 메시지 가져오기
+ */
+interface getDmChannelMessagesArgs {
+  receiverId: string;
+  spaceId: string;
+}
+export const getDmChannelMessages = async ({
+  receiverId,
+  spaceId,
+}: getDmChannelMessagesArgs) => {
+  // 채팅방 여부 확인
+  const dm_channel = await checkDmChannel({ receiverId, spaceId });
+
+  // 채팅방이 없을 때는 빈배열 반환
+  if (!dm_channel) return [];
+  else {
+    // 채팅방이 있을 때는 메시지 배열 반환
+    const { data: channelMessages } = await supabase
+      .from("dm_messages")
+      .select(`*`)
+      .eq("dm_id", dm_channel)
+      .order("created_at", { ascending: false });
+    return channelMessages;
+  }
+};
+
+/**
  * DM 메시지를 보내는 함수
  * 조건부 처리
  * (1) 기존 해당 유저와 channel이 없었을 때
@@ -82,14 +131,10 @@ export const sendMessage = async ({
 }: sendMessageArgs) => {
   const currentUser = await getUserSessionHandler();
   // 채팅방 여부 확인
-  const dm_channel = await supabase.rpc("get_dm_channels", {
-    p_space_id: spaceId,
-    p_user_id: currentUser?.id!,
-    p_receiver_id: receiverId,
-  });
+  const dm_channel = await checkDmChannel({ receiverId, spaceId });
 
   // (1)채팅방이 기존에 없는 경우
-  if (!dm_channel.data?.length) {
+  if (!dm_channel) {
     // (1-1) 채팅방 생성
     const { data: newDmChannel } = await supabase
       .from("dm_channels")
@@ -113,7 +158,7 @@ export const sendMessage = async ({
     // (2) 채팅방이 기존에 있는 경우
     // 해당 채팅방으로 메시지 바로 전송
     await supabase.from("dm_messages").insert({
-      dm_id: dm_channel.data[0].id!,
+      dm_id: dm_channel,
       message,
       receiver_id: receiverId,
       sender_id: currentUser?.id!,

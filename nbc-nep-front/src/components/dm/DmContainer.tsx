@@ -1,4 +1,8 @@
-import { useGetOtherUserInfo, useSendMessage } from "@/hooks/query/useSupabase";
+import {
+  useGetDmMessages,
+  useGetOtherUserInfo,
+  useSendMessage,
+} from "@/hooks/query/useSupabase";
 import { Tables } from "@/types/supabase";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -19,6 +23,8 @@ export default function DmContainer({
   const getOtherUser = useGetOtherUserInfo();
   const [otherUser, setOtherUser] = useState<Tables<"users">>();
   const sendMessage = useSendMessage();
+  const getDmMessages = useGetDmMessages();
+  const [messages, setMessages] = useState<Tables<"dm_messages">[]>([]);
 
   const sendHandler: SubmitHandler<FieldValues> = async (values) => {
     if (typeof currentSpaceId === "string")
@@ -32,6 +38,20 @@ export default function DmContainer({
 
   // 상대 유저의 정보를 불러오는 useEffect
   useEffect(() => {
+    if (typeof currentSpaceId === "string") {
+      getDmMessages(
+        { receiverId: otherUserId, spaceId: currentSpaceId },
+        {
+          onSuccess: (dmMessages) => {
+            setMessages(dmMessages!);
+          },
+        }
+      );
+    }
+  }, []);
+
+  // // 상대 유저와 대화 내용 가져오기
+  useEffect(() => {
     getOtherUser(
       { otherUserId },
       {
@@ -42,23 +62,18 @@ export default function DmContainer({
     );
   }, []);
 
-  // // 상대 유저와 대화 내용 가져오기
-  // useEffect(() => {
-  //   getOtherUser(
-  //     { otherUserId },
-  //     {
-  //       onSuccess: (otherUserInfo) => {
-  //         if (otherUserInfo) setOtherUser(otherUserInfo);
-  //       },
-  //     }
-  //   );
-  // }, []);
-
   return (
     <section>
       <button onClick={() => handleCloseDmContainer(otherUserId)}>close</button>
       <h1>상대방 유저 정보 : {otherUser?.display_name}</h1>
-      <ul></ul>
+      <ul>
+        {messages.map((message) => (
+          <li key={message.id}>
+            <h3>{message.receiver_id}</h3>
+            <span>{message.message}</span>
+          </li>
+        ))}
+      </ul>
       <form onSubmit={handleSubmit(sendHandler)}>
         <input
           id="send-input"
