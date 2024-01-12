@@ -306,7 +306,7 @@ export default function ScreenShare() {
   }
 
   // setDevice -> socket.emit('createWebRtcTransport',{consumer: false});
-  async function setDeviceAndCreateTransportCallback(
+  async function loadDeviceAndCreateTransportCallback(
     rtpCapabilities: RtpCapabilities,
     type: ShareType
   ) {
@@ -318,29 +318,37 @@ export default function ScreenShare() {
       console.error("set device rtpCapabilities error : ", error);
     }
 
+    // loadDevice(rtpCapabilities);
+
     console.log("device load rtpCapabilities success");
     console.log("socket emit create-web-rtc-transport");
     // TODO : 이름 바꿔야함 create-web-rtc-transport로
     socket.emit("createWebRtcTransport", { consumer: false, type });
   }
 
-  function handleShare(HTMLElementRef: RefObject<HTMLVideoElement>) {
+  function handleShareAndJoinRoom(HTMLElementRef: RefObject<HTMLVideoElement>) {
     return (stream: MediaStream, type: ShareType) => {
       HTMLElementRef.current!.srcObject = stream;
       socket.emit(
         "join-room",
         { roomId: "test", type },
-        setDeviceAndCreateTransportCallback
+        loadDeviceAndCreateTransportCallback
       );
     };
   }
 
   return (
     <div>
-      <ShareScreenButton onShare={handleShare(localVideoRef)} mode="screen">
+      <ShareScreenButton
+        onShare={handleShareAndJoinRoom(localVideoRef)}
+        mode="screen"
+      >
         Share Screen
       </ShareScreenButton>
-      <ShareScreenButton onShare={handleShare(webCamRef)} mode="webcam">
+      <ShareScreenButton
+        onShare={handleShareAndJoinRoom(webCamRef)}
+        mode="webcam"
+      >
         Share Web Cam
       </ShareScreenButton>
 
