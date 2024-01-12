@@ -1,3 +1,4 @@
+import useDevice from "@/hooks/share-screen/useDevice";
 import useSocket from "@/hooks/useSocket";
 import { Device, types } from "mediasoup-client";
 import { RefObject, useEffect, useRef, useState } from "react";
@@ -16,6 +17,7 @@ export default function ScreenShare() {
   const { socket } = useSocket();
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const deviceRef = useRef<Device>();
+  const { device, loadDevice } = useDevice();
   const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
   const [videos, setVideos] = useState<MediaStream[]>([]);
   const webCamRef = useRef<HTMLVideoElement>(null);
@@ -332,6 +334,7 @@ export default function ScreenShare() {
       );
     };
   }
+
   return (
     <div>
       <ShareScreenButton onShare={handleShare(localVideoRef)} mode="screen">
