@@ -62,7 +62,7 @@ export default function ScreenShare() {
   }
 
   function handleCreateSendTransport(device: Device) {
-    return async function (params: TransPortType, type: string) {
+    return async function (params: TransPortType, type: ShareType) {
       const stream =
         type === "screen"
           ? (localVideoRef.current!.srcObject as MediaStream)
@@ -326,7 +326,7 @@ export default function ScreenShare() {
   // setDevice -> socket.emit('createWebRtcTransport',{consumer: false});
   async function setDeviceAndCreateTransport(
     rtpCapabilities: RtpCapabilities,
-    type: string
+    type: ShareType
   ) {
     const device = deviceRef.current;
 
@@ -414,7 +414,7 @@ type NewProducerParameter = {
   isNewSocketHost: boolean;
 };
 
-type ConsumerType = [string, string, string, boolean];
+type ShareType = "screen" | "webcam";
 
 const videoParams = {
   // mediasoup params
