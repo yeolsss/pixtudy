@@ -1,5 +1,4 @@
 import { useLoginUser } from "@/hooks/query/useSupabase";
-import { useAppDispatch } from "@/hooks/useReduxTK";
 import { closeModal } from "@/redux/modules/modalSlice";
 import {
   handleValidateEmail,
@@ -10,6 +9,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import AuthInput from "../AuthInput";
 import SocialLogin from "./SocialLogin";
+import { useAppDispatch } from "@/hooks/useReduxTK";
 
 export default function LoginModalMainContainer() {
   const login = useLoginUser();

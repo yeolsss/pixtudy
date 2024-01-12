@@ -1,5 +1,5 @@
+import OnChangeUserSession from "@/components/layout/OnChangeUserSession";
 import StoreProvider from "@/libs/StoreProvier";
-import OnChangeUserSession from "@/utils/OnChangeUserSession";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";

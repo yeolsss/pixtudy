@@ -2,12 +2,9 @@ import { getUserSessionHandler } from "@/api/supabase/auth";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
 import { login, logout } from "@/redux/modules/authSlice";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export default function OnChangeUserSession() {
-  const router = useRouter();
-
   const dispatch = useAppDispatch();
   // 유저정보를 불러오는 코드
   const setUserSession = async () => {
@@ -17,14 +14,11 @@ export default function OnChangeUserSession() {
   /* 로그인 상태를 tracking*/
   useEffect(() => {
     const subscription = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "INITIAL_SESSION") {
+      if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
         // 최초 랜더링 시
         if (session) {
           setUserSession();
         }
-      } else if (event === "SIGNED_IN") {
-        // 로그인 시
-        setUserSession();
       } else if (event === "SIGNED_OUT") {
         // 로그아웃 시
         dispatch(logout());

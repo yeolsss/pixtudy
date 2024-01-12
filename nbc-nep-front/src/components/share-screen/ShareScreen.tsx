@@ -1,7 +1,8 @@
-import useSocket from "@/hooks/useSocket";
+import useSocket from "@/hooks/socket/useSocket";
 import useVideoShare from "@/hooks/useVideoShare";
 import { CSSProperties, useState } from "react";
 import ShareScreenButton from "./ShareScreenButton";
+
 export default function ShareScreen() {
   const [myVideos, setMyVideos] = useState<MediaStream[]>([]);
   const [otherVideos, setOtherVideos] = useState<MediaStream[]>([]);

@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
-import { Socket, io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 export default function useSocket() {
   const socketRef = useRef<Socket>(
-    io("http://localhost:3001", { withCredentials: true })
+    io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}`, {
+      withCredentials: true,
+    })
   );
 
   useEffect(() => {
