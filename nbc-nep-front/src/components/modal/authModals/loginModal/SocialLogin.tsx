@@ -1,4 +1,4 @@
-import { LoginPlatformType, loginHandler } from "@/api/auth";
+import { LoginPlatformType, loginHandler } from "@/api/supabase/auth";
 
 const socialLoginButtons = [
   { text: "구글", platform: "google" },
