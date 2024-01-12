@@ -1,8 +1,9 @@
 import { PropsWithChildren } from "react";
+import { ShareType } from "../types/ScreenShare.types";
 
 interface Props {
-  onShare: (stream: MediaStream, type: "screen" | "webcam") => void;
-  mode: "screen" | "webcam";
+  onShare: (stream: MediaStream, type: ShareType) => void;
+  mode: ShareType;
 }
 
 export default function ShareScreenButton({

@@ -1,6 +1,15 @@
 import useSocket from "@/hooks/useSocket";
 import { Device, types } from "mediasoup-client";
 import { RefObject, useEffect, useRef, useState } from "react";
+import {
+  ConsumerTransportType,
+  DtlsParameters,
+  NewProducerParameter,
+  ProduceParameter,
+  RtpCapabilities,
+  ShareType,
+  TransPortType,
+} from "../types/ScreenShare.types";
 import ShareScreenButton from "./ShareScreenButton";
 
 export default function ScreenShare() {
@@ -362,41 +371,6 @@ export default function ScreenShare() {
     </div>
   );
 }
-
-type RtpCapabilities = types.RtpCapabilities;
-
-type DtlsParameters = {
-  dtlsParameters: types.DtlsParameters;
-};
-
-type ProduceParameter = {
-  kind: types.MediaKind;
-  rtpParameters: types.RtpParameters;
-  appData: types.AppData;
-};
-
-type TransPortType = {
-  id: string;
-  iceParameters: types.IceParameters;
-  iceCandidates: types.IceCandidate[];
-  dtlsParameters: types.DtlsParameters;
-};
-
-type ConsumerTransportType = {
-  consumerTransport: types.Transport;
-  serverConsumerTransportId: string;
-  producerId: string;
-  consumer: types.Consumer;
-};
-
-type NewProducerParameter = {
-  producerId: string;
-  socketId: string;
-  socketName: string;
-  isNewSocketHost: boolean;
-};
-
-type ShareType = "screen" | "webcam";
 
 const videoParams = {
   // mediasoup params
