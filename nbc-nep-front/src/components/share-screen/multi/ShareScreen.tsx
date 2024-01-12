@@ -2,65 +2,6 @@ import useSocket from "@/hooks/useSocket";
 import { Device, types } from "mediasoup-client";
 import { useEffect, useRef, useState } from "react";
 
-type RtpCapabilities = types.RtpCapabilities;
-
-type DtlsParameters = {
-  dtlsParameters: types.DtlsParameters;
-};
-
-type ProduceParameter = {
-  kind: types.MediaKind;
-  rtpParameters: types.RtpParameters;
-  appData: types.AppData;
-};
-
-type TransPortType = {
-  id: string;
-  iceParameters: types.IceParameters;
-  iceCandidates: types.IceCandidate[];
-  dtlsParameters: types.DtlsParameters;
-};
-
-type ConsumerTransportType = {
-  consumerTransport: types.Transport;
-  serverConsumerTransportId: string;
-  producerId: string;
-  consumer: types.Consumer;
-};
-
-type NewProducerParameter = {
-  producerId: string;
-  socketId: string;
-  socketName: string;
-  isNewSocketHost: boolean;
-};
-
-type ConsumerType = [string, string, string, boolean];
-
-const videoParams = {
-  // mediasoup params
-  encodings: [
-    {
-      rid: "r0",
-      maxBitrate: 100000,
-      scalabilityMode: "S1T3",
-    },
-    {
-      rid: "r1",
-      maxBitrate: 300000,
-      scalabilityMode: "S1T3",
-    },
-    {
-      rid: "r2",
-      maxBitrate: 900000,
-      scalabilityMode: "S1T3",
-    },
-  ],
-  codecOptions: {
-    videoGoogleStartBitrate: 1000,
-  },
-};
-
 export default function ScreenShare() {
   const { socket } = useSocket();
   const localVideoRef = useRef<HTMLVideoElement>(null);
@@ -68,7 +9,7 @@ export default function ScreenShare() {
   const deviceRef = useRef<Device>();
   const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
   const [videos, setVideos] = useState<MediaStream[]>([]);
-  const [consumingTransports, setConsumingTransports] = useState<string[]>([]);
+  const webCamRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const device = new Device();
@@ -95,45 +36,87 @@ export default function ScreenShare() {
   }, []);
 
   async function handleStartCapture() {
-    const stream = await navigator.mediaDevices.getDisplayMedia({
+    const videoStream = await navigator.mediaDevices.getDisplayMedia({
       video: true,
     });
-    localVideoRef.current!.srcObject = stream;
+
+    localVideoRef.current!.srcObject = videoStream;
 
     console.log("handle start capture socket is : ", socket.id);
     console.log("socket emit join-room");
-    socket.emit("join-room", { roomId: "test" }, setDevice);
+    socket.emit(
+      "join-room",
+      { roomId: "test", type: "screen" },
+      setDeviceAndCreateTransport
+    );
+  }
+  async function handleWebCamCapture() {
+    const webCamStream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: true,
+    });
+
+    webCamRef.current!.srcObject = webCamStream;
+
+    socket.emit(
+      "join-room",
+      { roomId: "test", type: "webcam" },
+      setDeviceAndCreateTransport
+    );
   }
 
   function handleCreateSendTransport(device: Device) {
-    return async function (params: TransPortType) {
-      const videoStream = localVideoRef.current!.srcObject as MediaStream;
+    return async function (params: TransPortType, type: string) {
+      const stream =
+        type === "screen"
+          ? (localVideoRef.current!.srcObject as MediaStream)
+          : (webCamRef.current!.srcObject as MediaStream);
 
       try {
-        if (videoStream.getVideoTracks().length === 0)
-          throw new Error("video track is not exist");
+        if (
+          stream.getVideoTracks().length === 0 &&
+          stream.getAudioTracks().length === 0
+        )
+          throw new Error("video and audio tracks are not exist");
 
-        console.log("video Stream is : ", videoStream.id);
-        console.log(
-          "video readyState is : ",
-          videoStream.getVideoTracks()[0].readyState
-        );
-        console.log(
-          "video enabled is:",
-          videoStream.getVideoTracks()[0].enabled
-        );
+        console.log("stream is for producer transport : ", stream.id);
 
-        const track = videoStream.getVideoTracks()[0];
-        const producerTransport = createSendTransport(device, params);
+        const videoTracks = stream.getVideoTracks();
+        const audioTracks = stream.getAudioTracks();
 
-        if (!producerTransport) return;
-        // produce track at send transport
-        await producerTransport.produce({
-          track: track,
-          ...videoParams,
-          appData: { trackId: track.id },
-        });
-        console.log("send producer track id : ", track.id);
+        if (videoTracks.length !== 0) {
+          const videoTransport = createSendTransport(device, params);
+          const videoTrack = videoTracks[0];
+          if (!videoTransport) return;
+
+          const videoProducer = await videoTransport.produce({
+            track: videoTrack,
+            ...videoParams,
+            appData: { trackId: videoTrack.id },
+          });
+          console.log(
+            "video send producer track id : ",
+            videoTrack.id,
+            "send video producer id : ",
+            videoProducer.id
+          );
+        } else if (audioTracks.length !== 0) {
+          const audioTransport = createSendTransport(device, params);
+          const audioTrack = audioTracks[0];
+          if (!audioTransport) return;
+
+          const audioProducer = await audioTransport.produce({
+            track: audioTrack,
+            appData: { trackId: audioTrack.id },
+          });
+          console.log(
+            "audio send producer track id : ",
+            audioTrack.id,
+            audioTrack,
+            "send audio producer id : ",
+            audioProducer.id
+          );
+        }
       } catch (error) {
         console.error("handle create send transport error : ", error);
       }
@@ -185,11 +168,11 @@ export default function ScreenShare() {
       socket.emit(
         "transport-produce",
         { ...parameter, socketId: socket.id },
-        (data: { id: string; producerExist: boolean }) => {
-          const { id, producerExist } = data;
+        (data: { id: string; producersExist: boolean }) => {
+          const { id, producersExist } = data;
           callback({ id });
-
-          if (producerExist) {
+          console.log("😀producerExist is :", producersExist);
+          if (producersExist) {
             // 이미 프로듀서가 존재한다면 join room을 한다
             socket.emit("get-producers", (producerList: ConsumerType[]) => {
               producerList.forEach((id) => signalNewConsumerTransport(...id));
@@ -209,14 +192,18 @@ export default function ScreenShare() {
     newSocketId: string,
     isNewSocketHost: boolean
   ) {
+    console.log("call signalNewConsumerTransport with id :", remoteProducerId);
     // 이미 consuming하고 있다면 무시하기
-    if (consumingTransports.includes(remoteProducerId)) return;
+    // if (consumingTransports.includes(remoteProducerId)) return;
+    // setConsumingTransports((prev) => [...prev, remoteProducerId]);
 
-    setConsumingTransports((prev) => [...prev, remoteProducerId]);
-    console.log(
-      "Cl2 is creating a consumer for Cl1's track, Producer ID:",
-      remoteProducerId
-    );
+    if (
+      consumerTransportsRef.current.some(
+        (consumerTransport) => consumerTransport.producerId === remoteProducerId
+      )
+    )
+      return;
+
     socket.emit(
       "createWebRtcTransport",
       { consumer: true },
@@ -229,7 +216,9 @@ export default function ScreenShare() {
         consumerTransport.on(
           "connect",
           async ({ dtlsParameters }, callback, errorBack: Function) => {
-            console.log("consumer trasnport connect start");
+            console.log(
+              `server consumer transport : ${params.id} and client consumer transport : ${consumerTransport.id} connect start`
+            );
             try {
               socket.emit("transport-recv-connect", {
                 dtlsParameters,
@@ -319,7 +308,8 @@ export default function ScreenShare() {
           console.log("track is : ", track);
 
           if (track.kind === "video") {
-            setVideos((prev) => [...prev, new MediaStream([track])]);
+            const newVideoStream = new MediaStream([track]);
+            setVideos((prev) => [...prev, newVideoStream]);
           }
           socket.emit("consumer-resume", { serverConsumerId });
 
@@ -332,8 +322,12 @@ export default function ScreenShare() {
   }
 
   // setDevice -> socket.emit('createWebRtcTransport',{consumer: false});
-  async function setDevice(rtpCapabilities: RtpCapabilities) {
+  async function setDeviceAndCreateTransport(
+    rtpCapabilities: RtpCapabilities,
+    type: string
+  ) {
     const device = deviceRef.current;
+
     try {
       await device?.load({ routerRtpCapabilities: rtpCapabilities });
     } catch (error) {
@@ -343,14 +337,15 @@ export default function ScreenShare() {
     console.log("device load rtpCapabilities success");
     console.log("socket emit create-web-rtc-transport");
     // TODO : 이름 바꿔야함 create-web-rtc-transport로
-    socket.emit("createWebRtcTransport", { consumer: false });
+    socket.emit("createWebRtcTransport", { consumer: false, type });
   }
 
-  console.log({ videos, socketId: socket.id });
   return (
     <div>
       <button onClick={handleStartCapture}>share screen</button>
+      <button onClick={handleWebCamCapture}>share web cam</button>
       <video ref={localVideoRef} playsInline autoPlay />
+      <video ref={webCamRef} playsInline autoPlay muted />
       <div id="remote-media-div">
         {videos.map((video) => (
           <video
@@ -358,21 +353,17 @@ export default function ScreenShare() {
             playsInline
             autoPlay
             muted
-            onError={(e) => console.error(e)}
+            onError={(e) => console.error("Video error: ", e)}
+            onLoadStart={() => console.log("Video loading started")}
+            onLoadedMetadata={() => console.log("Video metadata loaded")}
             onLoad={(e) => {
               console.log("loaded video ", e.currentTarget);
-            }}
-            onLoadedMetadata={(e) => {
-              console.log("Video metadata loaded", e);
-              e.currentTarget
-                .play()
-                .catch((err) => console.error("Play error:", err));
             }}
             onCanPlay={(e) => console.log("Video can play", e)}
             ref={(videoRef) => {
               if (videoRef) {
                 videoRef.srcObject = video;
-                videoRef.play();
+                // videoRef.play();
               }
             }}
           ></video>
@@ -381,3 +372,62 @@ export default function ScreenShare() {
     </div>
   );
 }
+
+type RtpCapabilities = types.RtpCapabilities;
+
+type DtlsParameters = {
+  dtlsParameters: types.DtlsParameters;
+};
+
+type ProduceParameter = {
+  kind: types.MediaKind;
+  rtpParameters: types.RtpParameters;
+  appData: types.AppData;
+};
+
+type TransPortType = {
+  id: string;
+  iceParameters: types.IceParameters;
+  iceCandidates: types.IceCandidate[];
+  dtlsParameters: types.DtlsParameters;
+};
+
+type ConsumerTransportType = {
+  consumerTransport: types.Transport;
+  serverConsumerTransportId: string;
+  producerId: string;
+  consumer: types.Consumer;
+};
+
+type NewProducerParameter = {
+  producerId: string;
+  socketId: string;
+  socketName: string;
+  isNewSocketHost: boolean;
+};
+
+type ConsumerType = [string, string, string, boolean];
+
+const videoParams = {
+  // mediasoup params
+  encodings: [
+    {
+      rid: "r0",
+      maxBitrate: 100000,
+      scalabilityMode: "S1T3",
+    },
+    {
+      rid: "r1",
+      maxBitrate: 300000,
+      scalabilityMode: "S1T3",
+    },
+    {
+      rid: "r2",
+      maxBitrate: 900000,
+      scalabilityMode: "S1T3",
+    },
+  ],
+  codecOptions: {
+    videoGoogleStartBitrate: 1000,
+  },
+};
