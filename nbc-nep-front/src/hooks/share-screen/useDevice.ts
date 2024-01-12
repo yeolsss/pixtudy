@@ -1,7 +1,4 @@
-import {
-  RtpCapabilities,
-  ShareType,
-} from "@/components/share-screen/types/ScreenShare.types";
+import { RtpCapabilities } from "@/components/share-screen/types/ScreenShare.types";
 import { Device, types } from "mediasoup-client";
 import { useEffect, useRef } from "react";
 export default function useDevice() {
@@ -12,7 +9,7 @@ export default function useDevice() {
     deviceRef.current = new Device();
   }, []);
 
-  async function loadDevice(rtpCapabilities: RtpCapabilities, type: ShareType) {
+  async function loadDevice(rtpCapabilities: RtpCapabilities) {
     const device = deviceRef.current;
     try {
       await device?.load({ routerRtpCapabilities: rtpCapabilities });
