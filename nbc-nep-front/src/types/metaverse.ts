@@ -1,4 +1,4 @@
-type Player = {
+export type Player = {
   rotation: number;
   x: number;
   y: number;
@@ -6,12 +6,17 @@ type Player = {
   frame: string;
 };
 
-type Players = {
+export type Players = {
   [id: string]: Player;
 };
 
-type MapData = {
+export type MapData = {
   objLayer: Phaser.Tilemaps.TilemapLayer | null;
   tileLayer: Phaser.Tilemaps.TilemapLayer | null;
   map: Phaser.Tilemaps.Tilemap;
+};
+
+export type Chat = {
+  userId: string;
+  message: string;
 };

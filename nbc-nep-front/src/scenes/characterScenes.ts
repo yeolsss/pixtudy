@@ -1,5 +1,6 @@
-import { CurrentPlayer } from "@/games/CurrentPlayer";
-import { OtherPlayersGroup } from "@/games/OtherPlayersGroup";
+import { CurrentPlayer } from "@/metaverse/CurrentPlayer";
+import { OtherPlayersGroup } from "@/metaverse/OtherPlayersGroup";
+import { MapData, Player, Players } from "@/types/metaverse";
 import Phaser from "phaser";
 import io, { Socket } from "socket.io-client";
 
@@ -18,7 +19,7 @@ export class CharacterScenes extends Phaser.Scene {
   otherPlayers?: OtherPlayersGroup;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   runKey?: Phaser.Input.Keyboard.Key;
-  lastDirection?: string; // 마지막으로 바라본 방향을 추적하는 변수
+  lastDirection?: string;
   private socket?: Socket;
   isRunning: boolean = false;
 
@@ -39,7 +40,7 @@ export class CharacterScenes extends Phaser.Scene {
 
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
-    this.socket = io("http://localhost:3001");
+    this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
@@ -138,6 +139,7 @@ export class CharacterScenes extends Phaser.Scene {
    * @param {Player} playerInfo - 추가할 플레이어의 정보.
    */
   addOtherPlayers(playerInfo: Player) {
+    // db정보 호출.
     this.otherPlayers?.addPlayer(playerInfo);
   }
 
@@ -199,10 +201,6 @@ export class CharacterScenes extends Phaser.Scene {
       );
     }
   }
-
-  /**
-   *
-   */
   updateLastDirection() {
     if (this.cursors?.left.isDown) {
       this.lastDirection = "left";
@@ -272,6 +270,7 @@ export class CharacterScenes extends Phaser.Scene {
         x: this.character?.x,
         y: this.character?.y,
         frame: this.character.frame.name,
+        // 유저정보를 받아다가 여따 박아넣으면 되지않을까
       };
 
       // 이전 위치와 현재 위치를 비교합니다.
@@ -281,7 +280,11 @@ export class CharacterScenes extends Phaser.Scene {
           currentPosition.y !== this.character?.oldPosition.y ||
           currentPosition.frame !== this.character?.frame.name)
       ) {
-        // 위치가 바뀌었다면 서버에 전송합니다.
+        // 위치가 바뀌었다면 서버에 전송합니다. 및 context에 전달
+        const event = new CustomEvent("playerMovement", {
+          detail: currentPosition,
+        });
+        window.dispatchEvent(event);
         this.socket?.emit("playerMovement", currentPosition);
       }
 

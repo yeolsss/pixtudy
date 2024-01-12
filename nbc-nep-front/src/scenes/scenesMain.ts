@@ -12,6 +12,10 @@ export class ScenesMain extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 60,
     });
+    this.load.spritesheet("otherCharacter", "/assets/characters/NPC12.png", {
+      frameWidth: 32,
+      frameHeight: 60,
+    });
   }
 
   create() {

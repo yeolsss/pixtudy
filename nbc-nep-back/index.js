@@ -5,6 +5,7 @@ const socketIO = require("socket.io");
 const cors = require("cors");
 const { handleJoinRoom, handleReceiveOffer } = require("./conference");
 const gameServer = require("./gameServer");
+const chatServer = require("./chatServer");
 
 const app = express();
 let server = http.Server(app);
@@ -54,7 +55,12 @@ io.on("connection", (socket) => {
 });
 
 // Game Server Socket Handlers
-gameServer(io);
+const metaverseNamespace = io.of("/metaverse");
+gameServer(metaverseNamespace);
+
+// chat server Socket Handlers
+const chatNamespace = io.of("/chat");
+chatServer(chatNamespace);
 
 server.listen(3001, function () {
   console.log("Starting server on port 3001");
