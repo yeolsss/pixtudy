@@ -20,7 +20,6 @@ export default function ConnectedUser() {
   // 나에게 오는 메시지를 tracking하는 채널
   useEffect(() => {
     const dmChannel = supabase.channel(`dm_channel_${space_id}`);
-    console.log(dmChannel);
     getUser(undefined, {
       onSuccess: (response) => {
         dmChannel

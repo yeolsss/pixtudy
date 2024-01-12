@@ -1,11 +1,11 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import {
-  useGetCurrentUser,
   useGetDmChannel,
   useGetDmMessages,
   useGetOtherUserInfo,
   useSendMessage,
 } from "@/hooks/query/useSupabase";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
 import { Tables } from "@/types/supabase";
 import { RealtimeChannel } from "@supabase/supabase-js";
@@ -26,7 +26,6 @@ export default function DmContainer({
   const currentSpaceId = router.query.index;
 
   const getOtherUser = useGetOtherUserInfo();
-  const getCurrentUser = useGetCurrentUser();
   const sendMessage = useSendMessage();
   const getDmMessages = useGetDmMessages();
   const getDmChannel = useGetDmChannel();
@@ -37,7 +36,7 @@ export default function DmContainer({
   const [messages, setMessages] = useState<getDmChannelMessagesReturns[]>([]);
 
   const currentSubscribeChannel = useRef<RealtimeChannel | null>(null);
-  const currentUser = useRef<Tables<"users"> | null>(null);
+  const currentUser = useAppSelector((state) => state.authSlice.user);
   const otherUser = useRef<Tables<"users"> | null>(null);
 
   // 입력 이벤트
@@ -59,7 +58,7 @@ export default function DmContainer({
                   dm_id: payload.id,
                   id: "1",
                   message: values["send-input"],
-                  sender: null,
+                  sender: currentUser,
                   receiver: null,
                 },
               ]);
@@ -81,12 +80,12 @@ export default function DmContainer({
                       id: payload.new.id,
                       message: payload.new.message,
                       receiver:
-                        currentUser.current?.id === payload.new.receiver_id
-                          ? currentUser.current
+                        currentUser.id === payload.new.receiver_id
+                          ? currentUser
                           : otherUser.current,
                       sender:
-                        currentUser.current?.id === payload.new.sender_id
-                          ? currentUser.current
+                        currentUser.id === payload.new.sender_id
+                          ? currentUser
                           : otherUser.current,
                     };
                     setMessages((prev) => [...prev, newMessage]);
@@ -129,12 +128,12 @@ export default function DmContainer({
                       id: payload.new.id,
                       message: payload.new.message,
                       receiver:
-                        currentUser.current?.id === payload.new.receiver_id
-                          ? currentUser.current
+                        currentUser.id === payload.new.receiver_id
+                          ? currentUser
                           : otherUser.current,
                       sender:
-                        currentUser.current?.id === payload.new.sender_id
-                          ? currentUser.current
+                        currentUser.id === payload.new.sender_id
+                          ? currentUser
                           : otherUser.current,
                     };
                     setMessages((prev) => [...prev, newMessage]);
@@ -163,7 +162,7 @@ export default function DmContainer({
     }
   }, []);
 
-  // 상대 유저의 정보와 현재유저의 정보를 불러오는 useEffect
+  // 상대 유저의 정보를 불러오는 useEffect
   useEffect(() => {
     getOtherUser(
       { otherUserId },
@@ -173,11 +172,6 @@ export default function DmContainer({
         },
       }
     );
-    getCurrentUser(undefined, {
-      onSuccess: (currentUserInfo) => {
-        if (currentUserInfo) currentUser.current = currentUserInfo;
-      },
-    });
   }, []);
 
   useEffect(() => {

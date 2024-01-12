@@ -12,7 +12,6 @@ export default function OnChangeUserSession() {
   // 유저정보를 불러오는 코드
   const setUserSession = async () => {
     const data = await getUserSessionHandler();
-    console.log(data);
     dispatch(login(data!));
   };
   /* 로그인 상태를 tracking*/
@@ -22,9 +21,7 @@ export default function OnChangeUserSession() {
         // 최초 랜더링 시
         if (session) {
           setUserSession();
-          //   router.push("/dashboard");
         }
-        console.log("render");
       } else if (event === "SIGNED_IN") {
         // 로그인 시
         setUserSession();
