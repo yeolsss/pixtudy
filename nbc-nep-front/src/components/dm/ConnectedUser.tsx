@@ -20,21 +20,28 @@ export default function ConnectedUser() {
   // 나에게 오는 메시지를 tracking하는 채널
   useEffect(() => {
     const dmChannel = supabase.channel(`dm_channel_${space_id}`);
+    console.log(dmChannel);
     getUser(undefined, {
       onSuccess: (response) => {
-        dmChannel.on(
-          "postgres_changes",
-          {
-            event: "INSERT",
-            schema: "public",
-            table: "dm_messages",
-            filter: `receiver_id=eq.${response?.id}`,
-          },
-          (payload) => {
-            console.log("메시지가 도착했어");
-            console.log(payload.new);
-          }
-        );
+        dmChannel
+          .on(
+            "postgres_changes",
+            {
+              event: "INSERT",
+              schema: "public",
+              table: "dm_messages",
+              filter: `receiver_id=eq.${response?.id}`,
+            },
+            (payload) => {
+              console.log("메시지가 도착했어");
+              console.log(payload.new);
+              setDmContainers((prev) => {
+                if (prev.includes(payload.new.sender_id)) return prev;
+                else return [...prev, payload.new.sender_id];
+              });
+            }
+          )
+          .subscribe();
       },
     });
   }, []);

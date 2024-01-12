@@ -30,10 +30,10 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       if (event === "INITIAL_SESSION") {
         // 최초 랜더링 시
         if (session) {
+          console.log(session);
           dispatch(login());
           router.push("/dashboard");
         }
-        console.log("hi");
       } else if (event === "SIGNED_IN") {
         // 로그인 시
         // dispatch(login());

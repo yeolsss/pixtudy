@@ -42,6 +42,18 @@ export default function DmContainer({
     );
   }, []);
 
+  // // 상대 유저와 대화 내용 가져오기
+  // useEffect(() => {
+  //   getOtherUser(
+  //     { otherUserId },
+  //     {
+  //       onSuccess: (otherUserInfo) => {
+  //         if (otherUserInfo) setOtherUser(otherUserInfo);
+  //       },
+  //     }
+  //   );
+  // }, []);
+
   return (
     <section>
       <button onClick={() => handleCloseDmContainer(otherUserId)}>close</button>
