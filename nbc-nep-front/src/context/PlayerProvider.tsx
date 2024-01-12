@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Player } from "@/types/metaverse";
 
 type PlayerContextType = {
   player: Player | undefined;

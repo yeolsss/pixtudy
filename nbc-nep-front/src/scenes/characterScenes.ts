@@ -1,7 +1,8 @@
-import { CurrentPlayer } from "@/games/CurrentPlayer";
-import { OtherPlayersGroup } from "@/games/OtherPlayersGroup";
 import Phaser from "phaser";
 import io, { Socket } from "socket.io-client";
+import { MapData, Player, Players } from "@/types/metaverse";
+import { CurrentPlayer } from "@/metaverse/CurrentPlayer";
+import { OtherPlayersGroup } from "@/metaverse/OtherPlayersGroup";
 
 const RUN = 350;
 const WORK = 250;
@@ -17,7 +18,7 @@ export class CharacterScenes extends Phaser.Scene {
   otherPlayers?: OtherPlayersGroup;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   runKey?: Phaser.Input.Keyboard.Key;
-  lastDirection?: string; // 마지막으로 바라본 방향을 추적하는 변수
+  lastDirection?: string;
   private socket?: Socket;
   isRunning: boolean = false;
 
@@ -43,7 +44,7 @@ export class CharacterScenes extends Phaser.Scene {
 
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
-    this.socket = io("http://localhost:3001/metaverse");
+    this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {

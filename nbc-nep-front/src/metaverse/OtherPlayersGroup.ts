@@ -1,5 +1,6 @@
-import { CurrentPlayer } from "@/games/CurrentPlayer";
 import Phaser from "phaser";
+import { Player } from "@/types/metaverse";
+import { CurrentPlayer } from "@/metaverse/CurrentPlayer";
 
 export class OtherPlayersGroup {
   group: Phaser.Physics.Arcade.Group;
