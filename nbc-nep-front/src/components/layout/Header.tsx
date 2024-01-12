@@ -1,5 +1,4 @@
 import { useGetCurrentUser, useLogoutUser } from "@/hooks/query/useSupabase";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
 import { Tables } from "@/types/supabase";
 import { useRouter } from "next/router";
@@ -7,6 +6,7 @@ import { useEffect, useState } from "react";
 import ModalPortal from "../modal/ModalPortal";
 import LoginModal from "../modal/authModals/loginModal/LoginModal";
 import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 
 export default function Header() {
   const router = useRouter();

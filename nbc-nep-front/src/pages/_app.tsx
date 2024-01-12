@@ -1,4 +1,3 @@
-import { useAppDispatch } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
 import { login, logout } from "@/redux/modules/authSlice";
 import store from "@/redux/store";
@@ -10,6 +9,7 @@ import { useRouter } from "next/router";
 import { ReactElement, ReactNode, useEffect } from "react";
 import { Provider } from "react-redux";
 import GlobalStyle from "@/styles/Globalstyle";
+import { useAppDispatch } from "@/hooks/useReduxTK";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;

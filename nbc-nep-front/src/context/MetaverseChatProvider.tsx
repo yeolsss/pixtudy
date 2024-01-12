@@ -1,7 +1,7 @@
 import React, { createContext, PropsWithChildren, useContext } from "react";
 import useChatSocket from "@/hooks/socket/useChatSocket";
-import useInput from "@/hooks/useInput";
 import { Chat } from "@/types/metaverse";
+import useInput from "@/hooks/useInput";
 
 type MetaverseChatContext = {
   chatInput: string;
