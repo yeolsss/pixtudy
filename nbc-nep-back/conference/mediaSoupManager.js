@@ -4,8 +4,8 @@ let router;
 
 async function createWorker() {
   worker = await mediasoup.createWorker({
-    rtcMinPort: 10000,
-    rtcMaxPort: 10100,
+    rtcMinPort: 2000,
+    rtcMaxPort: 2100,
   });
   router = await worker.createRouter({
     mediaCodecs: [
@@ -31,7 +31,7 @@ async function createWorker() {
 
 async function createWebRtcTransport() {
   const transport = await router.createWebRtcTransport({
-    listenIps: [{ ip: "0.0.0.0", announcedIp: null }],
+    listenIps: [{ ip: "127.0.0.1", announcedIp: null }],
     enableUdp: true,
     enableTcp: true,
     preferUdp: true,

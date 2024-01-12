@@ -115,7 +115,6 @@ io.on("connection", (socket) => {
       console.log("no transport found");
       return;
     }
-
     try {
       transport.connect({ dtlsParameters });
       console.log("end - 'transport connect' success");
@@ -142,7 +141,7 @@ io.on("connection", (socket) => {
         });
 
         const { roomName } = peers[socket.id];
-
+        console.log(`${socketId}의 remote producer id is ${remoteProducer.id}`);
         addProducer(remoteProducer, roomName, socket.id, socket.name);
 
         setPeers(socket.id, "producers", (prevProducers) => [
@@ -158,7 +157,8 @@ io.on("connection", (socket) => {
 
         console.log("end - 'transport produce' success");
         const producersExist = !!producers.filter(
-          (producer) => producer.roomName === roomName
+          (producer) =>
+            producer.roomName === roomName && producer.socketId !== socket.id
         ).length;
 
         callback({
@@ -219,6 +219,9 @@ io.on("connection", (socket) => {
 
       try {
         console.log("start - consume");
+        console.log(
+          `${socket.id}가 컴슘을 하는데 remote producer id is ${remoteProducerId}`
+        );
         const consumer = await consumerTransport.consume({
           producerId: remoteProducerId,
           rtpCapabilities,
@@ -273,8 +276,6 @@ io.on("connection", (socket) => {
           transport.transport.id === serverConsumerTransportId &&
           transport.consumer
       )?.transport;
-
-      console.log("consumer Transport is ", consumerTransport);
 
       if (!consumerTransport) {
         console.log("oops, no transport found");
