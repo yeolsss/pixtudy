@@ -6,9 +6,12 @@ import {
   signUpHandler,
 } from "@/api/supabase/auth";
 import {
+  checkDmChannel,
+  getDmChannelMessages,
   getSpaceUsers,
   getUserDmChannel,
   getUserSpaces,
+  sendMessage,
 } from "@/api/supabase/dm";
 import { useMutation } from "@tanstack/react-query";
 
@@ -63,7 +66,7 @@ export function useGetOtherUserInfo() {
   return getOtherUser;
 }
 
-/* spaces */
+/* dm */
 // get current user spaces
 export function useGetUserSpaces() {
   const { mutate: getUserSpacesInfo } = useMutation({
@@ -91,4 +94,33 @@ export function useGetUserDMChannel() {
     onError: () => {},
   });
   return getDmChannel;
+}
+
+//
+export function useGetDmChannel() {
+  const { mutate: dmChannel } = useMutation({
+    mutationFn: checkDmChannel,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return dmChannel;
+}
+// Dm채널 유무 확인 후 기존 메시지 가져오기
+export function useGetDmMessages() {
+  const { mutate: dmMessages } = useMutation({
+    mutationFn: getDmChannelMessages,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return dmMessages;
+}
+
+// 메시지 보내기
+export function useSendMessage() {
+  const { mutate: message } = useMutation({
+    mutationFn: sendMessage,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return message;
 }
