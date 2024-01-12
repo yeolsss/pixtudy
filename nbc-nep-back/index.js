@@ -157,10 +157,13 @@ io.on("connection", (socket) => {
         });
 
         console.log("end - 'transport produce' success");
+        const producersExist = !!producers.filter(
+          (producer) => producer.roomName === roomName
+        ).length;
 
         callback({
           id: remoteProducer.id,
-          producersExist: remoteProducer.length > 1,
+          producersExist,
         });
       } catch (error) {
         console.log("oops, transport produce error", error);
@@ -259,7 +262,7 @@ io.on("connection", (socket) => {
         console.log("oops consume error", error);
       }
     }
-  );
+  ); //
 
   socket.on(
     "transport-recv-connect",
