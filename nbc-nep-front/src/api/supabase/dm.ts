@@ -71,41 +71,42 @@ export const sendMessage = async ({
   spaceId,
 }: sendMessageArgs) => {
   const currentUser = await getUserSessionHandler();
+  // 채팅방 여부 확인
   const dm_channel = await supabase.rpc("get_dm_channels", {
     p_space_id: spaceId,
     p_user_id: currentUser?.id!,
     p_receiver_id: receiverId,
   });
 
-  // const dm_channel = await supabase
-  //   .from("dm_channels")
-  //   .select(`*`)
-  //   .filter("space_id", "eq", spaceId)
-  //   .or(
-  //     `user.eq.${currentUser?.id},other_user.eq.${receiverId},user.eq.${receiverId},other_user.eq.${currentUser?.id}`
-  //   );
-  if (dm_channel.data) {
-    if (!dm_channel.data[0]) {
-      // 채팅방이 기존에 없는 경우
-      const { data: newDmChannel } = await supabase
-        .from("dm_channels")
-        .insert({
-          space_id: spaceId,
-          user: currentUser?.id!,
-          other_user: receiverId,
-        })
-        .select(`*`);
-      if (newDmChannel)
-        await supabase.from("dm_messages").insert({
-          dm_id: newDmChannel[0].id,
-          message,
-          receiver_id: receiverId,
-          sender_id: currentUser?.id!,
-        });
+  // (1)채팅방이 기존에 없는 경우
+  if (!dm_channel.data?.length) {
+    // (1-1) 채팅방 생성
+    const { data: newDmChannel } = await supabase
+      .from("dm_channels")
+      .insert({
+        space_id: spaceId,
+        user: currentUser?.id!,
+        other_user: receiverId,
+      })
+      .select(`*`)
+      .single();
+    // (1-2) 메시지 보내기
+    if (newDmChannel) {
+      await supabase.from("dm_messages").insert({
+        dm_id: newDmChannel.id,
+        message,
+        receiver_id: receiverId,
+        sender_id: currentUser?.id!,
+      });
     }
+  } else {
+    // (2) 채팅방이 기존에 있는 경우
+    // 해당 채팅방으로 메시지 바로 전송
+    await supabase.from("dm_messages").insert({
+      dm_id: dm_channel.data[0].id!,
+      message,
+      receiver_id: receiverId,
+      sender_id: currentUser?.id!,
+    });
   }
-
-  // if(currentUser) {
-  //   const {error} = await supabase.from('dm_messages').insert({message:})
-  // }
 };

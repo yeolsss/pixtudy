@@ -9,6 +9,7 @@ import {
   getSpaceUsers,
   getUserDmChannel,
   getUserSpaces,
+  sendMessage,
 } from "@/api/supabase/dm";
 import { useMutation } from "@tanstack/react-query";
 
@@ -63,7 +64,7 @@ export function useGetOtherUserInfo() {
   return getOtherUser;
 }
 
-/* spaces */
+/* dm */
 // get current user spaces
 export function useGetUserSpaces() {
   const { mutate: getUserSpacesInfo } = useMutation({
@@ -91,4 +92,14 @@ export function useGetUserDMChannel() {
     onError: () => {},
   });
   return getDmChannel;
+}
+
+// 메시지 보내기
+export function useSendMessage() {
+  const { mutate: message } = useMutation({
+    mutationFn: sendMessage,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return message;
 }
