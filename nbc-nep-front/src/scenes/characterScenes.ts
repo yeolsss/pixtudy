@@ -44,7 +44,9 @@ export class CharacterScenes extends Phaser.Scene {
 
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
-    this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
+    this.socket = io(
+      `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse?userId=${"test"}`
+    );
 
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {

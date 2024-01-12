@@ -36,8 +36,6 @@ export const PlayerProvider = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
-  console.log(player);
-
   const value = {
     player,
     setPlayer,

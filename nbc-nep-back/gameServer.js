@@ -4,7 +4,11 @@ module.exports = function (io) {
   io.on("connection", function (socket) {
     console.log("player [" + socket.id + "] connected");
 
+    // 클라이언트에서 보낸 쿼리 매개변수로부터 userId를 가져옵니다.
+    const userId = socket.handshake.query.userId;
+
     players[socket.id] = {
+      userId,
       rotation: 0,
       x: 100,
       y: 100,
@@ -15,7 +19,9 @@ module.exports = function (io) {
       movingDown: false,
       frame: 0,
     };
+
     socket.emit("currentPlayers", players);
+    //123
     socket.broadcast.emit("newPlayer", players[socket.id]);
 
     socket.on("disconnect", function () {

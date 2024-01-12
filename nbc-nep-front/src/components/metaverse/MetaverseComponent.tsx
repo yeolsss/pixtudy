@@ -33,6 +33,12 @@ const MetaverseComponent = () => {
     };
 
     game = new Phaser.Game(config);
+    game.registry.set("userId", {
+      userId: "test",
+      nickname: "송용승",
+      character: "character2",
+      position: { x: 0, y: 0 },
+    });
 
     window.addEventListener("resize", resize);
 
