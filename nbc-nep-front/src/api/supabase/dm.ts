@@ -1,4 +1,5 @@
 import { supabase } from "@/libs/supabase";
+import { Tables } from "@/types/supabase";
 import { Space_members } from "@/types/supabase.tables.type";
 import { getUserSessionHandler } from "./auth";
 
@@ -87,24 +88,28 @@ interface getDmChannelMessagesArgs {
   receiverId: string;
   spaceId: string;
 }
+export interface getDmChannelMessagesReturns {
+  id: string;
+  created_at: string;
+  dm_id: string;
+  message: string;
+  sender: Tables<"users"> | null;
+  receiver: Tables<"users"> | null;
+}
 export const getDmChannelMessages = async ({
   receiverId,
   spaceId,
 }: getDmChannelMessagesArgs) => {
   // 채팅방 여부 확인
   const dm_channel = await checkDmChannel({ receiverId, spaceId });
-
   // 채팅방이 없을 때는 빈배열 반환
-  if (!dm_channel) return [];
-  else {
-    // 채팅방이 있을 때는 메시지 배열 반환
-    const { data: channelMessages } = await supabase
-      .from("dm_messages")
-      .select(`*`)
-      .eq("dm_id", dm_channel)
-      .order("created_at", { ascending: false });
-    return channelMessages;
+  if (!dm_channel) {
+    return [];
   }
+  const channelMessages = await supabase.rpc("get_dm_channel_messages", {
+    p_dm_channel: dm_channel!,
+  });
+  return channelMessages.data as getDmChannelMessagesReturns[];
 };
 
 /**
@@ -154,6 +159,7 @@ export const sendMessage = async ({
         sender_id: currentUser?.id!,
       });
     }
+    return newDmChannel;
   } else {
     // (2) 채팅방이 기존에 있는 경우
     // 해당 채팅방으로 메시지 바로 전송

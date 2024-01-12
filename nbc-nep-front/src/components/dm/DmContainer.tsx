@@ -1,11 +1,16 @@
+import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import {
+  useGetCurrentUser,
+  useGetDmChannel,
   useGetDmMessages,
   useGetOtherUserInfo,
   useSendMessage,
 } from "@/hooks/query/useSupabase";
+import { supabase } from "@/libs/supabase";
 import { Tables } from "@/types/supabase";
+import { RealtimeChannel } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 interface Props {
@@ -19,31 +24,124 @@ export default function DmContainer({
 }: Props) {
   const router = useRouter();
   const currentSpaceId = router.query.index;
-  const { handleSubmit, register, reset } = useForm();
+
   const getOtherUser = useGetOtherUserInfo();
-  const [otherUser, setOtherUser] = useState<Tables<"users">>();
+  const getCurrentUser = useGetCurrentUser();
   const sendMessage = useSendMessage();
   const getDmMessages = useGetDmMessages();
-  const [messages, setMessages] = useState<Tables<"dm_messages">[]>([]);
+  const getDmChannel = useGetDmChannel();
 
+  const { handleSubmit, register, reset } = useForm();
+
+  // const [otherUser, setOtherUser] = useState<Tables<"users">>();
+  const [messages, setMessages] = useState<getDmChannelMessagesReturns[]>([]);
+
+  const currentSubscribeChannel = useRef<RealtimeChannel | null>(null);
+  const currentUser = useRef<Tables<"users"> | null>(null);
+  const otherUser = useRef<Tables<"users"> | null>(null);
+
+  // 입력 이벤트
   const sendHandler: SubmitHandler<FieldValues> = async (values) => {
     if (typeof currentSpaceId === "string")
-      sendMessage({
-        message: values["send-input"],
-        receiverId: otherUserId,
-        spaceId: currentSpaceId,
-      });
+      sendMessage(
+        {
+          message: values["send-input"],
+          receiverId: otherUserId,
+          spaceId: currentSpaceId,
+        },
+        {
+          onSuccess: (payload) => {
+            if (payload) {
+              setMessages((prev) => [
+                ...prev,
+                {
+                  created_at: new Date().toISOString(),
+                  dm_id: payload.id,
+                  id: "1",
+                  message: values["send-input"],
+                  sender: null,
+                  receiver: null,
+                },
+              ]);
+              const channel = supabase.channel(`dm_${payload.id}`);
+              currentSubscribeChannel.current = channel;
+              channel
+                .on(
+                  "postgres_changes",
+                  {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "dm_messages",
+                    filter: `dm_id=eq.${payload.id}`,
+                  },
+                  (payload) => {
+                    const newMessage: getDmChannelMessagesReturns = {
+                      created_at: payload.new.created_at,
+                      dm_id: payload.new.dm_id,
+                      id: payload.new.id,
+                      message: payload.new.message,
+                      receiver:
+                        currentUser.current?.id === payload.new.receiver_id
+                          ? currentUser.current
+                          : otherUser.current,
+                      sender:
+                        currentUser.current?.id === payload.new.sender_id
+                          ? currentUser.current
+                          : otherUser.current,
+                    };
+                    setMessages((prev) => [...prev, newMessage]);
+                  }
+                )
+                .subscribe();
+            }
+          },
+        }
+      );
     reset();
   };
 
-  // 상대 유저의 정보를 불러오는 useEffect
+  // 상대 유저와의 채널을 탐색하여 subscribe 시키는 useEffct
   useEffect(() => {
     if (typeof currentSpaceId === "string") {
-      getDmMessages(
-        { receiverId: otherUserId, spaceId: currentSpaceId },
+      getDmChannel(
         {
-          onSuccess: (dmMessages) => {
-            setMessages(dmMessages!);
+          receiverId: otherUserId,
+          spaceId: currentSpaceId,
+        },
+        {
+          onSuccess: (currentDmChannel) => {
+            if (currentDmChannel) {
+              const channel = supabase.channel(`dm_${currentDmChannel}`);
+              currentSubscribeChannel.current = channel;
+              channel
+                .on(
+                  "postgres_changes",
+                  {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "dm_messages",
+                    filter: `dm_id=eq.${currentDmChannel}`,
+                  },
+                  (payload) => {
+                    const newMessage: getDmChannelMessagesReturns = {
+                      created_at: payload.new.created_at,
+                      dm_id: payload.new.dm_id,
+                      id: payload.new.id,
+                      message: payload.new.message,
+                      receiver:
+                        currentUser.current?.id === payload.new.receiver_id
+                          ? currentUser.current
+                          : otherUser.current,
+                      sender:
+                        currentUser.current?.id === payload.new.sender_id
+                          ? currentUser.current
+                          : otherUser.current,
+                    };
+                    setMessages((prev) => [...prev, newMessage]);
+                  }
+                )
+                .subscribe();
+            }
           },
         }
       );
@@ -52,25 +150,54 @@ export default function DmContainer({
 
   // // 상대 유저와 대화 내용 가져오기
   useEffect(() => {
+    if (typeof currentSpaceId === "string") {
+      getDmMessages(
+        { receiverId: otherUserId, spaceId: currentSpaceId },
+        {
+          onSuccess: (dmMessages) => {
+            console.log(dmMessages);
+            setMessages(dmMessages);
+          },
+        }
+      );
+    }
+  }, []);
+
+  // 상대 유저의 정보와 현재유저의 정보를 불러오는 useEffect
+  useEffect(() => {
     getOtherUser(
       { otherUserId },
       {
         onSuccess: (otherUserInfo) => {
-          if (otherUserInfo) setOtherUser(otherUserInfo);
+          if (otherUserInfo) otherUser.current = otherUserInfo;
         },
       }
     );
+    getCurrentUser(undefined, {
+      onSuccess: (currentUserInfo) => {
+        if (currentUserInfo) currentUser.current = currentUserInfo;
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      // unMount 시 채널 구독 취소
+      if (currentSubscribeChannel.current)
+        supabase.removeChannel(currentSubscribeChannel.current);
+    };
   }, []);
 
   return (
     <section>
       <button onClick={() => handleCloseDmContainer(otherUserId)}>close</button>
-      <h1>상대방 유저 정보 : {otherUser?.display_name}</h1>
+      <h1>상대방 유저 정보 : {otherUser.current?.display_name}</h1>
       <ul>
         {messages.map((message) => (
           <li key={message.id}>
-            <h3>{message.receiver_id}</h3>
+            <h3>{message.sender?.display_name}</h3>
             <span>{message.message}</span>
+            <span>{message.created_at}</span>
           </li>
         ))}
       </ul>

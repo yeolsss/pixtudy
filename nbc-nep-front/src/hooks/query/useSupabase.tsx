@@ -6,6 +6,7 @@ import {
   signUpHandler,
 } from "@/api/supabase/auth";
 import {
+  checkDmChannel,
   getDmChannelMessages,
   getSpaceUsers,
   getUserDmChannel,
@@ -95,6 +96,15 @@ export function useGetUserDMChannel() {
   return getDmChannel;
 }
 
+//
+export function useGetDmChannel() {
+  const { mutate: dmChannel } = useMutation({
+    mutationFn: checkDmChannel,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+  return dmChannel;
+}
 // Dm채널 유무 확인 후 기존 메시지 가져오기
 export function useGetDmMessages() {
   const { mutate: dmMessages } = useMutation({

@@ -33,11 +33,9 @@ export default function ConnectedUser() {
               filter: `receiver_id=eq.${response?.id}`,
             },
             (payload) => {
-              console.log("메시지가 도착했어");
-              console.log(payload.new);
               setDmContainers((prev) => {
                 if (prev.includes(payload.new.sender_id)) return prev;
-                else return [...prev, payload.new.sender_id];
+                else return [payload.new.sender_id, ...prev];
               });
             }
           )
@@ -62,7 +60,7 @@ export default function ConnectedUser() {
   const handleOpenDmContainer = (id: string) => {
     setDmContainers((prev) => {
       if (prev.includes(id)) return prev;
-      else return [...prev, id];
+      else return [id, ...prev];
     });
   };
 
