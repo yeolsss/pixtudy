@@ -52,7 +52,7 @@ let peers = {};
 
 io.on("connection", (socket) => {
   // 처음 클라이언트에서 start capture를 했을 경우에 발생하는 이벤트
-  socket.on("join-room", ({ roomName }, setDevice) => {
+  socket.on("join-room", ({ roomName, type }, setDevice) => {
     console.log("socket on join-room");
     // peers초기 세팅
     peers[socket.id] = {
@@ -69,11 +69,11 @@ io.on("connection", (socket) => {
 
     const rtpCapabilities = getRtcCapabilities();
 
-    setDevice(rtpCapabilities);
+    setDevice(rtpCapabilities, type);
   });
 
   // device rtp capabilities를 받아서 세팅을 완료 했고 remote producer 혹은 consumer를 만드는 이벤트
-  socket.on("createWebRtcTransport", async ({ consumer }, callback) => {
+  socket.on("createWebRtcTransport", async ({ consumer, type }, callback) => {
     if (!consumer) {
       console.log(socket.id, " producer로서 createWebRtcTransport 호출");
     } else {
@@ -101,7 +101,7 @@ io.on("connection", (socket) => {
       callback({ params });
     } else {
       console.log("socket emit created web-rtc-transport");
-      socket.emit("createdWebRtcTransport", params);
+      socket.emit("createdWebRtcTransport", params, type);
     }
   });
 
