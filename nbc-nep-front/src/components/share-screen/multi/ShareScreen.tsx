@@ -2,7 +2,12 @@ import useDevice from "@/hooks/share-screen/useDevice";
 import useSocket from "@/hooks/useSocket";
 import { types } from "mediasoup-client";
 import { RefObject, useEffect, useRef, useState } from "react";
-import { isAlreadyConsumeTransport } from "../lib/util";
+import {
+  checkStreamTracksEmpty,
+  isAlreadyConsumeTransport,
+  isNotEmptyTracks,
+  isVideoTrack,
+} from "../lib/util";
 import {
   ConsumerTransportType,
   DtlsParameters,
@@ -55,10 +60,7 @@ export default function ScreenShare() {
         : (webCamRef.current!.srcObject as MediaStream);
 
     try {
-      if (
-        stream.getVideoTracks().length === 0 &&
-        stream.getAudioTracks().length === 0
-      )
+      if (checkStreamTracksEmpty(stream))
         throw new Error("video and audio tracks are not exist");
 
       console.log("stream is for producer transport : ", stream.id);
@@ -66,7 +68,7 @@ export default function ScreenShare() {
       const videoTracks = stream.getVideoTracks();
       const audioTracks = stream.getAudioTracks();
 
-      if (videoTracks.length !== 0) {
+      if (isNotEmptyTracks(videoTracks)) {
         const videoTransport = createSendTransport(params);
         const videoTrack = videoTracks[0];
         if (!videoTransport) return;
@@ -83,7 +85,7 @@ export default function ScreenShare() {
           "send video producer id : ",
           videoProducer.id
         );
-      } else if (audioTracks.length !== 0) {
+      } else if (isNotEmptyTracks(audioTracks)) {
         const audioTransport = createSendTransport(params);
         const audioTrack = audioTracks[0];
         if (!audioTransport) return;
@@ -287,7 +289,7 @@ export default function ScreenShare() {
           console.log("consumer track is : ", track.id);
           console.log("track is : ", track);
 
-          if (track.kind === "video") {
+          if (isVideoTrack(track)) {
             const newVideoStream = new MediaStream([track]);
             setVideos((prev) => [...prev, newVideoStream]);
           }

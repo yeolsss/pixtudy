@@ -8,3 +8,17 @@ export function isAlreadyConsumeTransport(
     return consumerTransport.producerId === remoteProducerId;
   });
 }
+
+export function checkStreamTracksEmpty(stream: MediaStream) {
+  return (
+    stream.getAudioTracks().length === 0 && stream.getVideoTracks().length === 0
+  );
+}
+
+export function isNotEmptyTracks(tracks: MediaStreamTrack[]) {
+  return tracks.length !== 0;
+}
+
+export function isVideoTrack(track: MediaStreamTrack) {
+  return track.kind === "video";
+}
