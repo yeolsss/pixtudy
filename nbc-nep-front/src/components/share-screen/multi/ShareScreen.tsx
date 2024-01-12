@@ -1,6 +1,6 @@
 import useSocket from "@/hooks/useSocket";
 import { Device, types } from "mediasoup-client";
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import ShareScreenButton from "./ShareScreenButton";
 
 export default function ScreenShare() {
@@ -31,34 +31,16 @@ export default function ScreenShare() {
   function handleNewProducer(data: NewProducerParameter) {
     signalNewConsumerTransport(data);
   }
-  async function handleStartCapture() {
-    const videoStream = await navigator.mediaDevices.getDisplayMedia({
-      video: true,
-    });
 
-    localVideoRef.current!.srcObject = videoStream;
-
-    console.log("handle start capture socket is : ", socket.id);
-    console.log("socket emit join-room");
-    socket.emit(
-      "join-room",
-      { roomId: "test", type: "screen" },
-      setDeviceAndCreateTransport
-    );
-  }
-  async function handleWebCamCapture() {
-    const webCamStream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true,
-    });
-
-    webCamRef.current!.srcObject = webCamStream;
-
-    socket.emit(
-      "join-room",
-      { roomId: "test", type: "webcam" },
-      setDeviceAndCreateTransport
-    );
+  function handleShare(HTMLElementRef: RefObject<HTMLVideoElement>) {
+    return (stream: MediaStream, type: ShareType) => {
+      HTMLElementRef.current!.srcObject = stream;
+      socket.emit(
+        "join-room",
+        { roomId: "test", type },
+        setDeviceAndCreateTransport
+      );
+    };
   }
 
   function handleCreateSendTransport(device: Device) {
@@ -344,10 +326,10 @@ export default function ScreenShare() {
 
   return (
     <div>
-      <ShareScreenButton onShare={handleStartCapture} mode="screen">
+      <ShareScreenButton onShare={handleShare(localVideoRef)} mode="screen">
         Share Screen
       </ShareScreenButton>
-      <ShareScreenButton onShare={handleWebCamCapture} mode="webcam">
+      <ShareScreenButton onShare={handleShare(webCamRef)} mode="webcam">
         Share Web Cam
       </ShareScreenButton>
 
