@@ -44,9 +44,7 @@ export class CharacterScenes extends Phaser.Scene {
 
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
-    this.socket = io(
-      `${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse?userId=${"test"}`
-    );
+    this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
@@ -67,6 +65,12 @@ export class CharacterScenes extends Phaser.Scene {
       this.otherPlayers?.removePlayer(playerId);
     });
 
+    this.socket.on("metaversePlayerList", (players: Players) => {
+      const event = new CustomEvent("metaversePlayerList", {
+        detail: players,
+      });
+      window.dispatchEvent(event);
+    });
     this.createAnimations();
 
     this.cursors = this.input.keyboard?.createCursorKeys();

@@ -1,8 +1,6 @@
 import {
   createContext,
-  Dispatch,
   PropsWithChildren,
-  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -10,36 +8,33 @@ import {
 import { Player } from "@/types/metaverse";
 
 type PlayerContextType = {
-  player: Player | undefined;
-  setPlayer: Dispatch<SetStateAction<Player | undefined>>;
-  updatePlayer: (player: Player) => void;
+  playerList: Player[];
 };
 
-const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
-export const PlayerProvider = ({ children }: PropsWithChildren) => {
-  const [player, setPlayer] = useState<Player>();
+const initialState: PlayerContextType = {
+  playerList: [] as Player[],
+};
 
-  const updatePlayer = (player: Player) => {
-    setPlayer(player);
-  };
+const PlayerContext = createContext<PlayerContextType>(initialState);
+export const PlayerProvider = ({ children }: PropsWithChildren) => {
+  const [playerList, setPlayerList] = useState<Player[]>([]);
 
   useEffect(() => {
-    const handlePlayerMovement = (event: Event) => {
+    const handlePlayerList = (event: Event) => {
       const customEvent = event as CustomEvent;
-      updatePlayer(customEvent.detail);
+      const players = Object.values(customEvent.detail) as Player[];
+      setPlayerList(players);
     };
 
-    window.addEventListener("playerMovement", handlePlayerMovement);
+    window.addEventListener("metaversePlayerList", handlePlayerList);
 
     return () => {
-      window.removeEventListener("playerMovement", handlePlayerMovement);
+      window.removeEventListener("metaversePlayerList", handlePlayerList);
     };
   }, []);
 
   const value = {
-    player,
-    setPlayer,
-    updatePlayer,
+    playerList,
   };
 
   return (

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { PlayerProvider } from "@/context/PlayerProvider";
 import styled from "styled-components";
 import MetaverseChat from "@/components/metaverseChat/MetaverseChat";
+import MetaversePlayerList from "@/components/metaversePlayerList/MetaversePlayerList";
 
 const MetaverseComponent = () => {
   useEffect(() => {
@@ -53,6 +54,7 @@ const MetaverseComponent = () => {
       <StMetaverseWrapper>
         <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
         <MetaverseChat />
+        <MetaversePlayerList />
       </StMetaverseWrapper>
     </PlayerProvider>
   );

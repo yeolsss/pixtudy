@@ -2,7 +2,6 @@ import React, { createContext, PropsWithChildren, useContext } from "react";
 import useChatSocket from "@/hooks/socket/useChatSocket";
 import { Chat } from "@/types/metaverse";
 import useInput from "@/hooks/useInput";
-import { useGetCurrentUser } from "@/hooks/query/useSupabase";
 
 type MetaverseChatContext = {
   chatInput: string;
@@ -34,9 +33,7 @@ export const MetaverseChatProvider = ({ children }: PropsWithChildren) => {
     setChatInput("");
   };
 
-  // 4. user 정보 customHooks
-  const getUser = useGetCurrentUser();
-  console.log(getUser);
+  // 4. 유저 정보 받아오기.
 
   // context value
   const value = {
