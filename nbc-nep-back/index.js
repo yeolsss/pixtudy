@@ -181,12 +181,12 @@ io.on("connection", (socket) => {
         (producer) =>
           producer.roomName === roomName && producer.socketId !== socket.id
       )
-      .map((producer) => [
-        producer.producer.id,
-        peers[producer.socketId].peerDetails.name,
-        producer.socketId,
-        peers[producer.socketId].peerDetails.isAdmin,
-      ]);
+      .map((producer) => ({
+        producerId: producer.producer.id,
+        socketName: peers[producer.socketId].peerDetails.name,
+        socketId: producer.socketId,
+        isNewSocketHost: peers[producer.socketId].peerDetails.isAdmin,
+      }));
 
     callback(producerList);
   });
