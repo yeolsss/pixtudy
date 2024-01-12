@@ -254,7 +254,7 @@ io.on("connection", (socket) => {
 
         console.log("end- consume");
 
-        callback(par ams);
+        callback(params);
       } catch (error) {
         console.log("oops consume error", error);
       }
