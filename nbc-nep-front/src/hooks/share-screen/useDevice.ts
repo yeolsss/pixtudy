@@ -1,8 +1,11 @@
-import { RtpCapabilities } from "@/components/share-screen/types/ScreenShare.types";
-import { Device, types } from "mediasoup-client";
+import {
+  RtpCapabilities,
+  TransPortType,
+} from "@/components/share-screen/types/ScreenShare.types";
+import { Device } from "mediasoup-client";
 import { useEffect, useRef } from "react";
 export default function useDevice() {
-  const deviceRef = useRef<types.Device>();
+  const deviceRef = useRef<Device>();
 
   useEffect(() => {
     if (deviceRef.current) return;
@@ -18,8 +21,23 @@ export default function useDevice() {
     }
   }
 
+  function createSendTransportWithDevice(params: TransPortType) {
+    return deviceRef.current!.createSendTransport(params);
+  }
+
+  function createRecvTransportWithDevice(params: TransPortType) {
+    return deviceRef.current!.createRecvTransport(params);
+  }
+
+  function getRtpCapabilitiesFromDevice() {
+    return deviceRef.current!.rtpCapabilities;
+  }
+
   return {
-    device: deviceRef.current,
+    device: deviceRef.current!,
     loadDevice,
+    createSendTransportWithDevice,
+    createRecvTransportWithDevice,
+    getRtpCapabilitiesFromDevice,
   };
 }

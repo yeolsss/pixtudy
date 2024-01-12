@@ -1,6 +1,6 @@
 import useDevice from "@/hooks/share-screen/useDevice";
 import useSocket from "@/hooks/useSocket";
-import { Device, types } from "mediasoup-client";
+import { types } from "mediasoup-client";
 import { RefObject, useEffect, useRef, useState } from "react";
 import {
   ConsumerTransportType,
@@ -16,19 +16,20 @@ import ShareScreenButton from "./ShareScreenButton";
 export default function ScreenShare() {
   const { socket } = useSocket();
   const localVideoRef = useRef<HTMLVideoElement>(null);
-  const deviceRef = useRef<Device>();
-  const { device, loadDevice } = useDevice();
+  const {
+    loadDevice,
+    createSendTransportWithDevice,
+    createRecvTransportWithDevice,
+    getRtpCapabilitiesFromDevice,
+  } = useDevice();
   const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
   const [videos, setVideos] = useState<MediaStream[]>([]);
   const webCamRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const device = new Device();
-    deviceRef.current = device;
-
     // 클라이언트에서 device를 로드를 완료한 이후에 서버 측에 receiver transport 만든 다음
     // sender transport를 만드는 이벤트
-    socket.on("createdWebRtcTransport", handleCreateSendTransport(device));
+    socket.on("createdWebRtcTransport", handleCreateSendTransport);
 
     // 기존에 있던 사용자에게 새로운 producer가 등장했을 경우에 발생하는 이벤트
     socket.on("new-producer", handleNewProducer);
@@ -43,68 +44,69 @@ export default function ScreenShare() {
     signalNewConsumerTransport(data);
   }
 
-  function handleCreateSendTransport(device: Device) {
-    return async function (params: TransPortType, type: ShareType) {
-      const stream =
-        type === "screen"
-          ? (localVideoRef.current!.srcObject as MediaStream)
-          : (webCamRef.current!.srcObject as MediaStream);
+  async function handleCreateSendTransport(
+    params: TransPortType,
+    type: ShareType
+  ) {
+    const stream =
+      type === "screen"
+        ? (localVideoRef.current!.srcObject as MediaStream)
+        : (webCamRef.current!.srcObject as MediaStream);
 
-      try {
-        if (
-          stream.getVideoTracks().length === 0 &&
-          stream.getAudioTracks().length === 0
-        )
-          throw new Error("video and audio tracks are not exist");
+    try {
+      if (
+        stream.getVideoTracks().length === 0 &&
+        stream.getAudioTracks().length === 0
+      )
+        throw new Error("video and audio tracks are not exist");
 
-        console.log("stream is for producer transport : ", stream.id);
+      console.log("stream is for producer transport : ", stream.id);
 
-        const videoTracks = stream.getVideoTracks();
-        const audioTracks = stream.getAudioTracks();
+      const videoTracks = stream.getVideoTracks();
+      const audioTracks = stream.getAudioTracks();
 
-        if (videoTracks.length !== 0) {
-          const videoTransport = createSendTransport(device, params);
-          const videoTrack = videoTracks[0];
-          if (!videoTransport) return;
+      if (videoTracks.length !== 0) {
+        const videoTransport = createSendTransport(params);
+        const videoTrack = videoTracks[0];
+        if (!videoTransport) return;
 
-          const videoProducer = await videoTransport.produce({
-            track: videoTrack,
-            ...videoParams,
-            appData: { trackId: videoTrack.id },
-          });
+        const videoProducer = await videoTransport.produce({
+          track: videoTrack,
+          ...videoParams,
+          appData: { trackId: videoTrack.id },
+        });
 
-          console.log(
-            "video send producer track id : ",
-            videoTrack.id,
-            "send video producer id : ",
-            videoProducer.id
-          );
-        } else if (audioTracks.length !== 0) {
-          const audioTransport = createSendTransport(device, params);
-          const audioTrack = audioTracks[0];
-          if (!audioTransport) return;
+        console.log(
+          "video send producer track id : ",
+          videoTrack.id,
+          "send video producer id : ",
+          videoProducer.id
+        );
+      } else if (audioTracks.length !== 0) {
+        const audioTransport = createSendTransport(params);
+        const audioTrack = audioTracks[0];
+        if (!audioTransport) return;
 
-          const audioProducer = await audioTransport.produce({
-            track: audioTrack,
-            appData: { trackId: audioTrack.id },
-          });
-          console.log(
-            "audio send producer track id : ",
-            audioTrack.id,
-            audioTrack,
-            "send audio producer id : ",
-            audioProducer.id
-          );
-        }
-      } catch (error) {
-        console.error("handle create send transport error : ", error);
+        const audioProducer = await audioTransport.produce({
+          track: audioTrack,
+          appData: { trackId: audioTrack.id },
+        });
+        console.log(
+          "audio send producer track id : ",
+          audioTrack.id,
+          audioTrack,
+          "send audio producer id : ",
+          audioProducer.id
+        );
       }
-    };
+    } catch (error) {
+      console.error("handle create send transport error : ", error);
+    }
   }
 
-  function createSendTransport(device: Device, params: TransPortType) {
+  function createSendTransport(params: TransPortType) {
     try {
-      const sendTransport = device.createSendTransport(params);
+      const sendTransport = createSendTransportWithDevice(params);
 
       sendTransport.on("connect", handleSendProducerTransportConnect);
       sendTransport.on("produce", handleSendProducerTransportProduce);
@@ -194,8 +196,7 @@ export default function ScreenShare() {
       (data: { params: TransPortType }) => {
         // 서버에서 transport를 만들고 나서 정보를 콜백받음
         const { params } = data;
-        const device = deviceRef.current!;
-        const consumerTransport = device.createRecvTransport(params);
+        const consumerTransport = createRecvTransportWithDevice(params);
 
         consumerTransport.on(
           "connect",
@@ -237,12 +238,12 @@ export default function ScreenShare() {
     newSocketId: string,
     isNewSocketHost: boolean
   ) {
-    const device = deviceRef.current!;
-
+    const rtpCapabilities = getRtpCapabilitiesFromDevice();
+    console.log("🥰🥰🥰🥰🥰🥰 ", rtpCapabilities);
     socket.emit(
       "consume",
       {
-        rtpCapabilities: device.rtpCapabilities,
+        rtpCapabilities,
         remoteProducerId, //클라이언트1의 producer Id
         serverConsumerTransportId,
       },
@@ -310,15 +311,7 @@ export default function ScreenShare() {
     rtpCapabilities: RtpCapabilities,
     type: ShareType
   ) {
-    const device = deviceRef.current;
-
-    try {
-      await device?.load({ routerRtpCapabilities: rtpCapabilities });
-    } catch (error) {
-      console.error("set device rtpCapabilities error : ", error);
-    }
-
-    // loadDevice(rtpCapabilities);
+    loadDevice(rtpCapabilities);
 
     console.log("device load rtpCapabilities success");
     console.log("socket emit create-web-rtc-transport");
