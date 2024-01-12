@@ -2,6 +2,7 @@ import useDevice from "@/hooks/share-screen/useDevice";
 import useSocket from "@/hooks/useSocket";
 import { types } from "mediasoup-client";
 import { RefObject, useEffect, useRef, useState } from "react";
+import { isAlreadyConsumeTransport } from "../lib/util";
 import {
   ConsumerTransportType,
   DtlsParameters,
@@ -179,14 +180,9 @@ export default function ScreenShare() {
     isNewSocketHost,
   }: NewProducerParameter) {
     console.log("call signalNewConsumerTransport with id :", remoteProducerId);
-    // 이미 consuming하고 있다면 무시하기
-    // if (consumingTransports.includes(remoteProducerId)) return;
-    // setConsumingTransports((prev) => [...prev, remoteProducerId]);
 
     if (
-      consumerTransportsRef.current.some(
-        (consumerTransport) => consumerTransport.producerId === remoteProducerId
-      )
+      isAlreadyConsumeTransport(consumerTransportsRef.current, remoteProducerId)
     )
       return;
 
@@ -239,7 +235,6 @@ export default function ScreenShare() {
     isNewSocketHost: boolean
   ) {
     const rtpCapabilities = getRtpCapabilitiesFromDevice();
-    console.log("🥰🥰🥰🥰🥰🥰 ", rtpCapabilities);
     socket.emit(
       "consume",
       {
