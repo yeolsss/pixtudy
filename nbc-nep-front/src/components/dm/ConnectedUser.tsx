@@ -22,18 +22,23 @@ export default function ConnectedUser() {
     const dmChannel = supabase.channel(`dm_channel_${space_id}`);
     getUser(undefined, {
       onSuccess: (response) => {
-        dmChannel.on(
-          "postgres_changes",
-          {
-            event: "INSERT",
-            schema: "public",
-            table: "dm_messages",
-            filter: `receiver_id=eq.${response?.id}`,
-          },
-          () => {
-            console.log("메시지가 도착했어");
-          }
-        );
+        dmChannel
+          .on(
+            "postgres_changes",
+            {
+              event: "INSERT",
+              schema: "public",
+              table: "dm_messages",
+              filter: `receiver_id=eq.${response?.id}`,
+            },
+            (payload) => {
+              setDmContainers((prev) => {
+                if (prev.includes(payload.new.sender_id)) return prev;
+                else return [payload.new.sender_id, ...prev];
+              });
+            }
+          )
+          .subscribe();
       },
     });
   }, []);
@@ -54,7 +59,7 @@ export default function ConnectedUser() {
   const handleOpenDmContainer = (id: string) => {
     setDmContainers((prev) => {
       if (prev.includes(id)) return prev;
-      else return [...prev, id];
+      else return [id, ...prev];
     });
   };
 

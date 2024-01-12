@@ -1,4 +1,4 @@
-import ConnectedUser from "@/dm/ConnectedUser";
+import ConnectedUser from "@/components/dm/ConnectedUser";
 
 export default function Chat() {
   return (
