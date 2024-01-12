@@ -6,7 +6,6 @@ import ShareScreenButton from "./ShareScreenButton";
 export default function ScreenShare() {
   const { socket } = useSocket();
   const localVideoRef = useRef<HTMLVideoElement>(null);
-  // 각 클라이언트는 Device 객체를 생성하고, 라우터로부터 rtpCapabilities를 받아 load 메서드를 실행한다.
   const deviceRef = useRef<Device>();
   const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
   const [videos, setVideos] = useState<MediaStream[]>([]);
@@ -20,22 +19,18 @@ export default function ScreenShare() {
     // sender transport를 만드는 이벤트
     socket.on("createdWebRtcTransport", handleCreateSendTransport(device));
 
-    socket.on("new-producer", (data: NewProducerParameter) => {
-      const { producerId, socketName, socketId, isNewSocketHost } = data;
-
-      signalNewConsumerTransport(
-        producerId,
-        socketName,
-        socketId,
-        isNewSocketHost
-      );
-    });
+    // 기존에 있던 사용자에게 새로운 producer가 등장했을 경우에 발생하는 이벤트
+    socket.on("new-producer", handleNewProducer);
 
     return () => {
       socket.off("createdWebRtcTransport", handleCreateSendTransport);
+      socket.off("new-producer", handleNewProducer);
     };
   }, []);
 
+  function handleNewProducer(data: NewProducerParameter) {
+    signalNewConsumerTransport(data);
+  }
   async function handleStartCapture() {
     const videoStream = await navigator.mediaDevices.getDisplayMedia({
       video: true,
@@ -176,9 +171,14 @@ export default function ScreenShare() {
           console.log("😀producerExist is :", producersExist);
           if (producersExist) {
             // 이미 프로듀서가 존재한다면 join room을 한다
-            socket.emit("get-producers", (producerList: ConsumerType[]) => {
-              producerList.forEach((id) => signalNewConsumerTransport(...id));
-            });
+            socket.emit(
+              "get-producers",
+              (producerList: NewProducerParameter[]) => {
+                producerList.forEach((data) =>
+                  signalNewConsumerTransport(data)
+                );
+              }
+            );
           }
         }
       );
@@ -188,12 +188,12 @@ export default function ScreenShare() {
     }
   }
 
-  function signalNewConsumerTransport(
-    remoteProducerId: string,
-    socketName: string,
-    newSocketId: string,
-    isNewSocketHost: boolean
-  ) {
+  function signalNewConsumerTransport({
+    producerId: remoteProducerId,
+    socketName,
+    socketId: newSocketId,
+    isNewSocketHost,
+  }: NewProducerParameter) {
     console.log("call signalNewConsumerTransport with id :", remoteProducerId);
     // 이미 consuming하고 있다면 무시하기
     // if (consumingTransports.includes(remoteProducerId)) return;
