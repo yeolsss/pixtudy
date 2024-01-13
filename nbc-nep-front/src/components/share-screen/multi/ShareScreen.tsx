@@ -324,13 +324,13 @@ export default function ScreenShare() {
     <div>
       <ShareScreenButton
         onShare={handleShareAndJoinRoom(localVideoRef)}
-        mode="screen"
+        type="screen"
       >
         Share Screen
       </ShareScreenButton>
       <ShareScreenButton
         onShare={handleShareAndJoinRoom(webCamRef)}
-        mode="webcam"
+        type="webcam"
       >
         Share Web Cam
       </ShareScreenButton>

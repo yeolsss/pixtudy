@@ -33,4 +33,4 @@ export type NewProducerParameter = {
   isNewSocketHost: boolean;
 };
 
-export type ShareType = "screen" | "webcam";
+export type ShareType = "screen" | "webcam" | "audio";

@@ -3,23 +3,19 @@ import { ShareType } from "../types/ScreenShare.types";
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void;
-  mode: ShareType;
+  type: ShareType;
 }
 
 export default function ShareScreenButton({
   onShare,
-  mode,
+  type,
   children,
 }: PropsWithChildren<Props>) {
   const handleClickShareButton = async () => {
-    const isScreenMode = mode === "screen";
-
     try {
-      const mediaStream: MediaStream = await (isScreenMode
-        ? getDisplayMedia()
-        : getUserMedia());
+      const mediaStream: MediaStream = await getMediaStreamByType(type);
 
-      onShare(mediaStream, mode);
+      onShare(mediaStream, type);
     } catch (err) {
       console.error("on error when start capture", err);
     }
@@ -27,6 +23,16 @@ export default function ShareScreenButton({
 
   return <button onClick={handleClickShareButton}>{children}</button>;
 }
+
+const getMediaStreamByType = async (type: ShareType) => {
+  const mediaFunctions = {
+    screen: getDisplayMedia,
+    webcam: getUserMedia,
+    audio: getUserAudio,
+  }[type];
+
+  return await mediaFunctions();
+};
 
 const getDisplayMedia = () =>
   navigator.mediaDevices.getDisplayMedia({
@@ -37,4 +43,7 @@ const getDisplayMedia = () =>
   });
 
 const getUserMedia = () =>
-  navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+
+const getUserAudio = () =>
+  navigator.mediaDevices.getUserMedia({ audio: true, video: false });
