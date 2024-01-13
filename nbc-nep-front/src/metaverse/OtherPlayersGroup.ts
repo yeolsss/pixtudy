@@ -26,6 +26,7 @@ export class OtherPlayersGroup {
     otherPlayer.body?.setOffset(0, 25);
     otherPlayer.playerId = playerInfo.playerId;
     this.group.add(otherPlayer);
+    // 이 부분이 없으면 다른 플레이어가 움직이지 않는다.
     this.otherPlayerNames.set(playerInfo.playerId, otherPlayerName);
   }
 
@@ -36,8 +37,8 @@ export class OtherPlayersGroup {
         const otherPlayer = gameObject as CurrentPlayer;
         const otherPlayerName = this.otherPlayerNames.get(playerId);
         if (playerId === otherPlayer.playerId && otherPlayerName) {
-          otherPlayer.destroy();
           otherPlayerName.destroy();
+          otherPlayer.destroy();
           this.otherPlayerNames.delete(playerId);
         }
       });

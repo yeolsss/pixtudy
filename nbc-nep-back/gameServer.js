@@ -23,9 +23,9 @@ module.exports = function (io) {
 
     socket.on("disconnect", function () {
       console.log("player [" + socket.id + "] disconnected");
-      delete players[socket.id];
-      io.emit("playerDisconnected", socket.id);
+      io.emit("playerDisconnected", players[socket.id].playerId);
       io.emit("metaversePlayerList", players);
+      delete players[socket.id];
     });
 
     socket.on("playerMovement", function (movementData) {

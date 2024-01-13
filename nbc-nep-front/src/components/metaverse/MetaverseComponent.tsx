@@ -1,11 +1,10 @@
+import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
+import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
-import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
 import { useEffect } from "react";
 import styled from "styled-components";
-import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
-import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 
 const MetaverseComponent = () => {
   useEffect(() => {
@@ -55,7 +54,7 @@ const MetaverseComponent = () => {
     <MetaversePlayerProvider>
       <StMetaverseWrapper>
         <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
-        <MetaverseChat />
+        {/* <MetaverseChat /> */}
         <MetaversePlayerList />
       </StMetaverseWrapper>
     </MetaversePlayerProvider>

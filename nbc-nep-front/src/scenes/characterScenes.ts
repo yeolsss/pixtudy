@@ -48,13 +48,19 @@ export class CharacterScenes extends Phaser.Scene {
     this.socket.on("connect", () => {
       this.socket?.emit("userData", playerInfo);
     });
-
+    let count = 0;
+    let othersCount = 0;
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
       Object.keys(players).forEach((id) => {
         if (players[id].socketId === this.socket?.id) {
+          count++;
+          if (count > 1) console.log("duplication");
+          else console.log("original");
           this.addPlayer(players[id], objLayer!);
         } else {
+          othersCount++;
+          console.log("othersCount: ", othersCount);
           this.addOtherPlayers(players[id]);
         }
       });
@@ -79,6 +85,7 @@ export class CharacterScenes extends Phaser.Scene {
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
     this.socket.on("playerMoved", (playerInfo: Player) => {
+      // playerInfo 가 문제인듯
       this.otherPlayers?.movePlayer(playerInfo);
     });
   }
