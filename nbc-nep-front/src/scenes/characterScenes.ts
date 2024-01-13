@@ -6,6 +6,12 @@ import io, { Socket } from "socket.io-client";
 
 const RUN = 350;
 const WORK = 250;
+const PLAYER_DEPTH = 1000;
+const PLAYER_NAME_DEPTH = 2000;
+const PLAYER_BODY_SIZE_X = 32;
+const PLAYER_BODY_SIZE_Y = 32;
+const PLAYER_BODY_OFFSET_X = 0;
+const PLAYER_BODY_OFFSET_Y = 25;
 
 interface InitData {
   mapData: MapData;
@@ -48,7 +54,6 @@ export class CharacterScenes extends Phaser.Scene {
     this.socket.on("connect", () => {
       this.socket?.emit("userData", playerInfo);
     });
-
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
       Object.keys(players).forEach((id) => {
@@ -64,8 +69,8 @@ export class CharacterScenes extends Phaser.Scene {
       this.addOtherPlayers(playerInfo);
     });
 
-    this.socket.on("playerDisconnected", (playerId: string) => {
-      this.otherPlayers?.removePlayer(playerId);
+    this.socket.on("playerDisconnected", (socketId: string) => {
+      this.otherPlayers?.removePlayer(socketId);
     });
 
     this.socket.on("metaversePlayerList", (players: Players) => {
@@ -79,6 +84,7 @@ export class CharacterScenes extends Phaser.Scene {
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
     this.socket.on("playerMoved", (playerInfo: Player) => {
+      // playerInfo 가 문제인듯
       this.otherPlayers?.movePlayer(playerInfo);
     });
   }
@@ -101,7 +107,6 @@ export class CharacterScenes extends Phaser.Scene {
     if (this.isAnyCursorKeyDown()) {
       // 이동 중인 경우 이동 방향에 맞는 애니메이션을 재생한다.
       if (animationKey) {
-        this.character?.anims.getFrameName();
         this.character?.anims.play(animationKey, true);
       }
     } else {
@@ -131,17 +136,17 @@ export class CharacterScenes extends Phaser.Scene {
       .text(playerInfo.x, playerInfo.y, playerInfo.nickname, {
         fontFamily: "PretendardVariable",
       }) // 플레이어 이름 표시할 오브젝트 생성
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.5)
+      .setDepth(PLAYER_NAME_DEPTH);
     this.character = this.physics.add
       .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
-      .setDepth(1000);
-
+      .setDepth(PLAYER_DEPTH);
     // 몸체 크기
-    this.character.body?.setSize(32, 32);
+    this.character.body?.setSize(PLAYER_BODY_SIZE_X, PLAYER_BODY_SIZE_Y);
 
     // 몸체 위치
     this.character.setCollideWorldBounds(true);
-    this.character.body?.setOffset(0, 25);
+    this.character.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
     this.physics.add.collider(this.character, objLayer!);
     this.cameras.main.startFollow(this.character, true);
   }

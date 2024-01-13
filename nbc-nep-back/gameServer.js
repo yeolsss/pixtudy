@@ -1,6 +1,5 @@
 module.exports = function (io) {
-  let players = {};
-  let player;
+  const players = {};
 
   io.on("connection", function (socket) {
     console.log("player [" + socket.id + "] connected");
@@ -22,12 +21,12 @@ module.exports = function (io) {
     });
 
     socket.on("disconnect", function () {
-      console.log("player [" + socket.id + "] disconnected");
-      delete players[socket.id];
-      io.emit("playerDisconnected", socket.id);
+      io.emit("playerDisconnected", players[socket.id].socketId);
+      delete players[socket.id]; // 플레이어 삭제한 후에 players 리스트를 다시 클라이언트로 보낸다
       io.emit("metaversePlayerList", players);
     });
 
+    // characterScenes의 emitPlayerMovement 함수에서 받은 데이터를 다시 클라이언트로 보낸다
     socket.on("playerMovement", function (movementData) {
       players[socket.id].x = movementData.x;
       players[socket.id].y = movementData.y;
