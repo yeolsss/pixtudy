@@ -5,6 +5,7 @@ import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
+import MetaverseChat from "./metaverseChat/MetaverseChat";
 
 // 시나리오
 // 1. useQuery 사용해서 유저 정보를 가져온다.
@@ -61,7 +62,7 @@ const MetaverseComponent = () => {
     <MetaversePlayerProvider>
       <StMetaverseWrapper>
         <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
-        {/* <MetaverseChat /> */}
+        <MetaverseChat />
         <MetaversePlayerList />
       </StMetaverseWrapper>
     </MetaversePlayerProvider>
