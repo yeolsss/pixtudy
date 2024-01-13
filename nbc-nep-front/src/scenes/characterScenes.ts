@@ -46,15 +46,13 @@ export class CharacterScenes extends Phaser.Scene {
     this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
     this.socket.on("connect", () => {
-      console.log("Connected to server, emitting userData");
       this.socket?.emit("userData", playerInfo);
     });
 
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
       Object.keys(players).forEach((id) => {
-        console.log(id);
-        if (players[id].playerId === playerInfo.playerId) {
+        if (players[id].socketId === this.socket?.id) {
           this.addPlayer(players[id], objLayer!);
         } else {
           this.addOtherPlayers(players[id]);
@@ -70,6 +68,12 @@ export class CharacterScenes extends Phaser.Scene {
       this.otherPlayers?.removePlayer(playerId);
     });
 
+    this.socket.on("metaversePlayerList", (players: Players) => {
+      const event = new CustomEvent("metaversePlayerList", {
+        detail: players,
+      });
+      window.dispatchEvent(event);
+    });
     this.createAnimations(playerInfo.character);
 
     this.cursors = this.input.keyboard?.createCursorKeys();
@@ -140,7 +144,6 @@ export class CharacterScenes extends Phaser.Scene {
     this.physics.add.collider(this.character, objLayer!);
     this.cameras.main.startFollow(this.characterName, true);
   }
-
   /**
    * 다른 플레이어를 게임에 추가한다.
    * @param {Player} playerInfo - 추가할 플레이어의 정보.

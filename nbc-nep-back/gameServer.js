@@ -18,12 +18,14 @@ module.exports = function (io) {
       };
       socket.emit("currentPlayers", players);
       socket.broadcast.emit("newPlayer", players[socket.id]);
+      io.emit("metaversePlayerList", players);
     });
 
     socket.on("disconnect", function () {
       console.log("player [" + socket.id + "] disconnected");
       delete players[socket.id];
       io.emit("playerDisconnected", socket.id);
+      io.emit("metaversePlayerList", players);
     });
 
     socket.on("playerMovement", function (movementData) {

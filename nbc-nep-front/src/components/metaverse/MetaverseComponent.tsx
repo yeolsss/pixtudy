@@ -1,19 +1,13 @@
-import MetaverseChat from "@/components/metaverseChat/MetaverseChat";
-import { PlayerProvider } from "@/context/PlayerProvider";
-import { useGetCurrentSpaceUsers } from "@/hooks/query/useSupabase";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
-import { Space_members } from "@/types/supabase.tables.type";
 import Phaser from "phaser";
-import { useEffect, useState } from "react";
+import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
+import { useEffect } from "react";
 import styled from "styled-components";
-
-const space_id = "0f5f0efe-ccc9-49a7-bc12-224eaa19685b";
+import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
+import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 
 const MetaverseComponent = () => {
-  const getCurrentUsers = useGetCurrentSpaceUsers();
-  const [currentUsers, setCurrentUsers] = useState<Space_members[]>([]);
-
   useEffect(() => {
     let game: Phaser.Game | undefined;
     const resize = () => {
@@ -58,12 +52,13 @@ const MetaverseComponent = () => {
   }, []);
 
   return (
-    <PlayerProvider>
+    <MetaversePlayerProvider>
       <StMetaverseWrapper>
         <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
         <MetaverseChat />
+        <MetaversePlayerList />
       </StMetaverseWrapper>
-    </PlayerProvider>
+    </MetaversePlayerProvider>
   );
 };
 

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
+import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseChatCard/MetaverseChatCard";
 
 export default function MetaverseChatList() {
   const { chatList } = useMetaverseChatContext();
@@ -8,10 +9,7 @@ export default function MetaverseChatList() {
     <>
       <StMetaverseChatList>
         {chatList?.map((chat, index) => (
-          <div key={chat.userId + index}>
-            <span>{chat.userId}: </span>
-            <span>{chat.message}</span>
-          </div>
+          <MetaverseChatCard chat={chat} key={chat.userId + index} />
         ))}
       </StMetaverseChatList>
     </>

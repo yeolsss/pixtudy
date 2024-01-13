@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React from "react";
-import MetaverseChatForm from "@/components/metaverseChat/metaverseChatForm/MetaverseChatForm";
+import MetaverseChatForm from "@/components/metaverse/metaverseChat/metaverseChatForm/MetaverseChatForm";
 import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
-import MetaverseChatList from "@/components/metaverseChat/metaverseChatList/MetaverseChatList";
+import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseChatList/MetaverseChatList";
 
 export default function MetaverseChat() {
   return (

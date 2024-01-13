@@ -14,6 +14,9 @@ import {
   sendMessage,
 } from "@/api/supabase/dm";
 import { useMutation } from "@tanstack/react-query";
+import { Tables } from "@/types/supabase";
+import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
+import { Space_members } from "@/types/supabase.tables.type";
 
 /* Auth */
 /* user */
@@ -48,22 +51,25 @@ export function useLogoutUser() {
 
 // get user session
 export function useGetCurrentUser() {
-  const { mutate: getUser } = useMutation({
-    mutationFn: getUserSessionHandler,
-    onSuccess: () => {},
-    onError: () => {},
-  });
-  return getUser;
+  const getCurrentUserOptions = {
+    queryKey: ["currentUser"],
+    queryFn: getUserSessionHandler,
+    queryOptions: { staleTime: Infinity },
+  };
+
+  return useCustomQuery<Tables<"users"> | null, Error>(getCurrentUserOptions);
 }
 
 // 특정유저의 정보를 가져오는 함수
-export function useGetOtherUserInfo() {
-  const { mutate: getOtherUser } = useMutation({
-    mutationFn: getOtherUserHandler,
-    onSuccess: () => {},
-    onError: () => {},
-  });
-  return getOtherUser;
+export function useGetOtherUserInfo(otherUserId: string) {
+  const getOtherUserOptions = {
+    queryKey: ["otherUser"],
+    queryFn: () => getOtherUserHandler({ otherUserId }),
+    queryOptions: { staleTime: Infinity },
+    enabled: !!otherUserId,
+  };
+
+  return useCustomQuery<Tables<"users"> | null, Error>(getOtherUserOptions);
 }
 
 /* dm */
@@ -77,13 +83,14 @@ export function useGetUserSpaces() {
   return getUserSpacesInfo;
 }
 
-export function useGetCurrentSpaceUsers() {
-  const { mutate: getCurrentSpaceUsers } = useMutation({
-    mutationFn: getSpaceUsers,
-    onSuccess: () => {},
-    onError: () => {},
-  });
-  return getCurrentSpaceUsers;
+export function useGetCurrentSpaceUsers(spaceId: string) {
+  const getCurrentSpaceUsersOptions = {
+    queryKey: ["currentSpaceUsers", spaceId],
+    queryFn: () => getSpaceUsers(spaceId),
+  };
+  return useCustomQuery<Space_members[] | null, Error>(
+    getCurrentSpaceUsersOptions
+  );
 }
 
 // 유저의 활성화 된 모든 dm 채널 가져오기
