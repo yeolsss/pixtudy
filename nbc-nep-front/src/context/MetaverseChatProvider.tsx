@@ -13,8 +13,8 @@ type MetaverseChatContext = {
 const initialState: MetaverseChatContext = {
   chatInput: "",
   chatList: [] as Chat[],
-  onChangeChatHandler: (e: React.ChangeEvent<HTMLInputElement>) => {},
-  onSubmitChatHandler: (e: React.FormEvent<HTMLFormElement>) => {},
+  onChangeChatHandler: () => {},
+  onSubmitChatHandler: () => {},
 };
 
 const MetaverseChatContext = createContext<MetaverseChatContext>(initialState);
