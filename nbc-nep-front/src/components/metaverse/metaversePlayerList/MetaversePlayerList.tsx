@@ -1,14 +1,13 @@
 import { usePlayerContext } from "@/context/PlayerProvider";
 import styled from "styled-components";
+import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/metaversePlayerCard/MetaversePlayerCard";
 
 export default function MetaversePlayerList() {
   const { playerList } = usePlayerContext();
   return (
     <StMetaversePlayerListWrapper>
       {playerList?.map((player) => (
-        <div key={player.playerId}>
-          <div>{player.playerId}</div>
-        </div>
+        <MetaversePlayerCard key={player.playerId} player={player} />
       ))}
     </StMetaversePlayerListWrapper>
   );

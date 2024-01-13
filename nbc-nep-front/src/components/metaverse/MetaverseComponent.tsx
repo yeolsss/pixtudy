@@ -4,8 +4,8 @@ import Phaser from "phaser";
 import { useEffect } from "react";
 import { PlayerProvider } from "@/context/PlayerProvider";
 import styled from "styled-components";
-import MetaverseChat from "@/components/metaverseChat/MetaverseChat";
-import MetaversePlayerList from "@/components/metaversePlayerList/MetaversePlayerList";
+import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
+import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 
 const MetaverseComponent = () => {
   useEffect(() => {
