@@ -1,4 +1,4 @@
-import { usePlayerContext } from "@/context/PlayerProvider";
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import styled from "styled-components";
 import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/metaversePlayerCard/MetaversePlayerCard";
 

@@ -5,6 +5,7 @@ module.exports = function (io) {
 
     chat[socket.id] = {
       userId: socket.id,
+      playerDisplayName: socket.playerDisplayName || socket.id,
       message: socket.message,
     };
     socket.emit("chat", chat);
@@ -15,8 +16,9 @@ module.exports = function (io) {
       io.emit("chatDisconnected", socket.id);
     });
 
-    socket.on("sendMessage", function ({ message }) {
+    socket.on("sendMessage", function ({ playerDisplayName, message }) {
       chat[socket.id].message = message;
+      chat[socket.id].playerDisplayName = playerDisplayName || socket.id;
       socket.emit("receiveMessage", chat[socket.id]);
       socket.broadcast.emit("receiveMessage", chat[socket.id]);
     });

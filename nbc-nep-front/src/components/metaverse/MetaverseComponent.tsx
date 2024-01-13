@@ -2,7 +2,7 @@ import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
-import { PlayerProvider } from "@/context/PlayerProvider";
+import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
 import styled from "styled-components";
 import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
@@ -50,13 +50,13 @@ const MetaverseComponent = () => {
   }, []);
 
   return (
-    <PlayerProvider>
+    <MetaversePlayerProvider>
       <StMetaverseWrapper>
         <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
         <MetaverseChat />
         <MetaversePlayerList />
       </StMetaverseWrapper>
-    </PlayerProvider>
+    </MetaversePlayerProvider>
   );
 };
 

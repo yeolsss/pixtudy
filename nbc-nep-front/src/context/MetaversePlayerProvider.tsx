@@ -16,7 +16,7 @@ const initialState: PlayerContextType = {
 };
 
 const PlayerContext = createContext<PlayerContextType>(initialState);
-export const PlayerProvider = ({ children }: PropsWithChildren) => {
+export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
   const [playerList, setPlayerList] = useState<Player[]>([]);
 
   useEffect(() => {

@@ -19,4 +19,5 @@ export type MapData = {
 export type Chat = {
   userId: string;
   message: string;
+  playerDisplayName: string;
 };

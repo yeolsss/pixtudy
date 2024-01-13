@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { Chat } from "@/types/metaverse";
 
-export default function useChatSocket() {
+export default function useChatSocket(playerDisplayName: string | null = "") {
   const [chatList, setChatList] = useState<Chat[]>([]);
   const socket = useRef<Socket | null>(null);
 
@@ -17,7 +17,7 @@ export default function useChatSocket() {
   }, []);
 
   const sendChatMessage = (message: string) => {
-    const newChat = { message };
+    const newChat = { playerDisplayName, message };
     socket.current?.emit("sendMessage", newChat);
   };
 
