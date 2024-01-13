@@ -28,17 +28,18 @@ interface GetUserDmChannelArgs {
  * @param space_id string
  * @returns space_members & users join
  */
-export const getSpaceUsers = async ({ space_id }: GetUserDmChannelArgs) => {
+export const getSpaceUsers = async (
+  space_id: string
+): Promise<Space_members[] | null> => {
   const currentUser = await getUserSessionHandler();
-  if (currentUser) {
-    const { data } = await supabase
-      .from("space_members")
-      .select(`*, users(*)`)
-      .filter("space_id", "eq", space_id)
-      .filter("user_id", "neq", currentUser.id)
-      .returns<Space_members[]>();
-    return data;
-  }
+  const { data } = await supabase
+    .from("space_members")
+    .select(`*, users(*)`)
+    .filter("space_id", "eq", space_id)
+    .filter("user_id", "neq", currentUser?.id)
+    .returns<Space_members[]>();
+
+  return data;
 };
 
 /**
