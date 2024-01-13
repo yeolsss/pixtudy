@@ -13,30 +13,33 @@ export default function OnChangeUserSession() {
     const data = await getUserSessionHandler();
     dispatch(login(data!));
   };
+
   /* 로그인 상태를 tracking*/
   useEffect(() => {
-    const subscription = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
-        // 최초 랜더링 시
+    // let currentSession = await supabase.auth.getSession();
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "INITIAL_SESSION") {
         if (session) {
-          setUserSession();
+          await setUserSession();
+          // router.push("/dashboard");
+        }
+      } else if (event === "SIGNED_IN") {
+        if (router.pathname === "/" && session) {
+          await setUserSession();
+          await router.push("/dashboard");
         }
       } else if (event === "SIGNED_OUT") {
         // 로그아웃 시
         dispatch(logout());
-        router.push("/");
+        await router.push("/");
       } else if (event === "PASSWORD_RECOVERY") {
         // 비밀번호 찾기 페이지 들어갈 시
       } else if (event === "TOKEN_REFRESHED") {
         // 리프레시 토큰 작동시
-        console.log("rf");
       } else if (event === "USER_UPDATED") {
         // 유저 정보 업데이트 시
       }
     });
-    return () => {
-      subscription.data.subscription.unsubscribe();
-    };
   }, []);
   return <></>;
 }

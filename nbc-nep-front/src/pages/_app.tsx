@@ -1,10 +1,10 @@
 import OnChangeUserSession from "@/components/layout/OnChangeUserSession";
 import StoreProvider from "@/libs/StoreProvier";
+import GlobalStyle from "@/styles/Globalstyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
-import { ReactElement, ReactNode } from "react";
-import GlobalStyle from "@/styles/Globalstyle";
+import { ReactElement, ReactNode, useEffect } from "react";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -18,13 +18,17 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   const queryClient = new QueryClient();
   const getLayout = Component.getLayout ?? ((page) => page);
 
+  useEffect(() => {
+    console.log("app render");
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
+        <OnChangeUserSession />
         <GlobalStyle />
         {getLayout(
           <>
-            <OnChangeUserSession />
             <Component {...pageProps} />
           </>
         )}
