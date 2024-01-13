@@ -1,23 +1,20 @@
 import Layout from "@/components/layout/Layout";
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { Space_members } from "@/types/supabase.tables.type";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import { NextPageWithLayout } from "../_app";
 
 const Dashboard: NextPageWithLayout = () => {
-  const [userSpaces, setUserSpaces] = useState<Space_members[] | null>();
-
-  const getUserSpaces = useGetUserSpaces();
+  const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+  const getUserSpaces = useGetUserSpaces(currentUserId);
+  const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    getUserSpaces(undefined, {
-      onSuccess: (response) => {
-        setUserSpaces(response);
-      },
-    });
-  }, []);
+    if (getUserSpaces) setUserSpaces(getUserSpaces);
+  }, [getUserSpaces]);
 
   const handleToSpace = (space_id: string) => {
     router.push(`/dm/${space_id}`);

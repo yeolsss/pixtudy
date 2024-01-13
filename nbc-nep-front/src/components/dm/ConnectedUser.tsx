@@ -1,23 +1,48 @@
-import {
-  useGetCurrentSpaceUsers,
-  useGetCurrentUser,
-} from "@/hooks/query/useSupabase";
+import { useGetCurrentSpaceUsers } from "@/hooks/query/useSupabase";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
+import { Tables } from "@/types/supabase";
+import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import DMContainer from "./DmContainer";
 
 export default function ConnectedUser() {
-  // 현재 접속한 room의 접속 유저를 보여주는 components
+  // params의 접속 스페이스 id 가져오기
   const router = useRouter();
-  const space_id =
-    (typeof router.query.index === "string" && router.query.index) || "";
-  const getCurrentUsers = useGetCurrentSpaceUsers(space_id);
-  const getUser = useGetCurrentUser();
-  const [dmContainers, setDmContainers] = useState<string[]>([]);
+
+  const spaceId =
+    typeof router.query.space_id === "string" ? router.query.space_id : "";
+
+  const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+
+  const getCurrentUsers = useGetCurrentSpaceUsers(spaceId);
+
+  const [activateDmUsers, setActivateDmUsers] = useState<string[]>([]);
+
+  const getNewMessage = (
+    payload: RealtimePostgresInsertPayload<Tables<"dm_messages">>
+  ) => {
+    setActivateDmUsers((prev) => {
+      if (prev.includes(payload.new.sender_id)) return prev;
+      else return [payload.new.sender_id, ...prev];
+    });
+  };
+
+  const handleOpenDmContainer = (id: string) => {
+    setActivateDmUsers((prev) => {
+      if (prev.includes(id)) return prev;
+      else return [id, ...prev];
+    });
+  };
+
+  const handleCloseDmContainer = (user_id: string) => {
+    setActivateDmUsers((prev) => prev.filter((id) => id !== user_id));
+  };
+
   // 나에게 오는 메시지를 tracking하는 채널
   useEffect(() => {
-    const dmChannel = supabase.channel(`dm_channel_${space_id}`);
+    const dmChannel = supabase.channel(`dm_channel_${spaceId}`);
     dmChannel
       .on(
         "postgres_changes",
@@ -25,28 +50,13 @@ export default function ConnectedUser() {
           event: "INSERT",
           schema: "public",
           table: "dm_messages",
-          filter: `receiver_id=eq.${getUser?.id}`,
+          filter: `receiver_id=eq.${currentUserId}`,
         },
-        (payload) => {
-          setDmContainers((prev) => {
-            if (prev.includes(payload.new.sender_id)) return prev;
-            else return [payload.new.sender_id, ...prev];
-          });
-        }
+        getNewMessage
       )
       .subscribe();
   }, []);
 
-  const handleOpenDmContainer = (id: string) => {
-    setDmContainers((prev) => {
-      if (prev.includes(id)) return prev;
-      else return [id, ...prev];
-    });
-  };
-
-  const handleCloseDmContainer = (user_id: string) => {
-    setDmContainers((prev) => prev.filter((id) => id !== user_id));
-  };
   return (
     <>
       {/* 유저정보 */}
@@ -65,11 +75,12 @@ export default function ConnectedUser() {
       </ul>
       {/* 각 채팅방 */}
       <section>
-        {dmContainers.map((dmContainer) => (
+        {activateDmUsers.map((user) => (
           <DMContainer
-            key={dmContainer}
-            otherUserId={dmContainer}
+            key={user}
+            otherUserId={user}
             handleCloseDmContainer={handleCloseDmContainer}
+            spaceId={spaceId}
           />
         ))}
       </section>

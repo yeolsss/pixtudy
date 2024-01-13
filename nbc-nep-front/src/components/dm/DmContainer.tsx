@@ -8,167 +8,139 @@ import {
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
 import { Tables } from "@/types/supabase";
-import { RealtimeChannel } from "@supabase/supabase-js";
-import { useRouter } from "next/router";
+import {
+  RealtimeChannel,
+  RealtimePostgresInsertPayload,
+} from "@supabase/supabase-js";
 import { useEffect, useRef, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 interface Props {
   otherUserId: string;
   handleCloseDmContainer: (id: string) => void;
+  spaceId: string;
 }
 
 export default function DmContainer({
   otherUserId,
   handleCloseDmContainer,
+  spaceId,
 }: Props) {
-  const router = useRouter();
-  const currentSpaceId = router.query.index;
-
   const sendMessage = useSendMessage();
-  const getDmMessages = useGetDmMessages();
-  const getDmChannel = useGetDmChannel();
-  const otherUserInfo = useGetOtherUserInfo(otherUserId);
-  const { handleSubmit, register, reset } = useForm();
 
-  // const [otherUser, setOtherUser] = useState<Tables<"users">>();
+  // 상대방 유저와 활성화된 dm 채널 아이디
+  // 채널이 이미 있을 때: string/ 없을 때: null
+  const currentDmChannel = useGetDmChannel({
+    receiverId: otherUserId,
+    spaceId,
+  });
+
+  // 상대방 유저와 기존 메시지 가져오기
+  const prevDmMessages = useGetDmMessages(currentDmChannel!);
+
+  // 상대방 유저 정보
+  const otherUserInfo = useGetOtherUserInfo(otherUserId);
+
+  // 메시지 정보를 저장하는 state
   const [messages, setMessages] = useState<getDmChannelMessagesReturns[]>([]);
 
+  // 현재 구독중인 채널 정보
   const currentSubscribeChannel = useRef<RealtimeChannel | null>(null);
-  const currentUser = useAppSelector((state) => state.authSlice.user);
-  const otherUser = useRef<Tables<"users"> | null>(null);
 
-  // 입력 이벤트
-  const sendHandler: SubmitHandler<FieldValues> = async (values) => {
-    if (typeof currentSpaceId === "string")
-      sendMessage(
+  // 현재 세션의 유저정보
+  const currentUser = useAppSelector((state) => state.authSlice.user);
+
+  // react-hook-form 초기화
+  const { handleSubmit, register, reset } = useForm();
+
+  // 구독중인 채널에서 메시지를 인지하였을 떄 이벤트
+  const newMessageInChannel = (
+    payload: RealtimePostgresInsertPayload<Tables<"dm_messages">>
+  ) => {
+    const newMessage = {
+      id: payload.new.id,
+      created_at: payload.new.created_at,
+      dm_id: payload.new.dm_id,
+      message: payload.new.message,
+      receiver:
+        currentUser.id === payload.new.receiver_id
+          ? currentUser
+          : otherUserInfo!,
+      sender:
+        currentUser.id === payload.new.receiver_id
+          ? otherUserInfo!
+          : currentUser,
+    };
+    setMessages((prev) => [...prev, newMessage]);
+  };
+
+  // 채널 id 정보를 통해 채널 구독을 시작하는 함수
+  const connectChannel = (currentChannelId: string) => {
+    const channel = supabase.channel(`dm_${currentChannelId}`);
+    currentSubscribeChannel.current = channel;
+    channel
+      .on(
+        "postgres_changes",
         {
-          message: values["send-input"],
-          receiverId: otherUserId,
-          spaceId: currentSpaceId,
+          event: "INSERT",
+          schema: "public",
+          table: "dm_messages",
+          filter: `dm_id=eq.${currentChannelId}`,
         },
-        {
-          onSuccess: (payload) => {
-            if (payload) {
-              setMessages((prev) => [
-                ...prev,
-                {
-                  created_at: new Date().toISOString(),
-                  dm_id: payload.id,
-                  id: "1",
-                  message: values["send-input"],
-                  sender: currentUser,
-                  receiver: null,
-                },
-              ]);
-              const channel = supabase.channel(`dm_${payload.id}`);
-              currentSubscribeChannel.current = channel;
-              channel
-                .on(
-                  "postgres_changes",
-                  {
-                    event: "INSERT",
-                    schema: "public",
-                    table: "dm_messages",
-                    filter: `dm_id=eq.${payload.id}`,
-                  },
-                  (payload) => {
-                    const newMessage: getDmChannelMessagesReturns = {
-                      created_at: payload.new.created_at,
-                      dm_id: payload.new.dm_id,
-                      id: payload.new.id,
-                      message: payload.new.message,
-                      receiver:
-                        currentUser.id === payload.new.receiver_id
-                          ? currentUser
-                          : otherUser.current,
-                      sender:
-                        currentUser.id === payload.new.sender_id
-                          ? currentUser
-                          : otherUser.current,
-                    };
-                    setMessages((prev) => [...prev, newMessage]);
-                  }
-                )
-                .subscribe();
-            }
-          },
-        }
-      );
+        newMessageInChannel
+      )
+      .subscribe();
+  };
+
+  // 메시지를 보내는 함수
+  const sendHandler: SubmitHandler<FieldValues> = async (values) => {
+    sendMessage(
+      {
+        currentDmChannel: currentDmChannel!,
+        message: values["send-input"],
+        receiverId: otherUserId,
+        spaceId,
+      },
+      {
+        onSuccess: (createdChannel) => {
+          if (createdChannel) {
+            // 최초 보낸 메시지 state에 추가
+            setMessages((prev) => [
+              ...prev,
+              {
+                created_at: new Date().toISOString(),
+                dm_id: createdChannel.id,
+                id: "first_send",
+                message: values["send-input"],
+                sender: currentUser,
+                receiver: otherUserInfo!,
+              },
+            ]);
+            // dm 채널 연결
+            connectChannel(createdChannel.id);
+          }
+        },
+      }
+    );
     reset();
   };
 
-  // 상대 유저와의 채널을 탐색하여 subscribe 시키는 useEffct
+  // 최초 mount시 상대방 유저와 dm channel 있는지 확인 후 채널 연결
   useEffect(() => {
-    if (typeof currentSpaceId === "string") {
-      getDmChannel(
-        {
-          receiverId: otherUserId,
-          spaceId: currentSpaceId,
-        },
-        {
-          onSuccess: (currentDmChannel) => {
-            if (currentDmChannel) {
-              const channel = supabase.channel(`dm_${currentDmChannel}`);
-              currentSubscribeChannel.current = channel;
-              channel
-                .on(
-                  "postgres_changes",
-                  {
-                    event: "INSERT",
-                    schema: "public",
-                    table: "dm_messages",
-                    filter: `dm_id=eq.${currentDmChannel}`,
-                  },
-                  (payload) => {
-                    const newMessage: getDmChannelMessagesReturns = {
-                      created_at: payload.new.created_at,
-                      dm_id: payload.new.dm_id,
-                      id: payload.new.id,
-                      message: payload.new.message,
-                      receiver:
-                        currentUser.id === payload.new.receiver_id
-                          ? currentUser
-                          : otherUser.current,
-                      sender:
-                        currentUser.id === payload.new.sender_id
-                          ? currentUser
-                          : otherUser.current,
-                    };
-                    setMessages((prev) => [...prev, newMessage]);
-                  }
-                )
-                .subscribe();
-            }
-          },
-        }
-      );
+    if (currentDmChannel) {
+      // dm 채널 연결
+      connectChannel(currentDmChannel);
     }
   }, []);
 
-  // // 상대 유저와 대화 내용 가져오기
+  // 최초 mount시 기존 메시지 불러오기
   useEffect(() => {
-    if (typeof currentSpaceId === "string") {
-      getDmMessages(
-        { receiverId: otherUserId, spaceId: currentSpaceId },
-        {
-          onSuccess: (dmMessages) => {
-            console.log(dmMessages);
-            setMessages(dmMessages);
-          },
-        }
-      );
-    }
-  }, []);
+    setMessages(prevDmMessages!);
+  }, [prevDmMessages]);
 
-  // 상대 유저의 정보를 불러오는 useEffect
-  useEffect(() => {
-    if (otherUserInfo) otherUser.current = otherUserInfo;
-  }, []);
-
+  // unMount 시 현재 구독중인 dm 채널 구독 취소
   useEffect(() => {
     return () => {
-      // unMount 시 채널 구독 취소
       if (currentSubscribeChannel.current)
         supabase.removeChannel(currentSubscribeChannel.current);
     };
@@ -176,10 +148,12 @@ export default function DmContainer({
 
   return (
     <section>
-      <button onClick={() => handleCloseDmContainer(otherUserId)}>close</button>
-      <h1>상대방 유저 정보 : {otherUser.current?.display_name}</h1>
+      <button onClick={() => handleCloseDmContainer(otherUserInfo?.id!)}>
+        close
+      </button>
+      <h1>상대방 유저 정보 : {otherUserInfo?.display_name}</h1>
       <ul>
-        {messages.map((message) => (
+        {messages?.map((message) => (
           <li key={message.id}>
             <h3>{message.sender?.display_name}</h3>
             <span>{message.message}</span>

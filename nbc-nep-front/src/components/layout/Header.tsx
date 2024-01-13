@@ -25,7 +25,6 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
-    router.push("/");
   };
 
   const handleToDashboard = () => {

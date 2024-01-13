@@ -2,10 +2,12 @@ import { getUserSessionHandler } from "@/api/supabase/auth";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
 import { login, logout } from "@/redux/modules/authSlice";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export default function OnChangeUserSession() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   // 유저정보를 불러오는 코드
   const setUserSession = async () => {
     const data = await getUserSessionHandler();
@@ -22,6 +24,7 @@ export default function OnChangeUserSession() {
       } else if (event === "SIGNED_OUT") {
         // 로그아웃 시
         dispatch(logout());
+        router.push("/");
       } else if (event === "PASSWORD_RECOVERY") {
         // 비밀번호 찾기 페이지 들어갈 시
       } else if (event === "TOKEN_REFRESHED") {
