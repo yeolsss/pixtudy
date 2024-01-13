@@ -1,12 +1,19 @@
 import MetaverseChat from "@/components/metaverseChat/MetaverseChat";
 import { PlayerProvider } from "@/context/PlayerProvider";
+import { useGetCurrentSpaceUsers } from "@/hooks/query/useSupabase";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
+import { Space_members } from "@/types/supabase.tables.type";
 import Phaser from "phaser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+const space_id = "0f5f0efe-ccc9-49a7-bc12-224eaa19685b";
+
 const MetaverseComponent = () => {
+  const getCurrentUsers = useGetCurrentSpaceUsers();
+  const [currentUsers, setCurrentUsers] = useState<Space_members[]>([]);
+
   useEffect(() => {
     let game: Phaser.Game | undefined;
     const resize = () => {
@@ -35,7 +42,7 @@ const MetaverseComponent = () => {
     game = new Phaser.Game(config);
     game.registry.set("player", {
       playerId: "yongseung",
-      nickname: "스님",
+      nickname: "스123님",
       character: "pinkybonz",
     });
 
