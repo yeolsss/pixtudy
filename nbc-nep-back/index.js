@@ -156,10 +156,7 @@ io.on("connection", (socket) => {
         });
 
         console.log("end - 'transport produce' success");
-        const producersExist = !!producers.filter(
-          (producer) =>
-            producer.roomName === roomName && producer.socketId !== socket.id
-        ).length;
+        const producersExist = getExistsProducers(roomName, socket.id);
 
         callback({
           id: remoteProducer.id,
@@ -347,5 +344,23 @@ function setPeers(socketId, key, callback) {
   peers[socketId] = {
     ...peers[socketId],
     [key]: callback(peers[socketId][key]),
+  };
+}
+
+function getExistsProducers(roomName, socketId) {
+  return producers
+    .filter(
+      (producer) =>
+        producer.roomName === roomName && producer.socketId !== socketId
+    )
+    .map(convertProducerToParams);
+}
+
+function convertProducerToParams(producer) {
+  return {
+    producerId: producer.producer.id,
+    socketName: peers[producer.socketId].peerDetails.name,
+    socketId: producer.socketId,
+    isNewSocketHost: peers[producer.socketId].peerDetails.isAdmin,
   };
 }

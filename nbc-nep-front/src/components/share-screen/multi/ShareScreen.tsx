@@ -152,20 +152,13 @@ export default function ScreenShare() {
       socket.emit(
         "transport-produce",
         { ...parameter, socketId: socket.id },
-        (data: { id: string; producersExist: boolean }) => {
+        (data: { id: string; producersExist: NewProducerParameter[] }) => {
           const { id, producersExist } = data;
           callback({ id });
           console.log("😀producerExist is :", producersExist);
-          if (producersExist) {
+          if (producersExist.length) {
             // 이미 프로듀서가 존재한다면 join room을 한다
-            socket.emit(
-              "get-producers",
-              (producerList: NewProducerParameter[]) => {
-                producerList.forEach((data) =>
-                  signalNewConsumerTransport(data)
-                );
-              }
-            );
+            producersExist.forEach(signalNewConsumerTransport);
           }
         }
       );
