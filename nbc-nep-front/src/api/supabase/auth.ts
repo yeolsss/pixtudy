@@ -1,4 +1,6 @@
 import { supabase } from "@/libs/supabase";
+import { Tables } from "@/types/supabase";
+import { getOtherUserHandlerArgs } from "@/types/supabase.tables.type";
 
 /**
  * Supabase 회원가입을 위한 함수
@@ -93,30 +95,29 @@ export const logoutHandler = async () => {
  * Supabase 현재 로그인 된 유저 정보를 가져오는 함수
  * @returns user tables row
  */
-export const getUserSessionHandler = async () => {
-  const { data: currentUsersSession } = await supabase.auth.getSession();
-  if (!currentUsersSession) {
-    return null;
-  } else {
-    const { data: currentUserInfo } = await supabase
-      .from("users")
-      .select(`*`)
-      .eq("id", currentUsersSession.session?.user.id!)
-      .single();
-    return currentUserInfo;
-  }
-};
+export const getUserSessionHandler =
+  async (): Promise<Tables<"users"> | null> => {
+    const { data: currentUsersSession } = await supabase.auth.getSession();
+    if (!currentUsersSession) {
+      return null;
+    } else {
+      const { data: currentUserInfo } = await supabase
+        .from("users")
+        .select(`*`)
+        .eq("id", currentUsersSession.session?.user.id!)
+        .single();
+      return currentUserInfo;
+    }
+  };
 
 /**
  * Supabase 특정 유저 정보를 가져오는 함수
  * @returns user tables row
  */
-interface getOtherUserHandlerArgs {
-  otherUserId: string;
-}
+
 export const getOtherUserHandler = async ({
   otherUserId,
-}: getOtherUserHandlerArgs) => {
+}: getOtherUserHandlerArgs): Promise<Tables<"users"> | null> => {
   const { data: userInfo } = await supabase
     .from("users")
     .select(`*`)

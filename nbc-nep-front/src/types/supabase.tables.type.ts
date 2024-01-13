@@ -40,3 +40,7 @@ export interface Space_members {
   spaces?: Spaces;
   users?: Users;
 }
+
+export interface getOtherUserHandlerArgs {
+  otherUserId: string;
+}

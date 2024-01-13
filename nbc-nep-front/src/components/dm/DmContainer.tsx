@@ -25,7 +25,6 @@ export default function DmContainer({
   const router = useRouter();
   const currentSpaceId = router.query.index;
 
-  const getOtherUser = useGetOtherUserInfo();
   const sendMessage = useSendMessage();
   const getDmMessages = useGetDmMessages();
   const getDmChannel = useGetDmChannel();
@@ -164,14 +163,8 @@ export default function DmContainer({
 
   // 상대 유저의 정보를 불러오는 useEffect
   useEffect(() => {
-    getOtherUser(
-      { otherUserId },
-      {
-        onSuccess: (otherUserInfo) => {
-          if (otherUserInfo) otherUser.current = otherUserInfo;
-        },
-      }
-    );
+    const otherUserInfo = useGetOtherUserInfo(otherUserId);
+    if (otherUserInfo) otherUser.current = otherUserInfo;
   }, []);
 
   useEffect(() => {

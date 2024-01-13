@@ -14,6 +14,8 @@ import {
   sendMessage,
 } from "@/api/supabase/dm";
 import { useMutation } from "@tanstack/react-query";
+import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
+import { Tables } from "@/types/supabase";
 
 /* Auth */
 /* user */
@@ -48,22 +50,25 @@ export function useLogoutUser() {
 
 // get user session
 export function useGetCurrentUser() {
-  const { mutate: getUser } = useMutation({
-    mutationFn: getUserSessionHandler,
-    onSuccess: () => {},
-    onError: () => {},
-  });
-  return getUser;
+  const getCurrentUserOptions = {
+    queryKey: ["currentUser"],
+    queryFn: getUserSessionHandler,
+    queryOptions: { staleTime: Infinity },
+  };
+
+  return useCustomQuery<Tables<"users"> | null, Error>(getCurrentUserOptions);
 }
 
 // 특정유저의 정보를 가져오는 함수
-export function useGetOtherUserInfo() {
-  const { mutate: getOtherUser } = useMutation({
-    mutationFn: getOtherUserHandler,
-    onSuccess: () => {},
-    onError: () => {},
-  });
-  return getOtherUser;
+export function useGetOtherUserInfo(otherUserId: string) {
+  const getOtherUserOptions = {
+    queryKey: ["otherUser"],
+    queryFn: () => getOtherUserHandler({ otherUserId }),
+    queryOptions: { staleTime: Infinity },
+    enabled: !!otherUserId,
+  };
+
+  return useCustomQuery<Tables<"users"> | null, Error>(getOtherUserOptions);
 }
 
 /* dm */
