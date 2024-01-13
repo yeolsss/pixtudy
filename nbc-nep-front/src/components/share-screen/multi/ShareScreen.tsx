@@ -35,13 +35,14 @@ export default function ScreenShare() {
   useEffect(() => {
     // 클라이언트에서 device를 로드를 완료한 이후에 서버 측에 receiver transport 만든 다음
     // sender transport를 만드는 이벤트
-    socket.on("createdWebRtcTransport", handleCreateSendTransport);
+    // created-web-rtc-transport
+    socket.on("created-web-rtc-transport", handleCreateSendTransport);
 
     // 기존에 있던 사용자에게 새로운 producer가 등장했을 경우에 발생하는 이벤트
     socket.on("new-producer", handleNewProducer);
 
     return () => {
-      socket.off("createdWebRtcTransport", handleCreateSendTransport);
+      socket.off("created-web-rtc-transport", handleCreateSendTransport);
       socket.off("new-producer", handleNewProducer);
     };
   }, []);
@@ -182,7 +183,7 @@ export default function ScreenShare() {
       return;
 
     socket.emit(
-      "createWebRtcTransport",
+      "create-web-rtc-transport",
       { consumer: true },
       (data: { params: TransPortType }) => {
         // 서버에서 transport를 만들고 나서 정보를 콜백받음
@@ -305,8 +306,7 @@ export default function ScreenShare() {
 
     console.log("device load rtpCapabilities success");
     console.log("socket emit create-web-rtc-transport");
-    // TODO : 이름 바꿔야함 create-web-rtc-transport로
-    socket.emit("createWebRtcTransport", { consumer: false, type });
+    socket.emit("create-web-rtc-transport", { consumer: false, type });
   }
 
   function handleShareAndJoinRoom(HTMLElementRef: RefObject<HTMLVideoElement>) {

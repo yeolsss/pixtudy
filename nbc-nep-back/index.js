@@ -73,37 +73,40 @@ io.on("connection", (socket) => {
   });
 
   // device rtp capabilities를 받아서 세팅을 완료 했고 remote producer 혹은 consumer를 만드는 이벤트
-  socket.on("createWebRtcTransport", async ({ consumer, type }, callback) => {
-    if (!consumer) {
-      console.log(socket.id, " producer로서 createWebRtcTransport 호출");
-    } else {
-      console.log(socket.id, " consumer로서 createWebRtcTransport 호출");
+  socket.on(
+    "create-web-rtc-transport",
+    async ({ consumer, type }, callback) => {
+      if (!consumer) {
+        console.log(socket.id, " producer로서 createWebRtcTransport 호출");
+      } else {
+        console.log(socket.id, " consumer로서 createWebRtcTransport 호출");
+      }
+
+      const socketId = socket.id;
+      const roomName = peers[socket.id].roomName;
+
+      const { transport, params } = await createWebRtcTransport();
+
+      // transport를 등록한다. 이 transport는 producer이거나 consumer일 수 있다.
+      transports = [...transports, { socketId, roomName, transport, consumer }];
+
+      // 사용자의 peer에 transport를 추가한다.
+      setPeers(socketId, "transports", (prevTransports) => [
+        ...prevTransports,
+        transport.id,
+      ]);
+
+      console.log("create web rtc transport success");
+
+      if (consumer) {
+        // consumer일 경우에는 다른 로직을 작성해야 하기 때문에 분기 처리
+        callback({ params });
+      } else {
+        console.log("socket emit created web-rtc-transport");
+        socket.emit("created-web-rtc-transport", params, type);
+      }
     }
-
-    const socketId = socket.id;
-    const roomName = peers[socket.id].roomName;
-
-    const { transport, params } = await createWebRtcTransport();
-
-    // transport를 등록한다. 이 transport는 producer이거나 consumer일 수 있다.
-    transports = [...transports, { socketId, roomName, transport, consumer }];
-
-    // 사용자의 peer에 transport를 추가한다.
-    setPeers(socketId, "transports", (prevTransports) => [
-      ...prevTransports,
-      transport.id,
-    ]);
-
-    console.log("create web rtc transport success");
-
-    if (consumer) {
-      // consumer일 경우에는 다른 로직을 작성해야 하기 때문에 분기 처리
-      callback({ params });
-    } else {
-      console.log("socket emit created web-rtc-transport");
-      socket.emit("createdWebRtcTransport", params, type);
-    }
-  });
+  );
 
   // 서버측 transport와 클라이언트 측 transport를 연결(핸드쉐이크)하는 이벤트
   socket.on("transport-connect", ({ dtlsParameters }) => {
