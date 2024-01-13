@@ -18,7 +18,7 @@ module.exports = function (io) {
       };
       socket.emit("currentPlayers", players);
       socket.broadcast.emit("newPlayer", players[socket.id]);
-	    io.emit("metaversePlayerList", players);
+      io.emit("metaversePlayerList", players);
     });
 
     socket.on("disconnect", function () {
