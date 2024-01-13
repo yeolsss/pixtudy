@@ -14,8 +14,8 @@ import {
   sendMessage,
 } from "@/api/supabase/dm";
 import { useMutation } from "@tanstack/react-query";
-import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Tables } from "@/types/supabase";
+import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 
 /* Auth */
 /* user */

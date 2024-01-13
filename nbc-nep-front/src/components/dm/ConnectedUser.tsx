@@ -16,7 +16,6 @@ export default function ConnectedUser() {
   const getUser = useGetCurrentUser();
   const [currentUsers, setCurrentUsers] = useState<Space_members[]>([]);
   const [dmContainers, setDmContainers] = useState<string[]>([]);
-
   // 나에게 오는 메시지를 tracking하는 채널
   useEffect(() => {
     const dmChannel = supabase.channel(`dm_channel_${space_id}`);
@@ -50,7 +49,7 @@ export default function ConnectedUser() {
         }
       );
     }
-  }, []);
+  }, [space_id]);
 
   const handleOpenDmContainer = (id: string) => {
     setDmContainers((prev) => {
