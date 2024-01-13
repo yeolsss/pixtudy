@@ -1,8 +1,8 @@
-import Phaser from "phaser";
-import io, { Socket } from "socket.io-client";
-import { MapData, Player, Players } from "@/types/metaverse";
 import { CurrentPlayer } from "@/metaverse/CurrentPlayer";
 import { OtherPlayersGroup } from "@/metaverse/OtherPlayersGroup";
+import { MapData, Player, Players } from "@/types/metaverse";
+import Phaser from "phaser";
+import io, { Socket } from "socket.io-client";
 
 const RUN = 350;
 const WORK = 250;
@@ -10,11 +10,14 @@ const WORK = 250;
 interface InitData {
   mapData: MapData;
 }
+
+type PlayerInfo = {};
 /**
  * CharacterScenes 클래스는 Phaser.Scene을 확장해서 게임 캐릭터의 동작을 관리한다.
  */
 export class CharacterScenes extends Phaser.Scene {
   character?: CurrentPlayer;
+  characterName?: Phaser.GameObjects.Text;
   otherPlayers?: OtherPlayersGroup;
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   runKey?: Phaser.Input.Keyboard.Key;
@@ -26,11 +29,6 @@ export class CharacterScenes extends Phaser.Scene {
     super({ key: "CharacterScenes" });
   }
 
-  /*
-  >>>  TODO - refactor (240111)
-  >>>  1. 관심사 분리 : 맵, 타일레이어, 오브젝트레이어 다른 scene 에서 생성해서 전달해준 거 받기 -> 안돼요...
-  >>>  2. 함수로 빼기
- */
   create() {
     const map = this.make.tilemap({
       key: "basic_map",
@@ -42,14 +40,19 @@ export class CharacterScenes extends Phaser.Scene {
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
     objLayer?.setCollisionByProperty({ collides: true });
 
+    const playerInfo = this.game.registry.get("player");
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
     this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
+    this.socket.on("connect", () => {
+      this.socket?.emit("userData", playerInfo);
+    });
+
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
       Object.keys(players).forEach((id) => {
-        if (players[id].playerId === this.socket?.id) {
+        if (players[id].socketId === this.socket?.id) {
           this.addPlayer(players[id], objLayer!);
         } else {
           this.addOtherPlayers(players[id]);
@@ -71,7 +74,7 @@ export class CharacterScenes extends Phaser.Scene {
       });
       window.dispatchEvent(event);
     });
-    this.createAnimations();
+    this.createAnimations(playerInfo.character);
 
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -82,6 +85,7 @@ export class CharacterScenes extends Phaser.Scene {
 
   /**
    * 게임의 상태를 업데이트한다. Phaser 게임 루프에서 자동으로 호출된다.
+   * playerMovement 이벤트를 서버로 전송한다.
    */
 
   update() {
@@ -92,12 +96,12 @@ export class CharacterScenes extends Phaser.Scene {
     const velocity = this.getMovementVector();
     this.updateCharacterMovement(velocity);
     this.updateLastDirection();
-
     let animationKey = this.lastDirection; // 마지막 방향을 기본값으로 설정한다.
 
     if (this.isAnyCursorKeyDown()) {
       // 이동 중인 경우 이동 방향에 맞는 애니메이션을 재생한다.
       if (animationKey) {
+        this.character?.anims.getFrameName();
         this.character?.anims.play(animationKey, true);
       }
     } else {
@@ -107,6 +111,13 @@ export class CharacterScenes extends Phaser.Scene {
       this.character?.setFrame(frameIndex);
     }
 
+    if (this.character && this.characterName) {
+      // Update the position of characterName to be above the character
+      this.characterName.setPosition(
+        this.character.x,
+        this.character.y - this.character.displayHeight / 2
+      );
+    }
     this.emitPlayerMovement();
   }
 
@@ -116,21 +127,24 @@ export class CharacterScenes extends Phaser.Scene {
    * @param {Phaser.Tilemaps.TilemapLayer} objLayer - 충돌을 처리할 타일맵 레이어.
    */
   addPlayer(playerInfo: Player, objLayer: Phaser.Tilemaps.TilemapLayer) {
-    this.character = this.physics.add.sprite(
-      playerInfo.x,
-      playerInfo.y,
-      "character",
-      0
-    );
+    this.characterName = this.add
+      .text(playerInfo.x, playerInfo.y, playerInfo.nickname, {
+        fontFamily: "PretendardVariable",
+      }) // 플레이어 이름 표시할 오브젝트 생성
+      .setOrigin(0.5, 0.5);
+    this.character = this.physics.add
+      .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
+      .setDepth(1000);
+
     // 몸체 크기
     this.character.body?.setSize(32, 32);
+
     // 몸체 위치
     this.character.setCollideWorldBounds(true);
     this.character.body?.setOffset(0, 25);
     this.physics.add.collider(this.character, objLayer!);
-    this.cameras.main.startFollow(this.character, true);
+    this.cameras.main.startFollow(this.characterName, true);
   }
-
   /**
    * 다른 플레이어를 게임에 추가한다.
    * @param {Player} playerInfo - 추가할 플레이어의 정보.
@@ -143,18 +157,20 @@ export class CharacterScenes extends Phaser.Scene {
   /**
    * 각 캐릭터별로 애니메이션을 추가한다.
    */
-  createAnimations() {
+  createAnimations(spriteKey: string) {
     const animations = [
       { key: "left", start: 4, end: 5 },
       { key: "right", start: 10, end: 11 },
       { key: "up", start: 7, end: 8 },
       { key: "down", start: 1, end: 2 },
     ];
-
     animations.forEach(({ key, start, end }) => {
       this.anims.create({
         key,
-        frames: this.anims.generateFrameNumbers("character", { start, end }),
+        frames: this.anims.generateFrameNumbers(spriteKey, {
+          start,
+          end,
+        }),
         frameRate: 5,
         repeat: -1,
       });
@@ -198,6 +214,7 @@ export class CharacterScenes extends Phaser.Scene {
       );
     }
   }
+
   updateLastDirection() {
     if (this.cursors?.left.isDown) {
       this.lastDirection = "left";

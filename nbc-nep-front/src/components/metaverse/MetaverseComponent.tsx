@@ -1,8 +1,8 @@
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
-import { useEffect } from "react";
 import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
+import { useEffect } from "react";
 import styled from "styled-components";
 import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
@@ -34,11 +34,10 @@ const MetaverseComponent = () => {
     };
 
     game = new Phaser.Game(config);
-    game.registry.set("userId", {
-      userId: "test",
-      nickname: "송용승",
-      character: "character2",
-      position: { x: 0, y: 0 },
+    game.registry.set("player", {
+      playerId: "yongseung",
+      nickname: "스123님",
+      character: "pinkybonz",
     });
 
     window.addEventListener("resize", resize);
