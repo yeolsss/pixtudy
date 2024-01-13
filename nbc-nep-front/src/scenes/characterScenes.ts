@@ -97,7 +97,6 @@ export class CharacterScenes extends Phaser.Scene {
     if (this.isAnyCursorKeyDown()) {
       // 이동 중인 경우 이동 방향에 맞는 애니메이션을 재생한다.
       if (animationKey) {
-        this.character?.anims.getFrameName();
         this.character?.anims.play(animationKey, true);
       }
     } else {

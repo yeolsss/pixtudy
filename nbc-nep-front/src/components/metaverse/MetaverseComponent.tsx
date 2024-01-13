@@ -40,6 +40,9 @@ const MetaverseComponent = () => {
     };
 
     game = new Phaser.Game(config);
+
+    // 현재 접속자 정보 가져오기
+    // 임의로 설정해 둔 정보 -> 갈아끼워야 함
     game.registry.set("player", {
       playerId: "yongseung",
       nickname: "스123님",
