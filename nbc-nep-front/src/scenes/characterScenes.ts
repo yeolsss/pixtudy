@@ -61,7 +61,7 @@ export class CharacterScenes extends Phaser.Scene {
     });
 
     this.socket.on("newPlayer", (playerInfo: Player) => {
-      this.otherPlayers?.addPlayer(playerInfo);
+      this.addOtherPlayers(playerInfo);
     });
 
     this.socket.on("playerDisconnected", (playerId: string) => {
@@ -143,7 +143,7 @@ export class CharacterScenes extends Phaser.Scene {
     this.character.setCollideWorldBounds(true);
     this.character.body?.setOffset(0, 25);
     this.physics.add.collider(this.character, objLayer!);
-    this.cameras.main.startFollow(this.characterName, true);
+    this.cameras.main.startFollow(this.character, true);
   }
   /**
    * 다른 플레이어를 게임에 추가한다.

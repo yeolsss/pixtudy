@@ -28,6 +28,7 @@ const MetaverseComponent = () => {
           debug: true,
           width: 1280,
           height: 800,
+          fps: 60,
         },
       },
       scene: [ScenesMain, CharacterScenes],
