@@ -5,6 +5,7 @@ import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
+import MetaverseChat from "./metaverseChat/MetaverseChat";
 
 const MetaverseComponent = () => {
   useEffect(() => {
@@ -34,8 +35,8 @@ const MetaverseComponent = () => {
 
     game = new Phaser.Game(config);
 
-    // 현재 접속자 정보 가져오기
-    // 임의로 설정해 둔 정보 -> 갈아끼워야 함
+    // 플레이어 정보를 저장하는 registry
+    // 임의로 설정해 둔 정보로, 실제 유저 정보를 가져와야 한다
     game.registry.set("player", {
       playerId: "yongseung",
       nickname: "스123님",
@@ -54,7 +55,7 @@ const MetaverseComponent = () => {
     <MetaversePlayerProvider>
       <StMetaverseWrapper>
         <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
-        {/* <MetaverseChat /> */}
+        <MetaverseChat />
         <MetaversePlayerList />
       </StMetaverseWrapper>
     </MetaversePlayerProvider>

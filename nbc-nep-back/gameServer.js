@@ -22,12 +22,12 @@ module.exports = function (io) {
     });
 
     socket.on("disconnect", function () {
-      console.log("player [" + socket.id + "] disconnected");
-      io.emit("playerDisconnected", players[socket.id].playerId);
+      io.emit("playerDisconnected", players[socket.id].socketId);
+      delete players[socket.id]; // 플레이어 삭제한 후에 players 리스트를 다시 클라이언트로 보낸다
       io.emit("metaversePlayerList", players);
-      delete players[socket.id]; // 27, 28의 순서가 중요
     });
 
+    // characterScenes의 emitPlayerMovement 함수에서 받은 데이터를 다시 클라이언트로 보낸다
     socket.on("playerMovement", function (movementData) {
       players[socket.id].x = movementData.x;
       players[socket.id].y = movementData.y;

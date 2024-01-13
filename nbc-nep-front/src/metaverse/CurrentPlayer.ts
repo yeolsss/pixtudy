@@ -1,12 +1,9 @@
 export class CurrentPlayer extends Phaser.Physics.Arcade.Sprite {
   oldPosition?: { x: number; y: number; frame: string };
   playerId?: string;
+  socketId?: string;
   nickname?: string;
   character?: string;
-  movingLeft?: boolean;
-  movingRight?: boolean;
-  movingUp?: boolean;
-  movingDown?: boolean;
 
   constructor(
     scene: Phaser.Scene,

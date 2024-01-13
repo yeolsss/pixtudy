@@ -70,8 +70,8 @@ export class CharacterScenes extends Phaser.Scene {
       this.otherPlayers?.addPlayer(playerInfo);
     });
 
-    this.socket.on("playerDisconnected", (playerId: string) => {
-      this.otherPlayers?.removePlayer(playerId);
+    this.socket.on("playerDisconnected", (socketId: string) => {
+      this.otherPlayers?.removePlayer(socketId);
     });
 
     this.socket.on("metaversePlayerList", (players: Players) => {
