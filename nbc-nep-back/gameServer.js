@@ -25,7 +25,7 @@ module.exports = function (io) {
       console.log("player [" + socket.id + "] disconnected");
       io.emit("playerDisconnected", players[socket.id].playerId);
       io.emit("metaversePlayerList", players);
-      delete players[socket.id];
+      delete players[socket.id]; // 27, 28의 순서가 중요
     });
 
     socket.on("playerMovement", function (movementData) {
