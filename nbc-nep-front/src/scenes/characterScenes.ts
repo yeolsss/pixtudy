@@ -6,6 +6,12 @@ import io, { Socket } from "socket.io-client";
 
 const RUN = 350;
 const WORK = 250;
+const PLAYER_DEPTH = 1000;
+const PLAYER_NAME_DEPTH = 2000;
+const PLAYER_BODY_SIZE_X = 32;
+const PLAYER_BODY_SIZE_Y = 32;
+const PLAYER_BODY_OFFSET_X = 0;
+const PLAYER_BODY_OFFSET_Y = 25;
 
 interface InitData {
   mapData: MapData;
@@ -48,19 +54,12 @@ export class CharacterScenes extends Phaser.Scene {
     this.socket.on("connect", () => {
       this.socket?.emit("userData", playerInfo);
     });
-    let count = 0;
-    let othersCount = 0;
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
       Object.keys(players).forEach((id) => {
         if (players[id].socketId === this.socket?.id) {
-          count++;
-          if (count > 1) console.log("duplication");
-          else console.log("original");
           this.addPlayer(players[id], objLayer!);
         } else {
-          othersCount++;
-          console.log("othersCount: ", othersCount);
           this.addOtherPlayers(players[id]);
         }
       });
@@ -137,17 +136,17 @@ export class CharacterScenes extends Phaser.Scene {
       .text(playerInfo.x, playerInfo.y, playerInfo.nickname, {
         fontFamily: "PretendardVariable",
       }) // 플레이어 이름 표시할 오브젝트 생성
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.5)
+      .setDepth(PLAYER_NAME_DEPTH);
     this.character = this.physics.add
       .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
-      .setDepth(1000);
-
+      .setDepth(PLAYER_DEPTH);
     // 몸체 크기
-    this.character.body?.setSize(32, 32);
+    this.character.body?.setSize(PLAYER_BODY_SIZE_X, PLAYER_BODY_SIZE_Y);
 
     // 몸체 위치
     this.character.setCollideWorldBounds(true);
-    this.character.body?.setOffset(0, 25);
+    this.character.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
     this.physics.add.collider(this.character, objLayer!);
     this.cameras.main.startFollow(this.characterName, true);
   }

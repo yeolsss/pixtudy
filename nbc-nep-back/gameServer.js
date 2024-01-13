@@ -1,6 +1,5 @@
 module.exports = function (io) {
-  let players = {};
-  let player;
+  const players = {};
 
   io.on("connection", function (socket) {
     console.log("player [" + socket.id + "] connected");

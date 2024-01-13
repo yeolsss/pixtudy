@@ -2,6 +2,13 @@ import { CurrentPlayer } from "@/metaverse/CurrentPlayer";
 import { Player } from "@/types/metaverse";
 import Phaser from "phaser";
 
+const PLAYER_NAME_DEPTH = 2000;
+const PLAYER_BODY_SIZE_X = 32;
+const PLAYER_BODY_SIZE_Y = 32;
+const PLAYER_BODY_OFFSET_X = 0;
+const PLAYER_BODY_OFFSET_Y = 25;
+const PLAYER_NAME_OFFSET = 30;
+
 export class OtherPlayersGroup {
   group: Phaser.Physics.Arcade.Group;
   scene: Phaser.Scene;
@@ -22,15 +29,21 @@ export class OtherPlayersGroup {
    */
   addPlayer(playerInfo: Player) {
     const otherPlayerName = this.scene.add
-      .text(playerInfo.x, playerInfo.y - 30, playerInfo.nickname, {
-        fontFamily: "PretendardVariable",
-      })
-      .setOrigin(0.5, 0.5);
+      .text(
+        playerInfo.x,
+        playerInfo.y - PLAYER_NAME_OFFSET,
+        playerInfo.nickname,
+        {
+          fontFamily: "PretendardVariable",
+        }
+      )
+      .setOrigin(0.5, 0.5)
+      .setDepth(PLAYER_NAME_DEPTH);
     const otherPlayer = this.scene.physics.add
       .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
       .setCollideWorldBounds(true) as CurrentPlayer;
-    otherPlayer.body?.setSize(32, 32);
-    otherPlayer.body?.setOffset(0, 25);
+    otherPlayer.body?.setSize(PLAYER_BODY_SIZE_X, PLAYER_BODY_SIZE_Y);
+    otherPlayer.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
     otherPlayer.playerId = playerInfo.playerId;
     // otherPlayer를 구분짓기 위한 유니크한 값으로 socketId를 사용한다. 수정할 때에는 여기서부터 시작할 것.
     otherPlayer.socketId = playerInfo.socketId;
@@ -71,7 +84,10 @@ export class OtherPlayersGroup {
         const otherPlayerName = this.otherPlayerNames.get(playerInfo.socketId);
         if (playerInfo.socketId === otherPlayer.socketId && otherPlayerName) {
           otherPlayer.setPosition(playerInfo.x, playerInfo.y);
-          otherPlayerName.setPosition(playerInfo.x, playerInfo.y - 30);
+          otherPlayerName.setPosition(
+            playerInfo.x,
+            playerInfo.y - PLAYER_NAME_OFFSET
+          );
           otherPlayer.setFrame(playerInfo.frame);
         }
       });
