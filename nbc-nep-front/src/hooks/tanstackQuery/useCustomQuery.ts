@@ -1,5 +1,5 @@
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export function useCustomQuery<T, TError extends Error = Error>(
   queryOptions: UseQueryOptions<T, TError>
@@ -7,8 +7,6 @@ export function useCustomQuery<T, TError extends Error = Error>(
   let { isLoading, isError, error, data, refetch } = useQuery<T, TError>(
     queryOptions
   );
-
-  const [isLoadingSkeleton, setIsLoadingSkeleton] = useState(true);
 
   useEffect(() => {}, [isLoading]);
 
