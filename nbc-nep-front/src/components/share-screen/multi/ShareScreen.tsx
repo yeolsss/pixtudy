@@ -21,19 +21,21 @@ import {
 import ShareScreenButton from "./ShareScreenButton";
 
 export default function ScreenShare() {
-  const { socket } = useSocket();
+  const { socket, disconnect } = useSocket();
   const localVideoRef = useRef<HTMLVideoElement>(null);
+  const webCamRef = useRef<HTMLVideoElement>(null);
+  const localAudioRef = useRef<HTMLAudioElement>(null);
+  const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
+
   const {
     loadDevice,
     createSendTransportWithDevice,
     createRecvTransportWithDevice,
     getRtpCapabilitiesFromDevice,
   } = useDevice();
-  const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
+
   const [videos, setVideos] = useState<MediaStream[]>([]);
   const [audios, setAudios] = useState<MediaStream[]>([]);
-  const webCamRef = useRef<HTMLVideoElement>(null);
-  const localAudioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     // 클라이언트에서 device를 로드를 완료한 이후에 서버 측에 receiver transport 만든 다음
@@ -44,9 +46,12 @@ export default function ScreenShare() {
     // 기존에 있던 사용자에게 새로운 producer가 등장했을 경우에 발생하는 이벤트
     socket.on("new-producer", handleNewProducer);
 
+    socket.on("disconnect", disconnect);
+
     return () => {
       socket.off("created-web-rtc-transport", handleCreateSendTransport);
       socket.off("new-producer", handleNewProducer);
+      socket.off("disconnect", disconnect);
     };
   }, []);
 
