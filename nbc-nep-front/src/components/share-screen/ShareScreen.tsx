@@ -1,10 +1,12 @@
 import useDevice from "@/hooks/share-screen/useDevice";
 import useSocket from "@/hooks/useSocket";
 import { types } from "mediasoup-client";
+import { Consumer, Producer } from "mediasoup-client/lib/types";
 import { RefObject, useEffect, useRef, useState } from "react";
 import ShareScreenButton from "./ShareScreenButton";
 import {
   checkStreamTracksEmpty,
+  isAlreadyConsume,
   isAlreadyConsumeTransport,
   isAudioTrack,
   isNotEmptyTracks,
@@ -15,6 +17,7 @@ import {
   DtlsParameters,
   NewProducerParameter,
   ProduceParameter,
+  RecvTransportType,
   RtpCapabilities,
   SendTransportType,
   ShareType,
@@ -28,8 +31,11 @@ export default function ScreenShare() {
   const localAudioRef = useRef<HTMLAudioElement>(null);
 
   const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
-  const [sendTransports, setSendTransports] = useState<SendTransportType[]>([]);
-  const [sendProducers, setSendProducers] = useState<types.Producer[]>([]);
+  const sendTransportRef = useRef<SendTransportType | null>(null);
+  const [producers, setProducers] = useState<Producer[]>([]);
+
+  const recvTransportRef = useRef<RecvTransportType | null>(null);
+  const [consumers, setConsumers] = useState<Consumer[]>([]);
 
   const {
     loadDevice,
@@ -42,6 +48,7 @@ export default function ScreenShare() {
   const [audios, setAudios] = useState<MediaStream[]>([]);
 
   useEffect(() => {
+    const sendTransport = sendTransportRef.current;
     // 클라이언트에서 device를 로드를 완료한 이후에 서버 측에 receiver transport 만든 다음
     // sender transport를 만드는 이벤트
     // created-web-rtc-transport
@@ -56,6 +63,8 @@ export default function ScreenShare() {
       socket.off("created-web-rtc-transport", handleCreateSendTransport);
       socket.off("new-producer", handleNewProducer);
       socket.off("disconnect", disconnect);
+
+      if (sendTransport) sendTransport.close();
     };
   }, []);
 
@@ -77,8 +86,6 @@ export default function ScreenShare() {
       if (checkStreamTracksEmpty(stream))
         throw new Error("video and audio tracks are not exist");
 
-      console.log("stream is for producer transport : ", stream.id);
-
       const videoTracks = stream.getVideoTracks();
       const audioTracks = stream.getAudioTracks();
 
@@ -96,22 +103,15 @@ export default function ScreenShare() {
         ...transportParams,
         appData: { trackId: track.id, streamId: stream.id },
       });
-      setSendProducers((prev) => [...prev, producer]);
-
-      console.log(
-        "send producer track id : ",
-        track.id,
-        "send producer id : ",
-        producer.id
-      );
-
-      setSendTransports((prev) => [...prev, sendTransport]);
+      setProducers((prev) => [...prev, producer]);
     } catch (error) {
       console.error("handle create send transport error : ", error);
     }
   }
 
   function createSendTransport(params: TransPortType) {
+    if (sendTransportRef.current) return sendTransportRef.current;
+
     try {
       const sendTransport = createSendTransportWithDevice(params);
 
@@ -120,9 +120,41 @@ export default function ScreenShare() {
 
       console.log(`send transport ${sendTransport.id} create success`);
 
+      sendTransportRef.current = sendTransport;
       return sendTransport;
     } catch (error) {
-      console.error("create local producer transport error: ", error);
+      console.error("create local sender transport error: ", error);
+    }
+  }
+
+  function createRecvTransport(params: TransPortType) {
+    if (recvTransportRef.current) return recvTransportRef.current;
+
+    try {
+      const recvTransport = createRecvTransportWithDevice(params);
+
+      recvTransport.on("connect", handleRecvConsumerTransportConnect);
+
+      console.log(`recv transport ${recvTransport.id} create success`);
+
+      recvTransportRef.current = recvTransport;
+      return recvTransport;
+    } catch (error) {
+      console.error("create local receiver transport error: ", error);
+    }
+  }
+
+  async function handleRecvConsumerTransportConnect(
+    { dtlsParameters }: DtlsParameters,
+    callback: Function,
+    errorBack: Function
+  ) {
+    console.log("handle recv consumer transport connect start");
+    try {
+      socket.emit("transport-recv-connect", { dtlsParameters });
+      callback();
+    } catch (error) {
+      errorBack(error);
     }
   }
 
@@ -172,18 +204,21 @@ export default function ScreenShare() {
     }
   }
 
+  // * remoteProducerId는 서버에서 제공해주는 producer id이다.
   function signalNewConsumerTransport({
     producerId: remoteProducerId,
-    socketName,
-    socketId: newSocketId,
-    isNewSocketHost,
   }: NewProducerParameter) {
     console.log("call signalNewConsumerTransport with id :", remoteProducerId);
 
+    // ! 이번에 하는게 완성되면 삭제돼야 마땅함
     if (
       isAlreadyConsumeTransport(consumerTransportsRef.current, remoteProducerId)
     )
       return;
+
+    if (isAlreadyConsume(consumers, remoteProducerId)) {
+      return;
+    }
 
     socket.emit(
       "create-web-rtc-transport",
@@ -191,7 +226,15 @@ export default function ScreenShare() {
       (data: { params: TransPortType }) => {
         // 서버에서 transport를 만들고 나서 정보를 콜백받음
         const { params } = data;
-        const consumerTransport = createRecvTransportWithDevice(params);
+        const recvTransport = createRecvTransport(params);
+        if (!recvTransport) {
+          console.error(
+            'recv transport가 만들어지지 않았기 때문에 다음을 실행할 수 없음. socket.emit("create-web-rtc-transport" 를 실행하는 와중에 발생됨'
+          );
+          return;
+        }
+        // ! 지금 현재 있는 것이 된다면 사라져야 마땅함
+        /* const consumerTransport = createRecvTransportWithDevice(params);
 
         consumerTransport.on(
           "connect",
@@ -211,16 +254,9 @@ export default function ScreenShare() {
               console.error("consumer transport connect error : ", error);
             }
           }
-        );
+        ); */
 
-        connectRecvTransport(
-          consumerTransport,
-          remoteProducerId,
-          params.id,
-          socketName,
-          newSocketId,
-          isNewSocketHost
-        );
+        connectRecvTransport(recvTransport, remoteProducerId, params.id);
       }
     );
   }
@@ -228,10 +264,7 @@ export default function ScreenShare() {
   function connectRecvTransport(
     consumerTransport: types.Transport,
     remoteProducerId: string,
-    serverConsumerTransportId: string,
-    socketName: string,
-    newSocketId: string,
-    isNewSocketHost: boolean
+    serverConsumerTransportId: string
   ) {
     const rtpCapabilities = getRtpCapabilitiesFromDevice();
     socket.emit(
@@ -249,14 +282,7 @@ export default function ScreenShare() {
         serverConsumerId: string;
         userName: string;
       }) => {
-        const {
-          id,
-          producerId,
-          kind,
-          rtpParameters,
-          serverConsumerId,
-          userName,
-        } = data;
+        const { id, producerId, kind, rtpParameters, serverConsumerId } = data;
 
         try {
           console.log("start - consumer");
@@ -266,13 +292,9 @@ export default function ScreenShare() {
             kind,
             rtpParameters,
           });
-          console.log(
-            "consumer consume success consumerTransport is ",
-            consumerTransport,
-            consumer
-          );
 
-          consumerTransportsRef.current = [
+          // ! 이번것이 된다면 사라져야 마땅함
+          /* consumerTransportsRef.current = [
             ...consumerTransportsRef.current,
             {
               consumerTransport,
@@ -280,11 +302,11 @@ export default function ScreenShare() {
               producerId: remoteProducerId,
               consumer,
             },
-          ];
+          ]; */
+
+          setConsumers((prev) => [...prev, consumer]);
 
           const { track } = consumer;
-          console.log("consumer track is : ", track.id);
-          console.log("track is : ", track);
 
           if (isVideoTrack(track)) {
             const newVideoStream = new MediaStream([track]);
@@ -311,8 +333,6 @@ export default function ScreenShare() {
   ) {
     loadDevice(rtpCapabilities);
 
-    console.log("device load rtpCapabilities success");
-    console.log("socket emit create-web-rtc-transport");
     socket.emit("create-web-rtc-transport", { consumer: false, type });
   }
 
@@ -336,10 +356,10 @@ export default function ScreenShare() {
       const stream = HTMLElementRef.current!.srcObject as MediaStream;
       const streamId = stream.id;
 
-      sendProducers.some((producer) => {
+      producers.some((producer) => {
         return producer.appData.streamId === streamId && producer.close();
       });
-      setSendProducers((prev) => prev.filter((producer) => !producer.closed));
+      setProducers((prev) => prev.filter((producer) => !producer.closed));
       HTMLElementRef.current!.srcObject = null;
     };
   }

@@ -18,7 +18,7 @@ export type TransPortType = {
   iceCandidates: types.IceCandidate[];
   dtlsParameters: types.DtlsParameters;
 };
-
+// ! 이번것이 해결된다면 사라져야 마땅함.
 export type ConsumerTransportType = {
   consumerTransport: types.Transport;
   serverConsumerTransportId: string;
@@ -36,3 +36,9 @@ export type NewProducerParameter = {
 export type ShareType = "screen" | "webcam" | "audio";
 
 export type SendTransportType = types.Transport<types.AppData>;
+
+export type RecvTransportType = types.Transport<types.AppData>;
+
+export type Producer = types.Producer<types.AppData>;
+
+export type Consumer = types.Consumer<types.AppData>;
