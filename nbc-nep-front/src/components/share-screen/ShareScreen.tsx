@@ -16,6 +16,7 @@ import {
   NewProducerParameter,
   ProduceParameter,
   RtpCapabilities,
+  SendTransportType,
   ShareType,
   TransPortType,
 } from "./types/ScreenShare.types";
@@ -26,6 +27,7 @@ export default function ScreenShare() {
   const webCamRef = useRef<HTMLVideoElement>(null);
   const localAudioRef = useRef<HTMLAudioElement>(null);
   const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
+  const [sendTransports, setSendTransports] = useState<SendTransportType[]>([]);
 
   const {
     loadDevice,
@@ -80,13 +82,14 @@ export default function ScreenShare() {
 
       const tracks = isNotEmptyTracks(videoTracks) ? videoTracks : audioTracks;
       const transportParams = isNotEmptyTracks(videoTracks) ? videoParams : {};
-      if (!tracks || tracks.length === 0)
-        throw new Error("tracks are not exist");
-
       const sendTransport = createSendTransport(params);
+
+      if (!tracks || tracks.length === 0 || !sendTransport)
+        throw new Error("tracks or send transport is not exist");
+
       const track = tracks[0];
 
-      const producer = await sendTransport!.produce({
+      const producer = await sendTransport.produce({
         track,
         ...transportParams,
         appData: { trackId: track.id },
@@ -98,6 +101,8 @@ export default function ScreenShare() {
         "send producer id : ",
         producer.id
       );
+
+      setSendTransports((prev) => [...prev, sendTransport]);
     } catch (error) {
       console.error("handle create send transport error : ", error);
     }

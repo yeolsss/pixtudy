@@ -34,3 +34,5 @@ export type NewProducerParameter = {
 };
 
 export type ShareType = "screen" | "webcam" | "audio";
+
+export type SendTransportType = types.Transport<types.AppData>;
