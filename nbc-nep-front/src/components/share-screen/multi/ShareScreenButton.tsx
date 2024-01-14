@@ -14,7 +14,6 @@ export default function ShareScreenButton({
   const handleClickShareButton = async () => {
     try {
       const mediaStream: MediaStream = await getMediaStreamByType(type);
-
       onShare(mediaStream, type);
     } catch (err) {
       console.error("on error when start capture", err);

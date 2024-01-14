@@ -22,3 +22,7 @@ export function isNotEmptyTracks(tracks: MediaStreamTrack[]) {
 export function isVideoTrack(track: MediaStreamTrack) {
   return track.kind === "video";
 }
+
+export function isAudioTrack(track: MediaStreamTrack) {
+  return track.kind === "audio";
+}

@@ -5,6 +5,7 @@ import { RefObject, useEffect, useRef, useState } from "react";
 import {
   checkStreamTracksEmpty,
   isAlreadyConsumeTransport,
+  isAudioTrack,
   isNotEmptyTracks,
   isVideoTrack,
 } from "../lib/util";
@@ -30,7 +31,9 @@ export default function ScreenShare() {
   } = useDevice();
   const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
   const [videos, setVideos] = useState<MediaStream[]>([]);
+  const [audios, setAudios] = useState<MediaStream[]>([]);
   const webCamRef = useRef<HTMLVideoElement>(null);
+  const localAudioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     // 클라이언트에서 device를 로드를 완료한 이후에 서버 측에 receiver transport 만든 다음
@@ -55,10 +58,11 @@ export default function ScreenShare() {
     params: TransPortType,
     type: ShareType
   ) {
-    const stream =
-      type === "screen"
-        ? (localVideoRef.current!.srcObject as MediaStream)
-        : (webCamRef.current!.srcObject as MediaStream);
+    const stream = {
+      screen: localVideoRef.current!.srcObject as MediaStream,
+      webcam: webCamRef.current!.srcObject as MediaStream,
+      audio: localAudioRef.current!.srcObject as MediaStream,
+    }[type];
 
     try {
       if (checkStreamTracksEmpty(stream))
@@ -286,7 +290,11 @@ export default function ScreenShare() {
           if (isVideoTrack(track)) {
             const newVideoStream = new MediaStream([track]);
             setVideos((prev) => [...prev, newVideoStream]);
+          } else if (isAudioTrack(track)) {
+            const newAudioStream = new MediaStream([track]);
+            setAudios((prev) => [...prev, newAudioStream]);
           }
+
           socket.emit("consumer-resume", { serverConsumerId });
 
           return;
@@ -309,7 +317,9 @@ export default function ScreenShare() {
     socket.emit("create-web-rtc-transport", { consumer: false, type });
   }
 
-  function handleShareAndJoinRoom(HTMLElementRef: RefObject<HTMLVideoElement>) {
+  function handleShareAndJoinRoom(
+    HTMLElementRef: RefObject<HTMLVideoElement> | RefObject<HTMLAudioElement>
+  ) {
     return (stream: MediaStream, type: ShareType) => {
       HTMLElementRef.current!.srcObject = stream;
       socket.emit(
@@ -334,9 +344,16 @@ export default function ScreenShare() {
       >
         Share Web Cam
       </ShareScreenButton>
+      <ShareScreenButton
+        onShare={handleShareAndJoinRoom(localAudioRef)}
+        type="audio"
+      >
+        Share Audio
+      </ShareScreenButton>
 
       <video ref={localVideoRef} playsInline autoPlay />
       <video ref={webCamRef} playsInline autoPlay muted />
+      <audio ref={localAudioRef} playsInline autoPlay muted />
 
       <div id="remote-media-div">
         {videos.map((video) => (
@@ -344,7 +361,6 @@ export default function ScreenShare() {
             key={video.id}
             playsInline
             autoPlay
-            muted
             onError={(e) => console.error("Video error: ", e)}
             onLoadStart={() => console.log("Video loading started")}
             onLoadedMetadata={() => console.log("Video metadata loaded")}
@@ -359,6 +375,18 @@ export default function ScreenShare() {
               }
             }}
           ></video>
+        ))}
+      </div>
+      <div id="remote-audio-div">
+        {audios.map((audio) => (
+          <audio
+            key={audio.id}
+            playsInline
+            autoPlay
+            ref={(audioRef) => {
+              if (audioRef) audioRef.srcObject = audio;
+            }}
+          ></audio>
         ))}
       </div>
     </div>
