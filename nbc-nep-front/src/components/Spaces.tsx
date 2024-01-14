@@ -17,7 +17,7 @@ export default function Spaces() {
   const router = useRouter();
 
   const handleToSpace = async (space_id: string) => {
-    await router.push(`/dm/${space_id}`);
+    await router.push(`/metaverse/${space_id}`);
   };
   return (
     <>

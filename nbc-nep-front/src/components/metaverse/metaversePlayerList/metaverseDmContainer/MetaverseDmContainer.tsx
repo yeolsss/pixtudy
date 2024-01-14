@@ -12,8 +12,10 @@ import {
   RealtimeChannel,
   RealtimePostgresInsertPayload,
 } from "@supabase/supabase-js";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import styled from "styled-components";
 
 interface Props {
   otherUserId: string;
@@ -21,7 +23,7 @@ interface Props {
   spaceId: string;
 }
 
-export default function DmContainer({
+export default function MetaverseDmContainer({
   otherUserId,
   handleCloseDmContainer,
   spaceId,
@@ -34,6 +36,8 @@ export default function DmContainer({
     receiverId: otherUserId,
     spaceId,
   });
+
+  const queryClient = useQueryClient();
 
   // 상대방 유저와 기존 메시지 가져오기
   const prevDmMessages = useGetDmMessages(currentDmChannel!);
@@ -52,6 +56,9 @@ export default function DmContainer({
 
   // react-hook-form 초기화
   const { handleSubmit, register, reset } = useForm();
+
+  // message ul ref (스크롤)
+  const messageListRef = useRef<HTMLUListElement>(null);
 
   // 구독중인 채널에서 메시지를 인지하였을 떄 이벤트
   const newMessageInChannel = (
@@ -103,10 +110,13 @@ export default function DmContainer({
       },
       {
         onSuccess: (createdChannel) => {
+          console.log(createdChannel);
           if (createdChannel) {
+            queryClient.invalidateQueries({
+              queryKey: ["dmChannel", otherUserId],
+            });
             // 최초 보낸 메시지 state에 추가
-            setMessages((prev) => [
-              ...prev,
+            setMessages([
               {
                 created_at: new Date().toISOString(),
                 dm_id: createdChannel.id,
@@ -127,16 +137,23 @@ export default function DmContainer({
 
   // 최초 mount시 상대방 유저와 dm channel 있는지 확인 후 채널 연결
   useEffect(() => {
+    console.log("check out", currentDmChannel);
     if (currentDmChannel) {
+      console.log("check in", currentDmChannel);
       // dm 채널 연결
       connectChannel(currentDmChannel);
     }
-  }, []);
+  }, [currentDmChannel]);
 
   // 최초 mount시 기존 메시지 불러오기
   useEffect(() => {
     setMessages(prevDmMessages!);
   }, [prevDmMessages]);
+
+  useEffect(() => {
+    if (messageListRef.current)
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+  }, [messages]);
 
   // unMount 시 현재 구독중인 dm 채널 구독 취소
   useEffect(() => {
@@ -147,12 +164,12 @@ export default function DmContainer({
   }, []);
 
   return (
-    <section>
+    <StMetaverseDmChannel>
       <button onClick={() => handleCloseDmContainer(otherUserInfo?.id!)}>
         close
       </button>
       <h1>상대방 유저 정보 : {otherUserInfo?.display_name}</h1>
-      <ul>
+      <ul ref={messageListRef}>
         {messages?.map((message) => (
           <li key={message.id}>
             <h3>{message.sender?.display_name}</h3>
@@ -172,6 +189,17 @@ export default function DmContainer({
         />
         <button type="submit">입력</button>
       </form>
-    </section>
+    </StMetaverseDmChannel>
   );
 }
+
+const StMetaverseDmChannel = styled.div`
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  & ul {
+    height: 80%;
+    overflow-y: scroll;
+    font-size: 2rem;
+  }
+`;
