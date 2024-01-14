@@ -19,6 +19,7 @@ const StMetaversePlayerListWrapper = styled.div`
   left: 0;
   width: 150px;
   height: 300px;
+  padding: 10px;
   overflow: scroll;
   z-index: 100;
   background-color: white;

@@ -6,6 +6,7 @@ import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import MetaverseChat from "./metaverseChat/MetaverseChat";
+import { useAppSelector } from "@/hooks/useReduxTK";
 
 // 시나리오
 // 1. useQuery 사용해서 유저 정보를 가져온다.
@@ -15,6 +16,7 @@ import MetaverseChat from "./metaverseChat/MetaverseChat";
 // 2-3. 2-1, 2-2 는 모달 창에서 진행한다.
 
 const MetaverseComponent = () => {
+  const { display_name, id } = useAppSelector((state) => state.authSlice.user);
   useEffect(() => {
     let game: Phaser.Game | undefined;
     const resize = () => {
@@ -46,8 +48,8 @@ const MetaverseComponent = () => {
     // 플레이어 정보를 저장하는 registry
     // 임의로 설정해 둔 정보로, 실제 유저 정보를 가져와야 한다
     game.registry.set("player", {
-      playerId: "yongseung",
-      nickname: "스123님",
+      playerId: id,
+      nickname: display_name,
       character: "pinkybonz",
     });
 
