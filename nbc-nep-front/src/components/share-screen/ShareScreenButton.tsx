@@ -1,26 +1,42 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { ShareType } from "./types/ScreenShare.types";
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void;
+  onStopShare?: () => void;
   type: ShareType;
 }
 
 export default function ShareScreenButton({
   onShare,
+  onStopShare,
   type,
   children,
 }: PropsWithChildren<Props>) {
+  const [isShare, setIsShare] = useState(false);
+
   const handleClickShareButton = async () => {
     try {
       const mediaStream: MediaStream = await getMediaStreamByType(type);
       onShare(mediaStream, type);
+      setIsShare(true);
     } catch (err) {
       console.error("on error when start capture", err);
     }
   };
 
-  return <button onClick={handleClickShareButton}>{children}</button>;
+  const handleClickStopShareButton = () => {
+    setIsShare(false);
+    onStopShare && onStopShare();
+  };
+
+  return (
+    <button
+      onClick={isShare ? handleClickStopShareButton : handleClickShareButton}
+    >
+      {children}
+    </button>
+  );
 }
 
 const getMediaStreamByType = async (type: ShareType) => {

@@ -24,10 +24,12 @@ import {
 export default function ScreenShare() {
   const { socket, disconnect } = useSocket();
   const localVideoRef = useRef<HTMLVideoElement>(null);
-  const webCamRef = useRef<HTMLVideoElement>(null);
+  const localWebCamRef = useRef<HTMLVideoElement>(null);
   const localAudioRef = useRef<HTMLAudioElement>(null);
+
   const consumerTransportsRef = useRef<ConsumerTransportType[]>([]);
   const [sendTransports, setSendTransports] = useState<SendTransportType[]>([]);
+  const [sendProducers, setSendProducers] = useState<types.Producer[]>([]);
 
   const {
     loadDevice,
@@ -67,7 +69,7 @@ export default function ScreenShare() {
   ) {
     const stream = {
       screen: localVideoRef.current!.srcObject as MediaStream,
-      webcam: webCamRef.current!.srcObject as MediaStream,
+      webcam: localWebCamRef.current!.srcObject as MediaStream,
       audio: localAudioRef.current!.srcObject as MediaStream,
     }[type];
 
@@ -92,8 +94,9 @@ export default function ScreenShare() {
       const producer = await sendTransport.produce({
         track,
         ...transportParams,
-        appData: { trackId: track.id },
+        appData: { trackId: track.id, streamId: stream.id },
       });
+      setSendProducers((prev) => [...prev, producer]);
 
       console.log(
         "send producer track id : ",
@@ -326,29 +329,47 @@ export default function ScreenShare() {
     };
   }
 
+  function handleStopShare(
+    HTMLElementRef: RefObject<HTMLVideoElement> | RefObject<HTMLAudioElement>
+  ) {
+    return () => {
+      const stream = HTMLElementRef.current!.srcObject as MediaStream;
+      const streamId = stream.id;
+
+      sendProducers.some((producer) => {
+        return producer.appData.streamId === streamId && producer.close();
+      });
+      setSendProducers((prev) => prev.filter((producer) => !producer.closed));
+      HTMLElementRef.current!.srcObject = null;
+    };
+  }
+
   return (
     <div>
       <ShareScreenButton
         onShare={handleShareAndJoinRoom(localVideoRef)}
+        onStopShare={handleStopShare(localVideoRef)}
         type="screen"
       >
         Share Screen
       </ShareScreenButton>
       <ShareScreenButton
-        onShare={handleShareAndJoinRoom(webCamRef)}
+        onShare={handleShareAndJoinRoom(localWebCamRef)}
+        onStopShare={handleStopShare(localWebCamRef)}
         type="webcam"
       >
         Share Web Cam
       </ShareScreenButton>
       <ShareScreenButton
         onShare={handleShareAndJoinRoom(localAudioRef)}
+        onStopShare={handleStopShare(localAudioRef)}
         type="audio"
       >
         Share Audio
       </ShareScreenButton>
 
       <video ref={localVideoRef} playsInline autoPlay />
-      <video ref={webCamRef} playsInline autoPlay muted />
+      <video ref={localWebCamRef} playsInline autoPlay muted />
       <audio ref={localAudioRef} playsInline autoPlay muted />
 
       <div id="remote-media-div">
