@@ -78,40 +78,26 @@ export default function ScreenShare() {
       const videoTracks = stream.getVideoTracks();
       const audioTracks = stream.getAudioTracks();
 
-      if (isNotEmptyTracks(videoTracks)) {
-        const videoTransport = createSendTransport(params);
-        const videoTrack = videoTracks[0];
-        if (!videoTransport) return;
+      const tracks = isNotEmptyTracks(videoTracks) ? videoTracks : audioTracks;
+      const transportParams = isNotEmptyTracks(videoTracks) ? videoParams : {};
+      if (!tracks || tracks.length === 0)
+        throw new Error("tracks are not exist");
 
-        const videoProducer = await videoTransport.produce({
-          track: videoTrack,
-          ...videoParams,
-          appData: { trackId: videoTrack.id },
-        });
+      const sendTransport = createSendTransport(params);
+      const track = tracks[0];
 
-        console.log(
-          "video send producer track id : ",
-          videoTrack.id,
-          "send video producer id : ",
-          videoProducer.id
-        );
-      } else if (isNotEmptyTracks(audioTracks)) {
-        const audioTransport = createSendTransport(params);
-        const audioTrack = audioTracks[0];
-        if (!audioTransport) return;
+      const producer = await sendTransport!.produce({
+        track,
+        ...transportParams,
+        appData: { trackId: track.id },
+      });
 
-        const audioProducer = await audioTransport.produce({
-          track: audioTrack,
-          appData: { trackId: audioTrack.id },
-        });
-        console.log(
-          "audio send producer track id : ",
-          audioTrack.id,
-          audioTrack,
-          "send audio producer id : ",
-          audioProducer.id
-        );
-      }
+      console.log(
+        "send producer track id : ",
+        track.id,
+        "send producer id : ",
+        producer.id
+      );
     } catch (error) {
       console.error("handle create send transport error : ", error);
     }
