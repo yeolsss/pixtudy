@@ -1,4 +1,5 @@
-import { LoginPlatformType, loginHandler } from "@/api/supabase/auth";
+import { LoginPlatformType } from "@/api/supabase/auth";
+import { useLoginUser } from "@/hooks/query/useSupabase";
 
 const socialLoginButtons = [
   { text: "구글", platform: "google" },
@@ -7,8 +8,10 @@ const socialLoginButtons = [
 ];
 
 export default function SocialLogin() {
+  const login = useLoginUser();
+
   const handleSocialLogin = (platform: LoginPlatformType) => {
-    loginHandler({ platform });
+    login({ platform });
   };
 
   return (

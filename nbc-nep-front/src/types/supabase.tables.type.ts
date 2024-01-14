@@ -17,8 +17,10 @@ export interface Spaces {
 export interface Dm_channels {
   id: string /* primary key */;
   space_id: string /* foreign key to spaces.id */;
-  chat_users: any; // type unknown;
+  user: string /* foreign key to users.id */;
+  other_user?: string /* foreign key to users.id */;
   spaces?: Spaces;
+  users?: Users;
 }
 
 export interface Dm_messages {
@@ -37,10 +39,8 @@ export interface Space_members {
   created_at: string;
   space_id: string /* foreign key to spaces.id */;
   user_id?: string /* foreign key to users.id */;
+  space_display_name: string;
+  space_avatar: string;
   spaces?: Spaces;
   users?: Users;
-}
-
-export interface getOtherUserHandlerArgs {
-  otherUserId: string;
 }

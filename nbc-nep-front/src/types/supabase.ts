@@ -105,18 +105,24 @@ export interface Database {
         Row: {
           created_at: string
           id: string
+          space_avatar: string
+          space_display_name: string
           space_id: string
           user_id: string | null
         }
         Insert: {
           created_at?: string
           id?: string
+          space_avatar?: string
+          space_display_name?: string
           space_id: string
           user_id?: string | null
         }
         Update: {
           created_at?: string
           id?: string
+          space_avatar?: string
+          space_display_name?: string
           space_id?: string
           user_id?: string | null
         }
