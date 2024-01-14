@@ -19,6 +19,7 @@ const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
   useEffect(() => {
     let game: Phaser.Game | undefined;
+
     const resize = () => {
       if (game) {
         game.scale.resize(window.innerWidth, window.innerHeight - 2);

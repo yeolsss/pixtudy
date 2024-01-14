@@ -1,7 +1,8 @@
 import { Player } from "@/types/metaverse";
 import styled from "styled-components";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "@/hooks/useReduxTK";
+import { supabase } from "@/libs/supabase";
 
 interface Props {
   player: Player;
@@ -12,6 +13,30 @@ export default function MetaversePlayerCard({ player }: Props) {
   const { id } = useAppSelector((state) => state.authSlice.user);
   const { playerId, nickname } = player;
 
+  // dm state
+  const [dmContainers, setDmContainers] = useState<string[]>([]);
+  const [isDMOpen, setIsDMOpen] = useState<boolean>(false);
+  useEffect(() => {
+    const dmChannel = supabase.channel(`dm_channel_${SPACE_ID}`);
+    dmChannel
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "dm_messages",
+          filter: `receiver_id=eq.${id}`,
+        },
+        (payload) => {
+          setDmContainers((prev) => {
+            if (prev.includes(payload.new.sender_id)) return prev;
+            else return [payload.new.sender_id, ...prev];
+          });
+        }
+      )
+      .subscribe();
+  }, []);
+
   const onClickDMMessageHandler = () => {
     if (playerId !== id) {
       console.log("DM message to ", nickname);
@@ -19,6 +44,7 @@ export default function MetaversePlayerCard({ player }: Props) {
     }
     console.log("자기 자신에게는 DM을 보낼 수 없습니다.");
   };
+
   return (
     <StMetaversePlayerCard onClick={onClickDMMessageHandler}>
       <div>
