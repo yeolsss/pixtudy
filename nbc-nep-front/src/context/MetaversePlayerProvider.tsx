@@ -1,3 +1,4 @@
+import { Player } from "@/types/metaverse";
 import {
   createContext,
   PropsWithChildren,
@@ -5,7 +6,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Player } from "@/types/metaverse";
 
 type PlayerContextType = {
   playerList: Player[];
