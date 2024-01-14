@@ -2,13 +2,14 @@ import useDevice from "@/hooks/share-screen/useDevice";
 import useSocket from "@/hooks/useSocket";
 import { types } from "mediasoup-client";
 import { RefObject, useEffect, useRef, useState } from "react";
+import ShareScreenButton from "./ShareScreenButton";
 import {
   checkStreamTracksEmpty,
   isAlreadyConsumeTransport,
   isAudioTrack,
   isNotEmptyTracks,
   isVideoTrack,
-} from "../lib/util";
+} from "./lib/util";
 import {
   ConsumerTransportType,
   DtlsParameters,
@@ -17,8 +18,7 @@ import {
   RtpCapabilities,
   ShareType,
   TransPortType,
-} from "../types/ScreenShare.types";
-import ShareScreenButton from "./ShareScreenButton";
+} from "./types/ScreenShare.types";
 
 export default function ScreenShare() {
   const { socket, disconnect } = useSocket();

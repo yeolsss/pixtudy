@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { ShareType } from "../types/ScreenShare.types";
+import { ShareType } from "./types/ScreenShare.types";
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void;
