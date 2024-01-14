@@ -26,15 +26,15 @@
         },
         "/Users/yeol/programing/project/nbc-nep/nbc-nep-front/public/assets/map/tile1.tmx": {
             "scale": 0.7722,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1320.901320901321,
-                "y": 424.11292411292413
+                "x": 865.0608650608651,
+                "y": 412.45791245791247
             }
         },
         "/Users/yeol/programing/project/nbc-nep/nbc-nep-front/public/assets/map/tile1.tmx#tile1": {
             "scaleInDock": 0.7614,
-            "scaleInEditor": 1.75
+            "scaleInEditor": 0.9692
         },
         "/Users/yeol/programing/project/nbc-nep/nbc-nep-front/public/assets/map/tile1.tsx": {
             "scaleInDock": 1,
