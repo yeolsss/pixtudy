@@ -1,29 +1,32 @@
 module.exports = function (io) {
-  let players = {};
+  const players = {};
 
   io.on("connection", function (socket) {
     console.log("player [" + socket.id + "] connected");
 
-    players[socket.id] = {
-      rotation: 0,
-      x: 100,
-      y: 100,
-      playerId: socket.id,
-      movingLeft: false,
-      movingRight: false,
-      movingUp: false,
-      movingDown: false,
-      frame: 0,
-    };
-    socket.emit("currentPlayers", players);
-    socket.broadcast.emit("newPlayer", players[socket.id]);
-
-    socket.on("disconnect", function () {
-      console.log("player [" + socket.id + "] disconnected");
-      delete players[socket.id];
-      io.emit("playerDisconnected", socket.id);
+    socket.on("userData", (playerInfo) => {
+      players[socket.id] = {
+        rotation: 0,
+        x: 100,
+        y: 100,
+        socketId: socket.id,
+        playerId: playerInfo.playerId,
+        nickname: playerInfo.nickname,
+        character: playerInfo.character,
+        frame: 0,
+      };
+      socket.emit("currentPlayers", players);
+      socket.broadcast.emit("newPlayer", players[socket.id]);
+      io.emit("metaversePlayerList", players);
     });
 
+    socket.on("disconnect", function () {
+      io.emit("playerDisconnected", players[socket.id].socketId);
+      delete players[socket.id]; // 플레이어 삭제한 후에 players 리스트를 다시 클라이언트로 보낸다
+      io.emit("metaversePlayerList", players);
+    });
+
+    // characterScenes의 emitPlayerMovement 함수에서 받은 데이터를 다시 클라이언트로 보낸다
     socket.on("playerMovement", function (movementData) {
       players[socket.id].x = movementData.x;
       players[socket.id].y = movementData.y;

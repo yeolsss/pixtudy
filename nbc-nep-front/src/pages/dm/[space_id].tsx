@@ -1,4 +1,6 @@
 import ConnectedUser from "@/components/dm/ConnectedUser";
+import { ReactElement } from "react";
+import Dashboard from "../dashboard";
 
 export default function Chat() {
   return (
@@ -9,3 +11,7 @@ export default function Chat() {
     </div>
   );
 }
+
+Dashboard.getLayout = function getLayout(page: ReactElement) {
+  return page;
+};

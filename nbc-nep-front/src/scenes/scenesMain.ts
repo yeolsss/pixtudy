@@ -16,6 +16,10 @@ export class ScenesMain extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 60,
     });
+    this.load.spritesheet("pinkybonz", "/assets/characters/front.png", {
+      frameWidth: 32,
+      frameHeight: 60,
+    });
   }
 
   create() {

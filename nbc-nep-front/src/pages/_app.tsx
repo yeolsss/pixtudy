@@ -1,5 +1,6 @@
 import OnChangeUserSession from "@/components/layout/OnChangeUserSession";
 import StoreProvider from "@/libs/StoreProvier";
+import GlobalStyle from "@/styles/Globalstyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
@@ -20,9 +21,10 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
+        <OnChangeUserSession />
+        <GlobalStyle />
         {getLayout(
           <>
-            <OnChangeUserSession />
             <Component {...pageProps} />
           </>
         )}

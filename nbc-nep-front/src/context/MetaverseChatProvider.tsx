@@ -2,6 +2,7 @@ import React, { createContext, PropsWithChildren, useContext } from "react";
 import useChatSocket from "@/hooks/socket/useChatSocket";
 import { Chat } from "@/types/metaverse";
 import useInput from "@/hooks/useInput";
+import { useAppSelector } from "@/hooks/useReduxTK";
 
 type MetaverseChatContext = {
   chatInput: string;
@@ -12,30 +13,23 @@ type MetaverseChatContext = {
 const initialState: MetaverseChatContext = {
   chatInput: "",
   chatList: [] as Chat[],
-  onChangeChatHandler: (e: React.ChangeEvent<HTMLInputElement>) => {},
-  onSubmitChatHandler: (e: React.FormEvent<HTMLFormElement>) => {},
+  onChangeChatHandler: () => {},
+  onSubmitChatHandler: () => {},
 };
 
 const MetaverseChatContext = createContext<MetaverseChatContext>(initialState);
 
 export const MetaverseChatProvider = ({ children }: PropsWithChildren) => {
-  // 필요한게 뭐냐 보즈아~~
-  // 1. 채팅 내용<HTMLInputElement>,
   const [chatInput, setChatInput, onChangeChatHandler] = useInput<string>("");
+  const { display_name } = useAppSelector((state) => state.authSlice.user);
+  const { chatList, sendChatMessage } = useChatSocket(display_name);
 
-  // 2. socket customHooks
-  const { chatList, sendChatMessage } = useChatSocket();
-
-  // 3. 채팅 내용을 보내는 함수<onSubmitChatHandler>
   const onSubmitChatHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sendChatMessage(chatInput);
     setChatInput("");
   };
 
-  // 4. user 정보 customHooks
-
-  // context value
   const value = {
     chatInput,
     chatList,

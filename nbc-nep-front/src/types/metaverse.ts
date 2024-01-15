@@ -2,7 +2,10 @@ export type Player = {
   rotation: number;
   x: number;
   y: number;
+  socketId: string;
   playerId: string;
+  nickname: string;
+  character: string;
   frame: string;
 };
 
@@ -19,4 +22,5 @@ export type MapData = {
 export type Chat = {
   userId: string;
   message: string;
+  playerDisplayName: string;
 };
