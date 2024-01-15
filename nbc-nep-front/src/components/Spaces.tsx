@@ -31,7 +31,7 @@ export default function Spaces() {
   };
   return (
     <>
-      {userSpaces.length > 1 ? (
+      {userSpaces.length >= 1 ? (
         userSpaces?.map((space) => {
           return (
             <section key={space.id}>
