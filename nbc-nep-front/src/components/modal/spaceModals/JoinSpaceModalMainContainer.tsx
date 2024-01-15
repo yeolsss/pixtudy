@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
 
 export default function JoinSpaceModalMainContainer() {
   const { id: userId, display_name: displayName } = useAppSelector(
@@ -23,9 +24,20 @@ export default function JoinSpaceModalMainContainer() {
   // 닉네임과 아바타 선택은 한 화면에서 진행. 그러면? 초대커드 검증 여붕 따라 렌더링
 
   return (
-    <div>
+    <StModalContainer>
       <h2>Space에 입장하기</h2>
       {isValidSpace === false ? <form>hey</form> : <div>why</div>}
-    </div>
+    </StModalContainer>
   );
 }
+
+const StModalContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background: white;
+  width: 50rem;
+  height: 50rem;
+`;
