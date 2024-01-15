@@ -8,9 +8,9 @@ export default function MetaverseChatList() {
   return (
     <>
       <StMetaverseChatList>
-        {chatList?.map((chat, index) => (
-          <MetaverseChatCard chat={chat} key={chat.userId + index} />
-        ))}
+        {chatList?.map((chat, index) => {
+          return <MetaverseChatCard chat={chat} key={chat.userId + index} />;
+        })}
       </StMetaverseChatList>
     </>
   );

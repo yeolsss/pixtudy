@@ -56,6 +56,7 @@ export class CharacterScenes extends Phaser.Scene {
     });
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
+      console.log("로그인 갯수 : ", Object.keys(players).length);
       Object.keys(players).forEach((id) => {
         if (players[id].socketId === this.socket?.id) {
           this.addPlayer(players[id], objLayer!);

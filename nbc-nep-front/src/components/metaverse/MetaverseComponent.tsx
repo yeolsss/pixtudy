@@ -1,8 +1,4 @@
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
-import {
-  MetaversePlayerProvider,
-  usePlayerContext,
-} from "@/context/MetaversePlayerProvider";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
@@ -10,15 +6,11 @@ import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import MetaverseChat from "./metaverseChat/MetaverseChat";
-import { useRouter } from "next/router";
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
-  const { setSpaceId } = usePlayerContext();
-  const router = useRouter();
-  const spaceId =
-    typeof router.query.space_id === "string" ? router.query.space_id : "";
-  setSpaceId(spaceId);
+  const { spaceId } = usePlayerContext();
 
   useEffect(() => {
     let game: Phaser.Game | undefined;
@@ -41,7 +33,7 @@ const MetaverseComponent = () => {
           debug: true,
           width: 1280,
           height: 800,
-          fps: 60,
+          fps: 100,
         },
       },
       scene: [ScenesMain, CharacterScenes],
@@ -67,13 +59,11 @@ const MetaverseComponent = () => {
   }, []);
 
   return (
-    <MetaversePlayerProvider>
-      <StMetaverseWrapper>
-        <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
-        <MetaverseChat />
-        <MetaversePlayerList />
-      </StMetaverseWrapper>
-    </MetaversePlayerProvider>
+    <StMetaverseWrapper>
+      <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
+      <MetaverseChat />
+      <MetaversePlayerList />
+    </StMetaverseWrapper>
   );
 };
 
