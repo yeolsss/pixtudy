@@ -1,11 +1,13 @@
 {
   "folders": [
-	{
-		"path": "nbc-nep-back"
-	},
-	{
-		"path": "nbc-nep-front"
-	}
-],
-  "settings": {}
+    {
+      "path": "nbc-nep-back"
+    },
+    {
+      "path": "nbc-nep-front"
+    }
+  ],
+  "settings": {
+    "cSpell.words": ["mediasoup"]
+  }
 }
