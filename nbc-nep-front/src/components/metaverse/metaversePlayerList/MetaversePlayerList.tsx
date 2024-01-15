@@ -106,6 +106,7 @@ const StMetaverseDmContainers = styled.section`
   position: absolute;
   bottom: 0;
   left: 200px;
+  display: flex;
   z-index: 100;
   background: green;
 `;
