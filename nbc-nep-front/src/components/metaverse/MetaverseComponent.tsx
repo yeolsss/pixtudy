@@ -1,6 +1,8 @@
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
-import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
-import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import {
+  MetaversePlayerProvider,
+  usePlayerContext,
+} from "@/context/MetaversePlayerProvider";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
@@ -8,12 +10,16 @@ import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import MetaverseChat from "./metaverseChat/MetaverseChat";
+import { useRouter } from "next/router";
 
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
-  const data = useGetUserSpaces(id);
+  const { setSpaceId } = usePlayerContext();
+  const router = useRouter();
+  const spaceId =
+    typeof router.query.space_id === "string" ? router.query.space_id : "";
+  setSpaceId(spaceId);
 
-  console.log(data);
   useEffect(() => {
     let game: Phaser.Game | undefined;
 
@@ -49,6 +55,7 @@ const MetaverseComponent = () => {
       playerId: id,
       nickname: display_name,
       character: "pinkybonz",
+      spaceId,
     });
 
     window.addEventListener("resize", resize);

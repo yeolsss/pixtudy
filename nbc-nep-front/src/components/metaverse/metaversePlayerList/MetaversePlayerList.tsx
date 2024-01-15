@@ -4,23 +4,17 @@ import { useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
 import { Tables } from "@/types/supabase";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import MetaverseDmContainer from "./metaverseDmContainer/MetaverseDmContainer";
 
 export default function MetaversePlayerList() {
   const { playerList } = usePlayerContext();
-
+  const { spaceId } = usePlayerContext();
   // 열린 dm 채팅방
   const [activateDmUsers, setActivateDmUsers] = useState<string[]>([]);
 
   const currentUserId = useAppSelector((state) => state.authSlice.user.id);
-
-  const router = useRouter();
-
-  const spaceId =
-    typeof router.query.space_id === "string" ? router.query.space_id : "";
 
   // 현재 세션의 유저 id가 receiver로 지정된 메시지가 도착했을 때
   const getNewMessage = (
