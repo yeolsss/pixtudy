@@ -1,15 +1,19 @@
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
+import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import MetaverseChat from "./metaverseChat/MetaverseChat";
-import { useAppSelector } from "@/hooks/useReduxTK";
 
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
+  const data = useGetUserSpaces(id);
+
+  console.log(data);
   useEffect(() => {
     let game: Phaser.Game | undefined;
 

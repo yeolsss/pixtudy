@@ -14,7 +14,7 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function App({ Component, pageProps }: AppPropsWithLayout) {
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const queryClient = new QueryClient();
   const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -32,4 +32,3 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     </QueryClientProvider>
   );
 }
-export default App;

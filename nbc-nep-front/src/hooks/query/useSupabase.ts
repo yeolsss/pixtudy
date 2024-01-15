@@ -14,6 +14,7 @@ import {
   sendMessage,
   sendMessageArgs,
 } from "@/api/supabase/dm";
+import { joinSpaceHandler } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Tables } from "@/types/supabase";
 import { Space_members } from "@/types/supabase.tables.type";
@@ -66,7 +67,18 @@ export function useGetOtherUserInfo(otherUserId: string) {
   return useCustomQuery<Tables<"users"> | null, Error>(getOtherUserOptions);
 }
 
-/* dm */
+/* space */
+// insert userData to space_members
+export function useJoinSpace() {
+  const { mutate: joinSpace } = useMutation({
+    mutationFn: joinSpaceHandler,
+    onError: (error) => {
+      console.error("joinSpaceError: ", error);
+    },
+  });
+  return joinSpace;
+}
+
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {
   const getUserSpacesOptions = {
@@ -89,6 +101,7 @@ export function useGetCurrentSpaceUsers(spaceId: string) {
   );
 }
 
+/* dm */
 // check dmChannel with otherUser
 export function useGetDmChannel({
   receiverId,
