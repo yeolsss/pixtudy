@@ -8,13 +8,6 @@ import styled from "styled-components";
 import MetaverseChat from "./metaverseChat/MetaverseChat";
 import { useAppSelector } from "@/hooks/useReduxTK";
 
-// 시나리오
-// 1. useQuery 사용해서 유저 정보를 가져온다.
-// 2. 가져온 유저 정보를 바탕으로 space에 입장한다.
-// 2-1. 유저 정보 중 space_display_name 이 없다면, nickname을 입력받는다.
-// 2-2. 유저 정보 중 space_avatar 가 없다면 프리셋 중 하나를 선택한다.
-// 2-3. 2-1, 2-2 는 모달 창에서 진행한다.
-
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
   useEffect(() => {

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "/Users/yeol/programing/project/nbc-nep/nbc-nep-front/public/assets/map/tile1.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
         "."
     ],
@@ -28,7 +28,7 @@
             "scale": 0.7722,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 865.0608650608651,
+                "x": 863.7658637658639,
                 "y": 412.45791245791247
             }
         },
