@@ -1,3 +1,5 @@
+import { StAudio, StVideo } from "./VideoConference";
+
 interface Props {
   stream: MediaStream;
   type: "video" | "audio";
@@ -5,7 +7,7 @@ interface Props {
 
 export default function ShareMediaItem({ stream, type }: Props) {
   return type === "video" ? (
-    <video
+    <StVideo
       playsInline
       autoPlay
       ref={(videoRef) => {
@@ -16,7 +18,7 @@ export default function ShareMediaItem({ stream, type }: Props) {
       }}
     />
   ) : (
-    <audio
+    <StAudio
       playsInline
       autoPlay
       ref={(audioRef) => {

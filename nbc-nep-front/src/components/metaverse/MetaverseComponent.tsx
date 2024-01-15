@@ -7,7 +7,6 @@ import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
-import ScreenShare from "../share-screen/ShareScreen";
 import MetaverseChat from "./metaverseChat/MetaverseChat";
 
 // 시나리오
@@ -73,7 +72,6 @@ const MetaverseComponent = () => {
         <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
         <MetaverseChat />
         <MetaversePlayerList />
-        <ScreenShare />
       </StMetaverseWrapper>
     </MetaversePlayerProvider>
   );

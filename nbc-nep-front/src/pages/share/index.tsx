@@ -1,5 +1,5 @@
-import ShareDockContainer from "@/components/share-screen/ShareDockContainer";
+import VideoConference from "@/components/video-conference/VideoConference";
 
 export default function Screen() {
-  return <ShareDockContainer />;
+  return <VideoConference />;
 }

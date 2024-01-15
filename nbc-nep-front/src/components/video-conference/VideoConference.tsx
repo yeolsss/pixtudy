@@ -4,6 +4,7 @@ import useSendTransport from "@/hooks/share-screen/useSendTransport";
 import useSocket from "@/hooks/socket/useSocket";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
 import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 import ShareButton from "./ShareButton";
 import ShareMediaItem from "./ShareMediaItem";
 import { isAlreadyConsume, isEmptyTracks } from "./lib/util";
@@ -18,7 +19,7 @@ import {
 
 const roomName = "test";
 
-export default function ShareDockContainer() {
+export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const localWebCamRef = useRef<HTMLVideoElement | null>(null);
@@ -197,8 +198,8 @@ export default function ShareDockContainer() {
   }
 
   return (
-    <>
-      <div>
+    <StWrapper>
+      <StDockContainer>
         <ShareButton
           type="screen"
           onShare={handleShare}
@@ -220,11 +221,11 @@ export default function ShareDockContainer() {
           shareButtonText="마이크 켜기"
           stopSharingButtonText="마이크 끄기"
         />
-      </div>
-      <div>
-        <video ref={localVideoRef} muted playsInline autoPlay></video>
-        <video ref={localWebCamRef} muted playsInline autoPlay></video>
-        <audio ref={localAudioRef} muted playsInline autoPlay></audio>
+      </StDockContainer>
+      <StMediaItemContainer>
+        <StVideo ref={localVideoRef} muted playsInline autoPlay></StVideo>
+        <StVideo ref={localWebCamRef} muted playsInline autoPlay></StVideo>
+        <StAudio ref={localAudioRef} muted playsInline autoPlay></StAudio>
         {consumers.map((consumer) => {
           const { track } = consumer;
           const stream = new MediaStream([track]);
@@ -237,8 +238,8 @@ export default function ShareDockContainer() {
             />
           );
         })}
-      </div>
-    </>
+      </StMediaItemContainer>
+    </StWrapper>
   );
 }
 
@@ -265,3 +266,47 @@ const videoParams = {
     videoGoogleStartBitrate: 1000,
   },
 };
+
+const StWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  position: relative;
+`;
+
+const StDockContainer = styled.div`
+  position: absolute;
+
+  left: 50%;
+  transform: translateX(-50%);
+
+  bottom: 10px;
+  width: 300px;
+  border: 1px solid black;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+`;
+const StMediaItemContainer = styled.div`
+  position: absolute;
+
+  right: 20px;
+  top: 0px;
+
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StVideo = styled.video`
+  width: 400px;
+  height: 300px;
+`;
+export const StAudio = styled.audio`
+  width: 0;
+  height: 0;
+`;

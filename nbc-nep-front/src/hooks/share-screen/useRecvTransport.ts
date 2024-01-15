@@ -2,7 +2,7 @@ import {
   DtlsParameters,
   RecvTransportType,
   TransPortParams,
-} from "@/components/share-screen/types/ScreenShare.types";
+} from "@/components/video-conference/types/ScreenShare.types";
 import { useRef } from "react";
 import { Socket } from "socket.io-client";
 
