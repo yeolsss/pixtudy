@@ -3,9 +3,13 @@ import { useAppSelector } from "@/hooks/useReduxTK";
 import { Space_members } from "@/types/supabase.tables.type";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import ModalPortal from "./modal/ModalPortal";
 
 export default function Spaces() {
   const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+  const isModalOpen = useAppSelector(
+    (state) => state.modalSlice.isJoinSpaceModalOpen
+  );
   const getUserSpaces = useGetUserSpaces(currentUserId);
 
   const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
@@ -21,6 +25,7 @@ export default function Spaces() {
   };
   return (
     <>
+      <button>Space에 입장하기</button>
       {userSpaces?.map((space) => {
         return (
           <section key={space.id}>
@@ -33,6 +38,7 @@ export default function Spaces() {
           </section>
         );
       })}
+      <ModalPortal></ModalPortal>
     </>
   );
 }
