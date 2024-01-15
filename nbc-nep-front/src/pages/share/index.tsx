@@ -1,5 +1,5 @@
-import ScreenShare from "@/components/share-screen/ShareScreen";
+import ShareDockContainer from "@/components/share-screen/ShareDockContainer";
 
 export default function Screen() {
-  return <ScreenShare />;
+  return <ShareDockContainer />;
 }

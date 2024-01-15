@@ -12,7 +12,7 @@ export type ProduceParameter = {
   appData: types.AppData;
 };
 
-export type TransPortType = {
+export type TransPortParams = {
   id: string;
   iceParameters: types.IceParameters;
   iceCandidates: types.IceCandidate[];
@@ -42,3 +42,10 @@ export type RecvTransportType = types.Transport<types.AppData>;
 export type Producer = types.Producer<types.AppData>;
 
 export type Consumer = types.Consumer<types.AppData>;
+
+export type MediaStreamWithId = {
+  stream: MediaStream;
+  id: string;
+};
+
+export type TrackKind = "video" | "audio";

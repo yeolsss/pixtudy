@@ -1,14 +1,13 @@
 import useDevice from "@/hooks/share-screen/useDevice";
-import useSocket from "@/hooks/useSocket";
+import useSocket from "@/hooks/socket/useSocket";
 import { types } from "mediasoup-client";
 import { Consumer, Producer } from "mediasoup-client/lib/types";
 import { RefObject, useEffect, useRef, useState } from "react";
-import ShareScreenButton from "./ShareScreenButton";
 import {
   checkStreamTracksEmpty,
   isAlreadyConsume,
   isAudioTrack,
-  isNotEmptyTracks,
+  isEmptyTracks,
   isVideoTrack,
 } from "./lib/util";
 import {
@@ -20,7 +19,7 @@ import {
   RtpCapabilities,
   SendTransportType,
   ShareType,
-  TransPortType,
+  TransPortParams,
 } from "./types/ScreenShare.types";
 
 export default function ScreenShare() {
@@ -72,7 +71,7 @@ export default function ScreenShare() {
   }
 
   async function handleCreateSendTransport(
-    params: TransPortType,
+    params: TransPortParams,
     type: ShareType
   ) {
     const stream = {
@@ -88,8 +87,8 @@ export default function ScreenShare() {
       const videoTracks = stream.getVideoTracks();
       const audioTracks = stream.getAudioTracks();
 
-      const tracks = isNotEmptyTracks(videoTracks) ? videoTracks : audioTracks;
-      const transportParams = isNotEmptyTracks(videoTracks) ? videoParams : {};
+      const tracks = isEmptyTracks(videoTracks) ? videoTracks : audioTracks;
+      const transportParams = isEmptyTracks(videoTracks) ? videoParams : {};
       const sendTransport = createSendTransport(params);
 
       if (!tracks || tracks.length === 0 || !sendTransport)
@@ -108,7 +107,7 @@ export default function ScreenShare() {
     }
   }
 
-  function createSendTransport(params: TransPortType) {
+  function createSendTransport(params: TransPortParams) {
     if (sendTransportRef.current) return sendTransportRef.current;
     console.log(params);
     try {
@@ -127,7 +126,7 @@ export default function ScreenShare() {
     }
   }
 
-  function createRecvTransport(params: TransPortType) {
+  function createRecvTransport(params: TransPortParams) {
     if (recvTransportRef.current) return recvTransportRef.current;
 
     try {
@@ -226,7 +225,7 @@ export default function ScreenShare() {
     socket.emit(
       "create-web-rtc-transport",
       { consumer: true },
-      (data: { params: TransPortType }) => {
+      (data: { params: TransPortParams }) => {
         // 서버에서 transport를 만들고 나서 정보를 콜백받음
         const { params } = data;
         const recvTransport = createRecvTransport(params);
@@ -370,28 +369,6 @@ export default function ScreenShare() {
 
   return (
     <div>
-      <ShareScreenButton
-        onShare={handleShareAndJoinRoom(localVideoRef)}
-        onStopShare={handleStopShare(localVideoRef)}
-        type="screen"
-      >
-        Share Screen
-      </ShareScreenButton>
-      <ShareScreenButton
-        onShare={handleShareAndJoinRoom(localWebCamRef)}
-        onStopShare={handleStopShare(localWebCamRef)}
-        type="webcam"
-      >
-        Share Web Cam
-      </ShareScreenButton>
-      <ShareScreenButton
-        onShare={handleShareAndJoinRoom(localAudioRef)}
-        onStopShare={handleStopShare(localAudioRef)}
-        type="audio"
-      >
-        Share Audio
-      </ShareScreenButton>
-
       <video ref={localVideoRef} playsInline autoPlay />
       <video ref={localWebCamRef} playsInline autoPlay muted />
       <audio ref={localAudioRef} playsInline autoPlay muted />

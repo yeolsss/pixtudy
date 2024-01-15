@@ -1,9 +1,9 @@
 import {
   RtpCapabilities,
-  TransPortType,
+  TransPortParams,
 } from "@/components/share-screen/types/ScreenShare.types";
 import { Device } from "mediasoup-client";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 export default function useDevice() {
   const deviceRef = useRef<Device>();
 
@@ -14,6 +14,7 @@ export default function useDevice() {
 
   async function loadDevice(rtpCapabilities: RtpCapabilities) {
     const device = deviceRef.current;
+    if (device && device.loaded) return;
     try {
       await device?.load({ routerRtpCapabilities: rtpCapabilities });
     } catch (error) {
@@ -21,13 +22,19 @@ export default function useDevice() {
     }
   }
 
-  function createSendTransportWithDevice(params: TransPortType) {
-    return deviceRef.current!.createSendTransport(params);
-  }
+  const createSendTransportWithDevice = useCallback(
+    (params: TransPortParams) => {
+      return deviceRef.current!.createSendTransport(params);
+    },
+    [deviceRef.current]
+  );
 
-  function createRecvTransportWithDevice(params: TransPortType) {
-    return deviceRef.current!.createRecvTransport(params);
-  }
+  const createRecvTransportWithDevice = useCallback(
+    (params: TransPortParams) => {
+      return deviceRef.current!.createRecvTransport(params);
+    },
+    [deviceRef.current]
+  );
 
   function getRtpCapabilitiesFromDevice() {
     return deviceRef.current!.rtpCapabilities;

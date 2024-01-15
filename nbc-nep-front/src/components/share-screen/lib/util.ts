@@ -24,8 +24,8 @@ export function checkStreamTracksEmpty(stream: MediaStream) {
   );
 }
 
-export function isNotEmptyTracks(tracks: MediaStreamTrack[]) {
-  return tracks.length !== 0;
+export function isEmptyTracks(tracks: MediaStreamTrack[]) {
+  return tracks.length === 0;
 }
 
 export function isVideoTrack(track: MediaStreamTrack) {
