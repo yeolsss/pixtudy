@@ -128,11 +128,21 @@ const GlobalStyle = styled.createGlobalStyle`
     border-spacing: 0;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
   :root {
   }
 
   Html {
     font-size: 62.5%;
+  }
+  body {
+    margin: unset;
+    min-width: 100%;
+  }
+  #__next {
   }
 `;
 

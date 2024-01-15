@@ -5,6 +5,7 @@ import {
   handleValidateEmail,
   handleValidatePassword,
 } from "@/utils/authFormValidate";
+import { useRouter } from "next/router";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import AuthInput from "../AuthInput";
@@ -13,6 +14,8 @@ import SocialLogin from "./SocialLogin";
 export default function LoginModalMainContainer() {
   const login = useLoginUser();
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
   // signUp hook form
   const {
     handleSubmit,
@@ -35,6 +38,7 @@ export default function LoginModalMainContainer() {
         onSuccess: () => {
           reset();
           dispatch(closeModal());
+          router.push("/dashboard");
         },
       }
     );

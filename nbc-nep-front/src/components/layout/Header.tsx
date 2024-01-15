@@ -1,7 +1,7 @@
 import { useLogoutUser } from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import ModalPortal from "../modal/ModalPortal";
 import LoginModal from "../modal/authModals/loginModal/LoginModal";
 import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
@@ -9,9 +9,9 @@ import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
 export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
-  const isLogin = useAppSelector((state) => state.authSlice.isLogin);
 
   const modalStatus = useAppSelector((state) => state.modalSlice);
+  const authStatus = useAppSelector((state) => state.authSlice);
 
   const dispatch = useAppDispatch();
 
@@ -25,7 +25,6 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
-    router.push("/");
   };
 
   const handleToDashboard = () => {
@@ -41,7 +40,7 @@ export default function Header() {
     { text: "SIGNUP", handler: handleOpenSignUpModal },
   ];
 
-  const currentButton = isLogin ? loginModeButton : logoutModeButton;
+  const currentButton = authStatus.isLogin ? loginModeButton : logoutModeButton;
 
   return (
     <>
@@ -52,6 +51,11 @@ export default function Header() {
             {btn.text}
           </button>
         ))}
+        {authStatus.isLogin && (
+          <span>
+            {authStatus.user.display_name}/{authStatus.user.email}
+          </span>
+        )}
       </header>
       {/* login 모달 */}
       {modalStatus.isLoginModalOpen && (

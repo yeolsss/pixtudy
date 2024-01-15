@@ -1,9 +1,10 @@
+import Spaces from "@/components/Spaces";
 import Layout from "@/components/layout/Layout";
 import { ReactElement } from "react";
 import { NextPageWithLayout } from "../_app";
 
 const Dashboard: NextPageWithLayout = () => {
-  return <div>dashboard</div>;
+  return <Spaces />;
 };
 
 Dashboard.getLayout = function getLayout(page: ReactElement) {
