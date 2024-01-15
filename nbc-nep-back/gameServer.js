@@ -18,11 +18,11 @@ module.exports = function (io) {
         spaceId: playerInfo.spaceId,
       };
 
-      let playersInSpace = Object.values(players).filter(
+      const playersInSpace = Object.values(players).filter(
         (player) => player.spaceId === playerInfo.spaceId
       );
 
-      let playerSpaceId = players[socket.id] ? playerInfo.spaceId : null;
+      const playerSpaceId = players[socket.id] ? playerInfo.spaceId : null;
       socket.emit("currentPlayers", playersInSpace);
       socket.to(playerSpaceId).emit("newPlayer", players[socket.id]);
       io.to(playerSpaceId).emit("metaversePlayerList", playersInSpace);
