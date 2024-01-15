@@ -110,7 +110,6 @@ export default function MetaverseDmContainer({
       },
       {
         onSuccess: (createdChannel) => {
-          console.log(createdChannel);
           if (createdChannel) {
             queryClient.invalidateQueries({
               queryKey: ["dmChannel", otherUserId],
@@ -137,9 +136,7 @@ export default function MetaverseDmContainer({
 
   // 최초 mount시 상대방 유저와 dm channel 있는지 확인 후 채널 연결
   useEffect(() => {
-    console.log("check out", currentDmChannel);
     if (currentDmChannel) {
-      console.log("check in", currentDmChannel);
       // dm 채널 연결
       connectChannel(currentDmChannel);
     }
@@ -150,6 +147,7 @@ export default function MetaverseDmContainer({
     setMessages(prevDmMessages!);
   }, [prevDmMessages]);
 
+  // 스크롤이 자동으로 맨 아래로 가도록
   useEffect(() => {
     if (messageListRef.current)
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;

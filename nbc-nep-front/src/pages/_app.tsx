@@ -4,7 +4,7 @@ import GlobalStyle from "@/styles/Globalstyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
-import { ReactElement, ReactNode, useEffect } from "react";
+import { ReactElement, ReactNode } from "react";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -17,10 +17,6 @@ type AppPropsWithLayout = AppProps & {
 function App({ Component, pageProps }: AppPropsWithLayout) {
   const queryClient = new QueryClient();
   const getLayout = Component.getLayout ?? ((page) => page);
-
-  useEffect(() => {
-    console.log("app render");
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
