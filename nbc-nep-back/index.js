@@ -6,6 +6,7 @@ const {
   createWebRtcTransport,
   getRtcCapabilities,
   getIsCanConsumeWithRouter,
+  getTransportParams,
 } = require("./conference/mediaSoupManager");
 
 const io = require("socket.io")(server, {
@@ -58,9 +59,9 @@ io.on("connection", (socket) => {
     peers[socket.id] = {
       socket,
       roomName,
-      transports: [],
-      producers: [],
-      consumers: [],
+      transports: peers[socket.id]?.transports || [],
+      producers: peers[socket.id]?.producers || [],
+      consumers: peers[socket.id]?.consumers || [],
       peerDetails: {
         name: "",
         isAdmin: false,
@@ -85,16 +86,25 @@ io.on("connection", (socket) => {
       const socketId = socket.id;
       const roomName = peers[socket.id].roomName;
 
-      const { transport, params } = await createWebRtcTransport();
+      if (
+        peers[socketId].transports.length === 0 ||
+        peers[socketId].transports.findIndex(
+          (transport) => transport.consumer === consumer
+        ) !== -1
+      ) {
+        let transport = await createWebRtcTransport();
+        peers[socketId].transports.push({ transport, consumer });
+        transports = [
+          ...transports,
+          { socketId, roomName, transport, consumer },
+        ];
+      }
 
-      // transport를 등록한다. 이 transport는 producer이거나 consumer일 수 있다.
-      transports = [...transports, { socketId, roomName, transport, consumer }];
-
-      // 사용자의 peer에 transport를 추가한다.
-      setPeers(socketId, "transports", (prevTransports) => [
-        ...prevTransports,
-        transport.id,
-      ]);
+      const { transport } = transports.find(
+        (transport) =>
+          transport.socketId === socketId && transport.roomName === roomName
+      );
+      const { params } = getTransportParams(transport);
 
       console.log("create web rtc transport success");
 
@@ -145,12 +155,9 @@ io.on("connection", (socket) => {
 
         const { roomName } = peers[socket.id];
         console.log(`${socketId}의 remote producer id is ${remoteProducer.id}`);
-        addProducer(remoteProducer, roomName, socket.id, socket.name);
 
-        setPeers(socket.id, "producers", (prevProducers) => [
-          ...prevProducers,
-          remoteProducer.id,
-        ]);
+        addProducer(remoteProducer, roomName, socket.id, socket.name);
+        peers[socket.id].producers.push(remoteProducer.id);
 
         informToConsumers(roomName, socket.id, remoteProducer.id);
 
@@ -202,9 +209,7 @@ io.on("connection", (socket) => {
 
       // 서버 transport중 내가 consume할 trasnport를 찾는다
       const consumerTransport = transports.find(
-        (transport) =>
-          transport.consumer &&
-          transport.transport.id === serverConsumerTransportId
+        (transport) => transport.transport.id === serverConsumerTransportId
       ).transport;
 
       if (
@@ -267,29 +272,24 @@ io.on("connection", (socket) => {
     }
   ); //
 
-  socket.on(
-    "transport-recv-connect",
-    async ({ dtlsParameters, serverConsumerTransportId }) => {
-      console.log('start - socket on "transport-recv-connect"');
-      const consumerTransport = transports.find(
-        (transport) =>
-          transport.transport.id === serverConsumerTransportId &&
-          transport.consumer
-      )?.transport;
+  socket.on("transport-recv-connect", async ({ dtlsParameters, socketId }) => {
+    console.log('start - socket on "transport-recv-connect"');
+    const consumerTransport = transports.find(
+      (transport) => transport.socketId === socketId
+    )?.transport;
 
-      if (!consumerTransport) {
-        console.log("oops, no transport found");
-        return;
-      }
-
-      try {
-        await consumerTransport.connect({ dtlsParameters });
-        console.log("end - socket on 'transport-recv-connect' success");
-      } catch (error) {
-        console.log("transport-recv-connect error", error);
-      }
+    if (!consumerTransport) {
+      console.log("oops, no transport found");
+      return;
     }
-  );
+
+    try {
+      await consumerTransport.connect({ dtlsParameters });
+      console.log("end - socket on 'transport-recv-connect' success");
+    } catch (error) {
+      console.log("transport-recv-connect error", error);
+    }
+  });
 
   socket.on("consumer-resume", async ({ serverConsumerId }) => {
     console.log("start - socket on 'consumer-resume'");

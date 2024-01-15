@@ -7,7 +7,6 @@ import ShareScreenButton from "./ShareScreenButton";
 import {
   checkStreamTracksEmpty,
   isAlreadyConsume,
-  isAlreadyConsumeTransport,
   isAudioTrack,
   isNotEmptyTracks,
   isVideoTrack,
@@ -111,10 +110,11 @@ export default function ScreenShare() {
 
   function createSendTransport(params: TransPortType) {
     if (sendTransportRef.current) return sendTransportRef.current;
-
+    console.log(params);
     try {
+      console.log("call here?");
       const sendTransport = createSendTransportWithDevice(params);
-
+      console.log("make?");
       sendTransport.on("connect", handleSendProducerTransportConnect);
       sendTransport.on("produce", handleSendProducerTransportProduce);
 
@@ -151,7 +151,10 @@ export default function ScreenShare() {
   ) {
     console.log("handle recv consumer transport connect start");
     try {
-      socket.emit("transport-recv-connect", { dtlsParameters });
+      socket.emit("transport-recv-connect", {
+        dtlsParameters,
+        socketId: socket.id,
+      });
       callback();
     } catch (error) {
       errorBack(error);
@@ -211,10 +214,10 @@ export default function ScreenShare() {
     console.log("call signalNewConsumerTransport with id :", remoteProducerId);
 
     // ! 이번에 하는게 완성되면 삭제돼야 마땅함
-    if (
+    /* if (
       isAlreadyConsumeTransport(consumerTransportsRef.current, remoteProducerId)
     )
-      return;
+      return; */
 
     if (isAlreadyConsume(consumers, remoteProducerId)) {
       return;
@@ -286,6 +289,7 @@ export default function ScreenShare() {
 
         try {
           console.log("start - consumer");
+
           const consumer = await consumerTransport.consume({
             id,
             producerId,

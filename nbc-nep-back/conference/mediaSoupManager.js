@@ -49,8 +49,19 @@ async function createWebRtcTransport() {
     console.log("transport closed");
   });
 
+  return transport;
+}
+
+function getRtcCapabilities() {
+  return router.rtpCapabilities;
+}
+
+function getIsCanConsumeWithRouter(data) {
+  return router.canConsume(data);
+}
+
+function getTransportParams(transport) {
   return {
-    transport,
     params: {
       id: transport.id,
       iceParameters: transport.iceParameters,
@@ -60,16 +71,10 @@ async function createWebRtcTransport() {
   };
 }
 
-function getRtcCapabilities() {
-  return router.rtpCapabilities;
-}
-function getIsCanConsumeWithRouter(data) {
-  return router.canConsume(data);
-}
-
 module.exports = {
   createWorker,
   createWebRtcTransport,
   getRtcCapabilities,
   getIsCanConsumeWithRouter,
+  getTransportParams,
 };
