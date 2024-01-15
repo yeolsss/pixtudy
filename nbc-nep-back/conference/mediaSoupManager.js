@@ -56,10 +56,6 @@ function getRtcCapabilities() {
   return router.rtpCapabilities;
 }
 
-function getIsCanConsumeWithRouter(data) {
-  return router.canConsume(data);
-}
-
 function isCanConsumeWithRouter(producerId, rtpCapabilities) {
   return router.canConsume({
     producerId,
@@ -80,7 +76,6 @@ module.exports = {
   createWorker,
   createWebRtcTransport,
   getRtcCapabilities,
-  getIsCanConsumeWithRouter,
   getTransportParams,
   isCanConsumeWithRouter,
 };
