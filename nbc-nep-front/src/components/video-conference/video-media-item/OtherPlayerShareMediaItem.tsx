@@ -30,7 +30,6 @@ export default function OtherPlayerShareMediaItem({
     setIsOpenLayout((prev) => !prev);
   };
 
-  console.log(filteredConsumers);
   return (
     <>
       <div onClick={handleOpenVideosLayout}>
@@ -50,7 +49,15 @@ export default function OtherPlayerShareMediaItem({
         )}
       </div>
       {isOpenLayout && (
-        <ShareScreenContainer filteredConsumers={filteredConsumers} />
+        <ShareScreenContainer>
+          {filteredConsumers.map((consumer) => (
+            <ShareMediaItem
+              key={consumer.id}
+              nickname={player.nickname}
+              videoSource={consumer}
+            />
+          ))}
+        </ShareScreenContainer>
       )}
     </>
   );

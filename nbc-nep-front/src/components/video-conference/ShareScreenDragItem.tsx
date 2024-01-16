@@ -1,6 +1,8 @@
 import { PropsWithChildren } from "react";
 import { useDrag } from "react-dnd";
 import styled from "styled-components";
+import { Consumer } from "./types/ScreenShare.types";
+import ShareMediaItem from "./ShareMediaItem";
 
 interface Props {
   id: string;

@@ -2,20 +2,19 @@ import { PropsWithChildren, useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
 import { currentLayoutIndex, getGridStyle } from "./lib/dnd";
-import {
-  Consumer,
-  GridStatusType,
-  GuideStatusType,
-} from "./types/ScreenShare.types";
+import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
+import ShareScreenDragItem from "./ShareScreenDragItem";
 
 interface Props {
-  filteredConsumers: Consumer[];
+  children: JSX.Element[];
 }
-export default function ShareScreenContainer({ filteredConsumers }: Props) {
-  console.log(filteredConsumers);
+export default function ShareScreenContainer({
+  children,
+}: PropsWithChildren<Props>) {
+  console.log(children);
   // 비디오 상태관리
-  const [videos, setVideos] = useState<string[]>([]);
-  const [selectVideos, setSelectVideos] = useState<(string | null)[]>([]);
+  const [videos, setVideos] = useState<JSX.Element[]>(children);
+  const [selectVideos, setSelectVideos] = useState<(JSX.Element | null)[]>([]);
 
   //   가이드 상태
   const [currentGuide, setCurrentGuide] = useState<GuideStatusType | null>(
@@ -32,7 +31,7 @@ export default function ShareScreenContainer({ filteredConsumers }: Props) {
   const hoverTimer = useRef<NodeJS.Timeout | null>(null);
 
   const [, drop] = useDrop({
-    accept: "BOX",
+    accept: "VIDEO",
     hover: (item, monitor) => {
       if (!dropParentRef.current) {
         return;
@@ -97,14 +96,14 @@ export default function ShareScreenContainer({ filteredConsumers }: Props) {
         if (prevGrid !== changeGridStyle) {
           setSelectVideos([]);
           // TODO: 데이터에 따른 변경 필요
-          //   setVideos(colors.filter((color) => color !== item.id));
+          setVideos((prev) => prev.filter((video) => video.key !== item.id));
         }
         return changeGridStyle;
       });
 
       setVideos((prevVideos) =>
         //  TODO: 데이터에 따른 변경 필요
-        prevVideos.filter((video) => video !== item.id)
+        prevVideos.filter((video) => video.key !== item.id)
       );
 
       setSelectVideos((prevVideos) => {
@@ -118,8 +117,11 @@ export default function ShareScreenContainer({ filteredConsumers }: Props) {
         while (newVideos.length <= activeIndex!) {
           newVideos.push(null); // 빈 값을 채워넣음
         }
+
         // TODO : 데이터에 따른 변경 필요
-        newVideos[activeIndex!] = item.id;
+        newVideos[activeIndex!] = children.find(
+          (child) => child.key === item.id
+        )!;
         return newVideos;
       });
     },
@@ -127,22 +129,17 @@ export default function ShareScreenContainer({ filteredConsumers }: Props) {
 
   return (
     <StVideosLayoutContainer>
-      <h1 style={{ fontWeight: "bold", fontSize: "2rem" }}>
-        layout components
-      </h1>
+      <h1>layout components</h1>
 
-      <div style={{ display: "flex", marginBottom: "2rem" }}>
-        {videos.map((video, index) => {
+      <StPreviewContainer>
+        {videos.map((video) => {
           return (
-            // TODO: VIDEO 형식에 따른 변경 필요
-            <></>
-            //   <ShareScreenDragItem key={video.id} id={video.id} active={false}>
-            //     {video}
-            //   </ShareScreenDragItem>
+            <ShareScreenDragItem key={video.key} id={video.key!} active={false}>
+              {video}
+            </ShareScreenDragItem>
           );
-          // return <Card key={video} color={video} active={false} />;
         })}
-      </div>
+      </StPreviewContainer>
 
       <StLayoutContainer
         ref={(element) => {
@@ -154,11 +151,9 @@ export default function ShareScreenContainer({ filteredConsumers }: Props) {
         {selectVideos?.map((video, index) => {
           if (!video) return <div key={index}>비디오를 드래그 하세요</div>;
           return (
-            // TODO: VIDEO 형식에 따른 변경 필요
-            <></>
-            //   <ShareScreenDragItem key={video.id} id={video.id} active={true}>
-            //     {video}
-            //   </ShareScreenDragItem>
+            <ShareScreenDragItem key={video.key} id={video.key!} active={true}>
+              {video}
+            </ShareScreenDragItem>
           );
         })}
 
@@ -169,10 +164,9 @@ export default function ShareScreenContainer({ filteredConsumers }: Props) {
 }
 
 const StVideosLayoutContainer = styled.div`
-  display: "flex";
-  flex-direction: "column";
-  align-items: "center";
-  height: "100%";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: fixed;
   left: 0;
   top: 0;
@@ -180,55 +174,65 @@ const StVideosLayoutContainer = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   color: white;
+
+  & h1 {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+`;
+
+const StPreviewContainer = styled.div`
+  display: flex;
+  margin-bottom: 3rem;
 `;
 
 const StLayoutContainer = styled.div<{ $currentGridLayout: GridStatusType }>`
-  background: "beige";
-  width: "80%";
-  height: "80%";
-  display: "grid";
-  position: "relative";
+  background: beige;
+  width: 80%;
+  height: 80%;
+  display: grid;
+  position: relative;
   ${(props) => {
     switch (props.$currentGridLayout) {
       case "edge-four":
-        return 'grid-template-rows: "1fr 1fr" grid-template-columns: "1fr 1fr"';
+        return "grid-template-rows: 1fr 1fr; grid-template-columns: 1fr 1fr";
       case "leftRight-two":
-        return 'grid-template-rows: "1fr" grid-template-columns: "1fr 1fr"';
+        return "grid-template-rows: 1fr; grid-template-columns: 1fr 1fr";
       case "topBottom-two":
-        return 'grid-template-rows: "1fr 1fr" grid-template-columns: "1fr"';
+        return "grid-template-rows: 1fr 1fr; grid-template-columns: 1fr";
       case "center-one":
       default:
-        return 'grid-template-rows: "1fr" grid-template-columns: "1fr"';
+        return "grid-template-rows: 1fr; grid-template-columns: 1fr";
     }
   }}
 `;
 
 const StLayoutGuide = styled.div<{ $guide: GuideStatusType | null }>`
   z-index: 10;
-  background: "rgba(0,0,0,0.5)";
+  background: rgba(122, 108, 108, 0.5);
   position: absolute;
   ${(props) => {
     switch (props.$guide) {
       case "top":
-        return 'top: 0; bottom: "50%"; left: 0; right: 0;';
+        return "top: 0; bottom: 50%; left: 0; right: 0;";
       case "bottom":
-        return 'top: "50%"; bottom: 0; left: 0; right: 0;';
+        return "top: 50%; bottom: 0; left: 0; right: 0;";
       case "left":
-        return 'top: 0; bottom: 0; left: 0; right: "50%";';
+        return "top: 0; bottom: 0; left: 0; right: 50%;";
       case "right":
-        return 'top: 0; bottom: 0; left: "50%"; right: 0;';
+        return "top: 0; bottom: 0; left: 50%; right: 0;";
       case "left-top":
-        return 'top: 0; bottom: "50%"; left: 0; right: "50%";';
+        return "top: 0; bottom: 50%; left: 0; right: 50%;";
       case "left-bottom":
-        return 'top: "50%"; bottom: 0; left: 0; right: "50%";';
+        return 'top: "50%"; bottom: 0; left: 0; right: 50%;';
       case "right-top":
-        return 'top: 0; bottom: "50%"; left: "50%"; right: 0;';
+        return "top: 0; bottom: 50%; left: 50%; right: 0;";
       case "right-bottom":
-        return 'top: "50%"; bottom: 0; left: "50%"; right: 0;';
+        return "top: 50%; bottom: 0; left: 50%; right: 0;";
       case "center":
         return "top: 0; bottom: 0; left: 0; right: 0;";
       default:
-        return 'top: "unset"; bottom: "unset"; left: "unset"; right: "unset";';
+        return "top: unset; bottom: unset; left: unset; right: unset;";
     }
   }}
 `;
