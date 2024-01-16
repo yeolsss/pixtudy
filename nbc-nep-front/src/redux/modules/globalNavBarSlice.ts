@@ -20,7 +20,6 @@ const globalNavBarSlice = createSlice({
       state.chatSection = action.payload.chatSection;
       state.settingsSection = action.payload.settingsSection;
       state.playerList = action.payload.playerList;
-      console.log(action.payload.playerList);
     },
   },
 });

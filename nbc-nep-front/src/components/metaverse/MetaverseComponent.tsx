@@ -2,19 +2,15 @@ import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
-import { useRouter } from "next/router";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import VideoConference from "../video-conference/VideoConference";
 
 const MetaverseComponent = () => {
-  const { display_name, id } = useAppSelector((state) => state.authSlice.user);
-  const { spaceId } = usePlayerContext();
-  const router = useRouter();
+  const { spaceId, playerSpaceInfoData, id } = usePlayerContext();
 
   useEffect(() => {
     let game: Phaser.Game | undefined;
@@ -24,48 +20,44 @@ const MetaverseComponent = () => {
       }
     };
 
-    const config = {
-      type: Phaser.AUTO,
-      width: window.innerWidth,
-      height: window.innerHeight - 2,
-      parent: "phaser-metaverse",
-      physics: {
-        default: "arcade",
-        arcade: {
-          gravity: { y: 0 },
-          debug: true,
-          width: 1280,
-          height: 800,
-          fps: 60,
+    if (playerSpaceInfoData?.space_avatar) {
+      const config = {
+        type: Phaser.AUTO,
+        width: window.innerWidth,
+        height: window.innerHeight - 2,
+        parent: "phaser-metaverse",
+        physics: {
+          default: "arcade",
+          arcade: {
+            gravity: { y: 0 },
+            debug: true,
+            width: 1280,
+            height: 800,
+            fps: 60,
+          },
         },
-      },
-      scene: [ScenesMain, CharacterScenes],
-    };
+        scene: [ScenesMain, CharacterScenes],
+      };
 
-    game = new Phaser.Game(config);
+      game = new Phaser.Game(config);
 
-    // 플레이어 정보를 저장하는 registry
-    // 임의로 설정해 둔 정보로, 실제 유저 정보를 가져와야 한다
-    game.registry.set("player", {
-      playerId: id,
-      nickname: display_name,
-      character: "ginger",
-      spaceId,
-    });
+      // 플레이어 정보를 저장하는 registry
+      // 임의로 설정해 둔 정보로, 실제 유저 정보를 가져와야 한다
+      game.registry.set("player", {
+        playerId: id,
+        nickname: playerSpaceInfoData?.space_display_name,
+        character: playerSpaceInfoData?.space_avatar || "pinkybonz",
+        spaceId,
+      });
 
-    window.addEventListener("resize", resize);
-
-    router.beforePopState(() => {
-      game?.destroy(true);
-      window.removeEventListener("resize", resize);
-      return true;
-    });
+      window.addEventListener("resize", resize);
+    }
 
     return () => {
       game?.destroy(true);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [playerSpaceInfoData]);
 
   return (
     <StMetaverseWrapper>

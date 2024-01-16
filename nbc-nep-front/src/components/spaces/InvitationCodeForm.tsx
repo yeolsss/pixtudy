@@ -49,7 +49,6 @@ export default function InvitationCodeForm({
       // 초대코드 유효하지 않다? async 함수로 빼야하나?
       // 첫번째 submit 씹힘
       if (spaceData) {
-        console.log(spaceData);
         setIsValidSpace(true);
       } else {
         // alert("초대코드가 유효하지 않습니다.");
