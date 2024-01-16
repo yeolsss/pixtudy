@@ -90,6 +90,10 @@ export class CharacterScenes extends Phaser.Scene {
       // playerInfo 가 문제인듯
       this.otherPlayers?.movePlayer(playerInfo);
     });
+
+    this.input.on("wheel", (pointer, gameObjects, deltaX, deltaY, deltaZ) => {
+      this.onMuseWheel(deltaY);
+    });
   }
 
   /**
@@ -313,6 +317,14 @@ export class CharacterScenes extends Phaser.Scene {
 
       // 현재 위치를 이전 위치로 저장합니다.
       this.character.oldPosition = currentPosition;
+    }
+  }
+
+  onMuseWheel(deltaY: number) {
+    if (deltaY > 0) {
+      this.cameras.main.setZoom(Math.max(this.cameras.main.zoom - 0.05, 1));
+    } else if (deltaY < 0) {
+      this.cameras.main.setZoom(Math.min(this.cameras.main.zoom + 0.05, 3));
     }
   }
 }
