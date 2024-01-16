@@ -17,6 +17,7 @@ type PlayerContextType = {
   spaceId: string;
   id: string;
   playerSpaceInfoData: Tables<"space_members"> | undefined;
+  display_name: string | null;
 };
 
 const initialState: PlayerContextType = {
@@ -24,11 +25,12 @@ const initialState: PlayerContextType = {
   spaceId: "",
   id: "",
   playerSpaceInfoData: {} as Tables<"space_members">,
+  display_name: "",
 };
 
 const PlayerContext = createContext<PlayerContextType>(initialState);
 export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
-  const { id } = useAppSelector((state) => state.authSlice.user);
+  const { id, display_name } = useAppSelector((state) => state.authSlice.user);
   const [playerList, setPlayerList] = useState<Player[]>([]);
 
   const router = useRouter();
@@ -66,6 +68,7 @@ export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
     spaceId,
     id,
     playerSpaceInfoData,
+    display_name,
   };
 
   return (
