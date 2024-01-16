@@ -7,6 +7,7 @@ import { useAppSelector } from "@/hooks/useReduxTK";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import MetaAvatar from "../metaverse/avatar/MetaAvatar";
 import ShareButton from "./ShareButton";
 import { isAlreadyConsume, isEmptyTracks } from "./lib/util";
 import {
@@ -49,6 +50,10 @@ export default function VideoConference() {
     createRecvTransportWithDevice,
     playerId: currentPlayerId,
   });
+
+  const currentPlayer = playerList.find(
+    (player) => player.playerId === currentPlayerId
+  );
 
   useEffect(() => {
     console.log("socket connected");
@@ -229,6 +234,7 @@ export default function VideoConference() {
   return (
     <>
       <StDockContainer>
+        <MetaAvatar spaceAvatar={currentPlayer?.character} />
         <ShareButton
           type="screen"
           onShare={handleShare}
