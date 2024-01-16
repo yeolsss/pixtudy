@@ -1,5 +1,5 @@
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { CharacterScenes } from "@/scenes/characterScenes";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";

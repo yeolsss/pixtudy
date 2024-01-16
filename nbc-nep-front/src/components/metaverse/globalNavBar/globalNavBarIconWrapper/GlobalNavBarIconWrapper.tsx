@@ -4,24 +4,31 @@ import IconButtonWrapper from "@/components/metaverse/globalNavBar/globalNavBarI
 import chartIcon from "@/assets/icons/Chart.png";
 import SettingsIcon from "@/assets/icons/Setting.png";
 import avatorIcon from "@/assets/icons/avator.png";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setIsSomeSection } from "@/redux/modules/globalNavBarSlice";
+import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 
 export default function GlobalNavBarIconWrapper() {
   const dispatch = useAppDispatch();
   const { chatSection, settingsSection } = useAppSelector(
     (state) => state.globalNavBar
   );
+
   const buttons = [
     {
       buttonImage: chartIcon,
       description: "채팅",
       handleOnClick: () => {
-        const newIsSomeSection = {
+        const updateIsSomeSection = {
           chatSection: !chatSection,
           settingsSection: false,
         };
-        dispatch(setIsSomeSection(newIsSomeSection));
+        dispatch(setIsSomeSection(updateIsSomeSection));
+        const updateIsOpenChat = {
+          globalChat: true,
+          dmChat: false,
+        };
+        dispatch(setIsOpenChat(updateIsOpenChat));
       },
     },
     {
