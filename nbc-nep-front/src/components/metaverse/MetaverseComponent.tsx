@@ -1,3 +1,4 @@
+import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { ScenesMain } from "@/scenes/scenesMain";
@@ -8,7 +9,7 @@ import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import { useRouter } from "next/router";
 import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
-import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
+import VideoConference from "../video-conference/VideoConference";
 
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
@@ -35,7 +36,7 @@ const MetaverseComponent = () => {
           debug: true,
           width: 1280,
           height: 800,
-          fps: 30,
+          fps: 60,
         },
       },
       scene: [ScenesMain, CharacterScenes],
@@ -72,6 +73,7 @@ const MetaverseComponent = () => {
       <MetaverseChatBar />
       <MetaversePlayerList />
       <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
+      <VideoConference />
     </StMetaverseWrapper>
   );
 };

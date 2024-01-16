@@ -1,5 +1,5 @@
-import ScreenShare from "@/components/share-screen/ShareScreen";
+import VideoConference from "@/components/video-conference/VideoConference";
 
 export default function Screen() {
-  return <ScreenShare />;
+  return <VideoConference />;
 }
