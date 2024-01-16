@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { Player } from "@/types/metaverse";
 import styled from "styled-components";
+import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 
 interface Props {
   player: Player;
@@ -13,7 +14,7 @@ export default function MetaversePlayerCard({
 }: Props) {
   const { id } = useAppSelector((state) => state.authSlice.user);
 
-  const { playerId, nickname } = player;
+  const { playerId, nickname, character } = player;
 
   const onClickDMMessageHandler = () => {
     if (playerId !== id) {
@@ -26,6 +27,7 @@ export default function MetaversePlayerCard({
   return (
     <StMetaversePlayerCard onClick={onClickDMMessageHandler}>
       <div>
+        <MetaAvatar spaceAvatar={character} />
         <span>{nickname}</span>
       </div>
     </StMetaversePlayerCard>
@@ -37,6 +39,11 @@ const StMetaversePlayerCard = styled.div`
   align-items: center;
   height: 30px;
   cursor: pointer;
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
   > div > span {
     font-size: 14px;
   }

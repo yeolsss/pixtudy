@@ -22,6 +22,7 @@ const StGlobalNavBar = styled.nav`
   justify-content: space-between;
   background-color: #1f2542;
   padding: 60px 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
 `;
 const StHomeLink = styled.a`
   font-size: 24px;

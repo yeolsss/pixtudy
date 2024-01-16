@@ -1,4 +1,9 @@
-import { StAudio, StVideo } from "./VideoConference";
+import {
+  StAudio,
+  StShareMediaItem,
+  StShareMediaNickname,
+  StVideo,
+} from "./styles/videoConference.styles";
 import { VideoSource } from "./types/ScreenShare.types";
 
 interface Props {
@@ -15,8 +20,8 @@ export default function ShareMediaItem({ videoSource, nickname }: Props) {
   const type = track.kind;
 
   return (
-    <div>
-      <p>{nickname}</p>
+    <StShareMediaItem>
+      <StShareMediaNickname>{nickname}</StShareMediaNickname>
       {type === "video" ? (
         <StVideo
           playsInline
@@ -40,6 +45,6 @@ export default function ShareMediaItem({ videoSource, nickname }: Props) {
           }}
         />
       )}
-    </div>
+    </StShareMediaItem>
   );
 }
