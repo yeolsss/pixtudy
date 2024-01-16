@@ -8,6 +8,7 @@ import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import { useRouter } from "next/router";
 import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
+import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
@@ -47,7 +48,7 @@ const MetaverseComponent = () => {
     game.registry.set("player", {
       playerId: id,
       nickname: display_name,
-      character: "pinkybonz",
+      character: "ginger",
       spaceId,
     });
 
@@ -69,6 +70,7 @@ const MetaverseComponent = () => {
     <StMetaverseWrapper>
       <GlobalNavBar />
       <MetaverseChatBar />
+      <MetaversePlayerList />
       <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
     </StMetaverseWrapper>
   );

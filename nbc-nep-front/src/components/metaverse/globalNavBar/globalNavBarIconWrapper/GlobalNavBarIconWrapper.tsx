@@ -11,21 +11,27 @@ import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
 
 export default function GlobalNavBarIconWrapper() {
   const dispatch = useAppDispatch();
-  const { chatSection, settingsSection } = useAppSelector(
+  const { chatSection, settingsSection, playerList } = useAppSelector(
     (state) => state.globalNavBar
   );
-  const { isOpenChat } = useAppSelector((state) => state.chatType);
+
+  let updateIsChatSection = {
+    chatSection: false,
+    settingsSection: false,
+    playerList: false,
+  };
 
   const buttons = [
     {
       buttonImage: chartIcon,
       description: "채팅",
       handleOnClick: () => {
-        const updateIsSomeSection = {
+        updateIsChatSection = {
           chatSection: !chatSection,
           settingsSection: false,
+          playerList: false,
         };
-        dispatch(setIsSomeSection(updateIsSomeSection));
+        dispatch(setIsSomeSection(updateIsChatSection));
         const updateIsOpenChat = {
           isOpenChat: !chatSection,
           chatType: "GLOBAL" as ChatType,
@@ -46,7 +52,14 @@ export default function GlobalNavBarIconWrapper() {
     {
       buttonImage: avatorIcon,
       description: "",
-      handleOnClick: () => {},
+      handleOnClick: () => {
+        updateIsChatSection = {
+          chatSection: false,
+          settingsSection: false,
+          playerList: !playerList,
+        };
+        dispatch(setIsSomeSection(updateIsChatSection));
+      },
     },
   ];
   return (

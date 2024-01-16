@@ -20,6 +20,10 @@ export class ScenesMain extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 60,
     });
+    this.load.spritesheet("ginger", "/assets/characters/ginger.png", {
+      frameWidth: 32,
+      frameHeight: 60,
+    });
   }
 
   create() {
