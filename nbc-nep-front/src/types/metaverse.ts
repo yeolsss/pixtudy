@@ -7,6 +7,19 @@ export type Player = {
   nickname: string;
   character: string;
   frame: string;
+  spaceId: string;
+};
+
+export type PlayerTest = {
+  rotation?: number;
+  x?: number;
+  y?: number;
+  socketId?: string;
+  playerId: string;
+  nickname: string | null;
+  character: string;
+  frame?: string;
+  spaceId?: string;
 };
 
 export type Players = {

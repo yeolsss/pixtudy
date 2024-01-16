@@ -1,9 +1,9 @@
-import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { Space_members } from "@/types/supabase.tables.type";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ModalPortal from "./modal/ModalPortal";
+import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import { useAppSelector } from "@/hooks/useReduxTK";
 
 export default function Spaces() {
   const currentUserId = useAppSelector((state) => state.authSlice.user.id);

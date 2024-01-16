@@ -5,6 +5,7 @@ module.exports = function (io) {
     console.log("player [" + socket.id + "] connected");
 
     socket.on("userData", (playerInfo) => {
+      socket.join(playerInfo.spaceId);
       players[socket.id] = {
         rotation: 0,
         x: 100,
@@ -14,16 +15,33 @@ module.exports = function (io) {
         nickname: playerInfo.nickname,
         character: playerInfo.character,
         frame: 0,
+        spaceId: playerInfo.spaceId,
       };
-      socket.emit("currentPlayers", players);
-      socket.broadcast.emit("newPlayer", players[socket.id]);
-      io.emit("metaversePlayerList", players);
+
+      const playersInSpace = Object.values(players).filter(
+        (player) => player.spaceId === playerInfo.spaceId
+      );
+
+      const playerSpaceId = players[socket.id] ? playerInfo.spaceId : null;
+      socket.emit("currentPlayers", playersInSpace);
+      socket.to(playerSpaceId).emit("newPlayer", players[socket.id]);
+
+      io.to(playerSpaceId).emit("metaversePlayerList", playersInSpace);
     });
 
     socket.on("disconnect", function () {
-      io.emit("playerDisconnected", players[socket.id].socketId);
+      console.log("player [" + socket.id + "] disconnected");
+      const playerSpaceId = players[socket.id]
+        ? players[socket.id].spaceId
+        : null;
+      io.to(playerSpaceId).emit("playerDisconnected", socket.id);
+
       delete players[socket.id]; // 플레이어 삭제한 후에 players 리스트를 다시 클라이언트로 보낸다
-      io.emit("metaversePlayerList", players);
+      const updatedPlayersInSpace = Object.values(players).filter(
+        (player) => player.spaceId === playerSpaceId
+      );
+
+      io.to(playerSpaceId).emit("metaversePlayerList", updatedPlayersInSpace);
     });
 
     // characterScenes의 emitPlayerMovement 함수에서 받은 데이터를 다시 클라이언트로 보낸다
@@ -32,7 +50,8 @@ module.exports = function (io) {
       players[socket.id].y = movementData.y;
       players[socket.id].frame = movementData.frame;
 
-      socket.broadcast.emit("playerMoved", players[socket.id]);
+      io.to(players[socket.id].spaceId).emit("playerMoved", players[socket.id]);
+      // socket.broadcast.emit("playerMoved", players[socket.id]);
     });
   });
 };
