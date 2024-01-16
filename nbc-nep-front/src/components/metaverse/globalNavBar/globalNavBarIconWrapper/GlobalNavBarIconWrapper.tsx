@@ -7,12 +7,14 @@ import avatorIcon from "@/assets/icons/avator.png";
 import { setIsSomeSection } from "@/redux/modules/globalNavBarSlice";
 import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
 
 export default function GlobalNavBarIconWrapper() {
   const dispatch = useAppDispatch();
   const { chatSection, settingsSection } = useAppSelector(
     (state) => state.globalNavBar
   );
+  const { isOpenChat } = useAppSelector((state) => state.chatType);
 
   const buttons = [
     {
@@ -25,8 +27,8 @@ export default function GlobalNavBarIconWrapper() {
         };
         dispatch(setIsSomeSection(updateIsSomeSection));
         const updateIsOpenChat = {
-          globalChat: true,
-          dmChat: false,
+          isOpenChat: !chatSection,
+          chatType: "GLOBAL" as ChatType,
         };
         dispatch(setIsOpenChat(updateIsOpenChat));
       },

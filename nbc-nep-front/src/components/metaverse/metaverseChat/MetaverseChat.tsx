@@ -7,22 +7,26 @@ import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseCha
 import { useAppSelector } from "@/hooks/useReduxTK";
 
 export default function MetaverseChat() {
-  const isOpenGlobalChat = useAppSelector((state) => state.chatType.globalChat);
+  const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
 
   return (
     <MetaverseChatProvider>
-      <StMetaverseGlobalChatWrapper $isOpenGlobalChat={isOpenGlobalChat}>
-        {isOpenGlobalChat && <MetaverseChatList />}
-        <MetaverseChatForm />
+      <StMetaverseGlobalChatWrapper $isOpenChat={isOpenChat}>
+        {isOpenChat && chatType === "GLOBAL" ? (
+          <>
+            <MetaverseChatList />
+            <MetaverseChatForm />
+          </>
+        ) : (
+          <div>DM</div>
+        )}
       </StMetaverseGlobalChatWrapper>
     </MetaverseChatProvider>
   );
 }
-const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenGlobalChat: boolean }>`
-  width: ${({ $isOpenGlobalChat }) =>
-    $isOpenGlobalChat
-      ? "300px"
-      : "0"}; // isOpenGlobalChat이 true일 때 300px, false일 때 0
+const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
+  width: ${({ $isOpenChat }) =>
+    $isOpenChat ? "300px" : "0"}; // isOpenChat이 true일 때 300px, false일 때 0
   overflow: hidden; // width가 0일 때 내부 내용이 보이지 않도록 설정
   border-left: 1px solid black;
   background-color: #1f2542;
@@ -33,5 +37,5 @@ const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenGlobalChat: boolean }>`
   transition:
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
-  z-index: ${({ $isOpenGlobalChat }) => ($isOpenGlobalChat ? "100" : "-1")};
+  z-index: ${({ $isOpenChat }) => ($isOpenChat ? "100" : "-1")};
 `;
