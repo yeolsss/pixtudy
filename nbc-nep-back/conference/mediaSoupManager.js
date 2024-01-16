@@ -56,18 +56,19 @@ function getRtcCapabilities() {
   return router.rtpCapabilities;
 }
 
-function getIsCanConsumeWithRouter(data) {
-  return router.canConsume(data);
+function isCanConsumeWithRouter(producerId, rtpCapabilities) {
+  return router.canConsume({
+    producerId,
+    rtpCapabilities,
+  });
 }
 
 function getTransportParams(transport) {
   return {
-    params: {
-      id: transport.id,
-      iceParameters: transport.iceParameters,
-      iceCandidates: transport.iceCandidates,
-      dtlsParameters: transport.dtlsParameters,
-    },
+    id: transport.id,
+    iceParameters: transport.iceParameters,
+    iceCandidates: transport.iceCandidates,
+    dtlsParameters: transport.dtlsParameters,
   };
 }
 
@@ -75,6 +76,6 @@ module.exports = {
   createWorker,
   createWebRtcTransport,
   getRtcCapabilities,
-  getIsCanConsumeWithRouter,
   getTransportParams,
+  isCanConsumeWithRouter,
 };

@@ -1,18 +1,21 @@
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import { ShareType } from "./types/ScreenShare.types";
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void;
-  onStopShare?: () => void;
+  onStopShare: (type: ShareType) => void;
   type: ShareType;
+  shareButtonText: string;
+  stopSharingButtonText: string;
 }
 
-export default function ShareScreenButton({
+export default function ShareButton({
   onShare,
   onStopShare,
   type,
-  children,
-}: PropsWithChildren<Props>) {
+  shareButtonText,
+  stopSharingButtonText,
+}: Props) {
   const [isShare, setIsShare] = useState(false);
 
   const handleClickShareButton = async () => {
@@ -27,14 +30,14 @@ export default function ShareScreenButton({
 
   const handleClickStopShareButton = () => {
     setIsShare(false);
-    onStopShare && onStopShare();
+    onStopShare(type);
   };
 
   return (
     <button
       onClick={isShare ? handleClickStopShareButton : handleClickShareButton}
     >
-      {children}
+      {isShare ? stopSharingButtonText : shareButtonText}
     </button>
   );
 }

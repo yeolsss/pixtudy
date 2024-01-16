@@ -7,6 +7,7 @@ import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
+import VideoConference from "../video-conference/VideoConference";
 import MetaverseChat from "./metaverseChat/MetaverseChat";
 
 // 시나리오
@@ -72,6 +73,7 @@ const MetaverseComponent = () => {
         <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
         <MetaverseChat />
         <MetaversePlayerList />
+        <VideoConference />
       </StMetaverseWrapper>
     </MetaversePlayerProvider>
   );
