@@ -1,20 +1,21 @@
-import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
-import MetaverseChat from "./metaverseChat/MetaverseChat";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import { useRouter } from "next/router";
+import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
+import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
   const { spaceId } = usePlayerContext();
+  const router = useRouter();
 
   useEffect(() => {
     let game: Phaser.Game | undefined;
-
     const resize = () => {
       if (game) {
         game.scale.resize(window.innerWidth, window.innerHeight - 2);
@@ -33,7 +34,7 @@ const MetaverseComponent = () => {
           debug: true,
           width: 1280,
           height: 800,
-          fps: 100,
+          fps: 30,
         },
       },
       scene: [ScenesMain, CharacterScenes],
@@ -52,6 +53,12 @@ const MetaverseComponent = () => {
 
     window.addEventListener("resize", resize);
 
+    router.beforePopState(() => {
+      game?.destroy(true);
+      window.removeEventListener("resize", resize);
+      return true;
+    });
+
     return () => {
       game?.destroy(true);
       window.removeEventListener("resize", resize);
@@ -60,15 +67,16 @@ const MetaverseComponent = () => {
 
   return (
     <StMetaverseWrapper>
+      <GlobalNavBar />
+      <MetaverseChatBar />
       <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
-      <MetaverseChat />
-      <MetaversePlayerList />
     </StMetaverseWrapper>
   );
 };
 
 const StMetaverseWrapper = styled.div`
   overflow: hidden;
+  display: flex;
   position: relative;
 `;
 const StMetaverseMain = styled.div`

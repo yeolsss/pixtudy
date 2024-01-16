@@ -20,7 +20,9 @@ export default function MetaverseChatForm() {
 const StChatInput = styled.input`
   width: 100%;
   height: 30px;
-  border: none;
   outline: none;
   padding: 0 10px;
+  background-color: #1f2542;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
 `;

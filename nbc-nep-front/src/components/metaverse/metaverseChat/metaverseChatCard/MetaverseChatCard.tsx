@@ -1,5 +1,6 @@
 import { Chat } from "@/types/metaverse";
 import React from "react";
+import styled from "styled-components";
 
 interface Props {
   chat: Chat;
@@ -7,9 +8,15 @@ interface Props {
 
 export default function MetaverseChatCard({ chat }: Props) {
   return (
-    <div>
+    <StMetaverseChatCard>
       <span>{chat.playerDisplayName} : </span>
       <span>{chat.message}</span>
-    </div>
+    </StMetaverseChatCard>
   );
 }
+
+const StMetaverseChatCard = styled.div`
+  > span:last-child {
+    word-break: break-all;
+  }
+`;
