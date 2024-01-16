@@ -16,7 +16,7 @@ export default function GlobalNavBarIconWrapper() {
     {
       buttonImage: chartIcon,
       description: "채팅",
-      onClickHandler: () => {
+      handleOnClick: () => {
         const newIsSomeSection = {
           chatSection: !chatSection,
           settingsSection: false,
@@ -27,17 +27,17 @@ export default function GlobalNavBarIconWrapper() {
     {
       buttonImage: SettingsIcon,
       description: "설정",
-      onClickHandler: () => {},
+      handleOnClick: () => {},
     },
     {
       buttonImage: chartIcon,
       description: "오류제보",
-      onClickHandler: () => {},
+      handleOnClick: () => {},
     },
     {
       buttonImage: avatorIcon,
       description: "",
-      onClickHandler: () => {},
+      handleOnClick: () => {},
     },
   ];
   return (

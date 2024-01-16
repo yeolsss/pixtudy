@@ -5,10 +5,10 @@ import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNa
 export default function IconButton({
   buttonImage,
   description,
-  onClickHandler,
+  handleOnClick,
 }: IconButtonProperty) {
   return (
-    <StButton onClick={onClickHandler}>
+    <StButton onClick={handleOnClick}>
       <Image src={buttonImage} alt={description} width={"50"} height={"50"} />
     </StButton>
   );

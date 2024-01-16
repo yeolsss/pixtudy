@@ -3,15 +3,15 @@ import styled from "styled-components";
 import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
 
 export default function MetaverseChatForm() {
-  const { onSubmitChatHandler, onChangeChatHandler, chatInput } =
+  const { handleOnSubmitChat, handleOnChangeChat, chatInput } =
     useMetaverseChatContext();
   return (
     <>
-      <form onSubmit={onSubmitChatHandler}>
+      <form onSubmit={handleOnSubmitChat}>
         <StChatInput
           type="text"
           value={chatInput}
-          onChange={onChangeChatHandler}
+          onChange={handleOnChangeChat}
         />
       </form>
     </>

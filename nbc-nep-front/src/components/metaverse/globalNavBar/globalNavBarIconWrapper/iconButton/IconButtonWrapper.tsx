@@ -6,13 +6,13 @@ interface Props {
   button: IconButtonProperty;
 }
 export default function IconButtonWrapper({ button }: Props) {
-  const { buttonImage, description, onClickHandler } = button;
+  const { buttonImage, description, handleOnClick } = button;
   return (
     <StIconButtonWrapper>
       <IconButton
         buttonImage={buttonImage}
         description={description}
-        onClickHandler={onClickHandler}
+        handleOnClick={handleOnClick}
       />
       <span>{description}</span>
     </StIconButtonWrapper>
