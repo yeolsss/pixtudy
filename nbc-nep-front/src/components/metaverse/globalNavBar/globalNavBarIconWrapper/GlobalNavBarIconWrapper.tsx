@@ -53,6 +53,11 @@ export default function GlobalNavBarIconWrapper() {
       buttonImage: avatorIcon,
       description: "",
       handleOnClick: () => {
+        const updateIsOpenChat = {
+          isOpenChat: false,
+          chatType: "GLOBAL" as ChatType,
+        };
+        dispatch(setIsOpenChat(updateIsOpenChat));
         updateIsChatSection = {
           chatSection: false,
           settingsSection: false,

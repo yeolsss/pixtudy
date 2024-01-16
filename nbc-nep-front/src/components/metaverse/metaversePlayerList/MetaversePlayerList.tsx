@@ -13,7 +13,6 @@ export default function MetaversePlayerList() {
     (state) => state.globalNavBar.playerList
   );
 
-  console.log(isOpenPlayerList);
   const { playerList } = usePlayerContext();
   const { spaceId } = usePlayerContext();
   // 열린 dm 채팅방
@@ -87,10 +86,11 @@ export default function MetaversePlayerList() {
 }
 
 const StMetaversePlayerListWrapper = styled.div<{ $isOpenPlayerList: boolean }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   width: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "300px" : "0")};
-
   padding: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "10px" : "0")};
-
   overflow: ${({ $isOpenPlayerList }) =>
     $isOpenPlayerList ? "scroll" : "hidden"};
   transition:
@@ -98,6 +98,8 @@ const StMetaversePlayerListWrapper = styled.div<{ $isOpenPlayerList: boolean }>`
     transform 0.3s ease-in-out;
   z-index: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "100" : "-1")};
   background-color: #1f2542;
+  color: white;
+
   &::-webkit-scrollbar {
     display: none;
   }

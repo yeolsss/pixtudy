@@ -23,8 +23,6 @@ export default function ShareMediaItemContainer({
     playerList.find((player) => player.playerId === playerId);
   const currentPlayer = findPlayer(currentPlayerId);
 
-  console.log(currentPlayer, playerList);
-
   return (
     <>
       <div>

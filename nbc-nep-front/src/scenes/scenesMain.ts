@@ -8,21 +8,46 @@ export class ScenesMain extends Phaser.Scene {
   preload() {
     this.load.image("tiles", "/assets/tiles/gather_pixel_spritesheet.png");
     this.load.tilemapTiledJSON("basic_map", "/assets/map/basic_map.json");
-    this.load.spritesheet("character", "/assets/characters/NPC11.png", {
-      frameWidth: 32,
-      frameHeight: 60,
-    });
-    this.load.spritesheet("otherCharacter", "/assets/characters/NPC12.png", {
-      frameWidth: 32,
-      frameHeight: 60,
-    });
-    this.load.spritesheet("pinkybonz", "/assets/characters/front.png", {
-      frameWidth: 32,
-      frameHeight: 60,
-    });
-    this.load.spritesheet("ginger", "/assets/characters/ginger.png", {
-      frameWidth: 32,
-      frameHeight: 60,
+
+    const characters = [
+      "ginger",
+      "NPC1",
+      "NPC2",
+      "NPC3",
+      "NPC4",
+      "NPC5",
+      "NPC6",
+      "NPC7",
+      "NPC8",
+      "NPC9",
+      "NPC10",
+      "NPC11",
+      "NPC12",
+      "NPC13",
+      "NPC14",
+      "NPC15",
+      "NPC16",
+      "NPC17",
+      "NPC18",
+      "NPC19",
+      "NPC20",
+      "NPC21",
+      "NPC22",
+      "NPC23",
+      "NPC24",
+      "NPC25",
+      "NPC26",
+      "pinkybonz",
+    ];
+    characters.forEach((character) => {
+      this.load.spritesheet(
+        character,
+        `/assets/characters/presets/${character}.png`,
+        {
+          frameWidth: 32,
+          frameHeight: 60,
+        }
+      );
     });
   }
 

@@ -41,12 +41,11 @@ const StMetaverseChatWrapper = styled.section<{ $isOpenChat: boolean }>`
 `;
 
 const StMetaverseChatBar = styled.div<{ $isOpenChatSection: boolean }>`
-  width: ${({ $isOpenChatSection }) =>
-    $isOpenChatSection
-      ? "100px"
-      : "0"}; // isOpenChat이 true일 때 100px, false일 때 0
-  overflow: hidden; // width가 0일 때 내부 내용이 보이지 않도록 설정
-  border-left: 1px solid black;
+  width: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "100px" : "0")};
+  border-right: ${({ $isOpenChatSection }) =>
+      $isOpenChatSection ? "1px" : "0"}
+    solid rgba(0, 0, 0, 0.5);
+  overflow: hidden;
   background-color: #1f2542;
   display: flex;
   flex-direction: column;
@@ -55,6 +54,7 @@ const StMetaverseChatBar = styled.div<{ $isOpenChatSection: boolean }>`
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
   z-index: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "100" : "-1")};
+  padding: 0 ${({ $isOpenChatSection }) => ($isOpenChatSection ? "10px" : "0")};
 `;
 const StChatWrapperTitle = styled.div`
   height: 100px;
