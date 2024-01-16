@@ -63,3 +63,5 @@ export type UserWithVideoSource = {
 export type UserVideoSourceMap = {
   [key: string]: UserWithVideoSource;
 };
+
+export type SplitVideoSource = [VideoSource[], VideoSource[]];
