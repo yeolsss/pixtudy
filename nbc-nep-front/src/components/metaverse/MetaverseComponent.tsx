@@ -1,28 +1,23 @@
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
-import {
-  MetaversePlayerProvider,
-  usePlayerContext,
-} from "@/context/MetaversePlayerProvider";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { CharacterScenes } from "@/scenes/characterScenes";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
-import MetaverseChat from "./metaverseChat/MetaverseChat";
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import { useRouter } from "next/router";
+import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
+import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
+import VideoConference from "../video-conference/VideoConference";
 
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
-  const { setSpaceId } = usePlayerContext();
+  const { spaceId } = usePlayerContext();
   const router = useRouter();
-  const spaceId =
-    typeof router.query.space_id === "string" ? router.query.space_id : "";
-  setSpaceId(spaceId);
 
   useEffect(() => {
     let game: Phaser.Game | undefined;
-
     const resize = () => {
       if (game) {
         game.scale.resize(window.innerWidth, window.innerHeight - 2);
@@ -54,11 +49,17 @@ const MetaverseComponent = () => {
     game.registry.set("player", {
       playerId: id,
       nickname: display_name,
-      character: "pinkybonz",
+      character: "ginger",
       spaceId,
     });
 
     window.addEventListener("resize", resize);
+
+    router.beforePopState(() => {
+      game?.destroy(true);
+      window.removeEventListener("resize", resize);
+      return true;
+    });
 
     return () => {
       game?.destroy(true);
@@ -67,18 +68,19 @@ const MetaverseComponent = () => {
   }, []);
 
   return (
-    <MetaversePlayerProvider>
-      <StMetaverseWrapper>
-        <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
-        <MetaverseChat />
-        <MetaversePlayerList />
-      </StMetaverseWrapper>
-    </MetaversePlayerProvider>
+    <StMetaverseWrapper>
+      <GlobalNavBar />
+      <MetaverseChatBar />
+      <MetaversePlayerList />
+      <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
+      <VideoConference />
+    </StMetaverseWrapper>
   );
 };
 
 const StMetaverseWrapper = styled.div`
   overflow: hidden;
+  display: flex;
   position: relative;
 `;
 const StMetaverseMain = styled.div`

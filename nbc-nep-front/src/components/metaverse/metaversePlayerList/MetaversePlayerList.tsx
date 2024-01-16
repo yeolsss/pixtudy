@@ -9,6 +9,11 @@ import styled from "styled-components";
 import MetaverseDmContainer from "./metaverseDmContainer/MetaverseDmContainer";
 
 export default function MetaversePlayerList() {
+  const isOpenPlayerList = useAppSelector(
+    (state) => state.globalNavBar.playerList
+  );
+
+  console.log(isOpenPlayerList);
   const { playerList } = usePlayerContext();
   const { spaceId } = usePlayerContext();
   // 열린 dm 채팅방
@@ -58,7 +63,7 @@ export default function MetaversePlayerList() {
 
   return (
     <>
-      <StMetaversePlayerListWrapper>
+      <StMetaversePlayerListWrapper $isOpenPlayerList={isOpenPlayerList}>
         {playerList?.map((player) => (
           <MetaversePlayerCard
             key={player.playerId}
@@ -81,16 +86,18 @@ export default function MetaversePlayerList() {
   );
 }
 
-const StMetaversePlayerListWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 200px;
-  height: 500px;
-  padding: 10px;
-  overflow: scroll;
-  z-index: 100;
-  background-color: white;
+const StMetaversePlayerListWrapper = styled.div<{ $isOpenPlayerList: boolean }>`
+  width: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "300px" : "0")};
+
+  padding: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "10px" : "0")};
+
+  overflow: ${({ $isOpenPlayerList }) =>
+    $isOpenPlayerList ? "scroll" : "hidden"};
+  transition:
+    width 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+  z-index: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "100" : "-1")};
+  background-color: #1f2542;
   &::-webkit-scrollbar {
     display: none;
   }
