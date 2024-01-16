@@ -20,8 +20,10 @@ export default function ShareMediaItemContainer({
   currentPlayerId,
 }: Props) {
   const isEmptyProducers = isArrayEmpty(producers);
+
   const findPlayer = (playerId: string) =>
     playerList.find((player) => player.playerId === playerId);
+
   const currentPlayer = findPlayer(currentPlayerId);
 
   return (

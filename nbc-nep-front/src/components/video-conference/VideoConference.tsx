@@ -109,6 +109,14 @@ export default function VideoConference() {
             appData,
           });
 
+          consumer?.on("@close", () => {
+            console.log("basic close consumer");
+          });
+
+          consumer?.observer.on("close", () => {
+            console.log("close consumer");
+          });
+
           if (!consumer) {
             throw new Error("consumer가 없다...있어야 하는데...");
           }
@@ -129,10 +137,15 @@ export default function VideoConference() {
     );
   }
 
-  function handleProducerClose(producerId: string) {
+  function handleProducerClose(streamId: string) {
+    console.log("producerId is : ", streamId);
+    console.log("consumers is: ", consumers);
     setConsumers((prev) =>
       prev.filter((consumer) => {
-        return consumer.appData.producerId !== producerId;
+        if (consumer.appData.streamId === streamId) {
+          consumer.close();
+        }
+        return consumer.appData.streamId !== streamId;
       })
     );
   }
@@ -188,7 +201,7 @@ export default function VideoConference() {
       }
 
       track.enabled = false;
-      socket.emit("producer-close", producer.id);
+      socket.emit("producer-close", producer.appData.streamId);
       producer.pause();
       producer.close();
 
