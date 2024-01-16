@@ -7,6 +7,7 @@ import { useAppSelector } from "@/hooks/useReduxTK";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import MetaAvatar from "../metaverse/avatar/MetaAvatar";
 import ShareButton from "./ShareButton";
 import { isAlreadyConsume, isEmptyTracks } from "./lib/util";
 import {
@@ -49,6 +50,10 @@ export default function VideoConference() {
     createRecvTransportWithDevice,
     playerId: currentPlayerId,
   });
+
+  const currentPlayer = playerList.find(
+    (player) => player.playerId === currentPlayerId
+  );
 
   useEffect(() => {
     console.log("socket connected");
@@ -224,17 +229,23 @@ export default function VideoConference() {
     }
   }
 
-  console.log(consumers);
+  function isCanShare() {
+    return (
+      producers.filter((producer) => producer.appData.shareType === "screen")
+        .length < 3
+    );
+  }
 
   return (
     <>
       <StDockContainer>
+        <MetaAvatar spaceAvatar={currentPlayer?.character} />
         <ShareButton
           type="screen"
           onShare={handleShare}
-          onStopShare={handleStopShare}
           shareButtonText="화면 공유"
-          stopSharingButtonText="공유 종료"
+          stopSharingButtonText="더이상 공유할 수 없습니다."
+          isCanShare={isCanShare}
         />
         <ShareButton
           type="webcam"

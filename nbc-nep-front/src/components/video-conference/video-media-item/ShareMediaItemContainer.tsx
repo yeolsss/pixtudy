@@ -1,7 +1,8 @@
 import { Player } from "@/types/metaverse";
 import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
-import { isArrayEmpty } from "../lib/util";
+import { isArrayEmpty, splitVideoSource } from "../lib/util";
+import { StShareScreenStackContainer } from "../styles/videoConference.styles";
 import { Consumer, Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
@@ -26,6 +27,8 @@ export default function ShareMediaItemContainer({
 
   const currentPlayer = findPlayer(currentPlayerId);
 
+  const [camAndAudioProducers, screenProducers] = splitVideoSource(producers);
+
   return (
     <StMediaItemContainer>
       <StMediaItemContainer>
@@ -35,13 +38,25 @@ export default function ShareMediaItemContainer({
             avatar={currentPlayer?.character}
           />
         ) : (
-          producers.map((producer) => (
-            <ShareMediaItem
-              nickname={currentPlayerId}
-              key={producer.id}
-              videoSource={producer}
-            />
-          ))
+          <>
+            {camAndAudioProducers.map((producer) => (
+              <ShareMediaItem
+                nickname={currentPlayerId}
+                key={producer.id}
+                videoSource={producer}
+              />
+            ))}
+            <StShareScreenStackContainer>
+              {screenProducers.map((producer, index) => (
+                <ShareMediaItem
+                  nickname={currentPlayerId}
+                  key={producer.id}
+                  videoSource={producer}
+                  spread={-index * 10}
+                />
+              ))}
+            </StShareScreenStackContainer>
+          </>
         )}
       </StMediaItemContainer>
       <StMediaItemContainer>
@@ -61,5 +76,6 @@ export default function ShareMediaItemContainer({
 const StMediaItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 40px;
+  padding: 40px 0;
 `;
