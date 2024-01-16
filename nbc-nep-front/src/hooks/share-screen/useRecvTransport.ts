@@ -9,11 +9,13 @@ import { Socket } from "socket.io-client";
 interface Props {
   socket: Socket;
   createRecvTransportWithDevice: (params: TransPortParams) => RecvTransportType;
+  playerId: string;
 }
 
 export default function useRecvTransport({
   socket,
   createRecvTransportWithDevice,
+  playerId,
 }: Props) {
   const recvTransportRef = useRef<RecvTransportType | null>(null);
 
@@ -40,7 +42,7 @@ export default function useRecvTransport({
     try {
       socket.emit("transport-recv-connect", {
         dtlsParameters,
-        socketId: socket.id,
+        playerId,
       });
 
       callback();

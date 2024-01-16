@@ -18,30 +18,27 @@ let clients = {};
 module.exports = function (io) {
   io.on("connection", (socket) => {
     // socket이 연결이 된다면, 그 socket에 대한 정보를 여기서 초기화를 애초에 해줘야겠다.fc
-    clients[socket.id] = {
-      socketId: socket.id,
-      spaceId: null,
-      [SEND_TRANSPORT_KEY]: null,
-      [RECV_TRANSPORT_KEY]: null,
-      producers: [],
-      consumers: [],
-    };
-
     socket.on("disconnect", () => {
       console.log("socket disconnect", socket.id);
-      clients[socket.id] = null;
     });
 
     // 클라이언트가 room에 들어왔을 경우, 초기 설정들을 해준다
     // socketId, roomName이라던가 ,transport들... 이미 있느
-    socket.on("join-room", (spaceId) => {
-      clients[socket.id].spaceId = spaceId;
+    socket.on("join-room", (spaceId, playerId) => {
+      clients[playerId] = {
+        spaceId: spaceId,
+        [SEND_TRANSPORT_KEY]: null,
+        [RECV_TRANSPORT_KEY]: null,
+        producers: [],
+        consumers: [],
+      };
+
+      clients[playerId].spaceId = spaceId;
       socket.join(spaceId);
     });
 
-    socket.on("create-transport", async (onTransportCreated) => {
-      const socketId = socket.id;
-      const client = clients[socketId];
+    socket.on("create-transport", async (playerId, onTransportCreated) => {
+      const client = clients[playerId];
 
       try {
         const rtpCapabilities = getRtcCapabilities();
@@ -61,8 +58,8 @@ module.exports = function (io) {
       }
     });
 
-    socket.on("transport-send-connect", ({ dtlsParameters }) => {
-      const client = clients[socket.id];
+    socket.on("transport-send-connect", ({ dtlsParameters, playerId }) => {
+      const client = clients[playerId];
       try {
         client[SEND_TRANSPORT_KEY].connect({ dtlsParameters });
       } catch (error) {
@@ -70,31 +67,34 @@ module.exports = function (io) {
       }
     });
 
-    socket.on("transport-send-produce", async (parameter, callback) => {
-      const client = clients[socket.id];
-      try {
-        const producer = await client[SEND_TRANSPORT_KEY].produce(parameter);
+    socket.on(
+      "transport-send-produce",
+      async ({ parameter, playerId }, callback) => {
+        const client = clients[playerId];
+        try {
+          const producer = await client[SEND_TRANSPORT_KEY].produce(parameter);
 
-        producer.on("transportclose", () => {
-          producer.close();
-          client.producers = client.producers.filter(
-            (p) => p.id !== producer.id
-          );
-        });
+          producer.on("transportclose", () => {
+            producer.close();
+            client.producers = client.producers.filter(
+              (p) => p.id !== producer.id
+            );
+          });
 
-        socket
-          .to(client.spaceId)
-          .emit("new-producer", producer.id, producer.appData);
-        client.producers.push(producer);
+          socket
+            .to(client.spaceId)
+            .emit("new-producer", producer.id, producer.appData);
+          client.producers.push(producer);
 
-        callback({ id: producer.id });
-      } catch (error) {
-        console.error("while produce send transport error:", error);
+          callback({ id: producer.id });
+        } catch (error) {
+          console.error("while produce send transport error:", error);
+        }
       }
-    });
+    );
 
-    socket.on("transport-recv-connect", ({ dtlsParameters }) => {
-      const client = clients[socket.id];
+    socket.on("transport-recv-connect", ({ dtlsParameters, playerId }) => {
+      const client = clients[playerId];
       try {
         client[RECV_TRANSPORT_KEY].connect({ dtlsParameters });
       } catch (error) {
@@ -105,8 +105,9 @@ module.exports = function (io) {
     // transport-recv-consume
     socket.on(
       "transport-recv-consume",
-      async ({ rtpCapabilities, producerId, appData }, callback) => {
-        const client = clients[socket.id];
+      async ({ rtpCapabilities, producerId, appData, playerId }, callback) => {
+        const client = clients[playerId];
+
         try {
           const recvTransport = client[RECV_TRANSPORT_KEY];
 
@@ -150,14 +151,16 @@ module.exports = function (io) {
       }
     );
 
-    socket.on("transport-close", () => {
-      const client = clients[socket.id];
+    socket.on("transport-close", (playerId) => {
+      const client = clients[playerId];
       try {
         client[SEND_TRANSPORT_KEY].close();
         client[RECV_TRANSPORT_KEY].close();
 
         client.producers.forEach((producer) => producer.close());
         client.consumers.forEach((consumer) => consumer.close());
+
+        clients[playerId] = null;
       } catch (error) {
         console.error("while close transport error:", error);
       }
@@ -179,12 +182,14 @@ module.exports = function (io) {
       }
     });
 
-    socket.on("get-producers", (callback) => {
+    socket.on("get-producers", (playerList, playerId, callback) => {
       const producers = [];
       for (const clientId in clients) {
+        if (clientId === playerId) continue;
+
         const client = clients[clientId];
 
-        if (!client || client.spaceId !== clients[socket.id].spaceId) continue;
+        if (playerList.indexOf(clientId) === -1) continue;
 
         client.producers.forEach((producer) => {
           try {
@@ -202,9 +207,9 @@ module.exports = function (io) {
       callback(producers);
     });
 
-    socket.on("consumer-resume", ({ consumerId }) => {
+    socket.on("consumer-resume", ({ consumerId, playerId }) => {
       try {
-        const client = clients[socket.id];
+        const client = clients[playerId];
         const consumer = client.consumers.find(
           (consumer) => consumer.id === consumerId
         );

@@ -41,25 +41,27 @@ export default function VideoConference() {
   const { sendTransport, createSendTransport } = useSendTransport({
     socket,
     createSendTransportWithDevice,
+    playerId: currentPlayerId,
   });
 
   const { recvTransport, createRecvTransport } = useRecvTransport({
     socket,
     createRecvTransportWithDevice,
+    playerId: currentPlayerId,
   });
 
   useEffect(() => {
     console.log("socket connected");
-    socket.emit("join-room", spaceId);
+    socket.emit("join-room", spaceId, currentPlayerId);
 
-    socket.emit("create-transport", handleCreatedTransport);
+    socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
 
     socket.on("new-producer", handleConsumeNewProducer);
 
     socket.on("producer-closed", handleProducerClose);
 
     return () => {
-      socket.emit("transport-close");
+      socket.emit("transport-close", currentPlayerId);
       disconnect();
       socket.off("new-producer", handleConsumeProducers);
       socket.off("producer-closed", handleProducerClose);
@@ -75,7 +77,12 @@ export default function VideoConference() {
     createSendTransport(sendTransportParams);
     createRecvTransport(recvTransportParams);
 
-    socket.emit("get-producers", handleConsumeProducers);
+    socket.emit(
+      "get-producers",
+      playerList,
+      currentPlayerId,
+      handleConsumeProducers
+    );
   }
 
   async function handleConsumeNewProducer(
@@ -92,7 +99,7 @@ export default function VideoConference() {
 
       socket.emit(
         "transport-recv-consume",
-        { rtpCapabilities, producerId, appData },
+        { rtpCapabilities, producerId, appData, playerId: currentPlayerId },
         async (data: {
           id: string;
           producerId: string;
@@ -126,7 +133,10 @@ export default function VideoConference() {
             consumer,
           ]);
 
-          socket.emit("consumer-resume", { consumerId: consumer.id });
+          socket.emit("consumer-resume", {
+            consumerId: consumer.id,
+            playerId: currentPlayerId,
+          });
         }
       );
     } catch (error) {
@@ -213,6 +223,8 @@ export default function VideoConference() {
       console.error("handle stop share error", error);
     }
   }
+
+  console.log(consumers);
 
   return (
     <>
