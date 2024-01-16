@@ -1,14 +1,14 @@
+import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
+import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
-import { CharacterScenes } from "@/scenes/characterScenes";
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import { useAppSelector } from "@/hooks/useReduxTK";
+import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
+import { useRouter } from "next/router";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import { useRouter } from "next/router";
-import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
-import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import VideoConference from "../video-conference/VideoConference";
 
 const MetaverseComponent = () => {
