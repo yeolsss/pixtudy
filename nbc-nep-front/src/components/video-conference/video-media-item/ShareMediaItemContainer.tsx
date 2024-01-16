@@ -1,4 +1,5 @@
 import { Player } from "@/types/metaverse";
+import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
 import { isArrayEmpty } from "../lib/util";
 import { Consumer, Producer } from "../types/ScreenShare.types";
@@ -24,8 +25,8 @@ export default function ShareMediaItemContainer({
   const currentPlayer = findPlayer(currentPlayerId);
 
   return (
-    <>
-      <div>
+    <StMediaItemContainer>
+      <StMediaItemContainer>
         {isEmptyProducers ? (
           <DefaultShareMediaItem
             nickname={currentPlayer?.nickname}
@@ -40,8 +41,8 @@ export default function ShareMediaItemContainer({
             />
           ))
         )}
-      </div>
-      <div>
+      </StMediaItemContainer>
+      <StMediaItemContainer>
         {playerList.map((player) => (
           <OtherPlayerShareMediaItem
             player={player}
@@ -50,7 +51,13 @@ export default function ShareMediaItemContainer({
             key={player.playerId}
           />
         ))}
-      </div>
-    </>
+      </StMediaItemContainer>
+    </StMediaItemContainer>
   );
 }
+
+const StMediaItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
