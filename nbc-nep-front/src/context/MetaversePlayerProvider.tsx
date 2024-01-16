@@ -1,4 +1,5 @@
 import { Player } from "@/types/metaverse";
+import { useRouter } from "next/router";
 import {
   createContext,
   PropsWithChildren,
@@ -9,15 +10,21 @@ import {
 
 type PlayerContextType = {
   playerList: Player[];
+  spaceId: string;
 };
 
 const initialState: PlayerContextType = {
   playerList: [] as Player[],
+  spaceId: "",
 };
 
 const PlayerContext = createContext<PlayerContextType>(initialState);
 export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
   const [playerList, setPlayerList] = useState<Player[]>([]);
+
+  const router = useRouter();
+  const spaceId =
+    typeof router.query.space_id === "string" ? router.query.space_id : "";
 
   useEffect(() => {
     const handlePlayerList = (event: Event) => {
@@ -35,6 +42,7 @@ export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
 
   const value = {
     playerList,
+    spaceId,
   };
 
   return (

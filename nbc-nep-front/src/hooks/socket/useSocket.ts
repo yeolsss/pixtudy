@@ -1,14 +1,19 @@
 import { useEffect, useRef } from "react";
-import { io, Socket } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 
-export default function useSocket() {
+interface Props {
+  namespace: string;
+}
+
+export default function useSocket({ namespace }: Props) {
   const socketRef = useRef<Socket>(
-    io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}`, {
+    io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}${namespace}`, {
       withCredentials: true,
     })
   );
 
   useEffect(() => {
+    if (socketRef.current?.connected) return;
     const socket = socketRef.current;
     socket.on("connect", () => {
       console.log("connect socket in useSocket.ts");

@@ -7,9 +7,11 @@ import ModalPortal from "./modal/ModalPortal";
 
 export default function Spaces() {
   const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+
   const isModalOpen = useAppSelector(
     (state) => state.modalSlice.isJoinSpaceModalOpen
   );
+
   const getUserSpaces = useGetUserSpaces(currentUserId);
 
   const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
