@@ -10,7 +10,7 @@ interface Props {
   player: Player;
 }
 
-export default function OtherPlayerMediaShareItem({
+export default function OtherPlayerShareMediaItem({
   consumers,
   player,
   currentPlayerId,
