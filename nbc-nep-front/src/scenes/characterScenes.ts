@@ -91,9 +91,18 @@ export class CharacterScenes extends Phaser.Scene {
       this.otherPlayers?.movePlayer(playerInfo);
     });
 
-    this.input.on("wheel", (pointer, gameObjects, deltaX, deltaY, deltaZ) => {
-      this.onMuseWheel(deltaY);
-    });
+    this.input.on(
+      "wheel",
+      (
+        _pointer: Phaser.Input.Pointer,
+        _gameObjects: Phaser.GameObjects.GameObject[],
+        _deltaX: number,
+        deltaY: number,
+        _deltaZ: number
+      ) => {
+        this.onMuseWheel(deltaY);
+      }
+    );
   }
 
   /**
