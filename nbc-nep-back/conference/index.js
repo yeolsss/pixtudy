@@ -150,7 +150,18 @@ module.exports = function (io) {
       }
     );
 
-    socket.on("transport-close", () => {});
+    socket.on("transport-close", () => {
+      const client = clients[socket.id];
+      try {
+        client[SEND_TRANSPORT_KEY].close();
+        client[RECV_TRANSPORT_KEY].close();
+
+        client.producers.forEach((producer) => producer.close());
+        client.consumers.forEach((consumer) => consumer.close());
+      } catch (error) {
+        console.error("while close transport error:", error);
+      }
+    });
 
     socket.on("producer-close", (streamId) => {
       try {

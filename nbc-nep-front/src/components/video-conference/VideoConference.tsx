@@ -59,6 +59,7 @@ export default function VideoConference() {
     socket.on("producer-closed", handleProducerClose);
 
     return () => {
+      socket.emit("transport-close");
       disconnect();
       socket.off("new-producer", handleConsumeProducers);
       socket.off("producer-closed", handleProducerClose);
@@ -81,7 +82,6 @@ export default function VideoConference() {
     producerId: string,
     appData: AppData
   ) {
-    console.log({ producerId, appData });
     if (isAlreadyConsume(consumers, producerId)) {
       console.log("이미 consume 중인 producerId");
       return;
@@ -121,7 +121,10 @@ export default function VideoConference() {
             throw new Error("consumer가 없다...있어야 하는데...");
           }
 
-          setConsumers((prev) => [...prev, consumer]);
+          setConsumers((prev) => [
+            ...prev.filter((consumer) => !consumer.closed),
+            consumer,
+          ]);
 
           socket.emit("consumer-resume", { consumerId: consumer.id });
         }
@@ -138,8 +141,6 @@ export default function VideoConference() {
   }
 
   function handleProducerClose(streamId: string) {
-    console.log("producerId is : ", streamId);
-    console.log("consumers is: ", consumers);
     setConsumers((prev) =>
       prev.filter((consumer) => {
         if (consumer.appData.streamId === streamId) {
