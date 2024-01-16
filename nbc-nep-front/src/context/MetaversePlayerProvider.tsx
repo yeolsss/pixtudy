@@ -1,7 +1,9 @@
 import { Player } from "@/types/metaverse";
 import {
   createContext,
+  Dispatch,
   PropsWithChildren,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -9,15 +11,20 @@ import {
 
 type PlayerContextType = {
   playerList: Player[];
+  spaceId: string;
+  setSpaceId: Dispatch<SetStateAction<string>>;
 };
 
 const initialState: PlayerContextType = {
   playerList: [] as Player[],
+  spaceId: "",
+  setSpaceId: () => {},
 };
 
 const PlayerContext = createContext<PlayerContextType>(initialState);
 export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
   const [playerList, setPlayerList] = useState<Player[]>([]);
+  const [spaceId, setSpaceId] = useState<string>("");
 
   useEffect(() => {
     const handlePlayerList = (event: Event) => {
@@ -35,6 +42,8 @@ export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
 
   const value = {
     playerList,
+    spaceId,
+    setSpaceId,
   };
 
   return (

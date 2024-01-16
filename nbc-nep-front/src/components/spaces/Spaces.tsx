@@ -4,8 +4,8 @@ import { openJoinSpaceModal } from "@/redux/modules/modalSlice";
 import { Space_members } from "@/types/supabase.tables.type";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import ModalPortal from "./modal/ModalPortal";
-import JoinSpaceModal from "./modal/spaceModals/JoinSpaceModal";
+import ModalPortal from "../modal/ModalPortal";
+import JoinSpaceModal from "../modal/spaceModals/joinSpaceModal/JoinSpaceModal";
 
 export default function Spaces() {
   const currentUserId = useAppSelector((state) => state.authSlice.user.id);
@@ -31,22 +31,19 @@ export default function Spaces() {
   };
   return (
     <>
-      {userSpaces.length >= 1 ? (
-        userSpaces?.map((space) => {
-          return (
-            <section key={space.id}>
-              <h1>{space.spaces?.title}</h1>
-              <h2>{space.spaces?.description}</h2>
-              <span>{space.spaces?.created_at}</span>
-              <button onClick={() => handleToSpace(space.spaces?.id!)}>
-                space로 이동
-              </button>
-            </section>
-          );
-        })
-      ) : (
-        <button onClick={handleOpenJoinSpaceModal}>Space에 입장하기</button>
-      )}
+      <button onClick={handleOpenJoinSpaceModal}>Space에 입장하기</button>
+      {userSpaces?.map((space) => {
+        return (
+          <section key={space.id}>
+            <h1>{space.spaces?.title}</h1>
+            <h2>{space.spaces?.description}</h2>
+            <span>{space.spaces?.created_at}</span>
+            <button onClick={() => handleToSpace(space.spaces?.id!)}>
+              space로 이동
+            </button>
+          </section>
+        );
+      })}
       {isModalOpen && (
         <ModalPortal>
           <JoinSpaceModal />

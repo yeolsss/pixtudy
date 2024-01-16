@@ -1,26 +1,25 @@
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
-import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
-import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import {
+  MetaversePlayerProvider,
+  usePlayerContext,
+} from "@/context/MetaversePlayerProvider";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { CharacterScenes } from "@/scenes/characterScenes";
 import { ScenesMain } from "@/scenes/scenesMain";
+import { useRouter } from "next/router";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import MetaverseChat from "./metaverseChat/MetaverseChat";
 
-// 시나리오
-// 1. useQuery 사용해서 유저 정보를 가져온다.
-// 2. 가져온 유저 정보를 바탕으로 space에 입장한다.
-// 2-1. 유저 정보 중 space_display_name 이 없다면, nickname을 입력받는다.
-// 2-2. 유저 정보 중 space_avatar 가 없다면 프리셋 중 하나를 선택한다.
-// 2-3. 2-1, 2-2 는 모달 창에서 진행한다.
-
 const MetaverseComponent = () => {
   const { display_name, id } = useAppSelector((state) => state.authSlice.user);
-  const data = useGetUserSpaces(id);
+  const { setSpaceId } = usePlayerContext();
+  const router = useRouter();
+  const spaceId =
+    typeof router.query.space_id === "string" ? router.query.space_id : "";
+  setSpaceId(spaceId);
 
-  console.log(data);
   useEffect(() => {
     let game: Phaser.Game | undefined;
 
@@ -56,6 +55,7 @@ const MetaverseComponent = () => {
       playerId: id,
       nickname: display_name,
       character: "pinkybonz",
+      spaceId,
     });
 
     window.addEventListener("resize", resize);

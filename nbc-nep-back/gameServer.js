@@ -5,6 +5,7 @@ module.exports = function (io) {
     console.log("player [" + socket.id + "] connected");
 
     socket.on("userData", (playerInfo) => {
+      console.log("playerInfo.spaceId - ", playerInfo.spaceId);
       players[socket.id] = {
         rotation: 0,
         x: 100,
@@ -14,6 +15,7 @@ module.exports = function (io) {
         nickname: playerInfo.nickname,
         character: playerInfo.character,
         frame: 0,
+        spaceId: playerInfo.spaceId,
       };
       socket.emit("currentPlayers", players);
       socket.broadcast.emit("newPlayer", players[socket.id]);

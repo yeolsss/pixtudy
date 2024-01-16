@@ -1,8 +1,8 @@
-import React, { createContext, PropsWithChildren, useContext } from "react";
 import useChatSocket from "@/hooks/socket/useChatSocket";
-import { Chat } from "@/types/metaverse";
 import useInput from "@/hooks/useInput";
 import { useAppSelector } from "@/hooks/useReduxTK";
+import { Chat } from "@/types/metaverse";
+import React, { createContext, PropsWithChildren, useContext } from "react";
 
 type MetaverseChatContext = {
   chatInput: string;
