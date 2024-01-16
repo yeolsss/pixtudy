@@ -5,7 +5,7 @@ import {
   TransPortParams,
 } from "@/components/video-conference/types/ScreenShare.types";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Socket } from "socket.io-client";
 
 interface Props {
@@ -18,9 +18,6 @@ export default function useSendTransport({
   createSendTransportWithDevice,
 }: Props) {
   const sendTransportRef = useRef<SendTransportType | null>(null);
-  const [sendTransport, setSendTransport] = useState<SendTransportType | null>(
-    null
-  );
 
   function createSendTransport(sendTransportParams: TransPortParams) {
     if (sendTransportRef.current) return sendTransportRef.current;

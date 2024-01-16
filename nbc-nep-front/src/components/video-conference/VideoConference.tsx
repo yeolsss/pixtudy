@@ -1,29 +1,35 @@
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDevice from "@/hooks/share-screen/useDevice";
 import useRecvTransport from "@/hooks/share-screen/useRecvTransport";
 import useSendTransport from "@/hooks/share-screen/useSendTransport";
 import useSocket from "@/hooks/socket/useSocket";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ShareButton from "./ShareButton";
-import ShareMediaItem from "./ShareMediaItem";
 import { isAlreadyConsume, isEmptyTracks } from "./lib/util";
 import {
+  AppData,
   Consumer,
   Producer,
+  ProducerForConsume,
   RtpCapabilities,
   ShareType,
-  TrackKind,
   TransPortParams,
 } from "./types/ScreenShare.types";
-
-const roomName = "test";
+import ShareMediaItemContainer from "./video-media-item/ShareMediaItemContainer";
 
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
-  const localVideoRef = useRef<HTMLVideoElement | null>(null);
-  const localWebCamRef = useRef<HTMLVideoElement | null>(null);
-  const localAudioRef = useRef<HTMLVideoElement | null>(null);
+
+  const { playerList, spaceId } = usePlayerContext();
+  const { id: currentPlayerId } = useAppSelector(
+    (state) => state.authSlice.user
+  );
+
+  const [producers, setProducers] = useState<Producer[]>([]);
+  const [consumers, setConsumers] = useState<Consumer[]>([]);
 
   const {
     loadDevice,
@@ -32,24 +38,19 @@ export default function VideoConference() {
     createRecvTransportWithDevice,
   } = useDevice();
 
-  // const recvTransportRef = useRef<RecvTransportType | null>(null);
   const { sendTransport, createSendTransport } = useSendTransport({
     socket,
     createSendTransportWithDevice,
   });
+
   const { recvTransport, createRecvTransport } = useRecvTransport({
     socket,
     createRecvTransportWithDevice,
   });
 
-  const [producers, setProducers] = useState<Producer[]>([]);
-  const [consumers, setConsumers] = useState<Consumer[]>([]);
-
-  // cursor 쓰세요 튜ㅜ터님 커서 쓰세요 두번 쓰세요 세번 쓰세요
-
   useEffect(() => {
     console.log("socket connected");
-    socket.emit("join-room", roomName);
+    socket.emit("join-room", spaceId);
 
     socket.emit("create-transport", handleCreatedTransport);
 
@@ -60,6 +61,7 @@ export default function VideoConference() {
     return () => {
       disconnect();
       socket.off("new-producer", handleConsumeProducers);
+      socket.off("producer-closed", handleProducerClose);
     };
   }, []);
 
@@ -75,17 +77,20 @@ export default function VideoConference() {
     socket.emit("get-producers", handleConsumeProducers);
   }
 
-  async function handleConsumeNewProducer(producerId: string) {
+  async function handleConsumeNewProducer(
+    producerId: string,
+    appData: AppData
+  ) {
     if (isAlreadyConsume(consumers, producerId)) {
       return;
     }
 
     try {
       const rtpCapabilities = getRtpCapabilitiesFromDevice();
-      console.log({ producerId });
+
       socket.emit(
         "transport-recv-consume",
-        { rtpCapabilities, producerId },
+        { rtpCapabilities, producerId, appData },
         async (data: {
           id: string;
           producerId: string;
@@ -99,7 +104,7 @@ export default function VideoConference() {
             producerId,
             kind,
             rtpParameters,
-            appData: { producerId },
+            appData,
           });
 
           if (!consumer) {
@@ -115,8 +120,10 @@ export default function VideoConference() {
     }
   }
 
-  function handleConsumeProducers(producerIds: string[]) {
-    producerIds.forEach((producerId) => handleConsumeNewProducer(producerId));
+  function handleConsumeProducers(producersForConsume: ProducerForConsume[]) {
+    producersForConsume.forEach(({ id, appData }) =>
+      handleConsumeNewProducer(id, appData)
+    );
   }
 
   function handleProducerClose(producerId: string) {
@@ -128,14 +135,6 @@ export default function VideoConference() {
   }
 
   async function handleShare(stream: MediaStream, type: ShareType) {
-    const localMediaRef = {
-      screen: localVideoRef,
-      webcam: localWebCamRef,
-      audio: localAudioRef,
-    }[type];
-
-    localMediaRef.current!.srcObject = stream;
-
     try {
       const videoTracks = stream.getVideoTracks();
       const audioTracks = stream.getAudioTracks();
@@ -146,10 +145,16 @@ export default function VideoConference() {
       const produceParams = isVideoTrackEmpty ? {} : { ...videoParams };
 
       const track = tracks[0];
+
       const producer = await sendTransport.current?.produce({
         track,
         ...produceParams,
-        appData: { trackId: track.id, streamId: stream.id },
+        appData: {
+          trackId: track.id,
+          streamId: stream.id,
+          userId: currentPlayerId,
+          shareType: type,
+        },
       });
 
       if (!producer) {
@@ -163,35 +168,30 @@ export default function VideoConference() {
   }
 
   async function handleStopShare(type: ShareType) {
-    const localMediaRef = {
-      screen: localVideoRef,
-      webcam: localWebCamRef,
-      audio: localAudioRef,
-    }[type];
+    const producer = producers.find(
+      (producer) => producer.appData.shareType === type
+    );
 
-    const stream = localMediaRef.current!.srcObject as MediaStream;
-
-    if (!stream) {
-      console.log("stream이 없다. 있어야 하는데...");
+    if (!producer) {
+      console.error("no producer...");
       return;
     }
-    const findProducerByStreamId = (producer: Producer) =>
-      producer.appData.streamId === stream.id;
 
     try {
-      producers.forEach(async (producer) => {
-        if (findProducerByStreamId(producer)) {
-          console.log("find producer, and close");
-          socket.emit("producer-close", producer.id);
-          producer.pause();
-          producer.close();
-        }
-      });
+      const track = producer?.track;
+
+      if (!track) {
+        throw new Error("no track...");
+      }
+
+      track.enabled = false;
+      socket.emit("producer-close", producer.id);
+      producer.pause();
+      producer.close();
 
       setProducers((prev) =>
-        prev.filter((producer) => !findProducerByStreamId(producer))
+        prev.filter((prevProducer) => prevProducer.id !== producer.id)
       );
-      localMediaRef.current!.srcObject = null;
     } catch (error) {
       console.error("handle stop share error", error);
     }
@@ -222,23 +222,16 @@ export default function VideoConference() {
           stopSharingButtonText="마이크 끄기"
         />
       </StDockContainer>
-      <StMediaItemContainer>
-        <StVideo ref={localVideoRef} muted playsInline autoPlay></StVideo>
-        <StVideo ref={localWebCamRef} muted playsInline autoPlay></StVideo>
-        <StAudio ref={localAudioRef} muted playsInline autoPlay></StAudio>
-        {consumers.map((consumer) => {
-          const { track } = consumer;
-          const stream = new MediaStream([track]);
-
-          return (
-            <ShareMediaItem
-              key={consumer.id}
-              stream={stream}
-              type={track.kind as TrackKind}
-            />
-          );
-        })}
-      </StMediaItemContainer>
+      <StMediaItemWrapper>
+        {playerList.length !== 0 && (
+          <ShareMediaItemContainer
+            consumers={consumers}
+            producers={producers}
+            playerList={playerList}
+            currentPlayerId={currentPlayerId}
+          />
+        )}
+      </StMediaItemWrapper>
     </StWrapper>
   );
 }
@@ -274,7 +267,9 @@ const StWrapper = styled.div`
   margin: 0;
   padding: 0;
 
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 const StDockContainer = styled.div`
@@ -283,7 +278,7 @@ const StDockContainer = styled.div`
   left: 50%;
   transform: translateX(-50%);
 
-  bottom: 10px;
+  bottom: 500px;
   width: 300px;
   border: 1px solid black;
 
@@ -292,7 +287,7 @@ const StDockContainer = styled.div`
   justify-content: center;
   gap: 15px;
 `;
-const StMediaItemContainer = styled.div`
+const StMediaItemWrapper = styled.div`
   position: absolute;
 
   right: 20px;
@@ -303,8 +298,12 @@ const StMediaItemContainer = styled.div`
 `;
 
 export const StVideo = styled.video`
-  width: 400px;
-  height: 300px;
+  width: 175px;
+  height: 130px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  object-fit: cover;
 `;
 export const StAudio = styled.audio`
   width: 0;

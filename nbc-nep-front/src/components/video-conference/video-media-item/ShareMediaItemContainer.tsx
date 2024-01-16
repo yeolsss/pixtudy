@@ -3,7 +3,7 @@ import ShareMediaItem from "../ShareMediaItem";
 import { isArrayEmpty } from "../lib/util";
 import { Consumer, Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
-import OtherPlayerMediaShareItem from "./OtherPlayerMediaShareItem";
+import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
 
 interface Props {
   producers: Producer[];
@@ -22,6 +22,8 @@ export default function ShareMediaItemContainer({
   const findPlayer = (playerId: string) =>
     playerList.find((player) => player.playerId === playerId);
   const currentPlayer = findPlayer(currentPlayerId);
+
+  console.log(currentPlayer, playerList);
 
   return (
     <>
@@ -43,7 +45,7 @@ export default function ShareMediaItemContainer({
       </div>
       <div>
         {playerList.map((player) => (
-          <OtherPlayerMediaShareItem
+          <OtherPlayerShareMediaItem
             player={player}
             currentPlayerId={currentPlayerId}
             consumers={consumers}

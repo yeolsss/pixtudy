@@ -1,3 +1,4 @@
+import { Player } from "@/types/metaverse";
 import { types } from "mediasoup-client";
 
 export type RtpCapabilities = types.RtpCapabilities;
@@ -18,13 +19,6 @@ export type TransPortParams = {
   iceCandidates: types.IceCandidate[];
   dtlsParameters: types.DtlsParameters;
 };
-// ! 이번것이 해결된다면 사라져야 마땅함.
-export type ConsumerTransportType = {
-  consumerTransport: types.Transport;
-  serverConsumerTransportId: string;
-  producerId: string;
-  consumer: types.Consumer;
-};
 
 export type NewProducerParameter = {
   producerId: string;
@@ -33,15 +27,24 @@ export type NewProducerParameter = {
   isNewSocketHost: boolean;
 };
 
+export type AppData = {
+  trackId: string;
+  streamId: string;
+  userId: string;
+  shareType: ShareType;
+} & types.AppData;
+
 export type ShareType = "screen" | "webcam" | "audio";
 
 export type SendTransportType = types.Transport<types.AppData>;
 
 export type RecvTransportType = types.Transport<types.AppData>;
 
-export type Producer = types.Producer<types.AppData>;
+export type Producer = types.Producer<AppData>;
 
-export type Consumer = types.Consumer<types.AppData>;
+export type Consumer = types.Consumer<AppData>;
+
+export type VideoSource = Producer | Consumer;
 
 export type MediaStreamWithId = {
   stream: MediaStream;
@@ -49,3 +52,14 @@ export type MediaStreamWithId = {
 };
 
 export type TrackKind = "video" | "audio";
+
+export type ProducerForConsume = { id: string; appData: AppData };
+
+export type UserWithVideoSource = {
+  producers: Producer[];
+  consumers: Consumer[];
+} & Player;
+
+export type UserVideoSourceMap = {
+  [key: string]: UserWithVideoSource;
+};

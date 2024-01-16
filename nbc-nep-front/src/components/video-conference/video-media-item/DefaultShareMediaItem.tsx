@@ -1,4 +1,9 @@
+import styled from "styled-components";
 import MetaAvatar from "../../metaverse/avatar/MetaAvatar";
+import {
+  StShareMediaItem,
+  StShareMediaNickname,
+} from "../styles/videoConference.styles";
 
 interface Props {
   avatar: string;
@@ -7,9 +12,19 @@ interface Props {
 
 export default function DefaultShareMediaItem({ nickname, avatar }: Props) {
   return (
-    <div>
+    <StDefaultShareMediaItemWrapper>
       <MetaAvatar spaceAvatar={avatar} />
-      <p>Default Image {nickname}</p>
-    </div>
+      <StShareMediaNickname>{nickname}</StShareMediaNickname>
+    </StDefaultShareMediaItemWrapper>
   );
 }
+
+const StDefaultShareMediaItemWrapper = styled(StShareMediaItem)`
+  display: flex;
+
+  & > span {
+    margin: auto;
+  }
+
+  position: relative;
+`;

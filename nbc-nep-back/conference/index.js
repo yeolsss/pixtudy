@@ -1,5 +1,5 @@
-const SEND_TRANSPORT = "sendTransport";
-const RECV_TRANSPORT = "recvTransport";
+const SEND_TRANSPORT_KEY = "sendTransport";
+const RECV_TRANSPORT_KEY = "recvTransport";
 
 const {
   createWebRtcTransport,
@@ -17,24 +17,26 @@ let clients = {};
 
 module.exports = function (io) {
   io.on("connection", (socket) => {
-    socket.on("disconnect", () => {
-      console.log("socket disconnect");
-      clients[socket.id] = null;
-    });
     // socket이 연결이 된다면, 그 socket에 대한 정보를 여기서 초기화를 애초에 해줘야겠다.fc
     clients[socket.id] = {
       socketId: socket.id,
-      roomName: null,
-      [SEND_TRANSPORT]: null,
-      [RECV_TRANSPORT]: null,
+      spaceId: null,
+      [SEND_TRANSPORT_KEY]: null,
+      [RECV_TRANSPORT_KEY]: null,
       producers: [],
       consumers: [],
     };
+
+    socket.on("disconnect", () => {
+      console.log("socket disconnect", socket.id);
+      clients[socket.id] = null;
+    });
+
     // 클라이언트가 room에 들어왔을 경우, 초기 설정들을 해준다
     // socketId, roomName이라던가 ,transport들... 이미 있느
-    socket.on("join-room", (roomName) => {
-      clients[socket.id].roomName = roomName;
-      socket.join(roomName);
+    socket.on("join-room", (spaceId) => {
+      clients[socket.id].spaceId = spaceId;
+      socket.join(spaceId);
     });
 
     socket.on("create-transport", async (onTransportCreated) => {
@@ -46,8 +48,8 @@ module.exports = function (io) {
         const sendTransport = await createWebRtcTransport();
         const recvTransport = await createWebRtcTransport();
 
-        setTransport(client, sendTransport, SEND_TRANSPORT);
-        setTransport(client, recvTransport, RECV_TRANSPORT);
+        setTransport(client, sendTransport, SEND_TRANSPORT_KEY);
+        setTransport(client, recvTransport, RECV_TRANSPORT_KEY);
 
         onTransportCreated(
           rtpCapabilities,
@@ -62,7 +64,7 @@ module.exports = function (io) {
     socket.on("transport-send-connect", ({ dtlsParameters }) => {
       const client = clients[socket.id];
       try {
-        client[SEND_TRANSPORT].connect({ dtlsParameters });
+        client[SEND_TRANSPORT_KEY].connect({ dtlsParameters });
       } catch (error) {
         console.error("while connect send transport error:", error);
       }
@@ -71,7 +73,7 @@ module.exports = function (io) {
     socket.on("transport-send-produce", async (parameter, callback) => {
       const client = clients[socket.id];
       try {
-        const producer = await client[SEND_TRANSPORT].produce(parameter);
+        const producer = await client[SEND_TRANSPORT_KEY].produce(parameter);
 
         producer.on("transportclose", () => {
           producer.close();
@@ -80,7 +82,9 @@ module.exports = function (io) {
           );
         });
 
-        socket.to(client.roomName).emit("new-producer", producer.id);
+        socket
+          .to(client.spaceId)
+          .emit("new-producer", producer.id, producer.appData);
         client.producers.push(producer);
 
         callback({ id: producer.id });
@@ -92,7 +96,7 @@ module.exports = function (io) {
     socket.on("transport-recv-connect", ({ dtlsParameters }) => {
       const client = clients[socket.id];
       try {
-        client[RECV_TRANSPORT].connect({ dtlsParameters });
+        client[RECV_TRANSPORT_KEY].connect({ dtlsParameters });
       } catch (error) {
         console.error("while connect recv transport error:", error);
       }
@@ -101,10 +105,11 @@ module.exports = function (io) {
     // transport-recv-consume
     socket.on(
       "transport-recv-consume",
-      async ({ rtpCapabilities, producerId }, callback) => {
+      async ({ rtpCapabilities, producerId, appData }, callback) => {
         const client = clients[socket.id];
         try {
-          const recvTransport = client[RECV_TRANSPORT];
+          const recvTransport = client[RECV_TRANSPORT_KEY];
+
           if (!isCanConsumeWithRouter(producerId, rtpCapabilities)) {
             console.error("can not consume");
             return;
@@ -114,6 +119,7 @@ module.exports = function (io) {
             producerId,
             rtpCapabilities,
             paused: true,
+            appData,
           });
 
           consumer.on("transportclose", () => {
@@ -154,7 +160,7 @@ module.exports = function (io) {
         client.producers = client.producers.filter((p) => p.id !== producerId);
 
         // 다른 클라이언트에게 프로듀서가 닫혔다고 알림
-        socket.to(client.roomName).emit("producer-closed", producerId);
+        socket.to(client.spaceId).emit("producer-closed", producerId);
       } catch (error) {
         console.log("producer close error", error);
       }
@@ -165,11 +171,16 @@ module.exports = function (io) {
       for (const clientId in clients) {
         const client = clients[clientId];
 
-        if (!client || client.roomName !== clients[socket.id].roomName)
-          continue;
+        if (!client || client.spaceId !== clients[socket.id].spaceId) continue;
 
         client.producers.forEach((producer) => {
-          producers.push(producer.id);
+          try {
+            if (producer.closed) return;
+
+            producers.push({ id: producer.id, appData: producer.appData });
+          } catch (error) {
+            console.log(error);
+          }
         });
       }
       callback(producers);
@@ -188,6 +199,7 @@ module.exports = function (io) {
     });
   });
 };
+
 function setTransport(client, transport, type) {
   client[type] = transport;
 }

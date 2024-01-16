@@ -17,4 +17,5 @@ const StAvatar = styled.span<{ space_avatar: string }>`
   border: 1px solid black;
   border-radius: 50%;
   display: block;
+  background-color: white;
 `;
