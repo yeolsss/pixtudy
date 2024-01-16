@@ -42,3 +42,22 @@ export type RecvTransportType = types.Transport<types.AppData>;
 export type Producer = types.Producer<types.AppData>;
 
 export type Consumer = types.Consumer<types.AppData>;
+
+// 가이드 형태
+export type GuideStatusType =
+  | "top"
+  | "right"
+  | "bottom"
+  | "left"
+  | "left-top"
+  | "right-top"
+  | "left-bottom"
+  | "right-bottom"
+  | "center";
+
+// 그리드 형태
+export type GridStatusType =
+  | "center-one"
+  | "topBottom-two"
+  | "leftRight-two"
+  | "edge-four";

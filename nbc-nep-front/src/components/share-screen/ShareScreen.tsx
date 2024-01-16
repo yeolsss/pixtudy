@@ -1,5 +1,5 @@
 import useDevice from "@/hooks/share-screen/useDevice";
-import useSocket from "@/hooks/useSocket";
+import useSocket from "@/hooks/socket/useSocket";
 import { types } from "mediasoup-client";
 import { Consumer, Producer } from "mediasoup-client/lib/types";
 import { RefObject, useEffect, useRef, useState } from "react";
