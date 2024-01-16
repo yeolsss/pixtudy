@@ -1,6 +1,6 @@
 import { getUserSessionHandler } from "@/api/supabase/auth";
-import { useAppDispatch } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
+import { useAppDispatch } from "@/hooks/useReduxTK";
 import { login, logout } from "@/redux/modules/authSlice";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

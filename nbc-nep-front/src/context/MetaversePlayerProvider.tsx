@@ -1,5 +1,4 @@
 import { Player } from "@/types/metaverse";
-import { useRouter } from "next/router";
 import {
   createContext,
   PropsWithChildren,
@@ -7,6 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useRouter } from "next/router";
 
 type PlayerContextType = {
   playerList: Player[];

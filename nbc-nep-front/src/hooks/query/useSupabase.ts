@@ -14,11 +14,11 @@ import {
   sendMessage,
   sendMessageArgs,
 } from "@/api/supabase/dm";
-import { joinSpaceHandler } from "@/api/supabase/space";
+import { getSpaceData, joinSpaceHandler } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Tables } from "@/types/supabase";
 import { Space_members } from "@/types/supabase.tables.type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAppSelector } from "../useReduxTK";
 
 /* Auth */
@@ -77,6 +77,16 @@ export function useJoinSpace() {
     },
   });
   return joinSpace;
+}
+// spaceId 로 스페이스를 조회하여 테이블 데이터를 가져온다.
+export function useGetSpace(spaceId: string) {
+  const { data, isError, isLoading, error } = useQuery({
+    queryKey: ["validateSpace", spaceId],
+    queryFn: () => getSpaceData(spaceId),
+    enabled: !!spaceId,
+  });
+  if (error) console.error(error);
+  return { data, isError, isLoading };
 }
 
 // get current user spaces

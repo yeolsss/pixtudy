@@ -1,11 +1,18 @@
 import { PropsWithChildren, useRef, useState } from "react";
-import { DndProvider, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDrop } from "react-dnd";
 import styled from "styled-components";
 import { currentLayoutIndex, getGridStyle } from "./lib/dnd";
-import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
+import {
+  Consumer,
+  GridStatusType,
+  GuideStatusType,
+} from "./types/ScreenShare.types";
 
-export default function ShareScreenContainer({ children }: PropsWithChildren) {
+interface Props {
+  filteredConsumers: Consumer[];
+}
+export default function ShareScreenContainer({ filteredConsumers }: Props) {
+  console.log(filteredConsumers);
   // 비디오 상태관리
   const [videos, setVideos] = useState<string[]>([]);
   const [selectVideos, setSelectVideos] = useState<(string | null)[]>([]);
@@ -119,47 +126,45 @@ export default function ShareScreenContainer({ children }: PropsWithChildren) {
   });
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <StVideosLayoutContainer>
-        <h1 style={{ fontWeight: "bold", fontSize: "2rem" }}>
-          layout components
-        </h1>
+    <StVideosLayoutContainer>
+      <h1 style={{ fontWeight: "bold", fontSize: "2rem" }}>
+        layout components
+      </h1>
 
-        <div style={{ display: "flex", marginBottom: "2rem" }}>
-          {videos.map((video, index) => {
-            return (
-              // TODO: VIDEO 형식에 따른 변경 필요
-              <></>
-              //   <ShareScreenDragItem key={video.id} id={video.id} active={false}>
-              //     {video}
-              //   </ShareScreenDragItem>
-            );
-            // return <Card key={video} color={video} active={false} />;
-          })}
-        </div>
+      <div style={{ display: "flex", marginBottom: "2rem" }}>
+        {videos.map((video, index) => {
+          return (
+            // TODO: VIDEO 형식에 따른 변경 필요
+            <></>
+            //   <ShareScreenDragItem key={video.id} id={video.id} active={false}>
+            //     {video}
+            //   </ShareScreenDragItem>
+          );
+          // return <Card key={video} color={video} active={false} />;
+        })}
+      </div>
 
-        <StLayoutContainer
-          ref={(element) => {
-            dropParentRef.current = element;
-            drop(element);
-          }}
-          $currentGridLayout={currentGrid!}
-        >
-          {selectVideos?.map((video, index) => {
-            if (!video) return <div key={index}>비디오를 드래그 하세요</div>;
-            return (
-              // TODO: VIDEO 형식에 따른 변경 필요
-              <></>
-              //   <ShareScreenDragItem key={video.id} id={video.id} active={true}>
-              //     {video}
-              //   </ShareScreenDragItem>
-            );
-          })}
+      <StLayoutContainer
+        ref={(element) => {
+          dropParentRef.current = element;
+          drop(element);
+        }}
+        $currentGridLayout={currentGrid!}
+      >
+        {selectVideos?.map((video, index) => {
+          if (!video) return <div key={index}>비디오를 드래그 하세요</div>;
+          return (
+            // TODO: VIDEO 형식에 따른 변경 필요
+            <></>
+            //   <ShareScreenDragItem key={video.id} id={video.id} active={true}>
+            //     {video}
+            //   </ShareScreenDragItem>
+          );
+        })}
 
-          {showGuide && <StLayoutGuide $guide={currentGuide} />}
-        </StLayoutContainer>
-      </StVideosLayoutContainer>
-    </DndProvider>
+        {showGuide && <StLayoutGuide $guide={currentGuide} />}
+      </StLayoutContainer>
+    </StVideosLayoutContainer>
   );
 }
 
@@ -168,6 +173,13 @@ const StVideosLayoutContainer = styled.div`
   flex-direction: "column";
   align-items: "center";
   height: "100%";
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
 `;
 
 const StLayoutContainer = styled.div<{ $currentGridLayout: GridStatusType }>`
