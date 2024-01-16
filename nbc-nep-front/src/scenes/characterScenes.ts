@@ -28,11 +28,12 @@ export class CharacterScenes extends Phaser.Scene {
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   runKey?: Phaser.Input.Keyboard.Key;
   lastDirection?: string;
-  private socket?: Socket;
+  socket: Socket;
   isRunning: boolean = false;
 
-  constructor() {
+  constructor(socket: Socket) {
     super({ key: "CharacterScenes" });
+    this.socket = socket;
   }
 
   create() {
@@ -46,10 +47,12 @@ export class CharacterScenes extends Phaser.Scene {
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
     objLayer?.setCollisionByProperty({ collides: true });
 
+    //소켓 시작
+    this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
+
     const playerInfo = this.game.registry.get("player");
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
-    this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
     this.socket.on("connect", () => {
       this.socket?.emit("userData", playerInfo);
@@ -149,6 +152,7 @@ export class CharacterScenes extends Phaser.Scene {
     this.character.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
     this.physics.add.collider(this.character, objLayer!);
     this.cameras.main.startFollow(this.character, true);
+    this.cameras.main.setZoom(2.5);
   }
   /**
    * 다른 플레이어를 게임에 추가한다.

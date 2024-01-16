@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import styled from "styled-components";
 import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
@@ -8,9 +9,9 @@ export default function MetaverseChatList() {
   return (
     <>
       <StMetaverseChatList>
-        {chatList?.map((chat, index) => (
-          <MetaverseChatCard chat={chat} key={chat.userId + index} />
-        ))}
+        {chatList?.map((chat, index) => {
+          return <MetaverseChatCard chat={chat} key={chat.userId + index} />;
+        })}
       </StMetaverseChatList>
     </>
   );
@@ -19,13 +20,15 @@ export default function MetaverseChatList() {
 const StMetaverseChatList = styled.div`
   width: 100%;
   height: 200px;
-  background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 5px;
   overflow: scroll;
+  flex: 10;
+  background-color: #1f2542;
+  color: white;
   &::-webkit-scrollbar {
     display: none;
   }
