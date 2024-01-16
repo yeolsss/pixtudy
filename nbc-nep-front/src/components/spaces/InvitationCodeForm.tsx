@@ -2,10 +2,8 @@ import { useGetSpace, useGetUserSpaces } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { Dispatch, SetStateAction } from "react";
 import {
-  FieldError,
-  FieldErrorsImpl,
   FieldValues,
-  Merge,
+  FormState,
   SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister,
@@ -17,7 +15,7 @@ interface Props {
   register: UseFormRegister<FieldValues>;
   reset: UseFormReset<FieldValues>;
   setIsValidSpace: React.Dispatch<React.SetStateAction<boolean>>;
-  error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
+  errors: FormState<FieldValues>["errors"];
   handleCancelBtnClick: () => void;
   setSpaceId: Dispatch<SetStateAction<string>>;
   spaceId: string;
@@ -28,7 +26,7 @@ export default function InvitationCodeForm({
   register,
   reset,
   setIsValidSpace,
-  error,
+  errors,
   handleCancelBtnClick,
   setSpaceId,
   spaceId,
@@ -74,7 +72,9 @@ export default function InvitationCodeForm({
           validate: onInvitationCodeChange,
         })}
       />
-      {/* {error && <p>{error?.message as string}</p>} */}
+      {errors.invitationCode && (
+        <p>{errors.invitationCode.message as string}</p>
+      )}
       <button type="submit">확인</button>
       <button onClick={handleCancelBtnClick}>취소</button>
     </form>

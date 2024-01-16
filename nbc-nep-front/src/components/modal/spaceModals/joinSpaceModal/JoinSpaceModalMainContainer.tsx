@@ -2,7 +2,6 @@ import ProfileForm from "@/components/spaces/ProfileForm";
 import { useJoinSpace } from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { openJoinSpaceModal } from "@/redux/modules/modalSlice";
-import { Tables } from "@/types/supabase";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,9 +14,6 @@ export default function JoinSpaceModalMainContainer() {
   );
   const [spaceId, setSpaceId] = useState<string>("");
   const [isValidSpace, setIsValidSpace] = useState<boolean>(false);
-  const [userProfile, setUserProfile] = useState<Tables<"space_members"> | {}>(
-    {}
-  );
   const join = useJoinSpace();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -50,7 +46,7 @@ export default function JoinSpaceModalMainContainer() {
             setSpaceId={setSpaceId}
             register={register}
             reset={reset}
-            error={errors["invitationCode"]}
+            errors={errors}
           />
           {errors.invitationCode && (
             <span>{errors.invitationCode.message as string}</span>

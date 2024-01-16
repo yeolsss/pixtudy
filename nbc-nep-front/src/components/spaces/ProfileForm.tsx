@@ -22,6 +22,7 @@ interface ProfileFormProps {
 export default function ProfileForm({
   spaceId,
   defaultDisplayName,
+  handleSubmit,
   handleCancelBtnClick,
   register,
   errors,
@@ -44,13 +45,11 @@ export default function ProfileForm({
       space_display_name: data.nickname,
       user_id: userId,
     };
-
-    //
     join(userProfile);
-    // console.log(data.avatar);
   };
+
   return (
-    <form onSubmit={handleProfileSubmit}>
+    <form onSubmit={handleSubmit(handleProfileSubmit)}>
       <input
         defaultValue={defaultDisplayName}
         type="text"
