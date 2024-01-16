@@ -41,24 +41,27 @@ export default function VideoConference() {
   const { sendTransport, createSendTransport } = useSendTransport({
     socket,
     createSendTransportWithDevice,
+    playerId: currentPlayerId,
   });
 
   const { recvTransport, createRecvTransport } = useRecvTransport({
     socket,
     createRecvTransportWithDevice,
+    playerId: currentPlayerId,
   });
 
   useEffect(() => {
     console.log("socket connected");
-    socket.emit("join-room", spaceId);
+    socket.emit("join-room", spaceId, currentPlayerId);
 
-    socket.emit("create-transport", handleCreatedTransport);
+    socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
 
     socket.on("new-producer", handleConsumeNewProducer);
 
     socket.on("producer-closed", handleProducerClose);
 
     return () => {
+      socket.emit("transport-close", currentPlayerId);
       disconnect();
       socket.off("new-producer", handleConsumeProducers);
       socket.off("producer-closed", handleProducerClose);
@@ -74,7 +77,12 @@ export default function VideoConference() {
     createSendTransport(sendTransportParams);
     createRecvTransport(recvTransportParams);
 
-    socket.emit("get-producers", handleConsumeProducers);
+    socket.emit(
+      "get-producers",
+      playerList,
+      currentPlayerId,
+      handleConsumeProducers
+    );
   }
 
   async function handleConsumeNewProducer(
@@ -82,6 +90,7 @@ export default function VideoConference() {
     appData: AppData
   ) {
     if (isAlreadyConsume(consumers, producerId)) {
+      console.log("이미 consume 중인 producerId");
       return;
     }
 
@@ -90,7 +99,7 @@ export default function VideoConference() {
 
       socket.emit(
         "transport-recv-consume",
-        { rtpCapabilities, producerId, appData },
+        { rtpCapabilities, producerId, appData, playerId: currentPlayerId },
         async (data: {
           id: string;
           producerId: string;
@@ -107,12 +116,27 @@ export default function VideoConference() {
             appData,
           });
 
+          consumer?.on("@close", () => {
+            console.log("basic close consumer");
+          });
+
+          consumer?.observer.on("close", () => {
+            console.log("close consumer");
+          });
+
           if (!consumer) {
             throw new Error("consumer가 없다...있어야 하는데...");
           }
-          setConsumers((prev) => [...prev, consumer]);
 
-          socket.emit("consumer-resume", { consumerId: consumer.id });
+          setConsumers((prev) => [
+            ...prev.filter((consumer) => !consumer.closed),
+            consumer,
+          ]);
+
+          socket.emit("consumer-resume", {
+            consumerId: consumer.id,
+            playerId: currentPlayerId,
+          });
         }
       );
     } catch (error) {
@@ -126,10 +150,13 @@ export default function VideoConference() {
     );
   }
 
-  function handleProducerClose(producerId: string) {
+  function handleProducerClose(streamId: string) {
     setConsumers((prev) =>
       prev.filter((consumer) => {
-        return consumer.appData.producerId !== producerId;
+        if (consumer.appData.streamId === streamId) {
+          consumer.close();
+        }
+        return consumer.appData.streamId !== streamId;
       })
     );
   }
@@ -152,7 +179,7 @@ export default function VideoConference() {
         appData: {
           trackId: track.id,
           streamId: stream.id,
-          userId: currentPlayerId,
+          playerId: currentPlayerId,
           shareType: type,
         },
       });
@@ -185,7 +212,7 @@ export default function VideoConference() {
       }
 
       track.enabled = false;
-      socket.emit("producer-close", producer.id);
+      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
       producer.pause();
       producer.close();
 
@@ -196,6 +223,8 @@ export default function VideoConference() {
       console.error("handle stop share error", error);
     }
   }
+
+  console.log(consumers);
 
   return (
     <>
@@ -260,18 +289,6 @@ const videoParams = {
   },
 };
 
-const StWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  margin: 0;
-  padding: 0;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
-
 const StDockContainer = styled.div`
   position: absolute;
 
@@ -295,17 +312,4 @@ const StMediaItemWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-`;
-
-export const StVideo = styled.video`
-  width: 175px;
-  height: 130px;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  object-fit: cover;
-`;
-export const StAudio = styled.audio`
-  width: 0;
-  height: 0;
 `;

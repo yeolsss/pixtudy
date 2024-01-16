@@ -11,11 +11,13 @@ import { Socket } from "socket.io-client";
 interface Props {
   socket: Socket;
   createSendTransportWithDevice: (params: TransPortParams) => SendTransportType;
+  playerId: string;
 }
 
 export default function useSendTransport({
   socket,
   createSendTransportWithDevice,
+  playerId,
 }: Props) {
   const sendTransportRef = useRef<SendTransportType | null>(null);
 
@@ -42,7 +44,7 @@ export default function useSendTransport({
   ) {
     try {
       // 미디어 데이터를 안전하게 전송하기 위하여 dtlsParameters를 서버측으로 전송하여 핸드쉐이크를 한다.
-      socket.emit("transport-send-connect", { dtlsParameters });
+      socket.emit("transport-send-connect", { dtlsParameters, playerId });
       // transport에 parameters들이 전송되었다는 것을 알려주는 역할
       callback();
     } catch (error) {
@@ -58,7 +60,7 @@ export default function useSendTransport({
     try {
       socket.emit(
         "transport-send-produce",
-        parameter,
+        { parameter, playerId },
         (data: { id: string }) => {
           const { id } = data;
           callback({ id });
