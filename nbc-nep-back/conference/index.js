@@ -166,10 +166,9 @@ module.exports = function (io) {
       }
     });
 
-    socket.on("producer-close", (streamId) => {
+    socket.on("producer-close", (playerId, streamId) => {
       try {
-        const client = clients[socket.id];
-        if (!client) return;
+        const client = clients[playerId];
 
         client.producers = client.producers.filter(
           (p) => p.appData.streamId !== streamId

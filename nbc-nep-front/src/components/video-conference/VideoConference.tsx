@@ -212,7 +212,7 @@ export default function VideoConference() {
       }
 
       track.enabled = false;
-      socket.emit("producer-close", producer.appData.streamId);
+      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
       producer.pause();
       producer.close();
 
