@@ -229,7 +229,12 @@ export default function VideoConference() {
     }
   }
 
-  console.log(consumers);
+  function isCanShare() {
+    return (
+      producers.filter((producer) => producer.appData.shareType === "screen")
+        .length <= 4
+    );
+  }
 
   return (
     <>
@@ -241,6 +246,7 @@ export default function VideoConference() {
           onStopShare={handleStopShare}
           shareButtonText="화면 공유"
           stopSharingButtonText="공유 종료"
+          condition={isCanShare}
         />
         <ShareButton
           type="webcam"
