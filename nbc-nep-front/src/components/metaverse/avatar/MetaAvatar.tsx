@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 interface Props {
-  spaceAvatar: string;
+  spaceAvatar?: string;
 }
 export default function MetaAvatar({ spaceAvatar }: Props) {
   return <StAvatar space_avatar={spaceAvatar}></StAvatar>;
 }
 
-const StAvatar = styled.span<{ space_avatar: string }>`
+const StAvatar = styled.span<{ space_avatar?: string }>`
   background-image: ${(props) =>
     `url("/assets/characters/presets/${props.space_avatar}.png")`};
   background-size: 512px 64px;
