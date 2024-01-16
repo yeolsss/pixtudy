@@ -37,21 +37,16 @@ export default function JoinSpaceModalMainContainer() {
     <StModalContainer>
       <h2>Space에 입장하기</h2>
       {!isValidSpace ? (
-        <>
-          <InvitationCodeForm
-            spaceId={spaceId}
-            handleSubmit={handleSubmit}
-            handleCancelBtnClick={handleCancelBtnClick}
-            setIsValidSpace={setIsValidSpace}
-            setSpaceId={setSpaceId}
-            register={register}
-            reset={reset}
-            errors={errors}
-          />
-          {errors.invitationCode && (
-            <span>{errors.invitationCode.message as string}</span>
-          )}
-        </>
+        <InvitationCodeForm
+          spaceId={spaceId}
+          handleSubmit={handleSubmit}
+          handleCancelBtnClick={handleCancelBtnClick}
+          setIsValidSpace={setIsValidSpace}
+          setSpaceId={setSpaceId}
+          register={register}
+          reset={reset}
+          errors={errors}
+        />
       ) : (
         <ProfileForm
           spaceId={spaceId}

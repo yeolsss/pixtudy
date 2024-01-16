@@ -33,24 +33,15 @@ export default function InvitationCodeForm({
 }: Props) {
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const userJoinedSpaces = useGetUserSpaces(userId);
-  const { data: spaceData, isError, isLoading } = useGetSpace(spaceId);
-
-  // useEffect(()=>{
-  //   if(spaceData) {
-
-  //   }
-  // },[spaceData, spaceId])
+  const { validateSpace, isError } = useGetSpace();
 
   const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
-    setSpaceId((prev) => data.invitationCode);
-    if (spaceData) {
-      // 초대코드 유효하지 않다? async 함수로 빼야하나?
-      // 첫번째 submit 씹힘
-      if (spaceData) {
-        setIsValidSpace(true);
-      } else {
-        // alert("초대코드가 유효하지 않습니다.");
-      }
+    validateSpace(data.invitationCode);
+    if (isError) {
+      alert("초대코드가 유효하지 않습니다.");
+    } else {
+      setIsValidSpace(true);
+      setSpaceId(data.invitationCode);
     }
   };
 
@@ -60,9 +51,7 @@ export default function InvitationCodeForm({
       : true;
   };
 
-  return isLoading ? (
-    <p>isLoading</p>
-  ) : (
+  return (
     <form onSubmit={handleSubmit(handleInvitationSubmit)}>
       <input
         type="text"
