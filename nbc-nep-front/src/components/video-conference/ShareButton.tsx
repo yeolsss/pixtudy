@@ -7,7 +7,7 @@ interface Props {
   type: ShareType;
   shareButtonText: string;
   stopSharingButtonText: string;
-  condition?: () => boolean;
+  isCanShare?: () => boolean;
 }
 
 export default function ShareButton({
@@ -16,7 +16,7 @@ export default function ShareButton({
   type,
   shareButtonText,
   stopSharingButtonText,
-  condition,
+  isCanShare: condition,
 }: Props) {
   const [isShare, setIsShare] = useState(false);
 
@@ -24,7 +24,11 @@ export default function ShareButton({
     try {
       const mediaStream: MediaStream = await getMediaStreamByType(type);
       onShare(mediaStream, type);
-      if (!condition || condition()) setIsShare(true);
+
+      if (!condition || !condition()) {
+        setIsShare(true);
+        return;
+      }
     } catch (err) {
       console.error("on error when start capture", err);
     }
