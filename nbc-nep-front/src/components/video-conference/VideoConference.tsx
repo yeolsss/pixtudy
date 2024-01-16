@@ -198,7 +198,7 @@ export default function VideoConference() {
   }
 
   return (
-    <StWrapper>
+    <>
       <StDockContainer>
         <ShareButton
           type="screen"
@@ -232,7 +232,7 @@ export default function VideoConference() {
           />
         )}
       </StMediaItemWrapper>
-    </StWrapper>
+    </>
   );
 }
 
