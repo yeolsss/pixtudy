@@ -141,7 +141,7 @@ module.exports = function (io) {
             rtpParameters: consumer.rtpParameters,
           };
 
-          client.consumers.push(consumer);
+          client.consumers = [...client.consumers, consumer];
 
           callback(params);
         } catch (error) {
@@ -175,7 +175,10 @@ module.exports = function (io) {
 
         client.producers.forEach((producer) => {
           try {
-            if (producer.closed) return;
+            if (producer.closed) {
+              producer.close();
+              return;
+            }
 
             producers.push({ id: producer.id, appData: producer.appData });
           } catch (error) {

@@ -30,7 +30,7 @@ export type NewProducerParameter = {
 export type AppData = {
   trackId: string;
   streamId: string;
-  userId: string;
+  playerId: string;
   shareType: ShareType;
 } & types.AppData;
 

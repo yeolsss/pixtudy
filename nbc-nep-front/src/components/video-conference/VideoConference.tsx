@@ -81,7 +81,9 @@ export default function VideoConference() {
     producerId: string,
     appData: AppData
   ) {
+    console.log({ producerId, appData });
     if (isAlreadyConsume(consumers, producerId)) {
+      console.log("이미 consume 중인 producerId");
       return;
     }
 
@@ -110,6 +112,7 @@ export default function VideoConference() {
           if (!consumer) {
             throw new Error("consumer가 없다...있어야 하는데...");
           }
+
           setConsumers((prev) => [...prev, consumer]);
 
           socket.emit("consumer-resume", { consumerId: consumer.id });
@@ -152,7 +155,7 @@ export default function VideoConference() {
         appData: {
           trackId: track.id,
           streamId: stream.id,
-          userId: currentPlayerId,
+          playerId: currentPlayerId,
           shareType: type,
         },
       });
@@ -259,18 +262,6 @@ const videoParams = {
     videoGoogleStartBitrate: 1000,
   },
 };
-
-const StWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  margin: 0;
-  padding: 0;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
 
 const StDockContainer = styled.div`
   position: absolute;

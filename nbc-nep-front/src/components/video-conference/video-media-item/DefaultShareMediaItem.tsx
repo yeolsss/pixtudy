@@ -6,8 +6,8 @@ import {
 } from "../styles/videoConference.styles";
 
 interface Props {
-  avatar: string;
-  nickname: string;
+  avatar?: string;
+  nickname?: string;
 }
 
 export default function DefaultShareMediaItem({ nickname, avatar }: Props) {
