@@ -1,8 +1,9 @@
 import { Player } from "@/types/metaverse";
+import ShareMediaItem from "../ShareMediaItem";
+import { isArrayEmpty } from "../lib/util";
+import { Consumer, Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
-import ShareMediaItem from "./ShareMediaItem";
-import { isArrayEmpty } from "./lib/util";
-import { Consumer, Producer } from "./types/ScreenShare.types";
+import OtherPlayerMediaShareItem from "./OtherPlayerMediaShareItem";
 
 interface Props {
   producers: Producer[];
@@ -41,33 +42,14 @@ export default function ShareMediaItemContainer({
         )}
       </div>
       <div>
-        {playerList.map((player) => {
-          if (player.playerId === currentPlayerId) return null;
-
-          const findedConsumers = consumers.filter(
-            (consumer) => consumer.appData.playerId === player.playerId
-          );
-          const isEmptyConsumers = isArrayEmpty(findedConsumers);
-
-          return (
-            <div key={player.playerId}>
-              {isEmptyConsumers ? (
-                <DefaultShareMediaItem
-                  nickname={player.nickname}
-                  avatar={player.character}
-                />
-              ) : (
-                findedConsumers.map((consumer) => (
-                  <ShareMediaItem
-                    nickname={player.nickname}
-                    key={consumer.id}
-                    videoSource={consumer}
-                  />
-                ))
-              )}
-            </div>
-          );
-        })}
+        {playerList.map((player) => (
+          <OtherPlayerMediaShareItem
+            player={player}
+            currentPlayerId={currentPlayerId}
+            consumers={consumers}
+            key={player.playerId}
+          />
+        ))}
       </div>
     </>
   );

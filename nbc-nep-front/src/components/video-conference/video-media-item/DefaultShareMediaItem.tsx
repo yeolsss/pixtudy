@@ -1,4 +1,4 @@
-import MetaAvatar from "../metaverse/avatar/MetaAvatar";
+import MetaAvatar from "../../metaverse/avatar/MetaAvatar";
 
 interface Props {
   avatar: string;
