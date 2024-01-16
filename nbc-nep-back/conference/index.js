@@ -152,15 +152,17 @@ module.exports = function (io) {
 
     socket.on("transport-close", () => {});
 
-    socket.on("producer-close", (producerId) => {
+    socket.on("producer-close", (streamId) => {
       try {
         const client = clients[socket.id];
         if (!client) return;
 
-        client.producers = client.producers.filter((p) => p.id !== producerId);
+        client.producers = client.producers.filter(
+          (p) => p.appData.streamId !== streamId
+        );
 
         // 다른 클라이언트에게 프로듀서가 닫혔다고 알림
-        socket.to(client.spaceId).emit("producer-closed", producerId);
+        socket.to(client.spaceId).emit("producer-closed", streamId);
       } catch (error) {
         console.log("producer close error", error);
       }
