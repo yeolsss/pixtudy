@@ -91,9 +91,18 @@ export class CharacterScenes extends Phaser.Scene {
       this.otherPlayers?.movePlayer(playerInfo);
     });
 
-    this.input.on("wheel", (pointer, gameObjects, deltaX, deltaY, deltaZ) => {
-      this.onMuseWheel(deltaY);
-    });
+    this.input.on(
+      "wheel",
+      (
+        _pointer: Phaser.Input.Pointer,
+        _gameObjects: Phaser.GameObjects.GameObject[],
+        _deltaX: number,
+        deltaY: number,
+        _deltaZ: number
+      ) => {
+        this.onMuseWheel(deltaY);
+      }
+    );
   }
 
   /**
@@ -156,7 +165,7 @@ export class CharacterScenes extends Phaser.Scene {
     this.character.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
     this.physics.add.collider(this.character, objLayer!);
     this.cameras.main.startFollow(this.character, true);
-    this.cameras.main.setZoom(2.5);
+    this.cameras.main.setZoom(2);
   }
   /**
    * 다른 플레이어를 게임에 추가한다.
