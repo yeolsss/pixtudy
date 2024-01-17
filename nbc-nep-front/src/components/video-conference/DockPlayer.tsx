@@ -60,6 +60,8 @@ const StDockPlayerInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[4]};
+  margin-left: 40px;
+  padding-top: ${(props) => props.theme.spacing[4]};
 `;
 
 const StDockPlayerNickname = styled.p`

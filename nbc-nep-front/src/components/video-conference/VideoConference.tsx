@@ -254,18 +254,19 @@ export default function VideoConference() {
     <>
       <StDockContainer>
         <DockPlayer player={currentPlayer} />
-        <BadgeWrapper>
-          {screenCount && <BadgeNumber count={screenCount} />}
-          <ShareButton
-            type="screen"
-            onShare={handleShare}
-            shareButtonText="화면 공유"
-            stopSharingButtonText="공유 불가"
-            isCanShare={isCanShare}
-            shareSvg={ScreenOff}
-            stopShareSvg={ScreenOn}
-          ></ShareButton>
-        </BadgeWrapper>
+        <ShareButton
+          type="screen"
+          onShare={handleShare}
+          shareButtonText="화면 공유"
+          stopSharingButtonText="공유 불가"
+          isCanShare={isCanShare}
+          shareSvg={ScreenOff}
+          stopShareSvg={ScreenOn}
+        >
+          <BadgeWrapper>
+            {screenCount ? <BadgeNumber count={screenCount} /> : null}
+          </BadgeWrapper>
+        </ShareButton>
         <ShareButton
           type="webcam"
           onShare={handleShare}
@@ -339,7 +340,7 @@ const StDockContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-items: center;
+
   gap: 15px;
   width: 465px;
 `;

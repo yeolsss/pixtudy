@@ -27,8 +27,8 @@ const StBadgeNumber = styled(StBadge)<{
   $bg: keyof Interactive;
   $color: keyof Interactive2;
 }>`
-  top: ${(props) => `calc(-1 * ${props.theme.spacing[8]})`};
-  right: ${(props) => props.theme.spacing[2]};
+  top: ${(props) => `calc(-1 * ${props.theme.spacing[48]})`};
+  left: ${(props) => props.theme.spacing[4]};
 
   width: 20px;
   height: 20px;
@@ -39,8 +39,8 @@ const StBadgeNumber = styled(StBadge)<{
   justify-content: center;
   align-items: end;
   font-weight: bold;
-
   background-color: ${(props) => props.theme.color.bg.interactive[props.$bg]};
+  color: ${(props) => props.theme.color.text.interactive[props.$color]};
   > * {
     color: ${(props) => props.theme.color.text.interactive[props.$color]};
   }

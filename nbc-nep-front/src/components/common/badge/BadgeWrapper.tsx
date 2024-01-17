@@ -7,4 +7,6 @@ export default function BadgeWrapper({ children }: PropsWithChildren) {
 
 const StBadgeWrapper = styled.div`
   position: relative;
+  width: 0;
+  height: 0;
 `;

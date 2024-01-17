@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import styled from "styled-components";
 import { ShareType } from "./types/ScreenShare.types";
 
@@ -23,7 +23,8 @@ export default function ShareButton({
   isCanShare,
   stopShareSvg,
   shareSvg,
-}: Props) {
+  children,
+}: PropsWithChildren<Props>) {
   const [isShare, setIsShare] = useState(isCanShare && !isCanShare());
 
   const handleClickShareButton = async () => {
@@ -56,18 +57,19 @@ export default function ShareButton({
         alt={"dock icon"}
       />
       {isShare ? stopSharingButtonText : shareButtonText}
+      {children}
     </StShareButtonWrapper>
   );
 }
 
 const StShareButtonWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   gap: ${(props) => props.theme.spacing[4]};
-
   color: ${(props) => props.theme.color.text.interactive.inverse};
 `;
 
