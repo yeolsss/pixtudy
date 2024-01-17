@@ -5,12 +5,14 @@ import styled from "styled-components";
 interface Props {
   id: string;
   active: boolean;
+  handleInactive?: (id: string) => void;
 }
 
 export default function ShareScreenDragItem({
   id,
   active,
   children,
+  handleInactive,
 }: PropsWithChildren<Props>) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "VIDEO",
@@ -22,7 +24,14 @@ export default function ShareScreenDragItem({
   }));
 
   return (
-    <StDragContainer ref={drag} $active={active} $isDragging={isDragging}>
+    <StDragContainer
+      ref={drag}
+      $active={active}
+      $isDragging={isDragging}
+      onClick={() => {
+        handleInactive && handleInactive(id);
+      }}
+    >
       {children}
     </StDragContainer>
   );

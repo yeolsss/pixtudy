@@ -29,6 +29,14 @@ export default function ShareScreenContainer({
   const dropParentRef = useRef<HTMLDivElement | null>(null);
   const hoverTimer = useRef<NodeJS.Timeout | null>(null);
 
+  const handleInactive = (id: string) => {
+    setVideos((prev) => [
+      ...prev,
+      children.findLast((child) => child.key === id)!,
+    ]);
+    setSelectVideos((prev) => prev.filter((video) => video?.key !== id));
+  };
+
   const [, drop] = useDrop({
     accept: "VIDEO",
     hover: (item, monitor) => {
@@ -156,7 +164,12 @@ export default function ShareScreenContainer({
         {selectVideos?.map((video, index) => {
           if (!video) return <div key={index}>비디오를 드래그 하세요</div>;
           return (
-            <ShareScreenDragItem key={video.key} id={video.key!} active={true}>
+            <ShareScreenDragItem
+              key={video.key}
+              id={video.key!}
+              active={true}
+              handleInactive={handleInactive}
+            >
               {video}
             </ShareScreenDragItem>
           );
@@ -184,7 +197,7 @@ const StVideosLayoutContainer = styled.div`
 
 const StPreviewContainer = styled.div<{ $isPreviewVideo: number }>`
   display: flex;
-  margin: 1rem 0;
+  /* margin: ${(props) => (props.$isPreviewVideo ? "1rem" : "0")}; */
   height: ${(props) => (props.$isPreviewVideo ? "15%" : "0")};
 `;
 
@@ -194,6 +207,7 @@ const StLayoutContainer = styled.div<{
 }>`
   background: rgba(0, 0, 0, 0.8);
   width: 100%;
+  height: 100%;
   height: ${(props) => (props.$isPreviewVideo ? "85%" : "95%")};
   display: grid;
   position: relative;
@@ -202,12 +216,12 @@ const StLayoutContainer = styled.div<{
       case "edge-four":
         return "grid-template-rows: 50% 50%; grid-template-columns: 50% 50%";
       case "leftRight-two":
-        return "grid-template-rows: 1fr; grid-template-columns: 50% 50%";
+        return "grid-template-rows: 100%; grid-template-columns: 50% 50%";
       case "topBottom-two":
-        return "grid-template-rows: 50% 50%; grid-template-columns: 1fr";
+        return "grid-template-rows: 50% 50%; grid-template-columns: 100%";
       case "center-one":
       default:
-        return "grid-template-rows: 1fr; grid-template-columns: 1fr";
+        return "grid-template-rows: 100%; grid-template-columns: 100%";
     }
   }}
 `;
