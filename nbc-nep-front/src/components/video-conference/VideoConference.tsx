@@ -96,7 +96,7 @@ export default function VideoConference() {
 
     socket.emit(
       "get-producers",
-      playerList,
+      spaceId,
       currentPlayerId,
       handleConsumeProducers
     );

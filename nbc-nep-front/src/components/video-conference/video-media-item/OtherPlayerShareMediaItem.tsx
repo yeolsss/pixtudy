@@ -26,13 +26,6 @@ export default function OtherPlayerShareMediaItem({
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
 
-  console.log({
-    consumers,
-    filteredConsumers,
-    camAndAudioConsumers,
-    screenConsumers,
-  });
-
   return (
     <>
       {isEmptyConsumers ? (
