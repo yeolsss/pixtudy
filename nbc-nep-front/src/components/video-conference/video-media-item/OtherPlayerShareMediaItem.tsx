@@ -36,7 +36,7 @@ export default function OtherPlayerShareMediaItem({
     screenConsumers,
   });
 
-  const handleOpenVideosLayout = () => {
+  const handleToggleVideosLayout = () => {
     setIsOpenLayout((prev) => !prev);
   };
 
@@ -56,7 +56,7 @@ export default function OtherPlayerShareMediaItem({
               videoSource={consumer}
             />
           ))}
-          <StShareScreenStackContainer onClick={handleOpenVideosLayout}>
+          <StShareScreenStackContainer onClick={handleToggleVideosLayout}>
             {screenConsumers.map((consumer, index) => (
               <ShareMediaItem
                 spread={-index * 10}
@@ -69,7 +69,9 @@ export default function OtherPlayerShareMediaItem({
         </>
       )}
       {isOpenLayout && (
-        <ShareScreenContainer>
+        <ShareScreenContainer
+          handleToggleVideosLayout={handleToggleVideosLayout}
+        >
           {screenConsumers.map((consumer, index) => (
             <ShareMediaItem
               key={consumer.id}

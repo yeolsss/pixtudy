@@ -380,7 +380,7 @@ export interface Radius {
   "8": string;
   "12": string;
   "16": string;
-  circle: number;
+  circle: string;
 }
 
 export interface Heading {
