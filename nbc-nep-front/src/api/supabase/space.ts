@@ -1,6 +1,37 @@
 import { supabase } from "@/libs/supabase";
 import { Tables, TablesInsert } from "@/types/supabase";
 
+export const createSpaceHandler = async (
+  spaceInfo: TablesInsert<"spaces"> & { display_name: string }
+): Promise<Tables<"spaces">> => {
+  const space: TablesInsert<"spaces"> = {
+    description: spaceInfo.description,
+    owner: spaceInfo.owner,
+    title: spaceInfo.title,
+  };
+  const { data: spaceData, error } = await supabase
+    .from("spaces")
+    .insert(space)
+    .select("*")
+    .single();
+  if (error) return Promise.reject(error);
+
+  if (spaceData) {
+    const ownerInfo: TablesInsert<"space_members"> = {
+      space_id: spaceData.id,
+      user_id: spaceData.owner,
+      space_avatar: "NPC3",
+      space_display_name: spaceInfo.display_name,
+    };
+    const { data, error } = await supabase
+      .from("space_members")
+      .insert(ownerInfo);
+    if (error) return Promise.reject(error);
+  }
+
+  return spaceData;
+};
+
 export const joinSpaceHandler = async (
   user: TablesInsert<"space_members">
 ): Promise<Tables<"space_members">> => {

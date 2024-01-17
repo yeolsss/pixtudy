@@ -15,11 +15,15 @@ import {
   sendMessage,
   sendMessageArgs,
 } from "@/api/supabase/dm";
-import { getSpaceData, joinSpaceHandler } from "@/api/supabase/space";
+import {
+  createSpaceHandler,
+  getSpaceData,
+  joinSpaceHandler,
+} from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/types/supabase";
 import { Space_members } from "@/types/supabase.tables.type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "../useReduxTK";
 
 /* Auth */
@@ -69,6 +73,25 @@ export function useGetOtherUserInfo(otherUserId: string) {
 }
 
 /* space */
+
+export function useCreateSpace() {
+  const client = useQueryClient();
+  const {
+    mutate: createSpace,
+    isSuccess,
+    isError,
+  } = useMutation({
+    mutationFn: createSpaceHandler,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+    },
+    onError: (error) => {
+      console.error("createSpaceError: ", error);
+    },
+  });
+  return { createSpace, isSuccess, isError };
+}
+
 // insert userData to space_members
 export function useJoinSpace() {
   const {

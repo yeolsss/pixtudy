@@ -119,6 +119,10 @@ const StNavButton = styled.button`
 const StCTAButton = styled.button`
   display: block;
   background-color: ${(props) => props.theme.color.bg.interactive.primary};
+  padding-top: ${(props) => props.theme.spacing[12]};
+  padding-bottom: ${(props) => props.theme.spacing[12]};
+  letter-spacing: var(--unit-2);
+  font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
   color: ${(props) => props.theme.color.text.interactive.inverse};
   &:hover {
     background-color: ${(props) =>

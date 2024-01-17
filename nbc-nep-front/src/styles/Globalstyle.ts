@@ -427,7 +427,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   input {
-    height: ${(props) => props.theme.unit[48]};
+    height: ${(props) => props.theme.unit[48]}px;
     border-radius: ${(props) => props.theme.border.radius[8]};
     border: 1px solid #d9d9d9;
     padding: ${(props) => props.theme.spacing[16]};
@@ -446,7 +446,8 @@ const GlobalStyle = styled.createGlobalStyle`
     color: ${(props) =>
       props.theme.color.text.interactive["secondary-pressed"]};
     background-color: ${(props) => props.theme.color.base.white};
-    font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
+    font-family: var(--sub-font);
+    font-weight: ${(props) => props.theme.body.lg.semibold.fontWeight};
     cursor: pointer;
 
     &:hover {

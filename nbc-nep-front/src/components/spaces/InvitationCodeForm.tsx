@@ -16,7 +16,6 @@ interface Props {
   reset: UseFormReset<FieldValues>;
   setIsValidSpace: React.Dispatch<React.SetStateAction<boolean>>;
   errors: FormState<FieldValues>["errors"];
-  handleCancelBtnClick: () => void;
   setSpaceId: Dispatch<SetStateAction<string>>;
   spaceId: string;
 }
@@ -27,7 +26,6 @@ export default function InvitationCodeForm({
   reset,
   setIsValidSpace,
   errors,
-  handleCancelBtnClick,
   setSpaceId,
   spaceId,
 }: Props) {
@@ -65,7 +63,6 @@ export default function InvitationCodeForm({
         <p>{errors.invitationCode.message as string}</p>
       )}
       <button type="submit">확인</button>
-      <button onClick={handleCancelBtnClick}>취소</button>
     </form>
   );
 }

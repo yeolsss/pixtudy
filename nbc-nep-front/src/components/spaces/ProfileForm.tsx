@@ -16,7 +16,6 @@ interface ProfileFormProps {
   spaceId: string;
   defaultDisplayName: string;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
-  handleCancelBtnClick: () => void;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
 }
@@ -25,7 +24,6 @@ export default function ProfileForm({
   spaceId,
   defaultDisplayName,
   handleSubmit,
-  handleCancelBtnClick,
   register,
   errors,
 }: ProfileFormProps) {
@@ -76,7 +74,6 @@ export default function ProfileForm({
       <AvatarInput register={register} />
       {errors.avatar && <span>errors.avatar.message</span>}
       <button type="submit">확인</button>
-      <button onClick={handleCancelBtnClick}>취소</button>
     </form>
   );
 }

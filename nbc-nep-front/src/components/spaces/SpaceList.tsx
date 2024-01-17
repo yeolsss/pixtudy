@@ -13,6 +13,8 @@ export default function SpaceList({ currentUserId }: Props) {
   const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
   const getUserSpaces = useGetUserSpaces(currentUserId);
 
+  console.log(getUserSpaces);
+
   useEffect(() => {
     if (getUserSpaces) setUserSpaces(getUserSpaces);
   }, [getUserSpaces]);
