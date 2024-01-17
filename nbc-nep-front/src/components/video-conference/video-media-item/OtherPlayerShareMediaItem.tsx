@@ -1,5 +1,7 @@
 import { Player } from "@/types/metaverse";
+import { useState } from "react";
 import ShareMediaItem from "../ShareMediaItem";
+import ShareScreenContainer from "../ShareScreenContainer";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
 import { StShareScreenStackContainer } from "../styles/videoConference.styles";
 import { Consumer } from "../types/ScreenShare.types";
@@ -16,6 +18,7 @@ export default function OtherPlayerShareMediaItem({
   player,
   currentPlayerId,
 }: Props) {
+  const [isOpenLayout, setIsOpenLayout] = useState<boolean>(false);
   if (currentPlayerId === player.playerId) return null;
 
   const filteredConsumers = consumers.filter(
@@ -25,6 +28,10 @@ export default function OtherPlayerShareMediaItem({
   const isEmptyConsumers = isArrayEmpty(filteredConsumers);
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
+
+  const handleToggleVideosLayout = () => {
+    setIsOpenLayout((prev) => !prev);
+  };
 
   return (
     <>
@@ -42,7 +49,7 @@ export default function OtherPlayerShareMediaItem({
               videoSource={consumer}
             />
           ))}
-          <StShareScreenStackContainer>
+          <StShareScreenStackContainer onClick={handleToggleVideosLayout}>
             {screenConsumers.map((consumer, index) => (
               <ShareMediaItem
                 spread={-index * 10}
@@ -53,6 +60,19 @@ export default function OtherPlayerShareMediaItem({
             ))}
           </StShareScreenStackContainer>
         </>
+      )}
+      {isOpenLayout && (
+        <ShareScreenContainer
+          handleToggleVideosLayout={handleToggleVideosLayout}
+        >
+          {screenConsumers.map((consumer, index) => (
+            <ShareMediaItem
+              key={consumer.id}
+              nickname={player.nickname}
+              videoSource={consumer}
+            />
+          ))}
+        </ShareScreenContainer>
       )}
     </>
   );
