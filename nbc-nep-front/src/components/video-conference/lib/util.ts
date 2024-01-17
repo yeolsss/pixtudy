@@ -1,6 +1,8 @@
 import { Player } from "@/types/metaverse";
 import { Consumer } from "mediasoup-client/lib/Consumer";
 import {
+  Producer,
+  ShareType,
   SplitVideoSource,
   UserVideoSourceMap,
   VideoSource,
@@ -42,6 +44,17 @@ export function updateUserVideoSourceMap(
 
 export function isArrayEmpty(array: unknown[]) {
   return array.length === 0;
+}
+
+function filterByShareType(item: VideoSource, shareType: ShareType) {
+  return item.appData.shareType === shareType;
+}
+
+export function getProducersByShareType(
+  producers: Producer[],
+  shareType: ShareType
+) {
+  return producers.filter((producer) => filterByShareType(producer, shareType));
 }
 
 export function splitVideoSource(videoSources: VideoSource[]) {

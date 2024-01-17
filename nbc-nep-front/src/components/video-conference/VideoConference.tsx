@@ -17,7 +17,12 @@ import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
-import { isAlreadyConsume, isArrayEmpty, isEmptyTracks } from "./lib/util";
+import {
+  getProducersByShareType,
+  isAlreadyConsume,
+  isArrayEmpty,
+  isEmptyTracks,
+} from "./lib/util";
 import {
   AppData,
   Consumer,
@@ -249,12 +254,14 @@ export default function VideoConference() {
       <StDockContainer>
         <DockPlayer player={currentPlayer} />
         <BadgeWrapper>
-          {!isArrayEmpty(producers) && <BadgeNumber count={producers.length} />}
+          {!isArrayEmpty(getProducersByShareType(producers, "screen")) && (
+            <BadgeNumber count={producers.length} />
+          )}
           <ShareButton
             type="screen"
             onShare={handleShare}
             shareButtonText="화면 공유"
-            stopSharingButtonText="더이상 공유할 수 없습니다."
+            stopSharingButtonText="공유 불가"
             isCanShare={isCanShare}
             shareSvg={ScreenOff}
             stopShareSvg={ScreenOn}
@@ -332,7 +339,7 @@ const StDockContainer = styled.div`
 
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   gap: 15px;
   width: 465px;
