@@ -1,8 +1,6 @@
 import { PropsWithChildren } from "react";
 import { useDrag } from "react-dnd";
 import styled from "styled-components";
-import { Consumer } from "./types/ScreenShare.types";
-import ShareMediaItem from "./ShareMediaItem";
 
 interface Props {
   id: string;
@@ -32,6 +30,18 @@ export default function ShareScreenDragItem({
 
 const StDragContainer = styled.div<{ $active: boolean; $isDragging: boolean }>`
   opacity: ${(props) => (props.$isDragging ? 0.2 : 1)};
-  width: ${(props) => (props.$active ? "100%" : "100px")};
-  height: ${(props) => (props.$active ? "100%" : "100px")};
+  width: 100%;
+  height: 100%;
+  margin: ${(props) => (props.$active ? "0" : "0 1rem")};
+  cursor: pointer;
+  & div {
+    width: ${(props) => props.$active && "100%"};
+    height: ${(props) => props.$active && "100%"};
+
+    & video {
+      width: ${(props) => props.$active && "100%"};
+      height: ${(props) => props.$active && "100%"};
+      object-fit: contain;
+    }
+  }
 `;

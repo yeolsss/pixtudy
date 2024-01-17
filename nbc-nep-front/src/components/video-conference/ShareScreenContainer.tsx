@@ -11,9 +11,8 @@ interface Props {
 export default function ShareScreenContainer({
   children,
 }: PropsWithChildren<Props>) {
-  console.log(children);
   // 비디오 상태관리
-  const [videos, setVideos] = useState<JSX.Element[]>(children);
+  const [videos, setVideos] = useState<(JSX.Element | null)[]>(children);
   const [selectVideos, setSelectVideos] = useState<(JSX.Element | null)[]>([]);
 
   //   가이드 상태
@@ -89,25 +88,29 @@ export default function ShareScreenContainer({
     },
 
     drop: (item: { id: string }) => {
+      console.log(item.id);
       const changeGridStyle = getGridStyle(currentGuide!);
       const activeIndex = currentLayoutIndex(currentGuide!);
 
       setCurrentGrid((prevGrid) => {
         if (prevGrid !== changeGridStyle) {
-          setSelectVideos([]);
-          // TODO: 데이터에 따른 변경 필요
-          setVideos((prev) => prev.filter((video) => video.key !== item.id));
+          setSelectVideos((prevSelect) => {
+            const prevSelectVideos = prevSelect.filter((select) => !!select);
+            setVideos((prevVideos) => [...prevVideos, ...prevSelectVideos]);
+            return [];
+          });
+          setVideos((prev) => prev.filter((video) => video?.key !== item.id));
         }
         return changeGridStyle;
       });
 
       setVideos((prevVideos) =>
-        //  TODO: 데이터에 따른 변경 필요
-        prevVideos.filter((video) => video.key !== item.id)
+        prevVideos.filter((video) => video?.key !== item.id)
       );
 
       setSelectVideos((prevVideos) => {
         const newVideos = [...prevVideos];
+        // console.log(activeIndex);
         const prevIndexValue = newVideos[activeIndex!];
         if (prevIndexValue) {
           setVideos((prev) => {
@@ -118,7 +121,6 @@ export default function ShareScreenContainer({
           newVideos.push(null); // 빈 값을 채워넣음
         }
 
-        // TODO : 데이터에 따른 변경 필요
         newVideos[activeIndex!] = children.find(
           (child) => child.key === item.id
         )!;
@@ -129,10 +131,14 @@ export default function ShareScreenContainer({
 
   return (
     <StVideosLayoutContainer>
-      <StPreviewContainer>
+      <StPreviewContainer $isPreviewVideo={videos.length}>
         {videos.map((video) => {
           return (
-            <ShareScreenDragItem key={video.key} id={video.key!} active={false}>
+            <ShareScreenDragItem
+              key={video?.key}
+              id={video?.key!}
+              active={false}
+            >
               {video}
             </ShareScreenDragItem>
           );
@@ -145,6 +151,7 @@ export default function ShareScreenContainer({
           drop(element);
         }}
         $currentGridLayout={currentGrid!}
+        $isPreviewVideo={videos.length}
       >
         {selectVideos?.map((video, index) => {
           if (!video) return <div key={index}>비디오를 드래그 하세요</div>;
@@ -167,39 +174,37 @@ const StVideosLayoutContainer = styled.div`
   align-items: center;
   justify-content: center;
   position: fixed;
-  left: 100px;
-  right: 200px;
   top: 0;
-  height: 100vh;
+  left: 100px;
+  right: 230px;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   color: white;
 `;
 
-const StPreviewContainer = styled.div`
+const StPreviewContainer = styled.div<{ $isPreviewVideo: number }>`
   display: flex;
-  margin-bottom: 4rem;
-  & > div {
-    cursor: pointer;
-  }
-  & div + div {
-    margin-left: 10rem;
-  }
+  margin: 1rem 0;
+  height: ${(props) => (props.$isPreviewVideo ? "15%" : "0")};
 `;
 
-const StLayoutContainer = styled.div<{ $currentGridLayout: GridStatusType }>`
+const StLayoutContainer = styled.div<{
+  $currentGridLayout: GridStatusType;
+  $isPreviewVideo: number;
+}>`
   background: rgba(0, 0, 0, 0.8);
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: ${(props) => (props.$isPreviewVideo ? "85%" : "95%")};
   display: grid;
   position: relative;
   ${(props) => {
     switch (props.$currentGridLayout) {
       case "edge-four":
-        return "grid-template-rows: 1fr 1fr; grid-template-columns: 1fr 1fr";
+        return "grid-template-rows: 50% 50%; grid-template-columns: 50% 50%";
       case "leftRight-two":
-        return "grid-template-rows: 1fr; grid-template-columns: 1fr 1fr";
+        return "grid-template-rows: 1fr; grid-template-columns: 50% 50%";
       case "topBottom-two":
-        return "grid-template-rows: 1fr 1fr; grid-template-columns: 1fr";
+        return "grid-template-rows: 50% 50%; grid-template-columns: 1fr";
       case "center-one":
       default:
         return "grid-template-rows: 1fr; grid-template-columns: 1fr";
@@ -224,7 +229,7 @@ const StLayoutGuide = styled.div<{ $guide: GuideStatusType | null }>`
       case "left-top":
         return "top: 0; bottom: 50%; left: 0; right: 50%;";
       case "left-bottom":
-        return 'top: "50%"; bottom: 0; left: 0; right: 50%;';
+        return "top: 50%; bottom: 0; left: 0; right: 50%;";
       case "right-top":
         return "top: 0; bottom: 50%; left: 50%; right: 0;";
       case "right-bottom":
