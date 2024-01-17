@@ -7,7 +7,13 @@ import { useAppSelector } from "@/hooks/useReduxTK";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import BadgeNumber from "../common/badge/BadgeNumber";
+import CameraOff from "../../assets/dock-icons/camera-off.svg";
+import CameraOn from "../../assets/dock-icons/camera-on.svg";
+import MicOff from "../../assets/dock-icons/mic-off.svg";
+import MicOn from "../../assets/dock-icons/mic-on.svg";
+import ScreenOff from "../../assets/dock-icons/screen-off.svg";
+import ScreenOn from "../../assets/dock-icons/screen-on.svg";
+import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import MetaAvatar from "../metaverse/avatar/MetaAvatar";
 import ShareButton from "./ShareButton";
@@ -250,7 +256,9 @@ export default function VideoConference() {
             shareButtonText="화면 공유"
             stopSharingButtonText="더이상 공유할 수 없습니다."
             isCanShare={isCanShare}
-          />
+            shareSvg={ScreenOff}
+            stopShareSvg={ScreenOn}
+          ></ShareButton>
         </BadgeWrapper>
         <ShareButton
           type="webcam"
@@ -258,6 +266,8 @@ export default function VideoConference() {
           onStopShare={handleStopShare}
           shareButtonText="카메라 켜기"
           stopSharingButtonText="카메라 끄기"
+          shareSvg={CameraOn}
+          stopShareSvg={CameraOff}
         />
         <ShareButton
           type="audio"
@@ -265,6 +275,8 @@ export default function VideoConference() {
           onStopShare={handleStopShare}
           shareButtonText="마이크 켜기"
           stopSharingButtonText="마이크 끄기"
+          shareSvg={MicOn}
+          stopShareSvg={MicOff}
         />
       </StDockContainer>
       <StMediaItemWrapper>
