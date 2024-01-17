@@ -20,7 +20,6 @@ import ShareButton from "./ShareButton";
 import {
   getProducersByShareType,
   isAlreadyConsume,
-  isArrayEmpty,
   isEmptyTracks,
 } from "./lib/util";
 import {
@@ -249,14 +248,14 @@ export default function VideoConference() {
     );
   }
 
+  const screenCount = getProducersByShareType(producers, "screen").length;
+
   return (
     <>
       <StDockContainer>
         <DockPlayer player={currentPlayer} />
         <BadgeWrapper>
-          {!isArrayEmpty(getProducersByShareType(producers, "screen")) && (
-            <BadgeNumber count={producers.length} />
-          )}
+          {screenCount && <BadgeNumber count={screenCount} />}
           <ShareButton
             type="screen"
             onShare={handleShare}
