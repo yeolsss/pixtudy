@@ -10,16 +10,16 @@ interface StBadgeProps {
 
 const StBadge = styled.div<StBadgeProps>`
   position: absolute;
-  width: ${(props) => getValue(props?.width) || "12px"};
-  height: ${(props) => getValue(props?.height) || "12px"};
+  width: ${(props) => toCssValue(props?.width) || "12px"};
+  height: ${(props) => toCssValue(props?.height) || "12px"};
   border-radius: ${(props) => props.theme.border.radius.circle};
   background-color: ${(props) => props.color || "var(--state-online)"};
 
-  top: ${(props) => props?.y || "0px"};
-  left: ${(props) => props?.x || "0px"};
+  top: ${(props) => toCssValue(props?.y) || "0px"};
+  left: ${(props) => toCssValue(props?.x) || "0px"};
 `;
 
-function getValue(x: string | number | undefined) {
+function toCssValue(x: string | number | undefined) {
   if (!x) return undefined;
   if (typeof x === "string") return x;
   return x + "px";

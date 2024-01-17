@@ -19,7 +19,7 @@ export default function DockPlayer({ player }: Props) {
           y={50}
           x={3}
         />
-        <StBadge color={getPlayerStateValue(0)} x="70%" y="80%" />
+        <StBadge color={getPlayerStateValue(0)} x={30} y={30} />
       </BadgeWrapper>
       <StDockPlayerInfoWrapper>
         <StDockPlayerNickname>{player?.nickname}</StDockPlayerNickname>
@@ -45,6 +45,8 @@ const StDockPlayerWrapper = styled.div`
 
   color: ${(props) => props.theme.color.text.interactive.inverse};
   font-family: var(--sub-font);
+
+  max-width: 200px;
 `;
 
 const StDockPlayerInfoWrapper = styled.div`
