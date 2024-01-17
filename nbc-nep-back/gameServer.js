@@ -1,3 +1,10 @@
+const PlayerState = {
+  ONLINE: 0,
+  EATING: 1,
+  LEFT_SEAT: 2,
+  DISTURB: 3,
+};
+
 module.exports = function (io) {
   const players = {};
 
@@ -6,6 +13,7 @@ module.exports = function (io) {
 
     socket.on("userData", (playerInfo) => {
       socket.join(playerInfo.spaceId);
+
       players[socket.id] = {
         rotation: 0,
         x: 100,
@@ -16,6 +24,7 @@ module.exports = function (io) {
         character: playerInfo.character,
         frame: 0,
         spaceId: playerInfo.spaceId,
+        state: PlayerState.ONLINE,
       };
 
       const playersInSpace = Object.values(players).filter(
