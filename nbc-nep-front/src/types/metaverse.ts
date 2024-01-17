@@ -8,18 +8,7 @@ export type Player = {
   character: string;
   frame: string;
   spaceId: string;
-};
-
-export type PlayerTest = {
-  rotation?: number;
-  x?: number;
-  y?: number;
-  socketId?: string;
-  playerId: string;
-  nickname: string | null;
-  character: string;
-  frame?: string;
-  spaceId?: string;
+  state: PlayerState;
 };
 
 export type Players = {
@@ -37,3 +26,10 @@ export type Chat = {
   message: string;
   playerDisplayName: string;
 };
+
+export enum PlayerState {
+  ONLINE,
+  EATING,
+  LEFT_SEAT,
+  DISTURB,
+}

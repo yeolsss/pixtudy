@@ -20,10 +20,12 @@ export const getSpaceData = async (spaceId: string) => {
     .select("*")
     .eq("id", spaceId)
     .single();
+
   if (error) {
     console.error(error);
     return false;
   }
+
   return data;
 };
 
@@ -31,6 +33,7 @@ export const getPlayerSpaceData = async (
   spaceId: string
 ): Promise<Tables<"space_members">> => {
   const { data: currentUsersSession } = await supabase.auth.getSession();
+
   const { data, error } = await supabase
     .from("space_members")
     .select("*")
@@ -42,5 +45,6 @@ export const getPlayerSpaceData = async (
     console.error(error);
     throw new Error(error.message); // 에러를 던집니다.
   }
+
   return data;
 };

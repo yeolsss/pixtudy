@@ -1,11 +1,11 @@
 import { Player } from "@/types/metaverse";
+import { useState } from "react";
 import ShareMediaItem from "../ShareMediaItem";
+import ShareScreenContainer from "../ShareScreenContainer";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
 import { StShareScreenStackContainer } from "../styles/videoConference.styles";
 import { Consumer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
-import ShareScreenContainer from "../ShareScreenContainer";
-import { useState } from "react";
 
 interface Props {
   currentPlayerId: string;
@@ -28,13 +28,6 @@ export default function OtherPlayerShareMediaItem({
   const isEmptyConsumers = isArrayEmpty(filteredConsumers);
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
-
-  console.log({
-    consumers,
-    filteredConsumers,
-    camAndAudioConsumers,
-    screenConsumers,
-  });
 
   const handleToggleVideosLayout = () => {
     setIsOpenLayout((prev) => !prev);

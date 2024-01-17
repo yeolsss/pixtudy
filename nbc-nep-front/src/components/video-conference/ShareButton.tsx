@@ -1,4 +1,6 @@
-import { useState } from "react";
+import Image from "next/image";
+import { PropsWithChildren, useState } from "react";
+import styled from "styled-components";
 import { ShareType } from "./types/ScreenShare.types";
 
 interface Props {
@@ -8,6 +10,8 @@ interface Props {
   shareButtonText: string;
   stopSharingButtonText: string;
   isCanShare?: () => boolean;
+  shareSvg: any;
+  stopShareSvg: any;
 }
 
 export default function ShareButton({
@@ -17,7 +21,10 @@ export default function ShareButton({
   shareButtonText,
   stopSharingButtonText,
   isCanShare,
-}: Props) {
+  stopShareSvg,
+  shareSvg,
+  children,
+}: PropsWithChildren<Props>) {
   const [isShare, setIsShare] = useState(isCanShare && !isCanShare());
 
   const handleClickShareButton = async () => {
@@ -40,13 +47,31 @@ export default function ShareButton({
   };
 
   return (
-    <button
+    <StShareButtonWrapper
       onClick={isShare ? handleClickStopShareButton : handleClickShareButton}
     >
+      <Image
+        src={isShare ? shareSvg : stopShareSvg}
+        width={24}
+        height={24}
+        alt={"dock icon"}
+      />
       {isShare ? stopSharingButtonText : shareButtonText}
-    </button>
+      {children}
+    </StShareButtonWrapper>
   );
 }
+
+const StShareButtonWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  gap: ${(props) => props.theme.spacing[4]};
+  color: ${(props) => props.theme.color.text.interactive.inverse};
+`;
 
 const getMediaStreamByType = async (type: ShareType) => {
   const mediaFunctions = {
