@@ -21,7 +21,9 @@ export default function SpaceCard({ space }: Props) {
         <span>{space.spaces?.created_at}</span>
       </StContentsContainer>
       <StButtonContainer>
-        <button onClick={() => handleToSpace(space?.id!)}>입장하기</button>
+        <button onClick={() => handleToSpace(space?.space_id!)}>
+          입장하기
+        </button>
       </StButtonContainer>
     </StCardWrapper>
   );

@@ -7,9 +7,11 @@ import { useAppSelector } from "@/hooks/useReduxTK";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import BadgeNumber from "../common/badge/BadgeNumber";
+import BadgeWrapper from "../common/badge/BadgeWrapper";
 import MetaAvatar from "../metaverse/avatar/MetaAvatar";
 import ShareButton from "./ShareButton";
-import { isAlreadyConsume, isEmptyTracks } from "./lib/util";
+import { isAlreadyConsume, isArrayEmpty, isEmptyTracks } from "./lib/util";
 import {
   AppData,
   Consumer,
@@ -240,13 +242,16 @@ export default function VideoConference() {
     <>
       <StDockContainer>
         <MetaAvatar spaceAvatar={currentPlayer?.character} />
-        <ShareButton
-          type="screen"
-          onShare={handleShare}
-          shareButtonText="화면 공유"
-          stopSharingButtonText="더이상 공유할 수 없습니다."
-          isCanShare={isCanShare}
-        />
+        <BadgeWrapper>
+          {!isArrayEmpty(producers) && <BadgeNumber count={producers.length} />}
+          <ShareButton
+            type="screen"
+            onShare={handleShare}
+            shareButtonText="화면 공유"
+            stopSharingButtonText="더이상 공유할 수 없습니다."
+            isCanShare={isCanShare}
+          />
+        </BadgeWrapper>
         <ShareButton
           type="webcam"
           onShare={handleShare}
@@ -304,16 +309,21 @@ const StDockContainer = styled.div`
   position: absolute;
 
   left: 50%;
+  bottom: ${(props) => props.theme.spacing[64]};
   transform: translateX(-50%);
 
-  bottom: 500px;
-  width: 300px;
-  border: 1px solid black;
+  background-color: ${(props) => props.theme.color.metaverse.primary};
+
+  padding: ${(props) => props.theme.spacing[16]};
+
+  border-radius: ${(props) => props.theme.border.radius.circle};
 
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 15px;
+  width: 465px;
 `;
 const StMediaItemWrapper = styled.div`
   position: absolute;
