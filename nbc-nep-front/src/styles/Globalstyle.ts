@@ -405,6 +405,11 @@ const GlobalStyle = styled.createGlobalStyle`
     --main-font: "Galmuri14", sans-serif;
     --point-font: "Galmuri11", sans-serif;
     --sub-font: "NeoDunggeunmo", sans-serif;
+
+    --state-online: #15e42a;
+    --state-eating: #ffa047;
+    --state-left-seat: #858585;
+    --state-disturb: #ee3e3e;
   }
 
   Html {

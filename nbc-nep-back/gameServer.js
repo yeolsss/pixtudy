@@ -1,6 +1,45 @@
 const express = require("express");
 const router = express.Router();
 const players = {};
+const PlayerState = {
+  ONLINE: 0,
+  EATING: 1,
+  LEFT_SEAT: 2,
+  DISTURB: 3,
+};
+
+// module.exports = function (io) {
+//   const players = {};
+
+//   io.on("connection", function (socket) {
+//     console.log("player [" + socket.id + "] connected");
+
+//     socket.on("userData", (playerInfo) => {
+//       socket.join(playerInfo.spaceId);
+
+//       players[socket.id] = {
+//         rotation: 0,
+//         x: 100,
+//         y: 100,
+//         socketId: socket.id,
+//         playerId: playerInfo.playerId,
+//         nickname: playerInfo.nickname,
+//         character: playerInfo.character,
+//         frame: 0,
+//         spaceId: playerInfo.spaceId,
+//         state: PlayerState.ONLINE,
+//       };
+
+//       const playersInSpace = Object.values(players).filter(
+//         (player) => player.spaceId === playerInfo.spaceId
+//       );
+
+//       const playerSpaceId = players[socket.id] ? playerInfo.spaceId : null;
+//       socket.emit("currentPlayers", playersInSpace);
+//       socket.to(playerSpaceId).emit("newPlayer", players[socket.id]);
+
+//       io.to(playerSpaceId).emit("metaversePlayerList", playersInSpace);
+//     });
 
 module.exports = {
   init: function (io) {
