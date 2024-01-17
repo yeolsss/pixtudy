@@ -4,20 +4,23 @@ import styled from "styled-components";
 import { currentLayoutIndex, getGridStyle } from "./lib/dnd";
 import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
 import ShareScreenDragItem from "./ShareScreenDragItem";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import {
+  layoutClose,
+  setActiveVideos,
+  setInActiveVideos,
+} from "@/redux/modules/layoutSlice";
 
 const EDGE_AREA_RATE = 220;
 
-interface Props {
-  children: JSX.Element[];
-  handleToggleVideosLayout: () => void;
-}
-export default function ShareScreenContainer({
-  children,
-  handleToggleVideosLayout,
-}: PropsWithChildren<Props>) {
+export default function ShareScreenContainer({}) {
   // 비디오 상태관리
-  const [videos, setVideos] = useState<(JSX.Element | null)[]>(children);
-  const [selectVideos, setSelectVideos] = useState<(JSX.Element | null)[]>([]);
+  // const [videos, setVideos] = useState<(JSX.Element | null)[]>(children);
+  // const [selectVideos, setSelectVideos] = useState<(JSX.Element | null)[]>([]);
+  const layoutVideoInfo = useAppSelector((state) => state.layoutSlice);
+  const inActiveVideos = layoutVideoInfo.layoutVideos;
+  const activeVideos = layoutVideoInfo.activeLayoutVideos;
+  const dispatch = useAppDispatch();
 
   // 가이드 상태
   const [currentGuide, setCurrentGuide] = useState<GuideStatusType | null>(
@@ -36,18 +39,16 @@ export default function ShareScreenContainer({
 
   // active 상태인 아이템을 클릭 시 inactive 상태로
   const handleInactive = (id: string) => {
-    setVideos((prev) => [
-      ...prev,
-      children.findLast((child) => child.key === id)!,
-    ]);
-    setSelectVideos((prev) =>
-      prev.map((video) => {
-        if (video?.key === id) {
-          return null;
-        }
-        return video;
-      })
+    const newInActiveVideos = [
+      ...inActiveVideos,
+      activeVideos.find((video) => video?.key === id)!,
+    ];
+    dispatch(setInActiveVideos(newInActiveVideos));
+
+    const newActiveVideos = activeVideos.map((video) =>
+      video?.key === id ? null : video
     );
+    dispatch(setActiveVideos(newActiveVideos));
   };
 
   const [, drop] = useDrop({
@@ -114,50 +115,55 @@ export default function ShareScreenContainer({
 
       setCurrentGrid((prevGrid) => {
         if (prevGrid !== changeGridStyle) {
-          setSelectVideos((prevSelect) => {
-            const prevSelectVideos = prevSelect.filter((select) => !!select);
-            setVideos((prevVideos) => [...prevVideos, ...prevSelectVideos]);
-            return [];
-          });
-          setVideos((prev) => prev.filter((video) => video?.key !== item.id));
+          const currentVideo = activeVideos.find(
+            (video) => video?.key === item.id
+          );
+          const newInActiveVideos = [
+            ...inActiveVideos,
+            ...activeVideos.filter((video) => !!video),
+          ] as JSX.Element[];
+          dispatch(setInActiveVideos(newInActiveVideos));
+          dispatch(setActiveVideos([currentVideo!]));
         }
         return changeGridStyle;
       });
 
-      setVideos((prevVideos) =>
-        prevVideos.filter((video) => video?.key !== item.id)
+      dispatch(
+        setInActiveVideos([
+          inActiveVideos.find((video) => video.key !== item.id)!,
+        ])
       );
 
-      setSelectVideos((prevVideos) => {
-        const newVideos = [...prevVideos];
-        const prevIndexValue = newVideos[activeIndex!];
-        if (prevIndexValue) {
-          setVideos((prev) => {
-            return [...prev, prevIndexValue];
-          });
-        }
-        while (newVideos.length <= activeIndex!) {
-          newVideos.push(null); // 빈 값을 채워넣음
-        }
+      const newVideos: (JSX.Element | null)[] = [...activeVideos];
+      const addVideo = inActiveVideos.find((video) => video.key === item.id)!;
+      const prevIndexValue = activeVideos[activeIndex!];
+      if (prevIndexValue) {
+        dispatch(setInActiveVideos([...inActiveVideos, prevIndexValue]));
+      }
+      while (newVideos.length <= activeIndex!) {
+        newVideos.push(null);
+      }
+      newVideos[activeIndex!] = addVideo;
+      newVideos;
 
-        newVideos[activeIndex!] = children.find(
-          (child) => child.key === item.id
-        )!;
-        return newVideos;
-      });
+      dispatch(setActiveVideos(newVideos));
     },
   });
 
-  const countSelectVideos = selectVideos.reduce((acc, val) => {
+  const countSelectVideos = activeVideos.reduce((acc, val) => {
     if (val) return acc + 1;
     else return acc;
   }, 0);
 
+  const handleCloseLayout = () => {
+    dispatch(layoutClose());
+  };
+
   return (
     <StVideosLayoutContainer>
-      <button onClick={handleToggleVideosLayout}>닫기</button>
-      <StPreviewContainer $isPreviewVideo={!!videos.length}>
-        {videos.map((video) => {
+      <button onClick={handleCloseLayout}>닫기</button>
+      <StPreviewContainer $isPreviewVideo={!!inActiveVideos.length}>
+        {inActiveVideos.map((video) => {
           return (
             <ShareScreenDragItem
               key={video?.key}
@@ -176,7 +182,7 @@ export default function ShareScreenContainer({
           drop(element);
         }}
         $currentGridLayout={currentGrid!}
-        $isPreviewVideo={!!videos.length}
+        $isPreviewVideo={!!inActiveVideos.length}
       >
         {!countSelectVideos && (
           <StNoActiveLayoutDiv>
@@ -184,7 +190,7 @@ export default function ShareScreenContainer({
           </StNoActiveLayoutDiv>
         )}
 
-        {selectVideos?.map((video, index) => {
+        {activeVideos?.map((video, index) => {
           if (!video) return <div key={index} />;
           return (
             <ShareScreenDragItem
