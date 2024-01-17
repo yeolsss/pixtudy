@@ -4,6 +4,7 @@ import {
 } from "@/components/video-conference/types/ScreenShare.types";
 import { Device } from "mediasoup-client";
 import { useCallback, useEffect, useRef } from "react";
+
 export default function useDevice() {
   const deviceRef = useRef<Device>();
 

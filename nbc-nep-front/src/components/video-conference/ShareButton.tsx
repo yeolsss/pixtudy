@@ -3,10 +3,11 @@ import { ShareType } from "./types/ScreenShare.types";
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void;
-  onStopShare: (type: ShareType) => void;
+  onStopShare?: (type: ShareType) => void;
   type: ShareType;
   shareButtonText: string;
   stopSharingButtonText: string;
+  isCanShare?: () => boolean;
 }
 
 export default function ShareButton({
@@ -15,22 +16,27 @@ export default function ShareButton({
   type,
   shareButtonText,
   stopSharingButtonText,
+  isCanShare,
 }: Props) {
-  const [isShare, setIsShare] = useState(false);
+  const [isShare, setIsShare] = useState(isCanShare && !isCanShare());
 
   const handleClickShareButton = async () => {
     try {
       const mediaStream: MediaStream = await getMediaStreamByType(type);
       onShare(mediaStream, type);
-      setIsShare(true);
+
+      if (!isCanShare || !isCanShare()) {
+        setIsShare(true);
+        return;
+      }
     } catch (err) {
       console.error("on error when start capture", err);
     }
   };
 
   const handleClickStopShareButton = () => {
+    onStopShare && onStopShare(type);
     setIsShare(false);
-    onStopShare(type);
   };
 
   return (

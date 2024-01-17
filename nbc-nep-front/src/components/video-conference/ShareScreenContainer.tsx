@@ -129,8 +129,6 @@ export default function ShareScreenContainer({
 
   return (
     <StVideosLayoutContainer>
-      <h1>layout components</h1>
-
       <StPreviewContainer>
         {videos.map((video) => {
           return (
@@ -167,27 +165,29 @@ const StVideosLayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: fixed;
-  left: 0;
+  left: 100px;
+  right: 200px;
   top: 0;
-  width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   color: white;
-
-  & h1 {
-    font-weight: bold;
-    font-size: 2rem;
-  }
 `;
 
 const StPreviewContainer = styled.div`
   display: flex;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
+  & > div {
+    cursor: pointer;
+  }
+  & div + div {
+    margin-left: 10rem;
+  }
 `;
 
 const StLayoutContainer = styled.div<{ $currentGridLayout: GridStatusType }>`
-  background: beige;
+  background: rgba(0, 0, 0, 0.8);
   width: 80%;
   height: 80%;
   display: grid;
