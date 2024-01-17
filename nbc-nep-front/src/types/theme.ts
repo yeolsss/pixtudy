@@ -13,6 +13,7 @@ export interface Root {
 }
 
 export interface Color {
+  metaverse: Metaverse;
   blue: Blue;
   red: Red;
   green: Green;
@@ -28,10 +29,14 @@ export interface Color {
   warning: Warning;
   danger: Danger;
   neutral: Neutral;
-  text: Text;
   bg: Bg;
+  text: Text;
   icon: Icon;
   border: Border;
+}
+
+export interface Metaverse {
+  primary: string;
 }
 
 export interface Blue {
@@ -217,20 +222,21 @@ export interface Neutral {
   "900": string;
 }
 
-export interface Text {
+export interface Bg {
   primary: string;
   secondary: string;
   tertiary: string;
-  interactive: Interactive;
   "info-bold": string;
-  info: string;
+  "info-subtle": string;
   "warning-bold": string;
-  warning: string;
+  "warning-subtle": string;
   "success-bold": string;
-  success: string;
+  "success-subtle": string;
   "danger-bold": string;
-  danger: string;
+  "danger-subtle": string;
+  "inverse-bold": string;
   disabled: string;
+  interactive: Interactive;
 }
 
 export interface Interactive {
@@ -240,37 +246,6 @@ export interface Interactive {
   secondary: string;
   "secondary-hovered": string;
   "secondary-pressed": string;
-  selected: string;
-  visited: string;
-  inverse: string;
-}
-
-export interface Bg {
-  primary: string;
-  secondary: string;
-  tertiary: string;
-  brand: string;
-  "info-bold": string;
-  interactive: Interactive2;
-  "info-subtle": string;
-  "warning-bold": string;
-  "warning-subtle": string;
-  "success-bold": string;
-  "success-subtle": string;
-  "danger-bold": string;
-  "danger-subtle": string;
-  "inverse-bold": string;
-  "inverse-bolder": string;
-  disabled: string;
-}
-
-export interface Interactive2 {
-  primary: string;
-  "primary-hovered": string;
-  "primary-pressed": string;
-  secondary: string;
-  "secondary-hovered": string;
-  "scondary-pressed": string;
   danger: string;
   "danger-hovered": string;
   "danger-pressed": string;
@@ -279,15 +254,43 @@ export interface Interactive2 {
   "selected-press": string;
 }
 
+export interface Text {
+  primary: string;
+  secondary: string;
+  tertiary: string;
+  brand: string;
+  info: string;
+  "info-bold": string;
+  warning: string;
+  "warning-bold": string;
+  success: string;
+  "success-bold": string;
+  danger: string;
+  "danger-bold": string;
+  disabled: string;
+  interactive: Interactive2;
+}
+
+export interface Interactive2 {
+  primary: string;
+  "primary-hovered": string;
+  "primary-pressed": string;
+  secondary: string;
+  "secondary-hovered": string;
+  "secondary-pressed": string;
+  selected: string;
+  inverse: string;
+}
+
 export interface Icon {
   primary: string;
   brand: string;
-  interactive: Interactive3;
   info: string;
   warning: string;
   success: string;
   danger: string;
   disabled: string;
+  interactive: Interactive3;
 }
 
 export interface Interactive3 {
@@ -297,14 +300,13 @@ export interface Interactive3 {
   secondary: string;
   "secondary-hovered": string;
   "secondary-press": string;
-  visited: string;
+  selected: string;
   inverse: string;
 }
 
 export interface Border {
   primary: string;
   secondary: string;
-  interactive: Interactive4;
   focusRing: string;
   info: string;
   "info-subtle": string;
@@ -315,6 +317,7 @@ export interface Border {
   danger: string;
   "danger-subtle": string;
   disabled: string;
+  interactive: Interactive4;
 }
 
 export interface Interactive4 {

@@ -1,6 +1,8 @@
 import { useJoinSpace } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { TablesInsert } from "@/types/supabase";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import {
   FieldValues,
   FormState,
@@ -22,12 +24,20 @@ interface ProfileFormProps {
 export default function ProfileForm({
   spaceId,
   defaultDisplayName,
+  handleSubmit,
   handleCancelBtnClick,
   register,
   errors,
 }: ProfileFormProps) {
-  const join = useJoinSpace();
+  const { joinSpace, isSuccess, isError } = useJoinSpace();
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSuccess) {
+      handleToSpace(spaceId);
+    }
+  }, [isSuccess, spaceId]);
 
   const validateNickname = (nickname: string) => {
     const nicknameReg = new RegExp(/^.{2,12}$/);
@@ -37,6 +47,10 @@ export default function ProfileForm({
     );
   };
 
+  const handleToSpace = async (space_id: string) => {
+    await router.replace(`/metaverse/${space_id!}`);
+  };
+
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     const userProfile: TablesInsert<"space_members"> = {
       space_id: spaceId,
@@ -44,13 +58,11 @@ export default function ProfileForm({
       space_display_name: data.nickname,
       user_id: userId,
     };
-
-    //
-    join(userProfile);
-    // console.log(data.avatar);
+    joinSpace(userProfile);
   };
+
   return (
-    <form onSubmit={handleProfileSubmit}>
+    <form onSubmit={handleSubmit(handleProfileSubmit)}>
       <input
         defaultValue={defaultDisplayName}
         type="text"

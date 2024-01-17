@@ -1,12 +1,18 @@
 import { supabase } from "@/libs/supabase";
 import { Tables, TablesInsert } from "@/types/supabase";
 
-export async function joinSpaceHandler(user: TablesInsert<"space_members">) {
-  const { data, error } = await supabase.from("space_members").insert(user);
+export const joinSpaceHandler = async (
+  user: TablesInsert<"space_members">
+): Promise<Tables<"space_members">> => {
+  const { data, error } = await supabase
+    .from("space_members")
+    .insert(user)
+    .select("*")
+    .single();
   if (error) return Promise.reject(error);
 
   return data;
-}
+};
 
 export const getSpaceData = async (spaceId: string) => {
   const { data, error } = await supabase
