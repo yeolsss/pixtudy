@@ -179,3 +179,13 @@ export const sendMessage = async ({
     await send(currentDmChannel);
   }
 };
+
+export const getLastDmMessageList = async (spaceId: string, userId: string) => {
+  const { data, error } = await supabase.rpc("get_last_dm_message_list", {
+    input_space_id: spaceId,
+    input_user_id: userId,
+  });
+
+  if (error) console.error("Error fetching messages:", error);
+  else return data;
+};
