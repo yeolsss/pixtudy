@@ -6,6 +6,7 @@ import SpaceList from "./SpaceList";
 
 export default function Spaces() {
   const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+
   const isModalOpen = useAppSelector(
     (state) => state.modalSlice.isJoinSpaceModalOpen
   );
