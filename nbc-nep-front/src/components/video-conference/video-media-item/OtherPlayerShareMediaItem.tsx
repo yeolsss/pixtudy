@@ -1,24 +1,24 @@
+import useVideoSource from "@/hooks/conference/useVideoSource";
 import { Player } from "@/types/metaverse";
 import { useState } from "react";
 import ShareMediaItem from "../ShareMediaItem";
 import ShareScreenContainer from "../ShareScreenContainer";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
 import { StShareScreenStackContainer } from "../styles/videoConference.styles";
-import { Consumer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 
 interface Props {
   currentPlayerId: string;
-  consumers: Consumer[];
   player: Player;
 }
 
 export default function OtherPlayerShareMediaItem({
-  consumers,
   player,
   currentPlayerId,
 }: Props) {
+  const { consumers } = useVideoSource();
   const [isOpenLayout, setIsOpenLayout] = useState<boolean>(false);
+
   if (currentPlayerId === player.playerId) return null;
 
   const filteredConsumers = consumers.filter(
