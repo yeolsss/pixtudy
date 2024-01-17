@@ -695,6 +695,12 @@ const GlobalStyle = styled.createGlobalStyle`
     min-width: 100%;
   }
 
+  header,
+  section {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
   input {
     height: ${(props) => props.theme.unit[48]};
     border-radius: ${(props) => props.theme.border.radius[8]};

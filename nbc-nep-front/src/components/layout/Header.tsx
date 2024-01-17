@@ -47,7 +47,7 @@ export default function Header() {
     <>
       <StNavContainer>
         <div>
-          <span onClick={() => router.push("/")}>NEP</span>
+          <span onClick={() => router.push("/")}>Pixtudy</span>
           <button>서비스 소개</button>
           <button>고객지원</button>
         </div>
@@ -92,7 +92,6 @@ const StNavContainer = styled.header`
     font-family: var(--point-font);
     font-size: ${(props) => props.theme.heading.desktop.lg.fontSize};
     font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
-    letter-spacing: var(--unit-4);
   }
 
   div {

@@ -35,7 +35,7 @@ export default function SpaceList({ currentUserId }: Props) {
   );
 }
 
-const StSpaceListWrapper = styled.div`
+const StSpaceListWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[32]};
