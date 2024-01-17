@@ -9,7 +9,7 @@ export default function IconButton({
 }: IconButtonProperty) {
   return (
     <StButton onClick={handleOnClick}>
-      <Image src={buttonImage} alt={description} width={"50"} height={"50"} />
+      <Image src={buttonImage} alt={description} width={"32"} height={"32"} />
     </StButton>
   );
 }
@@ -19,4 +19,7 @@ const StButton = styled.button`
   border: unset;
   padding: unset;
   cursor: pointer;
+  &:hover {
+    background-color: unset;
+  }
 `;

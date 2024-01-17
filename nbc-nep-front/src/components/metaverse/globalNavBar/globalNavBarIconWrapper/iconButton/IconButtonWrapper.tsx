@@ -6,22 +6,23 @@ interface Props {
   button: IconButtonProperty;
 }
 export default function IconButtonWrapper({ button }: Props) {
-  const { buttonImage, description, handleOnClick } = button;
+  const { buttonImage, description, type, handleOnClick } = button;
+
   return (
     <StIconButtonWrapper>
       <IconButton
         buttonImage={buttonImage}
         description={description}
+        type={type}
         handleOnClick={handleOnClick}
       />
-      <span>{description}</span>
     </StIconButtonWrapper>
   );
 }
 
 const StIconButtonWrapper = styled.div`
-  width: 50px;
-  height: 70px;
+  width: 32px;
+  height: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;

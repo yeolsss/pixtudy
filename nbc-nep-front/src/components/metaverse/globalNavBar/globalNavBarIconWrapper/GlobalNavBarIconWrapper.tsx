@@ -1,13 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import IconButtonWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButtonWrapper";
-import chartIcon from "@/assets/icons/Chart.png";
-import SettingsIcon from "@/assets/icons/Setting.png";
-import avatorIcon from "@/assets/icons/avator.png";
+import chartIcon from "@/assets/icons/Comments.svg";
+import SettingsIcon from "@/assets/icons/Cog.svg";
+import avatorIcon from "@/assets/icons/Users.svg";
+import reportIcon from "@/assets/icons/User Headset.svg";
 import { setIsSomeSection } from "@/redux/modules/globalNavBarSlice";
 import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
+import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
+import IconButtonByPlayerList from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButtonByPlayerList";
 
 export default function GlobalNavBarIconWrapper() {
   const dispatch = useAppDispatch();
@@ -21,10 +24,11 @@ export default function GlobalNavBarIconWrapper() {
     playerList: false,
   };
 
-  const buttons = [
+  const buttons: IconButtonProperty[] = [
     {
       buttonImage: chartIcon,
       description: "채팅",
+      type: "chat",
       handleOnClick: () => {
         updateIsChatSection = {
           chatSection: !chatSection,
@@ -42,16 +46,19 @@ export default function GlobalNavBarIconWrapper() {
     {
       buttonImage: SettingsIcon,
       description: "설정",
+      type: "settings",
       handleOnClick: () => {},
     },
     {
-      buttonImage: chartIcon,
+      buttonImage: reportIcon,
       description: "오류제보",
+      type: "report",
       handleOnClick: () => {},
     },
     {
       buttonImage: avatorIcon,
-      description: "",
+      description: "접속자 정보",
+      type: "playerList",
       handleOnClick: () => {
         const updateIsOpenChat = {
           isOpenChat: false,
@@ -69,9 +76,23 @@ export default function GlobalNavBarIconWrapper() {
   ];
   return (
     <StBottomIconWrapper>
-      {buttons.map((button, index) => (
-        <IconButtonWrapper key={button.description + index} button={button} />
-      ))}
+      {buttons.map((button, index) => {
+        if (button.type !== "playerList") {
+          return (
+            <IconButtonWrapper
+              key={button.description + index}
+              button={button}
+            />
+          );
+        } else {
+          return (
+            <IconButtonByPlayerList
+              key={button.description + index}
+              button={button}
+            />
+          );
+        }
+      })}
     </StBottomIconWrapper>
   );
 }
@@ -80,5 +101,6 @@ const StBottomIconWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 50%;
+  height: 287px;
+  width: 44px;
 `;
