@@ -10,7 +10,7 @@ import styled from "styled-components";
 import VideoConference from "../video-conference/VideoConference";
 
 const MetaverseComponent = () => {
-  const { spaceId, playerSpaceInfoData, id } = usePlayerContext();
+  const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();
 
   useEffect(() => {
     let game: Phaser.Game | undefined;
@@ -45,7 +45,7 @@ const MetaverseComponent = () => {
       // 임의로 설정해 둔 정보로, 실제 유저 정보를 가져와야 한다
       game.registry.set("player", {
         playerId: id,
-        nickname: playerSpaceInfoData?.space_display_name,
+        nickname: playerSpaceInfoData?.space_display_name || display_name,
         character: playerSpaceInfoData?.space_avatar || "pinkybonz",
         spaceId,
       });

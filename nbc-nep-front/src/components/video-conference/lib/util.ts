@@ -1,6 +1,10 @@
 import { Player } from "@/types/metaverse";
 import { Consumer } from "mediasoup-client/lib/Consumer";
-import { UserVideoSourceMap } from "../types/ScreenShare.types";
+import {
+  SplitVideoSource,
+  UserVideoSourceMap,
+  VideoSource,
+} from "../types/ScreenShare.types";
 
 export function isAlreadyConsume(
   consumers: Consumer[],
@@ -38,4 +42,21 @@ export function updateUserVideoSourceMap(
 
 export function isArrayEmpty(array: unknown[]) {
   return array.length === 0;
+}
+
+export function splitVideoSource(videoSources: VideoSource[]) {
+  const CAM_AND_AUDIO_VIDEO_SOURCE = 0;
+  const SCREEN_VIDEO_SOURCE = 1;
+
+  return videoSources.reduce<SplitVideoSource>(
+    (acc, cur) => {
+      if (cur.appData.shareType === "screen") {
+        acc[SCREEN_VIDEO_SOURCE].push(cur);
+      } else {
+        acc[CAM_AND_AUDIO_VIDEO_SOURCE].push(cur);
+      }
+      return acc;
+    },
+    [[], []]
+  );
 }

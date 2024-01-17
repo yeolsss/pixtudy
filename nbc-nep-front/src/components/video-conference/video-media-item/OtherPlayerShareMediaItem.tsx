@@ -1,6 +1,7 @@
 import { Player } from "@/types/metaverse";
 import ShareMediaItem from "../ShareMediaItem";
-import { isArrayEmpty } from "../lib/util";
+import { isArrayEmpty, splitVideoSource } from "../lib/util";
+import { StShareScreenStackContainer } from "../styles/videoConference.styles";
 import { Consumer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 
@@ -22,23 +23,44 @@ export default function OtherPlayerShareMediaItem({
   );
 
   const isEmptyConsumers = isArrayEmpty(filteredConsumers);
+  const [camAndAudioConsumers, screenConsumers] =
+    splitVideoSource(filteredConsumers);
+
+  console.log({
+    consumers,
+    filteredConsumers,
+    camAndAudioConsumers,
+    screenConsumers,
+  });
 
   return (
-    <div>
+    <>
       {isEmptyConsumers ? (
         <DefaultShareMediaItem
           nickname={player.nickname}
           avatar={player.character}
         />
       ) : (
-        filteredConsumers.map((consumer) => (
-          <ShareMediaItem
-            key={consumer.id}
-            nickname={player.nickname}
-            videoSource={consumer}
-          />
-        ))
+        <>
+          {camAndAudioConsumers.map((consumer) => (
+            <ShareMediaItem
+              key={consumer.id}
+              nickname={player.nickname}
+              videoSource={consumer}
+            />
+          ))}
+          <StShareScreenStackContainer>
+            {screenConsumers.map((consumer, index) => (
+              <ShareMediaItem
+                spread={-index * 10}
+                key={consumer.id}
+                nickname={player.nickname}
+                videoSource={consumer}
+              />
+            ))}
+          </StShareScreenStackContainer>
+        </>
       )}
-    </div>
+    </>
   );
 }
