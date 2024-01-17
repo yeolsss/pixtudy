@@ -1,6 +1,6 @@
 import { CurrentPlayer } from "@/metaverse/CurrentPlayer";
 import { OtherPlayersGroup } from "@/metaverse/OtherPlayersGroup";
-import { MapData, Player, Players } from "@/types/metaverse";
+import { Player, Players } from "@/types/metaverse";
 import Phaser from "phaser";
 import io, { Socket } from "socket.io-client";
 
@@ -13,11 +13,6 @@ const PLAYER_BODY_SIZE_Y = 32;
 const PLAYER_BODY_OFFSET_X = 0;
 const PLAYER_BODY_OFFSET_Y = 25;
 
-interface InitData {
-  mapData: MapData;
-}
-
-type PlayerInfo = {};
 /**
  * CharacterScenes 클래스는 Phaser.Scene을 확장해서 게임 캐릭터의 동작을 관리한다.
  */
@@ -43,8 +38,9 @@ export class CharacterScenes extends Phaser.Scene {
       tileHeight: 32,
     });
     const tileSet = map.addTilesetImage("tile1", "tiles");
-    const tileLayer = map.createLayer("tileLayer", tileSet!, 0, 0);
+    const _ = map.createLayer("tileLayer", tileSet!, 0, 0);
     const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
+
     objLayer?.setCollisionByProperty({ collides: true });
 
     //소켓 시작
@@ -57,6 +53,7 @@ export class CharacterScenes extends Phaser.Scene {
     this.socket.on("connect", () => {
       this.socket?.emit("userData", playerInfo);
     });
+
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
       Object.keys(players).forEach((id) => {

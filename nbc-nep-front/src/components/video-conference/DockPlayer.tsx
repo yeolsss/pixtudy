@@ -23,7 +23,9 @@ export default function DockPlayer({ player }: Props) {
       </BadgeWrapper>
       <StDockPlayerInfoWrapper>
         <StDockPlayerNickname>{player?.nickname}</StDockPlayerNickname>
-        <StDockPlayerState>{player?.playerId}</StDockPlayerState>
+        <StDockPlayerState>
+          {getPlayerStateToText(player?.state)}
+        </StDockPlayerState>
       </StDockPlayerInfoWrapper>
     </StDockPlayerWrapper>
   );
@@ -36,6 +38,11 @@ const getPlayerStateValue = (playerState: PlayerState) => {
     "var(--state-left-seat)",
     "var(--state-disturb",
   ][playerState];
+};
+
+const getPlayerStateToText = (playerState?: PlayerState) => {
+  if (playerState === undefined) return null;
+  return ["온라인", "식사중", "자리비움", "방해금지"][playerState];
 };
 
 const StDockPlayerWrapper = styled.div`

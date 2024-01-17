@@ -1,4 +1,9 @@
+import { getPlayerSpaceData } from "@/api/supabase/space";
+import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { Player } from "@/types/metaverse";
+import { Tables } from "@/types/supabase";
+import { useRouter } from "next/router";
 import {
   createContext,
   PropsWithChildren,
@@ -6,11 +11,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useRouter } from "next/router";
-import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
-import { Tables } from "@/types/supabase";
-import { getPlayerSpaceData } from "@/api/supabase/space";
-import { useAppSelector } from "@/hooks/useReduxTK";
 
 type PlayerContextType = {
   playerList: Player[];
@@ -29,6 +29,7 @@ const initialState: PlayerContextType = {
 };
 
 const PlayerContext = createContext<PlayerContextType>(initialState);
+
 export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
   const { id, display_name } = useAppSelector((state) => state.authSlice.user);
   const [playerList, setPlayerList] = useState<Player[]>([]);
@@ -36,6 +37,7 @@ export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const spaceId =
     typeof router.query.space_id === "string" ? router.query.space_id : "";
+
   // user 정보를 가져와서 spaceId에 해당하는 정보 가져오기
   const playerSpaceInfoOptions = {
     queryKey: ["playerSpaceInfo", spaceId],
@@ -45,6 +47,7 @@ export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
       staleTime: Infinity,
     },
   };
+
   const playerSpaceInfoData = useCustomQuery<Tables<"space_members">, Error>(
     playerSpaceInfoOptions
   );
