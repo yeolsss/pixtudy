@@ -9,6 +9,7 @@ import {
   checkDmChannelArgs,
   getDmChannelMessages,
   getDmChannelMessagesReturns,
+  getLastDmMessageList,
   getSpaceUsers,
   getUserSpaces,
   sendMessage,
@@ -16,7 +17,7 @@ import {
 } from "@/api/supabase/dm";
 import { getSpaceData, joinSpaceHandler } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
-import { Tables } from "@/types/supabase";
+import { Database, Tables } from "@/types/supabase";
 import { Space_members } from "@/types/supabase.tables.type";
 import { useMutation } from "@tanstack/react-query";
 import { useAppSelector } from "../useReduxTK";
@@ -162,4 +163,21 @@ export function useSendMessage() {
     },
   });
   return message;
+}
+
+export function useGetLastDMList(spaceId: string, userId: string) {
+  const queryOptions = {
+    queryKey: ["lastDMList"],
+    queryFn: async () => {
+      const result = await getLastDmMessageList(spaceId, userId);
+      return result || [];
+    },
+    enabled: !!spaceId && !!userId,
+    queryOptions: { staleTime: Infinity },
+  };
+
+  return useCustomQuery<
+    Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"],
+    Error
+  >(queryOptions);
 }

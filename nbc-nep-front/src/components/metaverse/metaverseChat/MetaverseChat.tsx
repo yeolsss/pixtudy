@@ -4,6 +4,7 @@ import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseCha
 import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";
+import MetaverseDmList from "@/components/metaverse/metaverseChat/metaverseDMList/MetaverseDMList";
 
 export default function MetaverseChat() {
   const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
@@ -17,7 +18,7 @@ export default function MetaverseChat() {
             <MetaverseChatForm />
           </>
         ) : (
-          <div>DM</div>
+          <MetaverseDmList />
         )}
       </StMetaverseGlobalChatWrapper>
     </MetaverseChatProvider>
