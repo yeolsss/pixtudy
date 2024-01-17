@@ -17,8 +17,6 @@ export default function SpaceList({ currentUserId }: Props) {
     if (getUserSpaces) setUserSpaces(getUserSpaces);
   }, [getUserSpaces]);
 
-  console.log(userSpaces);
-
   return (
     <StSpaceListWrapper>
       <SpaceListHeader />

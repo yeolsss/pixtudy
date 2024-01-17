@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import React from "react";
 import GlobalNavBarIconWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/GlobalNavBarIconWrapper";
+import Image from "next/image";
+import HomeIcon from "@/assets/icons/LogoSection.svg";
 
 export default function GlobalNavBar() {
   return (
     <StGlobalNavBar>
       <StTopIcon>
-        <StHomeLink href="/dashboard">홈</StHomeLink>
+        <StHomeLink href="/dashboard">
+          <Image src={HomeIcon} alt={"홈 버튼"} width={24} height={24} />
+        </StHomeLink>
       </StTopIcon>
       <GlobalNavBarIconWrapper />
     </StGlobalNavBar>
@@ -17,18 +21,26 @@ const StGlobalNavBar = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 100px;
-  min-width: 100px;
+  max-width: 68px;
   justify-content: space-between;
-  background-color: #1f2542;
-  padding: 60px 0;
+  padding: 32px 12px 24px;
   border-right: 1px solid rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.color.metaverse.primary};
+  color: ${({ theme }) => theme.color.icon.interactive.primary};
 `;
 const StHomeLink = styled.a`
+  display: flex;
+
   font-size: 24px;
   color: #fff;
   cursor: pointer;
   text-decoration: none;
+  width: 44px;
+  height: 44px;
+  background-color: ${({ theme }) => theme.color.bg.primary};
+  justify-content: center;
+  align-items: center;
+  border-radius: ${({ theme }) => theme.border.radius[16]};
 `;
 
 const StTopIcon = styled.div``;
