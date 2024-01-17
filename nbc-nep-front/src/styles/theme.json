@@ -313,7 +313,7 @@
       "8": "var(--unit-8)",
       "12": "var(--unit-12)",
       "16": "var(--unit-16)",
-      "circle": 999999
+      "circle": "9999px"
     }
   },
   "heading": {
