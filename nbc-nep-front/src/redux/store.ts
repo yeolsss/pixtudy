@@ -1,13 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import authSlice from "./modules/authSlice";
-import modalSlice from "./modules/modalSlice";
-import globalNavBar from "./modules/globalNavBarSlice";
 import chatType from "./modules/chatTypeSlice";
+import conferenceSlice from "./modules/conferenceSlice";
+import globalNavBar from "./modules/globalNavBarSlice";
+import modalSlice from "./modules/modalSlice";
 
 export const makeStore = () => {
   return configureStore({
-    reducer: { modalSlice, authSlice, globalNavBar, chatType },
+    reducer: { modalSlice, authSlice, globalNavBar, chatType, conferenceSlice },
   });
 };
 
