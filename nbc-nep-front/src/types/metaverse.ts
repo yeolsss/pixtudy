@@ -37,3 +37,10 @@ export type Chat = {
   message: string;
   playerDisplayName: string;
 };
+
+export enum PlayerState {
+  ONLINE,
+  EATING,
+  LEFT_SEAT,
+  DISTURB,
+}
