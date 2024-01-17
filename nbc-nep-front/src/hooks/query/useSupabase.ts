@@ -18,7 +18,7 @@ import { getSpaceData, joinSpaceHandler } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Tables } from "@/types/supabase";
 import { Space_members } from "@/types/supabase.tables.type";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useAppSelector } from "../useReduxTK";
 
 /* Auth */
@@ -70,23 +70,24 @@ export function useGetOtherUserInfo(otherUserId: string) {
 /* space */
 // insert userData to space_members
 export function useJoinSpace() {
-  const { mutate: joinSpace } = useMutation({
+  const {
+    mutate: joinSpace,
+    isSuccess,
+    isError,
+  } = useMutation({
     mutationFn: joinSpaceHandler,
     onError: (error) => {
       console.error("joinSpaceError: ", error);
     },
   });
-  return joinSpace;
+  return { joinSpace, isSuccess, isError };
 }
 // spaceId 로 스페이스를 조회하여 테이블 데이터를 가져온다.
-export function useGetSpace(spaceId: string) {
-  const { data, isError, isLoading, error } = useQuery({
-    queryKey: ["validateSpace", spaceId],
-    queryFn: () => getSpaceData(spaceId),
-    enabled: !!spaceId,
+export function useGetSpace() {
+  const { mutate: validateSpace, isError } = useMutation({
+    mutationFn: getSpaceData,
   });
-  if (error) console.error(error);
-  return { data, isError, isLoading };
+  return { validateSpace, isError };
 }
 
 // get current user spaces

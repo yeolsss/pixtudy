@@ -7,7 +7,8 @@ const styled = { createGlobalStyle };
 export const theme: Root = themeData as Root;
 
 const GlobalStyle = styled.createGlobalStyle`
-  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+  @import url("//cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@1.530/neodgm/style.css");
+  @import url("https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css");
 
   html,
   body,
@@ -136,7 +137,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   * {
     box-sizing: border-box;
-    font-family: "Pretendard", sans-serif;
+    font-family: var(--main-font);
   }
 
   :root {
@@ -681,39 +682,9 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-border-interactive-secondary: var(--color-neutral-300);
     --color-border-interactive-secondary-hovered: var(--color-neutral-200);
     --color-border-interactive-secondary-pressed: var(--color-neutral-100);
-    --heading-mobile-4xl: [object Object];
-    --heading-mobile-3xl: [object Object];
-    --heading-mobile-2xl: [object Object];
-    --heading-mobile-xl: [object Object];
-    --heading-mobile-lg: [object Object];
-    --heading-desktop-4xl: [object Object];
-    --heading-desktop-3xl: [object Object];
-    --heading-desktop-2xl: [object Object];
-    --heading-desktop-xl: [object Object];
-    --heading-desktop-lg: [object Object];
-    --heading-desktop-md: [object Object];
-    --heading-desktop-sm: [object Object];
-    --body-lg-regular: [object Object];
-    --body-lg-medium: [object Object];
-    --body-lg-semibold: [object Object];
-    --body-md-regular: [object Object];
-    --body-md-medium: [object Object];
-    --body-md-semibold: [object Object];
-    --body-md-underline: [object Object];
-    --body-md-encode: [object Object];
-    --body-sm-regular: [object Object];
-    --body-sm-medium: [object Object];
-    --Elevation-Light-shadow2: [object Object];
-    --Elevation-Light-shadow4: [object Object];
-    --Elevation-Light-shadow8: [object Object];
-    --Elevation-Light-shadow16: [object Object];
-    --Elevation-Dark-shadow2: [object Object];
-    --Elevation-Dark-shadow4: [object Object];
-    --Elevation-Dark-shadow8: [object Object];
-    --Elevation-Dark-shadow16: [object Object];
-    --Desktop: [object Object];
-    --Tablet: [object Object];
-    --Mobile: [object Object];
+    --main-font: "Galmuri14", sans-serif;
+    --point-font: "Galmuri11", sans-serif;
+    --sub-font: "NeoDunggeunmo", sans-serif;
   }
 
   Html {
@@ -724,15 +695,39 @@ const GlobalStyle = styled.createGlobalStyle`
     min-width: 100%;
   }
 
+  header,
+  section {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  input {
+    height: ${(props) => props.theme.unit[48]};
+    border-radius: ${(props) => props.theme.border.radius[8]};
+    border: 1px solid #d9d9d9;
+    padding: ${(props) => props.theme.spacing[16]};
+    padding: ${(props) => props.theme.spacing[16]};
+  }
+
   button {
-    display: block;
-    background-color: ${(props) => props.theme.color.blue[600]};
-    color: ${(props) => props.theme.color.blue[50]};
+    display: inline-block;
+    padding-top: ${(props) => props.theme.spacing[8]};
+    padding-bottom: ${(props) => props.theme.spacing[8]};
+    padding-left: ${(props) => props.theme.spacing[24]};
+    padding-right: ${(props) => props.theme.spacing[24]};
+    border: 1px solid
+      ${(props) => props.theme.color.border.interactive.secondary};
+    border-radius: ${(props) => props.theme.border.radius[8]};
+    color: ${(props) =>
+      props.theme.color.text.interactive["secondary-pressed"]};
+    background-color: ${(props) => props.theme.color.base.white};
     font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
-    border: none;
-    padding: ${(props) => props.theme.spacing[12]};
-    border-radius: ${(props) => props.theme.border.radius.circle}px;
-    box-shadow: ${(props) => props.theme.elevation.Light.shadow4};
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${(props) => props.theme.color.bg["info-bold"]};
+      color: ${(props) => props.theme.color.base.white};
+    }
   }
   #__next {
   }
