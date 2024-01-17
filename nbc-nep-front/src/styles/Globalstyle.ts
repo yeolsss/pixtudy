@@ -397,7 +397,7 @@ const GlobalStyle = styled.createGlobalStyle`
     --border-radius-8: var(--unit-8);
     --border-radius-12: var(--unit-12);
     --border-radius-16: var(--unit-16);
-    --border-radius-circle: 999999;
+    --border-radius-circle: "9999px";
     --color-border-interactive-secondary: var(--color-neutral-600);
     --color-border-interactive-secondary-hovered: var(--color-neutral-700);
     --color-border-interactive-secondary-pressed: var(--color-neutral-800);
