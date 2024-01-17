@@ -241,6 +241,34 @@ export default function VideoConference() {
     }
   }
 
+  async function handleShareStopProducer(producerId: string) {
+    const producer = producers.find((producer) => producer.id === producerId);
+
+    if (!producer) {
+      console.error("no producer...");
+      return;
+    }
+
+    try {
+      const { track } = producer;
+      if (!track) {
+        throw new Error("no track..");
+      }
+
+      track.enabled = false;
+      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
+
+      producer.pause();
+      producer.close();
+
+      setProducers((prev) =>
+        prev.filter((prevProducer) => prevProducer.id !== producer.id)
+      );
+    } catch (error) {
+      console.error("handle stop share error", error);
+    }
+  }
+
   function isCanShare() {
     return (
       producers.filter((producer) => producer.appData.shareType === "screen")
@@ -289,6 +317,7 @@ export default function VideoConference() {
       <StMediaItemWrapper>
         {playerList.length !== 0 && (
           <ShareMediaItemContainer
+            handleShareStopProducer={handleShareStopProducer}
             consumers={consumers}
             producers={producers}
             playerList={playerList}
