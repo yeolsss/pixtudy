@@ -2,10 +2,8 @@ import { useGetSpace, useGetUserSpaces } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { Dispatch, SetStateAction } from "react";
 import {
-  FieldError,
-  FieldErrorsImpl,
   FieldValues,
-  Merge,
+  FormState,
   SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister,
@@ -17,7 +15,7 @@ interface Props {
   register: UseFormRegister<FieldValues>;
   reset: UseFormReset<FieldValues>;
   setIsValidSpace: React.Dispatch<React.SetStateAction<boolean>>;
-  error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
+  errors: FormState<FieldValues>["errors"];
   handleCancelBtnClick: () => void;
   setSpaceId: Dispatch<SetStateAction<string>>;
   spaceId: string;
@@ -28,31 +26,22 @@ export default function InvitationCodeForm({
   register,
   reset,
   setIsValidSpace,
-  error,
+  errors,
   handleCancelBtnClick,
   setSpaceId,
   spaceId,
 }: Props) {
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const userJoinedSpaces = useGetUserSpaces(userId);
-  const { data: spaceData, isError, isLoading } = useGetSpace(spaceId);
-
-  // useEffect(()=>{
-  //   if(spaceData) {
-
-  //   }
-  // },[spaceData, spaceId])
+  const { validateSpace, isError } = useGetSpace();
 
   const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
-    setSpaceId((prev) => data.invitationCode);
-    if (spaceData) {
-      // 초대코드 유효하지 않다? async 함수로 빼야하나?
-      // 첫번째 submit 씹힘
-      if (spaceData) {
-        setIsValidSpace(true);
-      } else {
-        // alert("초대코드가 유효하지 않습니다.");
-      }
+    validateSpace(data.invitationCode);
+    if (isError) {
+      alert("초대코드가 유효하지 않습니다.");
+    } else {
+      setIsValidSpace(true);
+      setSpaceId(data.invitationCode);
     }
   };
 
@@ -62,9 +51,7 @@ export default function InvitationCodeForm({
       : true;
   };
 
-  return isLoading ? (
-    <p>isLoading</p>
-  ) : (
+  return (
     <form onSubmit={handleSubmit(handleInvitationSubmit)}>
       <input
         type="text"
@@ -74,7 +61,9 @@ export default function InvitationCodeForm({
           validate: onInvitationCodeChange,
         })}
       />
-      {/* {error && <p>{error?.message as string}</p>} */}
+      {errors.invitationCode && (
+        <p>{errors.invitationCode.message as string}</p>
+      )}
       <button type="submit">확인</button>
       <button onClick={handleCancelBtnClick}>취소</button>
     </form>
