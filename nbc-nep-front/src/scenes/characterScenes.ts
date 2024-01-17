@@ -165,7 +165,7 @@ export class CharacterScenes extends Phaser.Scene {
     this.character.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
     this.physics.add.collider(this.character, objLayer!);
     this.cameras.main.startFollow(this.character, true);
-    this.cameras.main.setZoom(2.5);
+    this.cameras.main.setZoom(2);
   }
   /**
    * 다른 플레이어를 게임에 추가한다.
