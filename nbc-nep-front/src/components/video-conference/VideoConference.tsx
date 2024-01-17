@@ -15,7 +15,7 @@ import ScreenOff from "../../assets/dock-icons/screen-off.svg";
 import ScreenOn from "../../assets/dock-icons/screen-on.svg";
 import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
-import MetaAvatar from "../metaverse/avatar/MetaAvatar";
+import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
 import { isAlreadyConsume, isArrayEmpty, isEmptyTracks } from "./lib/util";
 import {
@@ -247,7 +247,7 @@ export default function VideoConference() {
   return (
     <>
       <StDockContainer>
-        <MetaAvatar spaceAvatar={currentPlayer?.character} />
+        <DockPlayer player={currentPlayer} />
         <BadgeWrapper>
           {!isArrayEmpty(producers) && <BadgeNumber count={producers.length} />}
           <ShareButton
