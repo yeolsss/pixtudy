@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { ThemeProvider } from "styled-components";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -22,15 +24,17 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        <OnChangeUserSession />
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          {getLayout(
-            <>
-              <Component {...pageProps} />
-            </>
-          )}
-        </ThemeProvider>
+        <DndProvider backend={HTML5Backend}>
+          <OnChangeUserSession />
+          <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            {getLayout(
+              <>
+                <Component {...pageProps} />
+              </>
+            )}
+          </ThemeProvider>
+        </DndProvider>
       </StoreProvider>
     </QueryClientProvider>
   );
