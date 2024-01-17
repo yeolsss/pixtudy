@@ -1,17 +1,18 @@
 import { Player } from "@/types/metaverse";
-import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
-import { StShareScreenStackContainer } from "../styles/videoConference.styles";
+import { StMediaItemContainer } from "../styles/videoConference.styles";
 import { Consumer, Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
+import PlayerProducerContainer from "./PlayerProducerContainer";
 
 interface Props {
   producers: Producer[];
   consumers: Consumer[];
   playerList: Player[];
   currentPlayerId: string;
+  handleShareStopProducer: (producerId: string) => void;
 }
 
 export default function ShareMediaItemContainer({
@@ -19,6 +20,7 @@ export default function ShareMediaItemContainer({
   consumers,
   playerList,
   currentPlayerId,
+  handleShareStopProducer,
 }: Props) {
   const isEmptyProducers = isArrayEmpty(producers);
 
@@ -39,23 +41,18 @@ export default function ShareMediaItemContainer({
           />
         ) : (
           <>
+            <PlayerProducerContainer
+              handleShareStopProducer={handleShareStopProducer}
+              nickname={currentPlayer?.nickname || ""}
+              producers={screenProducers as Producer[]}
+            />
             {camAndAudioProducers.map((producer) => (
               <ShareMediaItem
-                nickname={currentPlayerId}
+                nickname={currentPlayer?.nickname || ""}
                 key={producer.id}
                 videoSource={producer}
               />
             ))}
-            <StShareScreenStackContainer>
-              {screenProducers.map((producer, index) => (
-                <ShareMediaItem
-                  nickname={currentPlayerId}
-                  key={producer.id}
-                  videoSource={producer}
-                  spread={-index * 10}
-                />
-              ))}
-            </StShareScreenStackContainer>
           </>
         )}
       </StMediaItemContainer>
@@ -72,10 +69,3 @@ export default function ShareMediaItemContainer({
     </StMediaItemContainer>
   );
 }
-
-const StMediaItemContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  padding: 40px 0;
-`;

@@ -64,7 +64,7 @@ const MetaverseComponent = () => {
       <GlobalNavBar />
       <MetaverseChatBar />
       <MetaversePlayerList />
-      <StMetaverseMain id="phaser-metaverse"></StMetaverseMain>
+      <StMetaverseMain id="phaser-metaverse" />
       <VideoConference />
     </StMetaverseWrapper>
   );

@@ -25,6 +25,7 @@ module.exports = function (io) {
     // 클라이언트가 room에 들어왔을 경우, 초기 설정들을 해준다
     // socketId, roomName이라던가 ,transport들... 이미 있느
     socket.on("join-room", (spaceId, playerId) => {
+      console.log(`player ${playerId} joined ${spaceId}`);
       clients[playerId] = {
         spaceId: spaceId,
         [SEND_TRANSPORT_KEY]: null,
@@ -181,14 +182,12 @@ module.exports = function (io) {
       }
     });
 
-    socket.on("get-producers", (playerList, playerId, callback) => {
+    socket.on("get-producers", (spaceId, playerId, callback) => {
       const producers = [];
+
       for (const clientId in clients) {
-        if (clientId === playerId) continue;
-
         const client = clients[clientId];
-
-        if (playerList.indexOf(clientId) === -1) continue;
+        if (clientId === playerId || client.spaceId !== spaceId) continue;
 
         client.producers.forEach((producer) => {
           try {
