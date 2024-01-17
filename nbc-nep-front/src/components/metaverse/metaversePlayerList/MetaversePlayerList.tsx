@@ -6,7 +6,6 @@ import { Tables } from "@/types/supabase";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import MetaverseDmContainer from "./metaverseDmContainer/MetaverseDmContainer";
 
 export default function MetaversePlayerList() {
   const isOpenPlayerList = useAppSelector(
@@ -72,14 +71,14 @@ export default function MetaversePlayerList() {
         ))}
       </StMetaversePlayerListWrapper>
       <StMetaverseDmContainers>
-        {activateDmUsers.map((user) => (
+        {/*{activateDmUsers.map((user) => (
           <MetaverseDmContainer
             key={user}
             otherUserId={user}
             handleCloseDmContainer={handleCloseDmContainer}
             spaceId={spaceId}
           />
-        ))}
+        ))}*/}
       </StMetaverseDmContainers>
     </>
   );

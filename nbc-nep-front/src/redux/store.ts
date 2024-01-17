@@ -4,10 +4,11 @@ import authSlice from "./modules/authSlice";
 import modalSlice from "./modules/modalSlice";
 import globalNavBar from "./modules/globalNavBarSlice";
 import chatType from "./modules/chatTypeSlice";
+import dm from "./modules/dmSlice";
 
 export const makeStore = () => {
   return configureStore({
-    reducer: { modalSlice, authSlice, globalNavBar, chatType },
+    reducer: { modalSlice, authSlice, globalNavBar, chatType, dm },
   });
 };
 

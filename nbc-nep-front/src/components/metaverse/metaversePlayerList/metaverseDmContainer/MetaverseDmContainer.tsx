@@ -19,13 +19,13 @@ import styled from "styled-components";
 
 interface Props {
   otherUserId: string;
-  handleCloseDmContainer: (id: string) => void;
+  // handleCloseDmContainer: (id: string) => void;
   spaceId: string;
 }
 
 export default function MetaverseDmContainer({
   otherUserId,
-  handleCloseDmContainer,
+  // handleCloseDmContainer,
   spaceId,
 }: Props) {
   const sendMessage = useSendMessage();
@@ -163,9 +163,9 @@ export default function MetaverseDmContainer({
 
   return (
     <StMetaverseDmChannel>
-      <button onClick={() => handleCloseDmContainer(otherUserInfo?.id!)}>
+      {/*<button onClick={() => handleCloseDmContainer(otherUserInfo?.id!)}>
         close
-      </button>
+      </button>*/}
       <h1>상대방 유저 정보 : {otherUserInfo?.display_name}</h1>
       <ul ref={messageListRef}>
         {messages?.map((message) => (
