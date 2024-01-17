@@ -23,7 +23,7 @@ export default function ShareMediaItem({
 
   const stream = new MediaStream([track]);
   const type = track.kind;
-  console.log({ spread });
+
   return (
     <StShareMediaItem $spread={spread}>
       <StShareMediaNickname>{nickname}</StShareMediaNickname>

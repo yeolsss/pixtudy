@@ -2,36 +2,33 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface LayoutState {
   isOpen: boolean;
-  layoutVideos: JSX.Element[];
-  activeLayoutVideos: (JSX.Element | null)[];
+  layoutPlayerId: string;
+  layoutPlayerNickName: string;
 }
 
 const initialState: LayoutState = {
   isOpen: false,
-  layoutVideos: [],
-  activeLayoutVideos: [],
+  layoutPlayerId: "",
+  layoutPlayerNickName: "",
 };
 
 export const layoutSlice = createSlice({
   name: "layout",
   initialState,
   reducers: {
-    layoutOpen: (state, action: PayloadAction<JSX.Element[]>) => {
+    layoutOpen: (
+      state,
+      action: PayloadAction<{ playerId: string; playerNickName: string }>
+    ) => {
       state.isOpen = true;
-      state.layoutVideos = action.payload;
+      state.layoutPlayerId = action.payload.playerId;
+      state.layoutPlayerNickName = action.payload.playerNickName;
     },
     layoutClose: () => {
       return initialState;
     },
-    setInActiveVideos: (state, action: PayloadAction<JSX.Element[]>) => {
-      state.layoutVideos = action.payload;
-    },
-    setActiveVideos: (state, action: PayloadAction<(JSX.Element | null)[]>) => {
-      state.activeLayoutVideos = action.payload;
-    },
   },
 });
 
-export const { layoutOpen, layoutClose, setInActiveVideos, setActiveVideos } =
-  layoutSlice.actions;
+export const { layoutOpen, layoutClose } = layoutSlice.actions;
 export default layoutSlice.reducer;

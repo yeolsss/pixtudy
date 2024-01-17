@@ -1,19 +1,30 @@
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import useDevice from "@/hooks/share-screen/useDevice";
-import useRecvTransport from "@/hooks/share-screen/useRecvTransport";
-import useSendTransport from "@/hooks/share-screen/useSendTransport";
+import useDevice from "@/hooks/conference/useDevice";
+import useRecvTransport from "@/hooks/conference/useRecvTransport";
+import useSendTransport from "@/hooks/conference/useSendTransport";
+import useVideoSource from "@/hooks/conference/useVideoSource";
 import useSocket from "@/hooks/socket/useSocket";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import MetaAvatar from "../metaverse/avatar/MetaAvatar";
+import CameraOff from "../../assets/dock-icons/camera-off.svg";
+import CameraOn from "../../assets/dock-icons/camera-on.svg";
+import MicOff from "../../assets/dock-icons/mic-off.svg";
+import MicOn from "../../assets/dock-icons/mic-on.svg";
+import ScreenOff from "../../assets/dock-icons/screen-off.svg";
+import ScreenOn from "../../assets/dock-icons/screen-on.svg";
+import BadgeNumber from "../common/badge/BadgeNumber";
+import BadgeWrapper from "../common/badge/BadgeWrapper";
+import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
-import { isAlreadyConsume, isEmptyTracks } from "./lib/util";
+import {
+  getProducersByShareType,
+  isAlreadyConsume,
+  isEmptyTracks,
+} from "./lib/util";
 import {
   AppData,
-  Consumer,
-  Producer,
   ProducerForConsume,
   RtpCapabilities,
   ShareType,
@@ -29,8 +40,14 @@ export default function VideoConference() {
     (state) => state.authSlice.user
   );
 
-  const [producers, setProducers] = useState<Producer[]>([]);
-  const [consumers, setConsumers] = useState<Consumer[]>([]);
+  const {
+    consumers,
+    producers,
+    addConsumer,
+    addProducer,
+    removeConsumer,
+    removeProducer,
+  } = useVideoSource();
 
   const {
     loadDevice,
@@ -84,7 +101,7 @@ export default function VideoConference() {
 
     socket.emit(
       "get-producers",
-      playerList,
+      spaceId,
       currentPlayerId,
       handleConsumeProducers
     );
@@ -133,10 +150,7 @@ export default function VideoConference() {
             throw new Error("consumer가 없다...있어야 하는데...");
           }
 
-          setConsumers((prev) => [
-            ...prev.filter((consumer) => !consumer.closed),
-            consumer,
-          ]);
+          addConsumer(consumer);
 
           socket.emit("consumer-resume", {
             consumerId: consumer.id,
@@ -156,14 +170,7 @@ export default function VideoConference() {
   }
 
   function handleProducerClose(streamId: string) {
-    setConsumers((prev) =>
-      prev.filter((consumer) => {
-        if (consumer.appData.streamId === streamId) {
-          consumer.close();
-        }
-        return consumer.appData.streamId !== streamId;
-      })
-    );
+    removeConsumer(streamId);
   }
 
   async function handleShare(stream: MediaStream, type: ShareType) {
@@ -193,7 +200,7 @@ export default function VideoConference() {
         throw new Error("no producer...");
       }
 
-      setProducers((prev) => [...prev, producer]);
+      addProducer(producer);
     } catch (error) {
       console.log("handle share error", error);
     }
@@ -221,9 +228,33 @@ export default function VideoConference() {
       producer.pause();
       producer.close();
 
-      setProducers((prev) =>
-        prev.filter((prevProducer) => prevProducer.id !== producer.id)
-      );
+      removeProducer(producer.id);
+    } catch (error) {
+      console.error("handle stop share error", error);
+    }
+  }
+
+  async function handleShareStopProducer(producerId: string) {
+    const producer = producers.find((producer) => producer.id === producerId);
+
+    if (!producer) {
+      console.error("no producer...");
+      return;
+    }
+
+    try {
+      const { track } = producer;
+      if (!track) {
+        throw new Error("no track..");
+      }
+
+      track.enabled = false;
+      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
+
+      producer.pause();
+      producer.close();
+
+      removeProducer(producer.id);
     } catch (error) {
       console.error("handle stop share error", error);
     }
@@ -236,23 +267,33 @@ export default function VideoConference() {
     );
   }
 
+  const screenCount = getProducersByShareType(producers, "screen").length;
+
   return (
     <>
       <StDockContainer>
-        <MetaAvatar spaceAvatar={currentPlayer?.character} />
+        <DockPlayer player={currentPlayer} />
         <ShareButton
           type="screen"
           onShare={handleShare}
           shareButtonText="화면 공유"
-          stopSharingButtonText="더이상 공유할 수 없습니다."
+          stopSharingButtonText="공유 불가"
           isCanShare={isCanShare}
-        />
+          shareSvg={ScreenOff}
+          stopShareSvg={ScreenOn}
+        >
+          <BadgeWrapper>
+            {screenCount ? <BadgeNumber count={screenCount} /> : null}
+          </BadgeWrapper>
+        </ShareButton>
         <ShareButton
           type="webcam"
           onShare={handleShare}
           onStopShare={handleStopShare}
           shareButtonText="카메라 켜기"
           stopSharingButtonText="카메라 끄기"
+          shareSvg={CameraOn}
+          stopShareSvg={CameraOff}
         />
         <ShareButton
           type="audio"
@@ -260,11 +301,14 @@ export default function VideoConference() {
           onStopShare={handleStopShare}
           shareButtonText="마이크 켜기"
           stopSharingButtonText="마이크 끄기"
+          shareSvg={MicOn}
+          stopShareSvg={MicOff}
         />
       </StDockContainer>
       <StMediaItemWrapper>
         {playerList.length !== 0 && (
           <ShareMediaItemContainer
+            handleShareStopProducer={handleShareStopProducer}
             consumers={consumers}
             producers={producers}
             playerList={playerList}
@@ -304,16 +348,21 @@ const StDockContainer = styled.div`
   position: absolute;
 
   left: 50%;
+  bottom: ${(props) => props.theme.spacing[64]};
   transform: translateX(-50%);
 
-  bottom: 500px;
-  width: 300px;
-  border: 1px solid black;
+  background-color: ${(props) => props.theme.color.metaverse.primary};
+
+  padding: ${(props) => props.theme.spacing[16]};
+
+  border-radius: ${(props) => props.theme.border.radius.circle};
 
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
+
   gap: 15px;
+  width: 465px;
 `;
 const StMediaItemWrapper = styled.div`
   position: absolute;

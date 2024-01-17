@@ -1,25 +1,30 @@
+import useVideoSource from "@/hooks/conference/useVideoSource";
 import { Player } from "@/types/metaverse";
-import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
-import { StShareScreenStackContainer } from "../styles/videoConference.styles";
-import { Consumer, Producer } from "../types/ScreenShare.types";
+import { StMediaItemContainer } from "../styles/videoConference.styles";
+import { Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
+import PlayerProducerContainer from "./PlayerProducerContainer";
+import ShareScreenContainer from "../ShareScreenContainer";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 
 interface Props {
-  producers: Producer[];
-  consumers: Consumer[];
   playerList: Player[];
   currentPlayerId: string;
+  handleShareStopProducer: (producerId: string) => void;
 }
 
 export default function ShareMediaItemContainer({
-  producers,
-  consumers,
   playerList,
   currentPlayerId,
+  handleShareStopProducer,
 }: Props) {
+  const layoutInfo = useAppSelector((state) => state.layoutSlice);
+
+  const { producers } = useVideoSource();
+
   const isEmptyProducers = isArrayEmpty(producers);
 
   const findPlayer = (playerId: string) =>
@@ -30,52 +35,43 @@ export default function ShareMediaItemContainer({
   const [camAndAudioProducers, screenProducers] = splitVideoSource(producers);
 
   return (
-    <StMediaItemContainer>
+    <>
       <StMediaItemContainer>
-        {isEmptyProducers ? (
-          <DefaultShareMediaItem
-            nickname={currentPlayer?.nickname}
-            avatar={currentPlayer?.character}
-          />
-        ) : (
-          <>
-            {camAndAudioProducers.map((producer) => (
-              <ShareMediaItem
-                nickname={currentPlayerId}
-                key={producer.id}
-                videoSource={producer}
+        <StMediaItemContainer>
+          {isEmptyProducers ? (
+            <DefaultShareMediaItem
+              nickname={currentPlayer?.nickname}
+              avatar={currentPlayer?.character}
+            />
+          ) : (
+            <>
+              <PlayerProducerContainer
+                handleShareStopProducer={handleShareStopProducer}
+                nickname={currentPlayer?.nickname || ""}
+                producers={screenProducers as Producer[]}
               />
-            ))}
-            <StShareScreenStackContainer>
-              {screenProducers.map((producer, index) => (
+              {camAndAudioProducers.map((producer) => (
                 <ShareMediaItem
-                  nickname={currentPlayerId}
+                  nickname={currentPlayer?.nickname || ""}
                   key={producer.id}
                   videoSource={producer}
-                  spread={-index * 10}
                 />
               ))}
-            </StShareScreenStackContainer>
-          </>
-        )}
+            </>
+          )}
+        </StMediaItemContainer>
+        <StMediaItemContainer>
+          {playerList.map((player) => (
+            <OtherPlayerShareMediaItem
+              player={player}
+              currentPlayerId={currentPlayerId}
+              key={player.playerId}
+            />
+          ))}
+        </StMediaItemContainer>
       </StMediaItemContainer>
-      <StMediaItemContainer>
-        {playerList.map((player) => (
-          <OtherPlayerShareMediaItem
-            player={player}
-            currentPlayerId={currentPlayerId}
-            consumers={consumers}
-            key={player.playerId}
-          />
-        ))}
-      </StMediaItemContainer>
-    </StMediaItemContainer>
+
+      {layoutInfo.isOpen && <ShareScreenContainer />}
+    </>
   );
 }
-
-const StMediaItemContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  padding: 40px 0;
-`;

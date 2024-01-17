@@ -1,8 +1,8 @@
+import useVideoSource from "@/hooks/conference/useVideoSource";
 import { Player } from "@/types/metaverse";
 import ShareMediaItem from "../ShareMediaItem";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
 import { StShareScreenStackContainer } from "../styles/videoConference.styles";
-import { Consumer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import ShareScreenContainer from "../ShareScreenContainer";
 import { useState, useRef } from "react";
@@ -11,18 +11,17 @@ import { layoutOpen } from "@/redux/modules/layoutSlice";
 
 interface Props {
   currentPlayerId: string;
-  consumers: Consumer[];
   player: Player;
 }
 
 export default function OtherPlayerShareMediaItem({
-  consumers,
   player,
   currentPlayerId,
 }: Props) {
   const dispatch = useAppDispatch();
-  const isLayoutOpen = useAppSelector((state) => state.layoutSlice.isOpen);
   const videosContainer = useRef<HTMLDivElement | null>(null);
+
+  const { consumers } = useVideoSource();
 
   if (currentPlayerId === player.playerId) return null;
 
@@ -41,24 +40,10 @@ export default function OtherPlayerShareMediaItem({
     screenConsumers,
   });
 
-  const shareScreenItem = screenConsumers.map((consumer, index) => (
-    <ShareMediaItem
-      spread={-index * 10}
-      key={consumer.id}
-      nickname={player.nickname}
-      videoSource={consumer}
-    />
-  ));
-
   const handleToggleVideosLayout = () => {
-    const newShareScreenItem = shareScreenItem.map((item) => (
-      <ShareMediaItem
-        key={item.key}
-        nickname={item.props.nickname}
-        videoSource={item.props.videoSource}
-      />
-    ));
-    dispatch(layoutOpen(newShareScreenItem));
+    dispatch(
+      layoutOpen({ playerId: player.playerId, playerNickName: player.nickname })
+    );
   };
 
   return (
@@ -81,11 +66,17 @@ export default function OtherPlayerShareMediaItem({
             onClick={handleToggleVideosLayout}
             ref={videosContainer}
           >
-            {shareScreenItem}
+            {screenConsumers.map((consumer, index) => (
+              <ShareMediaItem
+                spread={-index * 10}
+                key={consumer.id}
+                nickname={player.nickname}
+                videoSource={consumer}
+              />
+            ))}
           </StShareScreenStackContainer>
         </>
       )}
-      {isLayoutOpen && <ShareScreenContainer />}
     </>
   );
 }
