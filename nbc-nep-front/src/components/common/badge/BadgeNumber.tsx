@@ -39,6 +39,7 @@ const StBadgeNumber = styled(StBadge)<{
   justify-content: center;
   align-items: end;
   font-weight: bold;
+
   background-color: ${(props) => props.theme.color.bg.interactive[props.$bg]};
   > * {
     color: ${(props) => props.theme.color.text.interactive[props.$color]};

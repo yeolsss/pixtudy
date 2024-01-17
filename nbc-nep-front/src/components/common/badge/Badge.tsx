@@ -15,8 +15,8 @@ const StBadge = styled.div<StBadgeProps>`
   border-radius: ${(props) => props.theme.border.radius.circle};
   background-color: ${(props) => props.color || "var(--state-online)"};
 
-  top: ${(props) => toCssValue(props?.y) || "0px"};
-  left: ${(props) => toCssValue(props?.x) || "0px"};
+  ${(props) => (props.y ? `top: ${toCssValue(props?.y)}` : "")};
+  ${(props) => (props.x ? `left: ${toCssValue(props?.x)}` : "")};
 `;
 
 function toCssValue(x: string | number | undefined) {
