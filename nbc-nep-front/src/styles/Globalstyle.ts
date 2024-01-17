@@ -141,6 +141,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   :root {
+    --user-counter: #15e42a;
     --color-blue-50: #eff6ff;
     --color-blue-100: #dbeafe;
     --color-blue-200: #bfdbfe;
@@ -444,7 +445,8 @@ const GlobalStyle = styled.createGlobalStyle`
     cursor: pointer;
 
     &:hover {
-      background-color: ${(props) => props.theme.color.bg["info-bold"]};
+      background-color: ${(props) =>
+        props.theme.color.bg.interactive["primary-hovered"]};
       color: ${(props) => props.theme.color.base.white};
     }
   }
