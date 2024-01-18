@@ -3,9 +3,10 @@ import {
   useGetDmChannel,
   useGetDmMessages,
   useGetOtherUserInfo,
+  useReadDMMessage,
   useSendMessage,
 } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/libs/supabase";
 import { Tables } from "@/types/supabase";
 import {
@@ -16,26 +17,24 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
+import { isCloseDm } from "@/redux/modules/dmSlice";
 
-interface Props {
-  otherUserId: string;
-  // handleCloseDmContainer: (id: string) => void;
-  spaceId: string;
-}
-
-export default function MetaverseDmContainer({
-  otherUserId,
-  // handleCloseDmContainer,
-  spaceId,
-}: Props) {
+export default function MetaverseDmContainer() {
   const sendMessage = useSendMessage();
+  const { dmRoomId, otherUserId, spaceId } = useAppSelector(
+    (state) => state.dm
+  );
+  const dispatch = useAppDispatch();
 
   // 상대방 유저와 활성화된 dm 채널 아이디
   // 채널이 이미 있을 때: string/ 없을 때: null
-  const currentDmChannel = useGetDmChannel({
-    receiverId: otherUserId,
-    spaceId,
-  });
+  const currentDmChannel =
+    dmRoomId !== ""
+      ? useGetDmChannel({
+          receiverId: otherUserId,
+          spaceId,
+        })
+      : dmRoomId;
 
   const queryClient = useQueryClient();
 
@@ -59,6 +58,13 @@ export default function MetaverseDmContainer({
 
   // message ul ref (스크롤)
   const messageListRef = useRef<HTMLUListElement>(null);
+
+  const { mutate, isPending, isError } = useReadDMMessage();
+
+  // 채팅창에 들어오면 읽은것으로 간주.
+  useEffect(() => {
+    mutate({ roomId: dmRoomId, receiverId: currentUser.id });
+  }, []);
 
   // 구독중인 채널에서 메시지를 인지하였을 떄 이벤트
   const newMessageInChannel = (
@@ -161,21 +167,23 @@ export default function MetaverseDmContainer({
     };
   }, []);
 
+  const handleCloseDmContainer = () => {
+    dispatch(isCloseDm());
+  };
+
   return (
     <StMetaverseDmChannel>
-      {/*<button onClick={() => handleCloseDmContainer(otherUserInfo?.id!)}>
-        close
-      </button>*/}
+      <button onClick={handleCloseDmContainer}>close</button>
       <h1>상대방 유저 정보 : {otherUserInfo?.display_name}</h1>
-      <ul ref={messageListRef}>
+      <StMessageWrapper ref={messageListRef}>
         {messages?.map((message) => (
-          <li key={message.id}>
+          <StMessageCard key={message.id}>
             <h3>{message.sender?.display_name}</h3>
             <span>{message.message}</span>
             <span>{message.created_at}</span>
-          </li>
+          </StMessageCard>
         ))}
-      </ul>
+      </StMessageWrapper>
       <form onSubmit={handleSubmit(sendHandler)}>
         <input
           id="send-input"
@@ -192,12 +200,29 @@ export default function MetaverseDmContainer({
 }
 
 const StMetaverseDmChannel = styled.div`
-  height: 500px;
+  max-height: 100%;
+  color: #ffffff;
+`;
+
+const StMessageWrapper = styled.ul`
   display: flex;
   flex-direction: column;
-  & ul {
-    height: 80%;
-    overflow-y: scroll;
-    font-size: 2rem;
+  gap: ${({ theme }) => theme.spacing["12"]};
+  min-height: 90%;
+  max-height: 700px;
+  height: auto;
+  overflow-y: scroll;
+  font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
+  font-family: ${({ theme }) => theme.body.sm.regular.fontFamily};
+  word-break: break-all;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
+`;
+
+const StMessageCard = styled.li`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing["4"]};
 `;

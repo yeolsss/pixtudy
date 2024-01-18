@@ -2,19 +2,18 @@ import { DMListCard } from "@/types/metaverse";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import styled from "styled-components";
-import MetaverseDmContainer from "@/components/metaverse/metaversePlayerList/metaverseDmContainer/MetaverseDmContainer";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import { useAppDispatch } from "@/hooks/useReduxTK";
+import { isOpenDm } from "@/redux/modules/dmSlice";
 
 interface Props {
   dm: DMListCard;
 }
 export default function MetaverseDmCard({ dm }: Props) {
-  const { isOpen, dmRoomId } = useAppSelector((state) => state.dm);
+  const dispatch = useAppDispatch();
   const { id, spaceId } = usePlayerContext();
   const {
-    message_id,
+    room_id,
     message,
-    created_at,
     sender_id,
     sender_username,
     sender_avatar,
@@ -28,7 +27,16 @@ export default function MetaverseDmCard({ dm }: Props) {
   const otherUserName = id === sender_id ? receiver_username : sender_username;
   const otherUserAvatar = id === sender_id ? receiver_avatar : sender_avatar;
 
-  const handleOnClickOpenDMChat = () => {};
+  const handleOnClickOpenDMChat = () => {
+    dispatch(
+      isOpenDm({
+        isOpen: true,
+        dmRoomId: room_id,
+        otherUserId,
+        spaceId,
+      })
+    );
+  };
 
   return (
     <StMetaverseDMCardWrapper onClick={handleOnClickOpenDMChat}>
@@ -49,11 +57,6 @@ export default function MetaverseDmCard({ dm }: Props) {
           <span>{unread_count}</span>
         </StUnreadCount>
       )}
-      <MetaverseDmContainer
-        otherUserId={otherUserId}
-        // handleCloseDmContainer={handleCloseDmContainer}
-        spaceId={spaceId}
-      />
     </StMetaverseDMCardWrapper>
   );
 }

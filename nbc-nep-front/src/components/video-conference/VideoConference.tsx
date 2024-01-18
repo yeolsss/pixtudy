@@ -1,11 +1,12 @@
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import useDevice from "@/hooks/share-screen/useDevice";
-import useRecvTransport from "@/hooks/share-screen/useRecvTransport";
-import useSendTransport from "@/hooks/share-screen/useSendTransport";
+import useDevice from "@/hooks/conference/useDevice";
+import useRecvTransport from "@/hooks/conference/useRecvTransport";
+import useSendTransport from "@/hooks/conference/useSendTransport";
+import useVideoSource from "@/hooks/conference/useVideoSource";
 import useSocket from "@/hooks/socket/useSocket";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import CameraOff from "../../assets/dock-icons/camera-off.svg";
 import CameraOn from "../../assets/dock-icons/camera-on.svg";
@@ -24,8 +25,6 @@ import {
 } from "./lib/util";
 import {
   AppData,
-  Consumer,
-  Producer,
   ProducerForConsume,
   RtpCapabilities,
   ShareType,
@@ -41,8 +40,14 @@ export default function VideoConference() {
     (state) => state.authSlice.user
   );
 
-  const [producers, setProducers] = useState<Producer[]>([]);
-  const [consumers, setConsumers] = useState<Consumer[]>([]);
+  const {
+    consumers,
+    producers,
+    addConsumer,
+    addProducer,
+    removeConsumer,
+    removeProducer,
+  } = useVideoSource();
 
   const {
     loadDevice,
@@ -145,10 +150,7 @@ export default function VideoConference() {
             throw new Error("consumer가 없다...있어야 하는데...");
           }
 
-          setConsumers((prev) => [
-            ...prev.filter((consumer) => !consumer.closed),
-            consumer,
-          ]);
+          addConsumer(consumer);
 
           socket.emit("consumer-resume", {
             consumerId: consumer.id,
@@ -168,14 +170,7 @@ export default function VideoConference() {
   }
 
   function handleProducerClose(streamId: string) {
-    setConsumers((prev) =>
-      prev.filter((consumer) => {
-        if (consumer.appData.streamId === streamId) {
-          consumer.close();
-        }
-        return consumer.appData.streamId !== streamId;
-      })
-    );
+    removeConsumer(streamId);
   }
 
   async function handleShare(stream: MediaStream, type: ShareType) {
@@ -205,7 +200,7 @@ export default function VideoConference() {
         throw new Error("no producer...");
       }
 
-      setProducers((prev) => [...prev, producer]);
+      addProducer(producer);
     } catch (error) {
       console.log("handle share error", error);
     }
@@ -233,9 +228,7 @@ export default function VideoConference() {
       producer.pause();
       producer.close();
 
-      setProducers((prev) =>
-        prev.filter((prevProducer) => prevProducer.id !== producer.id)
-      );
+      removeProducer(producer.id);
     } catch (error) {
       console.error("handle stop share error", error);
     }
@@ -261,9 +254,7 @@ export default function VideoConference() {
       producer.pause();
       producer.close();
 
-      setProducers((prev) =>
-        prev.filter((prevProducer) => prevProducer.id !== producer.id)
-      );
+      removeProducer(producer.id);
     } catch (error) {
       console.error("handle stop share error", error);
     }

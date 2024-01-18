@@ -1,27 +1,26 @@
+import useVideoSource from "@/hooks/conference/useVideoSource";
 import { Player } from "@/types/metaverse";
 import ShareMediaItem from "../ShareMediaItem";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
 import { StMediaItemContainer } from "../styles/videoConference.styles";
-import { Consumer, Producer } from "../types/ScreenShare.types";
+import { Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
 import PlayerProducerContainer from "./PlayerProducerContainer";
 
 interface Props {
-  producers: Producer[];
-  consumers: Consumer[];
   playerList: Player[];
   currentPlayerId: string;
   handleShareStopProducer: (producerId: string) => void;
 }
 
 export default function ShareMediaItemContainer({
-  producers,
-  consumers,
   playerList,
   currentPlayerId,
   handleShareStopProducer,
 }: Props) {
+  const { producers } = useVideoSource();
+
   const isEmptyProducers = isArrayEmpty(producers);
 
   const findPlayer = (playerId: string) =>
@@ -61,7 +60,6 @@ export default function ShareMediaItemContainer({
           <OtherPlayerShareMediaItem
             player={player}
             currentPlayerId={currentPlayerId}
-            consumers={consumers}
             key={player.playerId}
           />
         ))}

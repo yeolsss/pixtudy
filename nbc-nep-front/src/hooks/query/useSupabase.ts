@@ -12,6 +12,7 @@ import {
   getLastDmMessageList,
   getSpaceUsers,
   getUserSpaces,
+  readDmMessage,
   sendMessage,
   sendMessageArgs,
 } from "@/api/supabase/dm";
@@ -19,7 +20,7 @@ import { getSpaceData, joinSpaceHandler } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/types/supabase";
 import { Space_members } from "@/types/supabase.tables.type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "../useReduxTK";
 
 /* Auth */
@@ -180,4 +181,16 @@ export function useGetLastDMList(spaceId: string, userId: string) {
     Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"],
     Error
   >(queryOptions);
+}
+
+export function useReadDMMessage() {
+  const queryClient = useQueryClient();
+  const { mutate, isError, isPending } = useMutation({
+    mutationFn: readDmMessage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lastDMList"] });
+    },
+  });
+
+  return { mutate, isError, isPending };
 }
