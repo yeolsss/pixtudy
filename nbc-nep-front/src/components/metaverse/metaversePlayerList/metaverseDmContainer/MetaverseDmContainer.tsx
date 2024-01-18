@@ -29,7 +29,7 @@ export default function MetaverseDmContainer() {
   // 상대방 유저와 활성화된 dm 채널 아이디
   // 채널이 이미 있을 때: string/ 없을 때: null
   const currentDmChannel =
-    dmRoomId !== ""
+    dmRoomId === ""
       ? useGetDmChannel({
           receiverId: otherUserId,
           spaceId,
@@ -64,6 +64,9 @@ export default function MetaverseDmContainer() {
   // 채팅창에 들어오면 읽은것으로 간주.
   useEffect(() => {
     mutate({ roomId: dmRoomId, receiverId: currentUser.id });
+    return () => {
+      mutate({ roomId: dmRoomId, receiverId: currentUser.id });
+    };
   }, []);
 
   // 구독중인 채널에서 메시지를 인지하였을 떄 이벤트

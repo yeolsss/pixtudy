@@ -1,23 +1,29 @@
-import { PropsWithChildren, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
-import { currentLayoutIndex, getGridStyle } from "./lib/dnd";
+import {
+  currentLayoutIndex,
+  formatGridTemplateVideos,
+  getGridStyle,
+} from "./lib/dnd";
 import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
 import ShareScreenDragItem from "./ShareScreenDragItem";
+import { useAppSelector } from "@/hooks/useReduxTK";
+import ShareMediaItem from "./ShareMediaItem";
+import useLayout from "@/hooks/conference/useLayout";
 
 const EDGE_AREA_RATE = 220;
 
-interface Props {
-  children: JSX.Element[];
-  handleToggleVideosLayout: () => void;
-}
-export default function ShareScreenContainer({
-  children,
-  handleToggleVideosLayout,
-}: PropsWithChildren<Props>) {
-  // 비디오 상태관리
-  const [videos, setVideos] = useState<(JSX.Element | null)[]>(children);
-  const [selectVideos, setSelectVideos] = useState<(JSX.Element | null)[]>([]);
+export default function ShareScreenContainer() {
+  const {
+    videos,
+    countSelectVideos,
+    handleInactive,
+    videosChange,
+    handleCloseLayout,
+  } = useLayout();
+
+  const layoutVideoInfo = useAppSelector((state) => state.layoutSlice);
 
   // 가이드 상태
   const [currentGuide, setCurrentGuide] = useState<GuideStatusType | null>(
@@ -33,22 +39,6 @@ export default function ShareScreenContainer({
   // 레이아웃 컨테이너
   const dropParentRef = useRef<HTMLDivElement | null>(null);
   const hoverTimer = useRef<NodeJS.Timeout | null>(null);
-
-  // active 상태인 아이템을 클릭 시 inactive 상태로
-  const handleInactive = (id: string) => {
-    setVideos((prev) => [
-      ...prev,
-      children.findLast((child) => child.key === id)!,
-    ]);
-    setSelectVideos((prev) =>
-      prev.map((video) => {
-        if (video?.key === id) {
-          return null;
-        }
-        return video;
-      })
-    );
-  };
 
   const [, drop] = useDrop({
     accept: "VIDEO",
@@ -112,59 +102,51 @@ export default function ShareScreenContainer({
       const changeGridStyle = getGridStyle(currentGuide!);
       const activeIndex = currentLayoutIndex(currentGuide!);
 
-      setCurrentGrid((prevGrid) => {
-        if (prevGrid !== changeGridStyle) {
-          setSelectVideos((prevSelect) => {
-            const prevSelectVideos = prevSelect.filter((select) => !!select);
-            setVideos((prevVideos) => [...prevVideos, ...prevSelectVideos]);
-            return [];
-          });
-          setVideos((prev) => prev.filter((video) => video?.key !== item.id));
-        }
-        return changeGridStyle;
-      });
+      // 그리드 설정 시 기존 그리드 형식과 비교하여 다를 경우 video state 초기화
 
-      setVideos((prevVideos) =>
-        prevVideos.filter((video) => video?.key !== item.id)
-      );
+      if (currentGrid !== changeGridStyle) {
+        const newVideos = videos.map((video) => {
+          return video.consumer.id === item.id
+            ? { ...video, isActive: activeIndex }
+            : { ...video, isActive: 0 };
+        });
+        videosChange(newVideos);
 
-      setSelectVideos((prevVideos) => {
-        const newVideos = [...prevVideos];
-        const prevIndexValue = newVideos[activeIndex!];
-        if (prevIndexValue) {
-          setVideos((prev) => {
-            return [...prev, prevIndexValue];
-          });
-        }
-        while (newVideos.length <= activeIndex!) {
-          newVideos.push(null); // 빈 값을 채워넣음
-        }
-
-        newVideos[activeIndex!] = children.find(
-          (child) => child.key === item.id
-        )!;
-        return newVideos;
-      });
+        // 그리드 변경
+        setCurrentGrid(changeGridStyle);
+      } else {
+        const newVideos = videos.map((video) => {
+          if (video.isActive === activeIndex) {
+            return { ...video, isActive: 0 };
+          } else {
+            return video.consumer.id === item.id
+              ? { ...video, isActive: activeIndex }
+              : video;
+          }
+        });
+        videosChange(newVideos);
+      }
     },
   });
 
-  const countSelectVideos = selectVideos.reduce((acc, val) => {
-    if (val) return acc + 1;
-    else return acc;
-  }, 0);
+  const inActiveVideos = videos
+    .filter((video) => !video.isActive)
+    .map((video) => video.consumer);
+
+  const activeVideos = formatGridTemplateVideos(videos);
 
   return (
     <StVideosLayoutContainer>
-      <button onClick={handleToggleVideosLayout}>닫기</button>
-      <StPreviewContainer $isPreviewVideo={!!videos.length}>
-        {videos.map((video) => {
+      <button onClick={handleCloseLayout}>닫기</button>
+      <StPreviewContainer $isPreviewVideo={!!inActiveVideos.length}>
+        {inActiveVideos?.map((video) => {
           return (
-            <ShareScreenDragItem
-              key={video?.key}
-              id={video?.key!}
-              active={false}
-            >
-              {video}
+            <ShareScreenDragItem key={video.id} id={video.id} active={false}>
+              <ShareMediaItem
+                key={video.id}
+                nickname={layoutVideoInfo.layoutPlayerNickName}
+                videoSource={video}
+              />
             </ShareScreenDragItem>
           );
         })}
@@ -176,24 +158,34 @@ export default function ShareScreenContainer({
           drop(element);
         }}
         $currentGridLayout={currentGrid!}
-        $isPreviewVideo={!!videos.length}
+        $isPreviewVideo={!!inActiveVideos.length}
       >
         {!countSelectVideos && (
           <StNoActiveLayoutDiv>
             <span>원하는 레이아웃으로 비디오를 드래그하세요</span>
+            <span>
+              레이아웃 내에서 [ctrl] + 휠 / 드래그 를 통해 줌/화면 이동을
+              사용해보세요
+            </span>
           </StNoActiveLayoutDiv>
         )}
 
-        {selectVideos?.map((video, index) => {
+        {activeVideos?.map((video, index) => {
           if (!video) return <div key={index} />;
           return (
             <ShareScreenDragItem
-              key={video.key}
-              id={video.key!}
+              key={video.id}
+              id={video.id}
               active={true}
               handleInactive={handleInactive}
             >
-              {video}
+              {
+                <ShareMediaItem
+                  key={video.id}
+                  nickname={layoutVideoInfo.layoutPlayerNickName}
+                  videoSource={video}
+                />
+              }
             </ShareScreenDragItem>
           );
         })}
@@ -211,7 +203,7 @@ const StVideosLayoutContainer = styled.div`
   justify-content: flex-end;
   position: fixed;
   top: 0;
-  left: 100px;
+  left: 68px;
   right: 230px;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
@@ -230,6 +222,12 @@ const StNoActiveLayoutDiv = styled.div`
   transform: translate(-50%, -50%);
   font-size: 2rem;
   font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & span + span {
+    margin-top: 3rem;
+  }
 `;
 const StPreviewContainer = styled.div<{ $isPreviewVideo: boolean }>`
   display: flex;

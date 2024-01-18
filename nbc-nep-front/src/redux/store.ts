@@ -7,9 +7,19 @@ import conferenceSlice from "./modules/conferenceSlice";
 import globalNavBar from "./modules/globalNavBarSlice";
 import modalSlice from "./modules/modalSlice";
 
+import layoutSlice from "./modules/layoutSlice";
+
 export const makeStore = () => {
   return configureStore({
-    reducer: { modalSlice, authSlice, globalNavBar, chatType, conferenceSlice, dm },
+    reducer: {
+      modalSlice,
+      authSlice,
+      globalNavBar,
+      chatType,
+      layoutSlice,
+      conferenceSlice,
+      dm,
+    },
   });
 };
 
