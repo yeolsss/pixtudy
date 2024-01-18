@@ -28,8 +28,8 @@ export default function useVideoSource() {
     dispatch(addConsumerRedux(consumer));
   }
 
-  function removeConsumer(consumerId: string) {
-    dispatch(removeConsumerRedux(consumerId));
+  function removeConsumer(streamId: string) {
+    dispatch(removeConsumerRedux(streamId));
   }
 
   return {
