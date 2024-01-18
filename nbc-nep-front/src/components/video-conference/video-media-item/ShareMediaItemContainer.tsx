@@ -1,7 +1,9 @@
 import useVideoSource from "@/hooks/conference/useVideoSource";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { Player } from "@/types/metaverse";
 import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
+import ShareScreenContainer from "../ShareScreenContainer";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
 import { Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
@@ -19,6 +21,8 @@ export default function ShareMediaItemContainer({
   currentPlayerId,
   handleShareStopProducer,
 }: Props) {
+  const layoutInfo = useAppSelector((state) => state.layoutSlice);
+
   const { producers } = useVideoSource();
   const isEmptyProducers = isArrayEmpty(producers);
 
@@ -62,6 +66,7 @@ export default function ShareMediaItemContainer({
           key={player.playerId}
         />
       ))}
+      {layoutInfo.isOpen && <ShareScreenContainer />}
     </StContainer>
   );
 }

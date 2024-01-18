@@ -1,8 +1,9 @@
 import useVideoSource from "@/hooks/conference/useVideoSource";
+import { useAppDispatch } from "@/hooks/useReduxTK";
+import { layoutOpen } from "@/redux/modules/layoutSlice";
 import { Player } from "@/types/metaverse";
-import { useState } from "react";
+import { useRef } from "react";
 import ShareMediaItem from "../ShareMediaItem";
-import ShareScreenContainer from "../ShareScreenContainer";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
 import {
   SPACING,
@@ -20,8 +21,10 @@ export default function OtherPlayerShareMediaItem({
   player,
   currentPlayerId,
 }: Props) {
+  const dispatch = useAppDispatch();
+  const videosContainerRef = useRef<HTMLDivElement | null>(null);
+
   const { consumers } = useVideoSource();
-  const [isOpenLayout, setIsOpenLayout] = useState<boolean>(false);
 
   if (currentPlayerId === player.playerId) return null;
 
@@ -35,7 +38,12 @@ export default function OtherPlayerShareMediaItem({
   const isEmptyScreenConsumers = isArrayEmpty(screenConsumers);
 
   const handleToggleVideosLayout = () => {
-    setIsOpenLayout((prev) => !prev);
+    dispatch(
+      layoutOpen({
+        playerId: player.playerId,
+        playerNickName: player.nickname,
+      })
+    );
   };
 
   return (
@@ -55,7 +63,10 @@ export default function OtherPlayerShareMediaItem({
             />
           ))}
           {!isEmptyScreenConsumers && (
-            <StVideoWrapper onClick={handleToggleVideosLayout}>
+            <StVideoWrapper
+              ref={videosContainerRef}
+              onClick={handleToggleVideosLayout}
+            >
               {screenConsumers.map((consumer, index) => (
                 <StStackItem
                   key={consumer.id}
@@ -72,19 +83,6 @@ export default function OtherPlayerShareMediaItem({
             </StVideoWrapper>
           )}
         </>
-      )}
-      {isOpenLayout && (
-        <ShareScreenContainer
-          handleToggleVideosLayout={handleToggleVideosLayout}
-        >
-          {screenConsumers.map((consumer, index) => (
-            <ShareMediaItem
-              key={consumer.id}
-              nickname={player.nickname}
-              videoSource={consumer}
-            />
-          ))}
-        </ShareScreenContainer>
       )}
     </>
   );
