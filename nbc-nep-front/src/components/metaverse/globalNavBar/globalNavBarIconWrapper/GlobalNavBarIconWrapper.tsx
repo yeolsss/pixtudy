@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import IconButtonByPlayerList from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButtonByPlayerList";
+import { isCloseDm } from "@/redux/modules/dmSlice";
 
 export default function GlobalNavBarIconWrapper() {
   const dispatch = useAppDispatch();
@@ -64,6 +65,7 @@ export default function GlobalNavBarIconWrapper() {
           isOpenChat: false,
           chatType: "GLOBAL" as ChatType,
         };
+        dispatch(isCloseDm());
         dispatch(setIsOpenChat(updateIsOpenChat));
         updateIsChatSection = {
           chatSection: false,
