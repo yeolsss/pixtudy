@@ -84,7 +84,6 @@ const StNavContainer = styled.header`
 
   span {
     display: block;
-    padding: 0 ${(props) => props.theme.spacing[24]};
     color: ${(props) => props.theme.color.text.interactive.primary};
     font-family: var(--point-font);
     font-size: ${(props) => props.theme.heading.desktop.lg.fontSize};

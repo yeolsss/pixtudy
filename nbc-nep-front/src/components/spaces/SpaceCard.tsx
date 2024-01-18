@@ -41,12 +41,12 @@ const StCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 300px;
   border: 1px solid ${(props) => props.theme.color.border.secondary};
   border-radius: ${(props) => props.theme.border.radius[12]};
 `;
 
 const StContentsContainer = styled.div`
+  width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;

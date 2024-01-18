@@ -6,12 +6,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import InvitationCodeForm from "../../../spaces/InvitationCodeForm";
+import { Procedure } from "../createSpaceModal/CreateSpaceModalMainContainer";
 
 export default function JoinSpaceModalMainContainer() {
   const { id: userId, display_name: displayName } = useAppSelector(
     (state) => state.authSlice.user
   );
   const [spaceId, setSpaceId] = useState<string>("");
+  const [procedure, setProcedure] = useState<Procedure>("1");
   const [isValidSpace, setIsValidSpace] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -33,8 +35,9 @@ export default function JoinSpaceModalMainContainer() {
         handler={() => dispatch(toggleJoinSpaceModal())}
       />
       <StModalContents>
-        {!isValidSpace ? (
+        {procedure === "1" ? (
           <InvitationCodeForm
+            setProcedure={setProcedure}
             spaceId={spaceId}
             handleSubmit={handleSubmit}
             setIsValidSpace={setIsValidSpace}
@@ -45,11 +48,13 @@ export default function JoinSpaceModalMainContainer() {
           />
         ) : (
           <ProfileForm
+            setProcedure={setProcedure}
             spaceId={spaceId}
             defaultDisplayName={displayName!}
             handleSubmit={handleSubmit}
             register={register}
             errors={errors}
+            mode="joinSpace"
           />
         )}
       </StModalContents>
@@ -78,4 +83,11 @@ export const StModalContents = styled.div`
   padding: ${(props) => props.theme.spacing[24]};
   padding-top: 0;
   height: 100%;
+
+  input[type="radio"] {
+    display: none;
+  }
+  input[type="radio"]:checked + span {
+    background: #ff0000;
+  }
 `;

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FieldValues, UseFormRegister, useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -6,6 +7,7 @@ interface Props {
 }
 
 function AvatarInput({ register }: Props) {
+  const [selectedAvatar, setSelectedAvatar] = useState("");
   const {
     formState: { errors },
   } = useForm();
@@ -22,17 +24,21 @@ function AvatarInput({ register }: Props) {
   return (
     <StInputContainer>
       {options.map((option, index) => (
-        <div key={option.label}>
+        <StInputWrapper
+          key={option.label}
+          $isSelected={selectedAvatar === option.value}
+        >
           <input
             type="radio"
             id={option.value}
             value={option.value}
             {...register("avatar", { required: "This field is required" })}
+            onChange={() => setSelectedAvatar(option.value)}
           />
           <label htmlFor={option.value} key={option.label}>
             <StSpan resource={option.src}></StSpan>
           </label>
-        </div>
+        </StInputWrapper>
       ))}
       {errors.avatar && <span>{errors.avatar.message as string}</span>}
     </StInputContainer>
@@ -45,20 +51,30 @@ const StInputContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  div {
-    width: 64px;
-    height: 64px;
-    background-color: #00000016;
-  }
+`;
+
+const StInputWrapper = styled.div<{ $isSelected: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  background-color: #00000016;
+  border-radius: ${(props) => props.theme.border.radius[8]};
+  //prettier-ignore
+  border: ${(props) =>
+    props.$isSelected ? `1px solid var(--color-blue-400)` : "none"};
 `;
 
 const StSpan = styled.span`
   background-image: url(${(props) => props.resource});
+  background-position: center;
   display: inline-block;
   width: 32px; /* 스프라이트의 너비 */
-  height: 64px; /* 스프라이트의 높이 */
+  height: 48px; /* 스프라이트의 높이 */
   background-repeat: no-repeat;
-  background-position: 0px 0px; /* 첫 번째 스프라이트의 위치 */
+  background-position: 0px -14px; /* 첫 번째 스프라이트의 위치 */
   margin-right: 10px; /* 라벨 간 간격 조정 */
   cursor: pointer;
+  margin: 0;
 `;

@@ -420,9 +420,12 @@ const GlobalStyle = styled.createGlobalStyle`
     min-width: 100%;
   }
 
-  header,
-  section {
+  header {
     max-width: 1200px;
+    margin: 0 auto;
+  }
+  main > section {
+    max-width: 1280px;
     margin: 0 auto;
   }
 

@@ -1,8 +1,16 @@
-import { useCreateSpace } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
-import { TablesInsert } from "@/types/supabase";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { Dispatch, SetStateAction } from "react";
+import {
+  FieldValues,
+  FormState,
+  SubmitHandler,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from "react-hook-form";
 import styled from "styled-components";
+import {
+  Procedure,
+  SpaceInfo,
+} from "../modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
 
 /**
  * TODO:
@@ -14,27 +22,29 @@ import styled from "styled-components";
  * 3. 닉네임 과 아바타를 설정한다.
  * 3-1. 아바타를 설정하지 않으면 이전에 사용했던 아바타를 보여준다.
  */
-export default function CreateSpaceForm() {
-  const { id: userId, display_name } = useAppSelector(
-    (state) => state.authSlice.user
-  );
-  const { createSpace, isError, isSuccess } = useCreateSpace();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+interface Props {
+  setProcedure: Dispatch<SetStateAction<Procedure>>;
+  setSpaceInfo: Dispatch<SetStateAction<SpaceInfo>>;
+  handleSubmit: UseFormHandleSubmit<FieldValues>;
+  register: UseFormRegister<FieldValues>;
+  errors: FormState<FieldValues>["errors"];
+}
 
+export default function CreateSpaceForm({
+  setProcedure,
+  setSpaceInfo,
+  register,
+  handleSubmit,
+  errors,
+}: Props) {
   const handleCreateSpaceSubmit: SubmitHandler<FieldValues> = (data) => {
-    const spaceInfo: TablesInsert<"spaces"> & { display_name: string } = {
-      owner: userId,
+    const spaceInfo: SpaceInfo = {
       title: data.spaceName,
       description: data.spaceDescription,
-      display_name: display_name!,
     };
-    createSpace(spaceInfo);
+    setSpaceInfo((prev) => ({ ...spaceInfo }));
+    setProcedure("2");
   };
 
   const fieldValues = [
@@ -72,18 +82,28 @@ export default function CreateSpaceForm() {
     <StCreateSpaceForm onSubmit={handleSubmit(handleCreateSpaceSubmit)}>
       {fieldValues.map((fieldValue) =>
         fieldValue.type === "text" ? (
-          <input
-            key={fieldValue.name}
-            type={fieldValue.type}
-            placeholder={fieldValue.placeholder}
-            {...fieldValue.register}
-          />
+          <>
+            <input
+              key={fieldValue.name}
+              type={fieldValue.type}
+              placeholder={fieldValue.placeholder}
+              {...fieldValue.register}
+            />
+            {errors.spaceName && (
+              <span>{errors.spaceName?.message as string}</span>
+            )}
+          </>
         ) : (
-          <textarea
-            key={fieldValue.name}
-            placeholder={fieldValue.placeholder}
-            {...fieldValue.register}
-          />
+          <>
+            <textarea
+              key={fieldValue.name}
+              placeholder={fieldValue.placeholder}
+              {...fieldValue.register}
+            />
+            {errors.spaceDescription && (
+              <span>{errors.spaceDescription?.message as string}</span>
+            )}
+          </>
         )
       )}
       <div>

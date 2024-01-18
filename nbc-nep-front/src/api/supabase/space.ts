@@ -2,7 +2,10 @@ import { supabase } from "@/libs/supabase";
 import { Tables, TablesInsert } from "@/types/supabase";
 
 export const createSpaceHandler = async (
-  spaceInfo: TablesInsert<"spaces"> & { display_name: string }
+  spaceInfo: TablesInsert<"spaces"> & {
+    space_display_name: string;
+    space_avatar: string;
+  }
 ): Promise<Tables<"spaces">> => {
   const space: TablesInsert<"spaces"> = {
     description: spaceInfo.description,
@@ -20,8 +23,8 @@ export const createSpaceHandler = async (
     const ownerInfo: TablesInsert<"space_members"> = {
       space_id: spaceData.id,
       user_id: spaceData.owner,
-      space_avatar: "NPC3",
-      space_display_name: spaceInfo.display_name,
+      space_avatar: spaceInfo.space_avatar,
+      space_display_name: spaceInfo.space_display_name,
     };
     const { data, error } = await supabase
       .from("space_members")
