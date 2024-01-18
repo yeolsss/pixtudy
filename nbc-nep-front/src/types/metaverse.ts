@@ -35,6 +35,7 @@ export enum PlayerState {
 }
 
 export type DMListCard = {
+  room_id: string;
   message_id: string;
   created_at: string;
   message: string;

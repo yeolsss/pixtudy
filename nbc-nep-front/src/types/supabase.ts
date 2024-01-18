@@ -244,6 +244,7 @@ export interface Database {
           input_user_id: string;
         };
         Returns: {
+          room_id: string;
           message_id: string;
           created_at: string;
           message: string;
