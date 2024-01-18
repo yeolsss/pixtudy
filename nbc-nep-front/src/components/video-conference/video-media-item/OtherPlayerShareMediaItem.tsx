@@ -4,7 +4,11 @@ import { useState } from "react";
 import ShareMediaItem from "../ShareMediaItem";
 import ShareScreenContainer from "../ShareScreenContainer";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
-import { StShareScreenStackContainer } from "../styles/videoConference.styles";
+import {
+  SPACING,
+  StStackItem,
+  StVideoWrapper,
+} from "../styles/videoConference.styles";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 
 interface Props {
@@ -28,6 +32,7 @@ export default function OtherPlayerShareMediaItem({
   const isEmptyConsumers = isArrayEmpty(filteredConsumers);
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
+  const isEmptyScreenConsumers = isArrayEmpty(screenConsumers);
 
   const handleToggleVideosLayout = () => {
     setIsOpenLayout((prev) => !prev);
@@ -49,16 +54,23 @@ export default function OtherPlayerShareMediaItem({
               videoSource={consumer}
             />
           ))}
-          <StShareScreenStackContainer onClick={handleToggleVideosLayout}>
-            {screenConsumers.map((consumer, index) => (
-              <ShareMediaItem
-                spread={-index * 10}
-                key={consumer.id}
-                nickname={player.nickname}
-                videoSource={consumer}
-              />
-            ))}
-          </StShareScreenStackContainer>
+          {!isEmptyScreenConsumers && (
+            <StVideoWrapper onClick={handleToggleVideosLayout}>
+              {screenConsumers.map((consumer, index) => (
+                <StStackItem
+                  key={consumer.id}
+                  $isSpread={false}
+                  $x={index * SPACING}
+                  $y={index * SPACING}
+                >
+                  <ShareMediaItem
+                    nickname={player.nickname}
+                    videoSource={consumer}
+                  />
+                </StStackItem>
+              ))}
+            </StVideoWrapper>
+          )}
         </>
       )}
       {isOpenLayout && (

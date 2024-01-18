@@ -9,15 +9,10 @@ import { VideoSource } from "./types/ScreenShare.types";
 interface Props {
   videoSource: VideoSource;
   nickname: string;
-  spread?: number;
 }
 
-export default function ShareMediaItem({
-  videoSource,
-  nickname,
-  spread,
-}: Props) {
-  const { track, appData } = videoSource;
+export default function ShareMediaItem({ videoSource, nickname }: Props) {
+  const { track } = videoSource;
 
   if (!track) return null;
 
@@ -25,7 +20,7 @@ export default function ShareMediaItem({
   const type = track.kind;
 
   return (
-    <StShareMediaItem $spread={spread}>
+    <StShareMediaItem>
       <StShareMediaNickname>{nickname}</StShareMediaNickname>
       {type === "video" ? (
         <StVideo

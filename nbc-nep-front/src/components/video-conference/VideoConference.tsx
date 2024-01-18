@@ -305,17 +305,13 @@ export default function VideoConference() {
           stopShareSvg={MicOff}
         />
       </StDockContainer>
-      <StMediaItemWrapper>
-        {playerList.length !== 0 && (
-          <ShareMediaItemContainer
-            handleShareStopProducer={handleShareStopProducer}
-            consumers={consumers}
-            producers={producers}
-            playerList={playerList}
-            currentPlayerId={currentPlayerId}
-          />
-        )}
-      </StMediaItemWrapper>
+      {playerList.length !== 0 && (
+        <ShareMediaItemContainer
+          handleShareStopProducer={handleShareStopProducer}
+          playerList={playerList}
+          currentPlayerId={currentPlayerId}
+        />
+      )}
     </>
   );
 }
@@ -363,13 +359,4 @@ const StDockContainer = styled.div`
 
   gap: 15px;
   width: 465px;
-`;
-const StMediaItemWrapper = styled.div`
-  position: absolute;
-
-  right: 20px;
-  top: 0px;
-
-  display: flex;
-  flex-direction: column;
 `;
