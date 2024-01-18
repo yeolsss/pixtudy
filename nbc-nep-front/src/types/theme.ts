@@ -10,6 +10,7 @@ export interface Root {
   tablet: Tablet;
   mobile: Mobile2;
   docs: Docs;
+  video: Video;
 }
 
 export interface Color {
@@ -749,4 +750,9 @@ export interface Color5 {
   g: number;
   b: number;
   a: number;
+}
+
+export interface Video {
+  width: string;
+  height: string;
 }

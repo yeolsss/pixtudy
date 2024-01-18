@@ -623,5 +623,9 @@
         "count": 4
       }
     ]
+  },
+  "video": {
+    "width": "var(--video-width)",
+    "height": "var(--video-height)"
   }
 }

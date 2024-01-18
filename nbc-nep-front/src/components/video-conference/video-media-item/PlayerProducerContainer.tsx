@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
-import { StMediaItemProducerContainer } from "../styles/videoConference.styles";
+import {
+  GAP,
+  SPACING,
+  StStackItem,
+  StVideoWrapper,
+  VIDEO_SIZE,
+} from "../styles/videoConference.styles";
 import { Producer } from "../types/ScreenShare.types";
 
 interface Props {
@@ -15,7 +21,7 @@ export default function PlayerProducerContainer({
   nickname,
   handleShareStopProducer,
 }: Props) {
-  const [isToggle, setToggle] = useState<boolean>(false);
+  const [isSpreadMode, setSpreadMode] = useState<boolean>(false);
   const toggleBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,7 +33,7 @@ export default function PlayerProducerContainer({
       )
         return;
 
-      if (isToggle) setToggle(false);
+      if (isSpreadMode) setSpreadMode(false);
       e.stopPropagation();
     };
 
@@ -36,48 +42,42 @@ export default function PlayerProducerContainer({
     return () => {
       window.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isToggle]);
+  }, [isSpreadMode]);
 
   const handleToggle = () => {
-    setToggle(true);
+    setSpreadMode(true);
   };
 
   return (
-    <StMediaItemProducerContainer
-      ref={toggleBoxRef}
-      onClick={handleToggle}
-      isToggle={isToggle}
-    >
+    <StVideoWrapper ref={toggleBoxRef} onClick={handleToggle}>
       {producers.map((producer, index) => (
-        <StProducerMediaItemWrapper key={producer.id}>
-          <ShareMediaItem
-            nickname={nickname}
-            videoSource={producer}
-            spread={!isToggle ? index * -10 : 0}
-          />
-          {isToggle && (
+        <StStackItem
+          key={producer.id}
+          $isSpread={isSpreadMode}
+          $y={isSpreadMode ? 0 : -index * SPACING}
+          $x={isSpreadMode ? -index * (VIDEO_SIZE + GAP) : -index * SPACING}
+        >
+          <ShareMediaItem nickname={nickname} videoSource={producer} />
+          {isSpreadMode && (
             <StRemoveProducerButton
               onClick={() => handleShareStopProducer(producer.id)}
             >
               x
             </StRemoveProducerButton>
           )}
-        </StProducerMediaItemWrapper>
+        </StStackItem>
       ))}
-    </StMediaItemProducerContainer>
+    </StVideoWrapper>
   );
 }
 
-export const StProducerMediaItemWrapper = styled.div`
-  position: relative;
-`;
-
-export const StRemoveProducerButton = styled.button`
+const StRemoveProducerButton = styled.button`
   background-color: ${(props) => props.theme.color.bg["danger-bold"]};
   width: 20px;
   height: 20px;
 
   position: absolute;
-  right: -10px;
-  top: -10px;
+
+  right: ${(props) => `calc(-1 * ${props.theme.spacing[4]})`};
+  top: ${(props) => `calc(-1 * ${props.theme.spacing[4]})`};
 `;
