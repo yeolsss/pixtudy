@@ -7,6 +7,8 @@ import { Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
 import PlayerProducerContainer from "./PlayerProducerContainer";
+import ShareScreenContainer from "../ShareScreenContainer";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 
 interface Props {
   playerList: Player[];
@@ -19,6 +21,8 @@ export default function ShareMediaItemContainer({
   currentPlayerId,
   handleShareStopProducer,
 }: Props) {
+  const layoutInfo = useAppSelector((state) => state.layoutSlice);
+
   const { producers } = useVideoSource();
 
   const isEmptyProducers = isArrayEmpty(producers);
@@ -31,39 +35,43 @@ export default function ShareMediaItemContainer({
   const [camAndAudioProducers, screenProducers] = splitVideoSource(producers);
 
   return (
-    <StMediaItemContainer>
+    <>
       <StMediaItemContainer>
-        {isEmptyProducers ? (
-          <DefaultShareMediaItem
-            nickname={currentPlayer?.nickname}
-            avatar={currentPlayer?.character}
-          />
-        ) : (
-          <>
-            <PlayerProducerContainer
-              handleShareStopProducer={handleShareStopProducer}
-              nickname={currentPlayer?.nickname || ""}
-              producers={screenProducers as Producer[]}
+        <StMediaItemContainer>
+          {isEmptyProducers ? (
+            <DefaultShareMediaItem
+              nickname={currentPlayer?.nickname}
+              avatar={currentPlayer?.character}
             />
-            {camAndAudioProducers.map((producer) => (
-              <ShareMediaItem
+          ) : (
+            <>
+              <PlayerProducerContainer
+                handleShareStopProducer={handleShareStopProducer}
                 nickname={currentPlayer?.nickname || ""}
-                key={producer.id}
-                videoSource={producer}
+                producers={screenProducers as Producer[]}
               />
-            ))}
-          </>
-        )}
+              {camAndAudioProducers.map((producer) => (
+                <ShareMediaItem
+                  nickname={currentPlayer?.nickname || ""}
+                  key={producer.id}
+                  videoSource={producer}
+                />
+              ))}
+            </>
+          )}
+        </StMediaItemContainer>
+        <StMediaItemContainer>
+          {playerList.map((player) => (
+            <OtherPlayerShareMediaItem
+              player={player}
+              currentPlayerId={currentPlayerId}
+              key={player.playerId}
+            />
+          ))}
+        </StMediaItemContainer>
       </StMediaItemContainer>
-      <StMediaItemContainer>
-        {playerList.map((player) => (
-          <OtherPlayerShareMediaItem
-            player={player}
-            currentPlayerId={currentPlayerId}
-            key={player.playerId}
-          />
-        ))}
-      </StMediaItemContainer>
-    </StMediaItemContainer>
+
+      {layoutInfo.isOpen && <ShareScreenContainer />}
+    </>
   );
 }

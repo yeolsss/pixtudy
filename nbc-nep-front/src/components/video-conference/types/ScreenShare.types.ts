@@ -84,3 +84,5 @@ export type UserVideoSourceMap = {
 };
 
 export type SplitVideoSource = [VideoSource[], VideoSource[]];
+
+export type LayoutConsumersType = { consumer: VideoSource; isActive: number };
