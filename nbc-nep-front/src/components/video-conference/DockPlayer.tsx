@@ -23,9 +23,12 @@ export default function DockPlayer({ player }: Props) {
       </BadgeWrapper>
       <StDockPlayerInfoWrapper>
         <StDockPlayerNickname>{player?.nickname}</StDockPlayerNickname>
-        <StDockPlayerState>
-          {getPlayerStateToText(player?.state)}
-        </StDockPlayerState>
+        <StPlayerNicknameContainer>
+          <StDockPlayerState>
+            {getPlayerStateToText(player?.state)}
+          </StDockPlayerState>
+          <StDockPlayerState>{player?.playerId}</StDockPlayerState>
+        </StPlayerNicknameContainer>
       </StDockPlayerInfoWrapper>
     </StDockPlayerWrapper>
   );
@@ -55,13 +58,9 @@ const StDockPlayerWrapper = styled.div`
 
   max-width: 200px;
 `;
-
-const StDockPlayerInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[4]};
-  margin-left: 40px;
-  padding-top: ${(props) => props.theme.spacing[4]};
+const StPlayerNicknameContainer = styled.div`
+  height: ${(props) => props.theme.unit[12]}px;
+  overflow: hidden;
 `;
 
 const StDockPlayerNickname = styled.p`
@@ -70,4 +69,22 @@ const StDockPlayerNickname = styled.p`
 
 const StDockPlayerState = styled.p`
   font-size: ${(props) => props.theme.body.sm.regular.fontSize};
+  transition: all 0.8s ease-in;
+`;
+
+const StDockPlayerInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing[4]};
+  margin-left: 40px;
+  padding-top: ${(props) => props.theme.spacing[4]};
+
+  &:hover {
+    background-color: ${(props) => props.theme.color.bg["info-bold"]};
+    background-blend-mode: ${StDockPlayerState} {
+      transform: translateY(
+        calc(${(props) => props.theme.spacing[12]} * -1)
+      ); // Adjust the value as needed
+    }
+  }
 `;

@@ -1,24 +1,31 @@
+import useVideoSource from "@/hooks/conference/useVideoSource";
+import { useAppDispatch } from "@/hooks/useReduxTK";
+import { layoutOpen } from "@/redux/modules/layoutSlice";
 import { Player } from "@/types/metaverse";
-import { useState } from "react";
+import { useRef } from "react";
 import ShareMediaItem from "../ShareMediaItem";
-import ShareScreenContainer from "../ShareScreenContainer";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
-import { StShareScreenStackContainer } from "../styles/videoConference.styles";
-import { Consumer } from "../types/ScreenShare.types";
+import {
+  SPACING,
+  StStackItem,
+  StVideoWrapper,
+} from "../styles/videoConference.styles";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 
 interface Props {
   currentPlayerId: string;
-  consumers: Consumer[];
   player: Player;
 }
 
 export default function OtherPlayerShareMediaItem({
-  consumers,
   player,
   currentPlayerId,
 }: Props) {
-  const [isOpenLayout, setIsOpenLayout] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const videosContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const { consumers } = useVideoSource();
+
   if (currentPlayerId === player.playerId) return null;
 
   const filteredConsumers = consumers.filter(
@@ -28,9 +35,15 @@ export default function OtherPlayerShareMediaItem({
   const isEmptyConsumers = isArrayEmpty(filteredConsumers);
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
+  const isEmptyScreenConsumers = isArrayEmpty(screenConsumers);
 
   const handleToggleVideosLayout = () => {
-    setIsOpenLayout((prev) => !prev);
+    dispatch(
+      layoutOpen({
+        playerId: player.playerId,
+        playerNickName: player.nickname,
+      })
+    );
   };
 
   return (
@@ -49,30 +62,27 @@ export default function OtherPlayerShareMediaItem({
               videoSource={consumer}
             />
           ))}
-          <StShareScreenStackContainer onClick={handleToggleVideosLayout}>
-            {screenConsumers.map((consumer, index) => (
-              <ShareMediaItem
-                spread={-index * 10}
-                key={consumer.id}
-                nickname={player.nickname}
-                videoSource={consumer}
-              />
-            ))}
-          </StShareScreenStackContainer>
+          {!isEmptyScreenConsumers && (
+            <StVideoWrapper
+              ref={videosContainerRef}
+              onClick={handleToggleVideosLayout}
+            >
+              {screenConsumers.map((consumer, index) => (
+                <StStackItem
+                  key={consumer.id}
+                  $isSpread={false}
+                  $x={index * SPACING}
+                  $y={index * SPACING}
+                >
+                  <ShareMediaItem
+                    nickname={player.nickname}
+                    videoSource={consumer}
+                  />
+                </StStackItem>
+              ))}
+            </StVideoWrapper>
+          )}
         </>
-      )}
-      {isOpenLayout && (
-        <ShareScreenContainer
-          handleToggleVideosLayout={handleToggleVideosLayout}
-        >
-          {screenConsumers.map((consumer, index) => (
-            <ShareMediaItem
-              key={consumer.id}
-              nickname={player.nickname}
-              videoSource={consumer}
-            />
-          ))}
-        </ShareScreenContainer>
       )}
     </>
   );

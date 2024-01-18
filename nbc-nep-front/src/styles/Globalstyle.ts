@@ -410,6 +410,9 @@ const GlobalStyle = styled.createGlobalStyle`
     --state-eating: #ffa047;
     --state-left-seat: #858585;
     --state-disturb: #ee3e3e;
+
+    --video-width: 175px;
+    --video-height: 130px;
   }
 
   Html {
