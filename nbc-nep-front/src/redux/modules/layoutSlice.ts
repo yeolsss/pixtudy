@@ -18,7 +18,10 @@ export const layoutSlice = createSlice({
   reducers: {
     layoutOpen: (
       state,
-      action: PayloadAction<{ playerId: string; playerNickName: string }>
+      action: PayloadAction<{
+        playerId: string;
+        playerNickName: string;
+      }>
     ) => {
       state.isOpen = true;
       state.layoutPlayerId = action.payload.playerId;

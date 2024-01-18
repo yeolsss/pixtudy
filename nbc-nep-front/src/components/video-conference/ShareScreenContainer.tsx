@@ -1,4 +1,4 @@
-import { PropsWithChildren, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
 import {
@@ -6,41 +6,25 @@ import {
   formatGridTemplateVideos,
   getGridStyle,
 } from "./lib/dnd";
-import {
-  GridStatusType,
-  GuideStatusType,
-  LayoutConsumersType,
-  VideoSource,
-} from "./types/ScreenShare.types";
+import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
 import ShareScreenDragItem from "./ShareScreenDragItem";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { layoutClose } from "@/redux/modules/layoutSlice";
-import useVideoSource from "@/hooks/conference/useVideoSource";
-import { splitVideoSource } from "./lib/util";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import ShareMediaItem from "./ShareMediaItem";
-import { useEffect } from "react";
+import useLayout from "@/hooks/conference/useLayout";
 
 const EDGE_AREA_RATE = 220;
 
-export default function ShareScreenContainer({}) {
-  // 비디오 상태관리
-  const dispatch = useAppDispatch();
+export default function ShareScreenContainer() {
+  const {
+    videos,
+    countSelectVideos,
+    handleInactive,
+    videosChange,
+    handleCloseLayout,
+  } = useLayout();
 
   const layoutVideoInfo = useAppSelector((state) => state.layoutSlice);
 
-  const { consumers } = useVideoSource();
-  const filteredConsumers = consumers.filter(
-    (consumer) => consumer.appData.playerId === layoutVideoInfo.layoutPlayerId
-  );
-
-  const [_, screenConsumers] = splitVideoSource(filteredConsumers);
-
-  // 유저의 화면공유 전체
-  const otherUserVideos = screenConsumers.map((consumer) => {
-    return { consumer, isActive: 0 };
-  });
-
-  const [videos, setVideos] = useState<LayoutConsumersType[]>(otherUserVideos);
   // 가이드 상태
   const [currentGuide, setCurrentGuide] = useState<GuideStatusType | null>(
     null
@@ -55,19 +39,6 @@ export default function ShareScreenContainer({}) {
   // 레이아웃 컨테이너
   const dropParentRef = useRef<HTMLDivElement | null>(null);
   const hoverTimer = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    setVideos(otherUserVideos);
-  }, [consumers, layoutVideoInfo]);
-
-  // active 상태인 아이템을 클릭 시 inactive 상태로
-  const handleInactive = (id: string) => {
-    setVideos((prev) =>
-      prev.map((video) =>
-        video.consumer.id === id ? { ...video, isActive: 0 } : video
-      )
-    );
-  };
 
   const [, drop] = useDrop({
     accept: "VIDEO",
@@ -134,39 +105,29 @@ export default function ShareScreenContainer({}) {
       // 그리드 설정 시 기존 그리드 형식과 비교하여 다를 경우 video state 초기화
 
       if (currentGrid !== changeGridStyle) {
-        setVideos((prev) => {
-          return prev.map((video) => {
-            return video.consumer.id === item.id
-              ? { ...video, isActive: activeIndex }
-              : { ...video, isActive: 0 };
-          }) as LayoutConsumersType[];
+        const newVideos = videos.map((video) => {
+          return video.consumer.id === item.id
+            ? { ...video, isActive: activeIndex }
+            : { ...video, isActive: 0 };
         });
+        videosChange(newVideos);
+
         // 그리드 변경
         setCurrentGrid(changeGridStyle);
       } else {
-        setVideos((prev) =>
-          prev.map((video) => {
-            if (video.isActive === activeIndex) {
-              return { ...video, isActive: 0 };
-            } else {
-              return video.consumer.id === item.id
-                ? { ...video, isActive: activeIndex }
-                : video;
-            }
-          })
-        );
+        const newVideos = videos.map((video) => {
+          if (video.isActive === activeIndex) {
+            return { ...video, isActive: 0 };
+          } else {
+            return video.consumer.id === item.id
+              ? { ...video, isActive: activeIndex }
+              : video;
+          }
+        });
+        videosChange(newVideos);
       }
     },
   });
-
-  const countSelectVideos = videos.reduce((acc, val) => {
-    if (!!val.isActive) return acc + 1;
-    else return acc;
-  }, 0);
-
-  const handleCloseLayout = () => {
-    dispatch(layoutClose());
-  };
 
   const inActiveVideos = videos
     .filter((video) => !video.isActive)
@@ -202,6 +163,10 @@ export default function ShareScreenContainer({}) {
         {!countSelectVideos && (
           <StNoActiveLayoutDiv>
             <span>원하는 레이아웃으로 비디오를 드래그하세요</span>
+            <span>
+              레이아웃 내에서 [ctrl] + 휠 / 드래그 를 통해 줌/화면 이동을
+              사용해보세요
+            </span>
           </StNoActiveLayoutDiv>
         )}
 
@@ -257,6 +222,12 @@ const StNoActiveLayoutDiv = styled.div`
   transform: translate(-50%, -50%);
   font-size: 2rem;
   font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & span + span {
+    margin-top: 3rem;
+  }
 `;
 const StPreviewContainer = styled.div<{ $isPreviewVideo: boolean }>`
   display: flex;

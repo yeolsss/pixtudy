@@ -27,15 +27,23 @@ export default function ShareScreenDragItem({
   return (
     <StShareScreenDragItemContainer>
       {!active && <StDrag ref={drag} />}
-      <StDragContainer
-        ref={preview}
-        $active={active}
-        $isDragging={isDragging}
-        onClick={() => {
-          handleInactive && handleInactive(id);
-        }}
-      >
-        <TransformWrapper panning={{ disabled: true }}>
+      <StDragContainer ref={preview} $active={active} $isDragging={isDragging}>
+        {active && (
+          <button
+            onClick={() => {
+              handleInactive && handleInactive(id);
+            }}
+          >
+            레이아웃 제거
+          </button>
+        )}
+        <TransformWrapper
+          wheel={{ activationKeys: ["Control"] }}
+          panning={{
+            activationKeys: ["Control"],
+            disabled: active ? false : true,
+          }}
+        >
           <TransformComponent>{children}</TransformComponent>
         </TransformWrapper>
       </StDragContainer>
@@ -71,5 +79,13 @@ const StDragContainer = styled.div<{ $active: boolean; $isDragging: boolean }>`
       height: ${(props) => props.$active && "100%"};
       object-fit: contain;
     }
+  }
+  & button {
+    position: absolute;
+    z-index: 20;
+    right: 1rem;
+    top: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
   }
 `;

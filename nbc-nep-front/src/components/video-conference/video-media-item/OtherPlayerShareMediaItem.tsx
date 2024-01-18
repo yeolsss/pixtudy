@@ -4,9 +4,8 @@ import ShareMediaItem from "../ShareMediaItem";
 import { isArrayEmpty, splitVideoSource } from "../lib/util";
 import { StShareScreenStackContainer } from "../styles/videoConference.styles";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
-import ShareScreenContainer from "../ShareScreenContainer";
-import { useState, useRef } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { useRef } from "react";
+import { useAppDispatch } from "@/hooks/useReduxTK";
 import { layoutOpen } from "@/redux/modules/layoutSlice";
 
 interface Props {
@@ -42,7 +41,10 @@ export default function OtherPlayerShareMediaItem({
 
   const handleToggleVideosLayout = () => {
     dispatch(
-      layoutOpen({ playerId: player.playerId, playerNickName: player.nickname })
+      layoutOpen({
+        playerId: player.playerId,
+        playerNickName: player.nickname,
+      })
     );
   };
 

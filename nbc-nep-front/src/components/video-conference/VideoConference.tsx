@@ -309,8 +309,8 @@ export default function VideoConference() {
         {playerList.length !== 0 && (
           <ShareMediaItemContainer
             handleShareStopProducer={handleShareStopProducer}
-            consumers={consumers}
-            producers={producers}
+            // consumers={consumers}
+            // producers={producers}
             playerList={playerList}
             currentPlayerId={currentPlayerId}
           />
