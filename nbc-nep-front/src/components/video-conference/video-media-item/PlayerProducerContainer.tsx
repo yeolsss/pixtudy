@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import useSpread from "@/hooks/conference/useSpread";
 import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
 import {
@@ -21,35 +21,10 @@ export default function PlayerProducerContainer({
   nickname,
   handleShareStopProducer,
 }: Props) {
-  const [isSpreadMode, setSpreadMode] = useState<boolean>(false);
-  const toggleBoxRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleOutsideClick = (e: Event) => {
-      if (
-        toggleBoxRef.current &&
-        e.target instanceof Node &&
-        toggleBoxRef.current.contains(e.target)
-      )
-        return;
-
-      if (isSpreadMode) setSpreadMode(false);
-      e.stopPropagation();
-    };
-
-    window.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      window.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [isSpreadMode]);
-
-  const handleToggle = () => {
-    setSpreadMode(true);
-  };
+  const { toggleBoxRef, handleToggleOnSpreadMode, isSpreadMode } = useSpread();
 
   return (
-    <StVideoWrapper ref={toggleBoxRef} onClick={handleToggle}>
+    <StVideoWrapper ref={toggleBoxRef} onClick={handleToggleOnSpreadMode}>
       {producers.map((producer, index) => (
         <StStackItem
           key={producer.id}
