@@ -11,6 +11,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
+import { Tables } from "@/types/supabase";
 import AvatarInput from "./AvatarInput";
 import { FORM_SPACE } from "./constatns/constants";
 import { Procedure, SpaceInfo, UserProfile } from "./types/space.types";
@@ -48,7 +49,9 @@ export default function ProfileForm({
     createSpace,
     isSuccess: createSuccess,
     isError: createError,
-  } = useCreateSpace();
+  } = useCreateSpace((data: Tables<"spaces">) => {
+    handleToSpace(data.id);
+  });
 
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const router = useRouter();
@@ -56,6 +59,7 @@ export default function ProfileForm({
   useEffect(() => {
     if (joinSuccess) {
       handleToSpace(spaceId);
+      return;
     }
   }, [joinSuccess, createSuccess, spaceId]);
 

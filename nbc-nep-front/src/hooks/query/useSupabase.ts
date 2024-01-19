@@ -75,15 +75,19 @@ export function useGetOtherUserInfo(otherUserId: string) {
 
 /* space */
 
-export function useCreateSpace() {
+export function useCreateSpace(
+  handleOnSuccess: (data: Tables<"spaces">) => void
+) {
   const client = useQueryClient();
+
   const {
     mutate: createSpace,
     isSuccess,
     isError,
   } = useMutation({
     mutationFn: createSpaceHandler,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      handleOnSuccess(data);
       client.invalidateQueries({ queryKey: ["userSpaces"] });
     },
     onError: (error) => {
