@@ -19,4 +19,5 @@ const StBackDrop = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
 `;

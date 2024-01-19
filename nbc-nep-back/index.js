@@ -3,7 +3,7 @@ const http = require("http");
 require("dotenv").config();
 const socketIO = require("socket.io");
 const cors = require("cors");
-const gameServer = require("./gameServer");
+const { init: gameServer, getCurrentUser } = require("./gameServer");
 const chatServer = require("./chatServer");
 const conferenceServer = require("./conference/index");
 
@@ -24,6 +24,8 @@ app.use(
   })
 );
 
+app.use("/api", getCurrentUser());
+
 const metaverseNamespace = io.of("/metaverse");
 gameServer(metaverseNamespace);
 
@@ -34,6 +36,8 @@ chatServer(chatNamespace);
 const conferenceNamespace = io.of("/conference");
 conferenceServer(conferenceNamespace);
 
-server.listen(3001, () => {
-  console.log("Server listening on port 3001");
+const PORT = process.env.NODE_ENV === "production" ? 8080 : 3001;
+
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
