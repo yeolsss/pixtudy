@@ -8,6 +8,7 @@ import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import VideoConference from "../video-conference/VideoConference";
+import PhaserSceneManager from "@/scenes/PhaserSceneManager";
 
 const MetaverseComponent = () => {
   const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();
@@ -49,6 +50,8 @@ const MetaverseComponent = () => {
         character: playerSpaceInfoData?.space_avatar || "pinkybonz",
         spaceId,
       });
+
+      PhaserSceneManager.setGameInstance(game);
 
       window.addEventListener("resize", resize);
     }

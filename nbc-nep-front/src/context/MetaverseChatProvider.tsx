@@ -9,23 +9,29 @@ type MetaverseChatContext = {
   chatList: Chat[];
   handleOnChangeChat: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnSubmitChat: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleFocus: () => void;
+  handleBlur: () => void;
 };
 const initialState: MetaverseChatContext = {
   chatInput: "",
   chatList: [] as Chat[],
   handleOnChangeChat: () => {},
   handleOnSubmitChat: () => {},
+  handleFocus: () => {},
+  handleBlur: () => {},
 };
 
 const MetaverseChatContext = createContext<MetaverseChatContext>(initialState);
 
 export const MetaverseChatProvider = ({ children }: PropsWithChildren) => {
-  const [chatInput, setChatInput, handleOnChangeChat] = useInput<string>("");
+  const [chatInput, setChatInput, handleOnChangeChat, handleFocus, handleBlur] =
+    useInput<string>("");
   const { display_name } = useAppSelector((state) => state.authSlice.user);
   const { chatList, sendChatMessage } = useChatSocket(display_name);
 
   const handleOnSubmitChat = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!chatInput) return;
     sendChatMessage(chatInput);
     setChatInput("");
   };
@@ -35,6 +41,8 @@ export const MetaverseChatProvider = ({ children }: PropsWithChildren) => {
     chatList,
     handleOnChangeChat,
     handleOnSubmitChat,
+    handleFocus,
+    handleBlur,
   };
 
   return (

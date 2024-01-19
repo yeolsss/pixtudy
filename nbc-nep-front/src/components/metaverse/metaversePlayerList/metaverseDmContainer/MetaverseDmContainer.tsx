@@ -14,10 +14,11 @@ import {
   RealtimePostgresInsertPayload,
 } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { isCloseDm } from "@/redux/modules/dmSlice";
+import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
+import useInput from "@/hooks/useInput";
 
 export default function MetaverseDmContainer() {
   const sendMessage = useSendMessage();
@@ -50,13 +51,15 @@ export default function MetaverseDmContainer() {
   // 현재 세션의 유저정보
   const currentUser = useAppSelector((state) => state.authSlice.user);
 
-  // react-hook-form 초기화
-  const { handleSubmit, register, reset } = useForm();
-
   // message ul ref (스크롤)
   const messageListRef = useRef<HTMLUListElement>(null);
 
   const { mutate, isPending, isError } = useReadDMMessage();
+
+  const [DMMessage, setDMMessage, onChange, handleFocus, handleBlur] =
+    useInput<string>("");
+
+  const inputRef = useFocusOutInput();
 
   // 채팅창에 들어오면 읽은것으로 간주.
   useEffect(() => {
@@ -106,11 +109,14 @@ export default function MetaverseDmContainer() {
   };
 
   // 메시지를 보내는 함수
-  const sendHandler: SubmitHandler<FieldValues> = async (values) => {
+  const handleOnSubmitDM = async (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault();
+    const message = DMMessage;
+    if (!message) return;
     sendMessage(
       {
         currentDmChannel: currentDmChannel!,
-        message: values["send-input"],
+        message,
         receiverId: otherUserId,
         spaceId,
       },
@@ -126,7 +132,7 @@ export default function MetaverseDmContainer() {
                 created_at: new Date().toISOString(),
                 dm_id: createdChannel.id,
                 id: "first_send",
-                message: values["send-input"],
+                message,
                 sender: currentUser,
                 receiver: otherUserInfo!,
               },
@@ -137,7 +143,7 @@ export default function MetaverseDmContainer() {
         },
       }
     );
-    reset();
+    setDMMessage("");
   };
 
   // 최초 mount시 상대방 유저와 dm channel 있는지 확인 후 채널 연결
@@ -184,14 +190,16 @@ export default function MetaverseDmContainer() {
           </StMessageCard>
         ))}
       </StMessageWrapper>
-      <form onSubmit={handleSubmit(sendHandler)}>
+      <form onSubmit={handleOnSubmitDM}>
         <input
           id="send-input"
           type="text"
           placeholder="메시지를 입력하세요"
-          {...register("send-input", {
-            required: true,
-          })}
+          value={DMMessage}
+          ref={inputRef}
+          onChange={onChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
         <button type="submit">입력</button>
       </form>

@@ -1,17 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
+import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
 
 export default function MetaverseChatForm() {
-  const { handleOnSubmitChat, handleOnChangeChat, chatInput } =
-    useMetaverseChatContext();
+  const {
+    handleOnSubmitChat,
+    handleOnChangeChat,
+    chatInput,
+    handleFocus,
+    handleBlur,
+  } = useMetaverseChatContext();
+  const inputRef = useFocusOutInput();
+
   return (
     <>
       <form onSubmit={handleOnSubmitChat}>
         <StChatInput
           type="text"
           value={chatInput}
+          ref={inputRef}
           onChange={handleOnChangeChat}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
       </form>
     </>

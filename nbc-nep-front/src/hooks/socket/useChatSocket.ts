@@ -21,7 +21,6 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
   }, [spaceId]);
 
   const sendChatMessage = (message: string) => {
-    console.log("chat custom Hook", spaceId);
     const newChat = { playerDisplayName, message, spaceId };
     socket.current?.emit("sendMessage", newChat);
   };
