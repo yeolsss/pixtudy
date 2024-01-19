@@ -1,22 +1,21 @@
 import { useState } from "react";
-import { FieldValues, UseFormRegister, useForm } from "react-hook-form";
+import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
 
 interface Props {
   register: UseFormRegister<FieldValues>;
+  errors: FormState<FieldValues>["errors"];
 }
 
-function AvatarInput({ register }: Props) {
+function AvatarInput({ register, errors }: Props) {
   const [selectedAvatar, setSelectedAvatar] = useState("");
-  const {
-    formState: { errors },
-  } = useForm();
 
   const options = Array.from({ length: 26 }, (_, i) => ({
     value: `NPC${i + 1}`,
     label: i + 1,
     src: `/assets/characters/presets/NPC${i + 1}.png`,
   }));
+
   type Inputs = {
     value: string;
   };

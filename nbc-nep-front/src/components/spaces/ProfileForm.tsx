@@ -72,6 +72,7 @@ export default function ProfileForm({
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     switch (mode) {
       case "joinSpace":
+        console.log(data);
         const userProfile: TablesInsert<"space_members"> = {
           space_id: spaceId,
           space_avatar: data.avatar,
@@ -81,6 +82,7 @@ export default function ProfileForm({
         joinSpace(userProfile);
         break;
       case "createSpace":
+        console.log(data);
         const spaceInfo: SpaceInfo = {
           title: partialSpaceInfo?.title,
           owner: userId,
@@ -107,7 +109,7 @@ export default function ProfileForm({
         })}
       />
       {errors.nickname && <span>{errors.nickname.message as string}</span>}
-      <AvatarInput register={register} />
+      <AvatarInput register={register} errors={errors} />
       {errors.avatar && <span>errors.avatar.message</span>}
       <button type="submit">확인</button>
       <button type="button" onClick={handleToPrevious}>

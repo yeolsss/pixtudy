@@ -9,6 +9,7 @@ import {
   UseFormRegister,
   UseFormReset,
 } from "react-hook-form";
+import styled from "styled-components";
 import { FORM_CHARACTER } from "./constatns/constants";
 import { Procedure } from "./types/space.types";
 
@@ -70,3 +71,5 @@ export default function InvitationCodeForm({
     </form>
   );
 }
+
+const StForm = styled.form``;
