@@ -20,19 +20,19 @@ export default function MetaverseChatList() {
 const StMetaverseChatList = styled.div`
   width: 100%;
   height: 200px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 5px;
   overflow: scroll;
   flex: 10;
-  background-color: #1f2542;
+
+  background-color: ${({ theme }) => theme.color.metaverse.secondary};
   color: white;
   &::-webkit-scrollbar {
     display: none;
   }
   > div > span {
     font-size: 1.6rem;
+    font-family: var(--main-font);
   }
 `;

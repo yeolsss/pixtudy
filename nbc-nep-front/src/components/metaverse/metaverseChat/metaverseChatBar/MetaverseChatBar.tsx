@@ -25,7 +25,7 @@ export default function MetaverseChatBar() {
     <>
       <StMetaverseChatBar $isOpenChatSection={isOpenChatSection}>
         <StChatWrapperTitle>
-          <h1>Chat</h1>
+          <h1>chat</h1>
         </StChatWrapperTitle>
         <button onClick={() => handleChatTypeOpen("GLOBAL")}>Room</button>
         <button onClick={() => handleChatTypeOpen("DM")}>DM</button>
@@ -35,13 +35,8 @@ export default function MetaverseChatBar() {
   );
 }
 
-const StMetaverseChatWrapper = styled.section<{ $isOpenChat: boolean }>`
-  display: flex;
-  width: ${({ $isOpenChat }) => ($isOpenChat ? "auto" : "0")};
-`;
-
 const StMetaverseChatBar = styled.div<{ $isOpenChatSection: boolean }>`
-  width: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "100px" : "0")};
+  width: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "93px" : "0")};
   border-right: ${({ $isOpenChatSection }) =>
       $isOpenChatSection ? "1px" : "0"}
     solid rgba(0, 0, 0, 0.5);
@@ -54,7 +49,11 @@ const StMetaverseChatBar = styled.div<{ $isOpenChatSection: boolean }>`
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
   z-index: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "100" : "-1")};
-  padding: 0 ${({ $isOpenChatSection }) => ($isOpenChatSection ? "10px" : "0")};
+  padding: ${({ theme }) => theme.spacing["16"]} 0;
+  // ${({ $isOpenChatSection }) => ($isOpenChatSection ? "24px" : "0")};
+  > button {
+    width: 100%;
+  }
 `;
 const StChatWrapperTitle = styled.div`
   height: 100px;
@@ -62,6 +61,6 @@ const StChatWrapperTitle = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 24px;
+  font-family: var(--sub-font);
   color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `;

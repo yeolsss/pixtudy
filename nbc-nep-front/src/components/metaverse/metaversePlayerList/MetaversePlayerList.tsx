@@ -58,7 +58,7 @@ const StMetaversePlayerListWrapper = styled.div<{ $isOpenPlayerList: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "300px" : "0")};
+  width: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "240px" : "0")};
   padding: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "10px" : "0")};
   overflow: ${({ $isOpenPlayerList }) =>
     $isOpenPlayerList ? "scroll" : "hidden"};
@@ -66,7 +66,7 @@ const StMetaversePlayerListWrapper = styled.div<{ $isOpenPlayerList: boolean }>`
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
   z-index: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "100" : "-1")};
-  background-color: #1f2542;
+  background-color: ${({ theme }) => theme.color.metaverse.secondary};
   color: white;
 
   &::-webkit-scrollbar {

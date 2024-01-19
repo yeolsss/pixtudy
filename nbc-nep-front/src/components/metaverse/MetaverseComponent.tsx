@@ -2,13 +2,13 @@ import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import { CharacterScenes } from "@/scenes/characterScenes";
-import { ScenesMain } from "@/scenes/scenesMain";
+import { CharacterScenes } from "@/metaverse/scenes/characterScenes";
+import { ScenesMain } from "@/metaverse/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import VideoConference from "../video-conference/VideoConference";
-import PhaserSceneManager from "@/scenes/PhaserSceneManager";
+import PhaserSceneManager from "@/metaverse/scenes/PhaserSceneManager";
 
 const MetaverseComponent = () => {
   const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();

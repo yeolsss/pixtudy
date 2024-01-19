@@ -36,4 +36,6 @@ const StChatInput = styled.input`
   background-color: #1f2542;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
+  line-height: 24px;
+  letter-spacing: -0.32px;
 `;

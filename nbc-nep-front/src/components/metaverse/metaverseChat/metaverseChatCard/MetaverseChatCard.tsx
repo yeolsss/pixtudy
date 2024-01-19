@@ -16,7 +16,11 @@ export default function MetaverseChatCard({ chat }: Props) {
 }
 
 const StMetaverseChatCard = styled.div`
+  font-family: var(--main-font);
+
   > span:last-child {
     word-break: break-all;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.32px;
   }
 `;
