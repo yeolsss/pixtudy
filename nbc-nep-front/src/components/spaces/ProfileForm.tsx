@@ -45,6 +45,7 @@ export default function ProfileForm({
     isSuccess: joinSuccess,
     isError: joinError,
   } = useJoinSpace();
+
   const {
     createSpace,
     isSuccess: createSuccess,

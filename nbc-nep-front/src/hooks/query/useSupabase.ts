@@ -107,6 +107,7 @@ export function useJoinSpace() {
   });
   return { joinSpace, isSuccess, isError };
 }
+
 // spaceId 로 스페이스를 조회하여 테이블 데이터를 가져온다.
 export function useGetSpace() {
   const { mutate: validateSpace, isError } = useMutation({

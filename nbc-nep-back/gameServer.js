@@ -71,10 +71,9 @@ module.exports = {
     router.get("/spaces/:spaceid/users/count", (req, res) => {
       const spaceId = req.params.spaceid;
       const playersInSpace = Object.values(players).filter((player) => {
-        console.log(player.spaceId, spaceId);
         return player.spaceId === spaceId;
       });
-      res.json({ count: playersInSpace.length });
+      res.status(200).json({ count: playersInSpace.length });
     });
     return router;
   },

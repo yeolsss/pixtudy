@@ -97,6 +97,7 @@ const GlobalStyle = styled.createGlobalStyle`
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+    font-family: var(--main-font);
   }
   /* HTML5 display-role reset for older browsers */
   article,
@@ -141,7 +142,8 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   :root {
-    --user-counter: #15e42a;
+    --user-exists: #15e42a;
+    --user-not-exists: #ff001f;
     --color-blue-50: #eff6ff;
     --color-blue-100: #dbeafe;
     --color-blue-200: #bfdbfe;
@@ -225,6 +227,7 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-base-black: #000000;
     --color-base-white: #ffffff;
     --unit-0: 0px;
+    --unit-1: 1px;
     --unit-2: 2px;
     --unit-4: 4px;
     --unit-8: 8px;
@@ -402,9 +405,12 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-border-interactive-secondary: var(--color-neutral-600);
     --color-border-interactive-secondary-hovered: var(--color-neutral-700);
     --color-border-interactive-secondary-pressed: var(--color-neutral-800);
+
     --main-font: "Galmuri14", sans-serif;
     --point-font: "Galmuri11", sans-serif;
     --sub-font: "NeoDunggeunmo", sans-serif;
+
+    --button-opacity: rgba(0, 0, 0, 0.5);
 
     --state-online: #15e42a;
     --state-eating: #ffa047;

@@ -1,3 +1,4 @@
+import { useLoginUser } from "@/hooks/query/useSupabase";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { closeModal } from "@/redux/modules/modalSlice";
 import {
@@ -9,7 +10,6 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import AuthInput from "../AuthInput";
 import SocialLogin from "./SocialLogin";
-import { useLoginUser } from "@/hooks/query/useSupabase";
 
 export default function LoginModalMainContainer() {
   const login = useLoginUser();
@@ -38,7 +38,13 @@ export default function LoginModalMainContainer() {
         onSuccess: () => {
           reset();
           dispatch(closeModal());
-          router.push("/dashboard");
+          console.log(process.env.NODE_ENV);
+          // Check if NODE_ENV is development and redirect accordingly
+          const redirectPath =
+            process.env.NODE_ENV === "development"
+              ? "/dashboard"
+              : `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`;
+          router.push(redirectPath);
         },
       }
     );

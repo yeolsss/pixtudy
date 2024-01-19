@@ -70,7 +70,6 @@ export const StModalContainer = styled.div`
   z-index: 10;
   background: white;
   width: 50rem;
-  height: 50rem;
   border-radius: ${(props) => props.theme.border.radius[8]};
 `;
 

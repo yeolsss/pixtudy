@@ -5,7 +5,10 @@ interface UserCount {
 }
 
 const client = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SOCKET_SERVER_URL,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_SOCKET_SERVER_URL
+      : "http://localhost:3001",
   headers: {
     "cache-control": "no-cache",
     "Content-Type": "application/json",
@@ -16,10 +19,13 @@ const client = axios.create({
 export const getUsersCount = async (spaceId: string) => {
   try {
     const response = await client.get(`/api/spaces/${spaceId}/users/count`);
-    console.log(response);
-    const { count } = response.data as UserCount;
-    return count;
+    if (response.data && response.data.count !== undefined) {
+      const { count } = response.data as UserCount;
+      return count;
+    } else {
+      throw new Error("invalid response");
+    }
   } catch (error) {
-    console.error;
+    console.error(error);
   }
 };
