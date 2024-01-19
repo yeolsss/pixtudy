@@ -1,4 +1,4 @@
-import { useGetSpace, useGetUserSpaces } from "@/hooks/query/useSupabase";
+import { getSpace, useGetUserSpaces } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { Dispatch, SetStateAction } from "react";
 import {
@@ -35,16 +35,16 @@ export default function InvitationCodeForm({
 }: Props) {
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const userJoinedSpaces = useGetUserSpaces(userId);
-  const { validateSpace, isError } = useGetSpace();
 
-  const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
-    validateSpace(data.invitationCode);
-    if (isError) {
-      alert("초대코드가 유효하지 않습니다.");
-    } else {
-      setSpaceId(data.invitationCode);
-      setProcedure(FORM_CHARACTER);
+  const handleInvitationSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const isExistsSpace = await getSpace(data.invitationCode);
+
+    if (!isExistsSpace) {
+      alert("초대 코드가 올바르지 않습니다.");
+      return;
     }
+    setSpaceId(data.invitationCode);
+    setProcedure(FORM_CHARACTER);
   };
 
   const onInvitationCodeChange = (invitationCode: string) => {
