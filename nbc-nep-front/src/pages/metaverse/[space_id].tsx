@@ -1,7 +1,5 @@
-import dynamic from "next/dynamic";
-import { ReactElement } from "react";
-import Dashboard from "../dashboard";
 import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
+import dynamic from "next/dynamic";
 
 const GameComponentWithNoSSR = dynamic(
   () => import("@/components/metaverse/MetaverseComponent"),
@@ -18,6 +16,6 @@ export default function Metaverse() {
   );
 }
 
-Dashboard.getLayout = function getLayout(page: ReactElement) {
-  return page;
-};
+// Dashboard.getLayout = function getLayout(page: ReactElement) {
+//   return page;
+// };
