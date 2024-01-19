@@ -9,7 +9,8 @@ import {
   UseFormRegister,
   UseFormReset,
 } from "react-hook-form";
-import { Procedure } from "../modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
+import { FORM_CHARACTER } from "./constatns/constants";
+import { Procedure } from "./types/space.types";
 
 interface Props {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
@@ -42,7 +43,7 @@ export default function InvitationCodeForm({
       alert("초대코드가 유효하지 않습니다.");
     } else {
       setSpaceId(data.invitationCode);
-      setProcedure("2");
+      setProcedure(FORM_CHARACTER);
     }
   };
 

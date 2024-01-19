@@ -1,9 +1,10 @@
 import ModalHeader from "@/components/common/ModalHeader";
 import CreateSpaceForm from "@/components/spaces/CreateSpaceForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
+import { FORM_SPACE } from "@/components/spaces/constatns/constants";
+import { Procedure, SpaceInfo } from "@/components/spaces/types/space.types";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { toggleCreateSpaceModal } from "@/redux/modules/modalSlice";
-import { TablesInsert } from "@/types/supabase";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -23,17 +24,13 @@ import {
  * TODO : 스페이스 프리셋 기능
  * scenesMain 의 constructor에 preset을 넣어서 스페이스를 생성하면 어떨까?
  */
-export type SpaceInfo = Partial<
-  TablesInsert<"spaces"> & { space_display_name: string; space_avatar: string }
->;
-
-export type Procedure = "1" | "2";
 
 export default function CreateSpaceModalMainContainer() {
   const { id, display_name } = useAppSelector((state) => state.authSlice.user);
   const [spaceId, setSpaceId] = useState<string>("");
   const [spaceInfo, setSpaceInfo] = useState<SpaceInfo | {}>({});
-  const [procedure, setProcedure] = useState<Procedure>("1");
+  const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
+
   const dispatch = useAppDispatch();
 
   const {
@@ -50,7 +47,7 @@ export default function CreateSpaceModalMainContainer() {
         handler={() => dispatch(toggleCreateSpaceModal())}
       />
       <StModalContents>
-        {procedure === "1" ? (
+        {procedure === FORM_SPACE ? (
           <CreateSpaceForm
             setProcedure={setProcedure}
             setSpaceInfo={setSpaceInfo}
