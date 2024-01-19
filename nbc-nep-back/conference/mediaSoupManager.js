@@ -30,8 +30,22 @@ async function createWorker() {
 }
 
 async function createWebRtcTransport() {
+  let listenIps;
+  if (process.env.NODE_ENV === "production") {
+    listenIps = [
+      {
+        ip: process.env.MEDIA_SOUP_PUBLIC_IP,
+        announcedIp: process.env.MEDIA_SOUP_PRIVATE_IP,
+      },
+    ];
+  } else if (process.env.NODE_ENV === "development") {
+    listenIps = [{ ip: "127.0.0.1", announcedIp: null }];
+  } else {
+    console.error("process.env.NODE_ENV is not set");
+  }
+
   const transport = await router.createWebRtcTransport({
-    listenIps: [{ ip: "127.0.0.1", announcedIp: null }],
+    listenIps,
     enableUdp: true,
     enableTcp: true,
     preferUdp: true,

@@ -37,3 +37,4 @@ next-env.d.ts
 node_modules/
 *.idea
 *.idea/
+nbc-nep-back/.env
