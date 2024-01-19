@@ -1,6 +1,5 @@
 import { useCreateSpace, useJoinSpace } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { TablesInsert } from "@/types/supabase";
 import { validateNickname } from "@/utils/spaceFormValidate";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect } from "react";
@@ -14,7 +13,7 @@ import {
 
 import AvatarInput from "./AvatarInput";
 import { FORM_SPACE } from "./constatns/constants";
-import { Procedure, SpaceInfo } from "./types/space.types";
+import { Procedure, SpaceInfo, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {
   spaceId?: string;
@@ -65,14 +64,13 @@ export default function ProfileForm({
   };
 
   const handleToPrevious = () => {
-    console.log(FORM_SPACE);
     setProcedure(FORM_SPACE);
   };
 
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     switch (mode) {
       case "joinSpace":
-        const userProfile: TablesInsert<"space_members"> = {
+        const userProfile: UserProfile = {
           space_id: spaceId,
           space_avatar: data.avatar,
           space_display_name: data.nickname,

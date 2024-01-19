@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { FieldValues, UseFormRegister, useForm } from "react-hook-form";
 import styled from "styled-components";
+import { characterOptions } from "./constatns/constants";
 
 interface Props {
   register: UseFormRegister<FieldValues>;
@@ -12,28 +13,28 @@ function AvatarInput({ register }: Props) {
     formState: { errors },
   } = useForm();
 
-  const options = Array.from({ length: 26 }, (_, i) => ({
-    value: `NPC${i + 1}`,
-    label: i + 1,
-    src: `/assets/characters/presets/NPC${i + 1}.png`,
-  }));
-  type Inputs = {
-    value: string;
+  const { onChange, ...restParam } = register("avatar", {
+    required: "This field is required",
+  });
+
+  const handleCustomChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSelectedAvatar(e.target.value);
+    onChange(e);
   };
 
   return (
     <StInputContainer>
-      {options.map((option, index) => (
+      {characterOptions.map((option, index) => (
         <StInputWrapper
-          key={option.label}
+          key={option.value}
           $isSelected={selectedAvatar === option.value}
         >
           <input
             type="radio"
             id={option.value}
             value={option.value}
-            {...register("avatar", { required: "This field is required" })}
-            onChange={() => setSelectedAvatar(option.value)}
+            onChange={handleCustomChange}
+            {...restParam}
           />
           <label htmlFor={option.value} key={option.label}>
             <StSpan resource={option.src}></StSpan>

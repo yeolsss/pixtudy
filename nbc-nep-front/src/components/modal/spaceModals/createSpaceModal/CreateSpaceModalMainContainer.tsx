@@ -38,6 +38,7 @@ export default function CreateSpaceModalMainContainer() {
     register,
     reset,
     formState: { errors },
+    getValues,
   } = useForm({ mode: "onSubmit" });
 
   return (
