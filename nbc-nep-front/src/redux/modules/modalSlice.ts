@@ -4,12 +4,14 @@ interface ModalState {
   isLoginModalOpen: boolean;
   isSignUpModalOpen: boolean;
   isJoinSpaceModalOpen: boolean;
+  isCreateSpaceModalOpen: boolean;
 }
 
 const initialState: ModalState = {
   isLoginModalOpen: false,
   isSignUpModalOpen: false,
   isJoinSpaceModalOpen: false,
+  isCreateSpaceModalOpen: false,
 };
 
 export const modalSlice = createSlice({
@@ -25,8 +27,11 @@ export const modalSlice = createSlice({
     openSignUpModal: (state) => {
       state.isSignUpModalOpen = !state.isSignUpModalOpen;
     },
-    openJoinSpaceModal: (state) => {
+    toggleJoinSpaceModal: (state) => {
       state.isJoinSpaceModalOpen = !state.isJoinSpaceModalOpen;
+    },
+    toggleCreateSpaceModal: (state) => {
+      state.isCreateSpaceModalOpen = !state.isCreateSpaceModalOpen;
     },
   },
 });
@@ -35,6 +40,7 @@ export const {
   closeModal,
   openLoginModal,
   openSignUpModal,
-  openJoinSpaceModal,
+  toggleJoinSpaceModal,
+  toggleCreateSpaceModal,
 } = modalSlice.actions;
 export default modalSlice.reducer;

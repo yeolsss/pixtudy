@@ -1,8 +1,9 @@
-import { useJoinSpace } from "@/hooks/query/useSupabase";
+import { useCreateSpace, useJoinSpace } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { TablesInsert } from "@/types/supabase";
+import { validateNickname } from "@/utils/spaceFormValidate";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import {
   FieldValues,
   FormState,
@@ -10,55 +11,86 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
+import {
+  Procedure,
+  SpaceInfo,
+} from "../modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
 import AvatarInput from "./AvatarInput";
 
 interface ProfileFormProps {
-  spaceId: string;
+  spaceId?: string;
+  spaceInfo?: SpaceInfo;
+  setProcedure: Dispatch<SetStateAction<Procedure>>;
+  setSpaceInfo?: Dispatch<SetStateAction<SpaceInfo>>;
   defaultDisplayName: string;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
-  handleCancelBtnClick: () => void;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
+  mode: "createSpace" | "joinSpace";
 }
 
 export default function ProfileForm({
-  spaceId,
+  spaceId = "",
+  spaceInfo: partialSpaceInfo,
+  setProcedure,
+  setSpaceInfo,
   defaultDisplayName,
   handleSubmit,
-  handleCancelBtnClick,
   register,
   errors,
+  mode,
 }: ProfileFormProps) {
-  const { joinSpace, isSuccess, isError } = useJoinSpace();
+  const {
+    joinSpace,
+    isSuccess: joinSuccess,
+    isError: joinError,
+  } = useJoinSpace();
+  const {
+    createSpace,
+    isSuccess: createSuccess,
+    isError: createError,
+  } = useCreateSpace();
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const router = useRouter();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (joinSuccess) {
       handleToSpace(spaceId);
     }
-  }, [isSuccess, spaceId]);
-
-  const validateNickname = (nickname: string) => {
-    const nicknameReg = new RegExp(/^.{2,12}$/);
-    return (
-      nicknameReg.test(nickname) ||
-      "닉네임은 2글자 이상 12글자 이내여야 합니다."
-    );
-  };
+  }, [joinSuccess, createSuccess, spaceId]);
 
   const handleToSpace = async (space_id: string) => {
     await router.replace(`/metaverse/${space_id!}`);
   };
 
+  const handleToPrevious = () => {
+    setProcedure("1");
+  };
+
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
-    const userProfile: TablesInsert<"space_members"> = {
-      space_id: spaceId,
-      space_avatar: data.avatar,
-      space_display_name: data.nickname,
-      user_id: userId,
-    };
-    joinSpace(userProfile);
+    switch (mode) {
+      case "joinSpace":
+        const userProfile: TablesInsert<"space_members"> = {
+          space_id: spaceId,
+          space_avatar: data.avatar,
+          space_display_name: data.nickname,
+          user_id: userId,
+        };
+        joinSpace(userProfile);
+        break;
+      case "createSpace":
+        const spaceInfo: SpaceInfo = {
+          title: partialSpaceInfo?.title,
+          owner: userId,
+          space_display_name: data.nickname,
+          space_avatar: data.avatar,
+          description: partialSpaceInfo?.description,
+        };
+        createSpace(spaceInfo);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -76,7 +108,9 @@ export default function ProfileForm({
       <AvatarInput register={register} />
       {errors.avatar && <span>errors.avatar.message</span>}
       <button type="submit">확인</button>
-      <button onClick={handleCancelBtnClick}>취소</button>
+      <button type="button" onClick={handleToPrevious}>
+        뒤로 가기
+      </button>
     </form>
   );
 }

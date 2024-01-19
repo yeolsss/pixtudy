@@ -1,24 +1,14 @@
 import { useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";
-import ModalPortal from "../modal/ModalPortal";
-import JoinSpaceModal from "../modal/spaceModals/joinSpaceModal/JoinSpaceModal";
 import SpaceList from "./SpaceList";
 
 export default function Spaces() {
   const currentUserId = useAppSelector((state) => state.authSlice.user.id);
 
-  const isModalOpen = useAppSelector(
-    (state) => state.modalSlice.isJoinSpaceModalOpen
-  );
   return (
     <>
       <StBanner />
       <SpaceList currentUserId={currentUserId} />
-      {isModalOpen && (
-        <ModalPortal>
-          <JoinSpaceModal />
-        </ModalPortal>
-      )}
     </>
   );
 }

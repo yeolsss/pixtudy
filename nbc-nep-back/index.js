@@ -3,7 +3,7 @@ const http = require("http");
 require("dotenv").config();
 const socketIO = require("socket.io");
 const cors = require("cors");
-const gameServer = require("./gameServer");
+const { init: gameServer, getCurrentUser } = require("./gameServer");
 const chatServer = require("./chatServer");
 const conferenceServer = require("./conference/index");
 
@@ -23,6 +23,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use("/api", getCurrentUser());
 
 const metaverseNamespace = io.of("/metaverse");
 gameServer(metaverseNamespace);

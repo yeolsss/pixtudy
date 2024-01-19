@@ -9,25 +9,26 @@ import {
   UseFormRegister,
   UseFormReset,
 } from "react-hook-form";
+import { Procedure } from "../modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
 
 interface Props {
+  setProcedure: Dispatch<SetStateAction<Procedure>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
   reset: UseFormReset<FieldValues>;
   setIsValidSpace: React.Dispatch<React.SetStateAction<boolean>>;
   errors: FormState<FieldValues>["errors"];
-  handleCancelBtnClick: () => void;
   setSpaceId: Dispatch<SetStateAction<string>>;
   spaceId: string;
 }
 
 export default function InvitationCodeForm({
+  setProcedure,
   handleSubmit,
   register,
   reset,
   setIsValidSpace,
   errors,
-  handleCancelBtnClick,
   setSpaceId,
   spaceId,
 }: Props) {
@@ -40,8 +41,8 @@ export default function InvitationCodeForm({
     if (isError) {
       alert("초대코드가 유효하지 않습니다.");
     } else {
-      setIsValidSpace(true);
       setSpaceId(data.invitationCode);
+      setProcedure("2");
     }
   };
 
@@ -65,7 +66,6 @@ export default function InvitationCodeForm({
         <p>{errors.invitationCode.message as string}</p>
       )}
       <button type="submit">확인</button>
-      <button onClick={handleCancelBtnClick}>취소</button>
     </form>
   );
 }
