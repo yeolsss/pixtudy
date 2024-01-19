@@ -1,6 +1,5 @@
 import { useCreateSpace, useJoinSpace } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { TablesInsert } from "@/types/supabase";
 import { validateNickname } from "@/utils/spaceFormValidate";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect } from "react";
@@ -12,9 +11,10 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
+import { Tables } from "@/types/supabase";
 import AvatarInput from "./AvatarInput";
 import { FORM_SPACE } from "./constatns/constants";
-import { Procedure, SpaceInfo } from "./types/space.types";
+import { Procedure, SpaceInfo, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {
   spaceId?: string;
@@ -49,7 +49,9 @@ export default function ProfileForm({
     createSpace,
     isSuccess: createSuccess,
     isError: createError,
-  } = useCreateSpace();
+  } = useCreateSpace((data: Tables<"spaces">) => {
+    handleToSpace(data.id);
+  });
 
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const router = useRouter();
@@ -57,6 +59,7 @@ export default function ProfileForm({
   useEffect(() => {
     if (joinSuccess) {
       handleToSpace(spaceId);
+      return;
     }
   }, [joinSuccess, createSuccess, spaceId]);
 
@@ -65,15 +68,13 @@ export default function ProfileForm({
   };
 
   const handleToPrevious = () => {
-    console.log(FORM_SPACE);
     setProcedure(FORM_SPACE);
   };
 
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     switch (mode) {
       case "joinSpace":
-        console.log(data);
-        const userProfile: TablesInsert<"space_members"> = {
+        const userProfile: UserProfile = {
           space_id: spaceId,
           space_avatar: data.avatar,
           space_display_name: data.nickname,

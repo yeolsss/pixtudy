@@ -27,7 +27,6 @@ import {
 
 export default function CreateSpaceModalMainContainer() {
   const { id, display_name } = useAppSelector((state) => state.authSlice.user);
-  const [spaceId, setSpaceId] = useState<string>("");
   const [spaceInfo, setSpaceInfo] = useState<SpaceInfo | {}>({});
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
 
@@ -36,7 +35,6 @@ export default function CreateSpaceModalMainContainer() {
   const {
     handleSubmit,
     register,
-    reset,
     formState: { errors },
   } = useForm({ mode: "onSubmit" });
 

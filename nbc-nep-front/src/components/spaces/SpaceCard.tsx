@@ -14,9 +14,11 @@ export default function SpaceCard({ space }: Props) {
   const { data: count, isLoading } = useGetUsersCount(space?.space_id!);
   const [usersCount, setUsersCount] = useState<number>(0);
   const router = useRouter();
+
   const handleToSpace = async (space_id: string) => {
     await router.push(`/metaverse/${space_id}`);
   };
+
   return (
     <StCardWrapper>
       <StContentsContainer>

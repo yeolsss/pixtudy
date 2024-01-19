@@ -80,9 +80,8 @@ export default function CreateSpaceForm({
     <StCreateSpaceForm onSubmit={handleSubmit(handleCreateSpaceSubmit)}>
       {fieldValues.map((fieldValue) =>
         fieldValue.type === "text" ? (
-          <>
+          <div key={fieldValue.name}>
             <input
-              key={fieldValue.name}
               type={fieldValue.type}
               placeholder={fieldValue.placeholder}
               {...fieldValue.register}
@@ -90,9 +89,9 @@ export default function CreateSpaceForm({
             {errors.spaceName && (
               <span>{errors.spaceName?.message as string}</span>
             )}
-          </>
+          </div>
         ) : (
-          <>
+          <div key={fieldValue.name}>
             <textarea
               key={fieldValue.name}
               placeholder={fieldValue.placeholder}
@@ -101,7 +100,7 @@ export default function CreateSpaceForm({
             {errors.spaceDescription && (
               <span>{errors.spaceDescription?.message as string}</span>
             )}
-          </>
+          </div>
         )
       )}
       <div>
