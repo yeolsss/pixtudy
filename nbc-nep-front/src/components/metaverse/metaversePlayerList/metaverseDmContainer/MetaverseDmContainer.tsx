@@ -28,13 +28,10 @@ export default function MetaverseDmContainer() {
 
   // 상대방 유저와 활성화된 dm 채널 아이디
   // 채널이 이미 있을 때: string/ 없을 때: null
-  const currentDmChannel =
-    dmRoomId === ""
-      ? useGetDmChannel({
-          receiverId: otherUserId,
-          spaceId,
-        })
-      : dmRoomId;
+  const currentDmChannel = useGetDmChannel({
+    receiverId: otherUserId,
+    spaceId,
+  });
 
   const queryClient = useQueryClient();
 
