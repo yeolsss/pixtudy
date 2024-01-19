@@ -13,6 +13,8 @@ export default function SpaceList({ currentUserId }: Props) {
   const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
   const getUserSpaces = useGetUserSpaces(currentUserId);
 
+  console.log(getUserSpaces);
+
   useEffect(() => {
     if (getUserSpaces) setUserSpaces(getUserSpaces);
   }, [getUserSpaces]);
@@ -46,6 +48,12 @@ const StSpaceListWrapper = styled.section`
 
 const StSpaceList = styled.ul`
   display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   width: 100%;
   gap: ${(props) => props.theme.spacing[24]};
+  margin-right: -${(props) => props.theme.spacing[24]};
+  li {
+    width: calc(25% - ${(props) => props.theme.spacing[24]});
+  }
 `;
