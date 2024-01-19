@@ -59,11 +59,18 @@ const StInputWrapper = styled.div<{ $isSelected: boolean }>`
   align-items: center;
   width: 64px;
   height: 64px;
-  background-color: #00000016;
+  background-color: ${(props) => props.theme.color.base.white};
   border-radius: ${(props) => props.theme.border.radius[8]};
   //prettier-ignore
-  border: ${(props) =>
-    props.$isSelected ? `1px solid var(--color-blue-400)` : "none"};
+  border-color: ${(props) =>
+    props.$isSelected
+      ? props.theme.color.border.focusRing
+      : props.theme.color.border.secondary};
+  border-width: ${(props) => (props.$isSelected ? "2px" : "1px")};
+  border-style: solid;
+  input[type="radio"] {
+    display: none;
+  }
 `;
 
 const StSpan = styled.span`

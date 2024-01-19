@@ -1,6 +1,7 @@
 import { useCreateSpace, useJoinSpace } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { TablesInsert } from "@/types/supabase";
+import { validateNickname } from "@/utils/spaceFormValidate";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import {
@@ -53,18 +54,10 @@ export default function ProfileForm({
   const router = useRouter();
 
   useEffect(() => {
-    if (joinSuccess || createSuccess) {
+    if (joinSuccess) {
       handleToSpace(spaceId);
     }
   }, [joinSuccess, createSuccess, spaceId]);
-
-  const validateNickname = (nickname: string) => {
-    const nicknameReg = new RegExp(/^.{2,12}$/);
-    return (
-      nicknameReg.test(nickname) ||
-      "닉네임은 2글자 이상 12글자 이내여야 합니다."
-    );
-  };
 
   const handleToSpace = async (space_id: string) => {
     await router.replace(`/metaverse/${space_id!}`);
@@ -86,12 +79,12 @@ export default function ProfileForm({
         joinSpace(userProfile);
         break;
       case "createSpace":
-        const spaceInfo = {
-          title: partialSpaceInfo?.title ?? "",
+        const spaceInfo: SpaceInfo = {
+          title: partialSpaceInfo?.title,
           owner: userId,
           space_display_name: data.nickname,
           space_avatar: data.avatar,
-          description: partialSpaceInfo?.description ?? "",
+          description: partialSpaceInfo?.description,
         };
         createSpace(spaceInfo);
         break;

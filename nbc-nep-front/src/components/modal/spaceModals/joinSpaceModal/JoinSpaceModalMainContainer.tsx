@@ -83,11 +83,4 @@ export const StModalContents = styled.div`
   padding: ${(props) => props.theme.spacing[24]};
   padding-top: 0;
   height: 100%;
-
-  input[type="radio"] {
-    display: none;
-  }
-  input[type="radio"]:checked + span {
-    background: #ff0000;
-  }
 `;

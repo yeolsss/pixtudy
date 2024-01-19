@@ -1,16 +1,14 @@
+import { SpaceInfo } from "@/components/modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
 import { supabase } from "@/libs/supabase";
 import { Tables, TablesInsert } from "@/types/supabase";
 
 export const createSpaceHandler = async (
-  spaceInfo: TablesInsert<"spaces"> & {
-    space_display_name: string;
-    space_avatar: string;
-  }
+  spaceInfo: SpaceInfo
 ): Promise<Tables<"spaces">> => {
   const space: TablesInsert<"spaces"> = {
-    description: spaceInfo.description,
-    owner: spaceInfo.owner,
-    title: spaceInfo.title,
+    description: spaceInfo.description!,
+    owner: spaceInfo.owner!,
+    title: spaceInfo.title!,
   };
   const { data: spaceData, error } = await supabase
     .from("spaces")
