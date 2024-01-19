@@ -18,6 +18,7 @@ import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
+import { videoParams } from "./constants/constants";
 import {
   getProducersByShareType,
   isAlreadyConsume,
@@ -47,6 +48,7 @@ export default function VideoConference() {
     addProducer,
     removeConsumer,
     removeProducer,
+    isCanShare,
   } = useVideoSource();
 
   const {
@@ -260,13 +262,6 @@ export default function VideoConference() {
     }
   }
 
-  function isCanShare() {
-    return (
-      producers.filter((producer) => producer.appData.shareType === "screen")
-        .length < 3
-    );
-  }
-
   const screenCount = getProducersByShareType(producers, "screen").length;
 
   return (
@@ -315,30 +310,6 @@ export default function VideoConference() {
     </>
   );
 }
-
-const videoParams = {
-  // mediasoup params
-  encodings: [
-    {
-      rid: "r0",
-      maxBitrate: 100000,
-      scalabilityMode: "S1T3",
-    },
-    {
-      rid: "r1",
-      maxBitrate: 300000,
-      scalabilityMode: "S1T3",
-    },
-    {
-      rid: "r2",
-      maxBitrate: 900000,
-      scalabilityMode: "S1T3",
-    },
-  ],
-  codecOptions: {
-    videoGoogleStartBitrate: 1000,
-  },
-};
 
 const StDockContainer = styled.div`
   position: absolute;
