@@ -11,11 +11,10 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
-import {
-  Procedure,
-  SpaceInfo,
-} from "../modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
+
 import AvatarInput from "./AvatarInput";
+import { FORM_SPACE } from "./constatns/constants";
+import { Procedure, SpaceInfo } from "./types/space.types";
 
 interface ProfileFormProps {
   spaceId?: string;
@@ -45,11 +44,13 @@ export default function ProfileForm({
     isSuccess: joinSuccess,
     isError: joinError,
   } = useJoinSpace();
+
   const {
     createSpace,
     isSuccess: createSuccess,
     isError: createError,
   } = useCreateSpace();
+
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const router = useRouter();
 
@@ -64,7 +65,8 @@ export default function ProfileForm({
   };
 
   const handleToPrevious = () => {
-    setProcedure("1");
+    console.log(FORM_SPACE);
+    setProcedure(FORM_SPACE);
   };
 
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {

@@ -7,10 +7,8 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
-import {
-  Procedure,
-  SpaceInfo,
-} from "../modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
+import { FORM_CHARACTER } from "./constatns/constants";
+import { Procedure, SpaceInfo } from "./types/space.types";
 
 /**
  * TODO:
@@ -43,8 +41,8 @@ export default function CreateSpaceForm({
       title: data.spaceName,
       description: data.spaceDescription,
     };
-    setSpaceInfo((prev) => ({ ...spaceInfo }));
-    setProcedure("2");
+    setSpaceInfo(() => ({ ...spaceInfo }));
+    setProcedure(FORM_CHARACTER);
   };
 
   const fieldValues = [
