@@ -34,8 +34,8 @@ async function createWebRtcTransport() {
   if (process.env.NODE_ENV === "production") {
     listenIps = [
       {
-        ip: process.env.MEDIA_SOUP_PUBLIC_IP,
-        announcedIp: process.env.MEDIA_SOUP_PRIVATE_IP,
+        ip: process.env.MEDIA_SOUP_PRIVATE_IP,
+        announcedIp: process.env.MEDIA_SOUP_PUBLIC_IP,
       },
     ];
   } else if (process.env.NODE_ENV === "development") {
