@@ -81,6 +81,8 @@ export default function VideoConference() {
 
     socket.on("producer-closed", handleProducerClose);
 
+    socket.on("closed-consumer", removeConsumer);
+
     return () => {
       socket.emit("transport-close", currentPlayerId);
       disconnect();

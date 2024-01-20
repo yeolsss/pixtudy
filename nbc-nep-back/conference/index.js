@@ -151,6 +151,8 @@ module.exports = function (io) {
           });
 
           consumer.on("producerclose", () => {
+            socket.emit("closed-consumer", consumer.appData.streamId);
+
             client.consumers = client.consumers.filter(
               (c) => c.id !== consumer.id
             );
