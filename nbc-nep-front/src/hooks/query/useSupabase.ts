@@ -1,6 +1,6 @@
 import {
   getOtherUserHandler,
-  loginHandler,
+  signInHandler,
   logoutHandler,
   signUpHandler,
 } from "@/api/supabase/auth";
@@ -37,13 +37,13 @@ export function useSignUpUser() {
 }
 // Login
 export function useSignInUser() {
-  const { mutate: login } = useMutation({
-    mutationFn: loginHandler,
+  const { mutate: signIn } = useMutation({
+    mutationFn: signInHandler,
     onError: (error) => {
       console.log("로그인에러:", error);
     },
   });
-  return login;
+  return signIn;
 }
 // Logout
 export function useLogoutUser() {

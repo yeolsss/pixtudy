@@ -7,6 +7,15 @@ import {
 
 export type AuthFormType = "signUp" | "signIn";
 
+export interface FormValues {
+  signIn_id?: string;
+  signIn_pw?: string;
+  signUp_id?: string;
+  signUp_pw?: string;
+  signUp_nickname?: string;
+  signUp_check_pw?: string;
+}
+
 export const getInputs = (formType: AuthFormType) => {
   if (formType === "signIn") {
     return [

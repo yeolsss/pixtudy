@@ -35,25 +35,25 @@ export const signUpHandler = async ({
  * @param string password - 로그인에 사용할 password (선택적 입력가능)
  * @param LoginPlatformType(string union) platform - 로그인 방식
  */
-export type LoginPlatformType = "email" | "google" | "kakao" | "github";
+export type SignInPlatformType = "email" | "google" | "kakao" | "github";
 
-interface LoginHandlerArgs {
+interface SignInHandlerArgs {
   email?: string;
   password?: string;
-  platform: LoginPlatformType;
+  platform: SignInPlatformType;
 }
 
-export const loginHandler = async ({
+export const signInHandler = async ({
   email,
   password,
   platform,
-}: LoginHandlerArgs) => {
-  let data, error;
+}: SignInHandlerArgs) => {
+  let error;
 
   switch (platform) {
     case "email":
       if (email && password)
-        ({ data, error } = await supabase.auth.signInWithPassword({
+        ({ error } = await supabase.auth.signInWithPassword({
           email,
           password,
         }));
@@ -61,7 +61,7 @@ export const loginHandler = async ({
     case "google":
     case "kakao":
     case "github":
-      ({ data, error } = await supabase.auth.signInWithOAuth({
+      ({ error } = await supabase.auth.signInWithOAuth({
         provider: platform,
         options: {
           queryParams: {

@@ -1,10 +1,9 @@
 import { useSignInUser, useSignUpUser } from "@/hooks/query/useSupabase";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { closeModal, openLoginModal } from "@/redux/modules/modalSlice";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { AuthFormType, getInputs } from "./utils/authUtils";
+import { AuthFormType, FormValues, getInputs } from "./utils/authUtils";
 import AuthInput from "./AuthInput";
 import styled from "styled-components";
 import SignInOptions from "./SignInOptions";
@@ -14,12 +13,12 @@ interface Props {
 }
 export default function AuthForm({ formType }: Props) {
   const signUp = useSignUpUser();
-  const dispatch = useAppDispatch();
   const signIn = useSignInUser();
   const router = useRouter();
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(
     formType === "signIn" ? true : false
   );
+  const isSaveLogin = useAppSelector((state) => state.authSlice.isSaveInfo);
 
   const handleOpenSignUpForm = () => {
     setIsSignUpFormOpen(true);
@@ -30,22 +29,33 @@ export default function AuthForm({ formType }: Props) {
     register,
     reset,
     watch,
+    setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormValues>({
     mode: "onChange",
   });
+
+  useEffect(() => {
+    const savedLogin = localStorage.getItem("saveLogin");
+    if (savedLogin) {
+      setValue("signIn_id", savedLogin);
+    }
+  }, [setValue]);
 
   const handleForm: SubmitHandler<FieldValues> = (values) => {
     if (formType === "signIn") {
       signIn(
         {
-          email: values.login_id,
-          password: values.login_pw,
+          email: values.signIn_id,
+          password: values.signIn_pw,
           platform: "email",
         },
         {
           onSuccess: () => {
             reset();
+            if (isSaveLogin)
+              localStorage.setItem("saveLogin", values.signIn_id);
+            else localStorage.removeItem("saveLogin");
             router.push("/dashboard");
           },
         }
@@ -61,8 +71,7 @@ export default function AuthForm({ formType }: Props) {
         {
           onSuccess: () => {
             reset();
-            dispatch(closeModal());
-            dispatch(openLoginModal());
+            router.push("/login");
           },
         }
       );
@@ -131,10 +140,10 @@ const StFormContainer = styled.form<{
         ? props.theme.color.text.interactive["secondary-pressed"]
         : props.theme.color.text.interactive.inverse};
     transition:
-      margin ease-in-out 0.5s,
-      border ease-in-out 0.5s,
-      background ease-in-out 0.5s,
-      color ease-in-out 0.5s;
+      margin ease-in-out 0.3s,
+      border ease-in-out 0.3s,
+      background ease-in-out 0.3s,
+      color ease-in-out 0.3s;
 
     &:hover {
       border-color: transparent;

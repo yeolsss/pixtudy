@@ -1,7 +1,7 @@
 import { getUserSessionHandler } from "@/api/supabase/auth";
 import { supabase } from "@/libs/supabase";
 import { useAppDispatch } from "@/hooks/useReduxTK";
-import { login, logout } from "@/redux/modules/authSlice";
+import { login, logout, setSaveLoginInfo } from "@/redux/modules/authSlice";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -21,7 +21,6 @@ export default function OnChangeUserSession() {
       if (event === "INITIAL_SESSION") {
         if (session) {
           await setUserSession();
-          // router.push("/dashboard");
         }
       } else if (event === "SIGNED_IN") {
         if (router.pathname === "/" && session) {
@@ -40,6 +39,11 @@ export default function OnChangeUserSession() {
         // 유저 정보 업데이트 시
       }
     });
+  }, []);
+
+  useEffect(() => {
+    console.log(localStorage.getItem("saveLogin"));
+    dispatch(setSaveLoginInfo(!!localStorage.getItem("saveLogin")));
   }, []);
   return <></>;
 }
