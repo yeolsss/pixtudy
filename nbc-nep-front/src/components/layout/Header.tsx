@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { StCTAButton } from "../common/commonStyles.styles";
 import ModalPortal from "../modal/ModalPortal";
 import LoginModal from "../modal/authModals/loginModal/LoginModal";
 import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
@@ -112,19 +113,5 @@ const StNavButton = styled.button`
     background-color: ${(props) => props.theme.color.bg.primary};
     color: ${(props) =>
       props.theme.color.text.interactive["secondary-pressed"]};
-  }
-`;
-
-const StCTAButton = styled.button`
-  display: block;
-  background-color: ${(props) => props.theme.color.bg.interactive.primary};
-  padding-top: ${(props) => props.theme.spacing[12]};
-  padding-bottom: ${(props) => props.theme.spacing[12]};
-  letter-spacing: var(--unit-2);
-  font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
-  color: ${(props) => props.theme.color.text.interactive.inverse};
-  &:hover {
-    background-color: ${(props) =>
-      props.theme.color.bg.interactive["primary-hovered"]};
   }
 `;
