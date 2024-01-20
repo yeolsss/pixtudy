@@ -2,10 +2,15 @@ import { useAppSelector } from "@/hooks/useReduxTK";
 import { Player } from "@/types/metaverse";
 import styled from "styled-components";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
+import { HandleOpenDmContainerPrams } from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 
 interface Props {
   player: Player;
-  handleOpenDmContainer: (id: string) => void;
+  handleOpenDmContainer: ({
+    otherUserId,
+    otherUserName,
+    otherUserAvatar,
+  }: HandleOpenDmContainerPrams) => void;
 }
 
 export default function MetaversePlayerCard({
@@ -14,21 +19,28 @@ export default function MetaversePlayerCard({
 }: Props) {
   const { id } = useAppSelector((state) => state.authSlice.user);
 
-  const { playerId, nickname, character } = player;
+  const {
+    playerId: otherUserId,
+    nickname: otherUserName,
+    character: otherUserAvatar,
+  } = player;
 
   const onClickDMMessageHandler = () => {
-    if (playerId !== id) {
-      handleOpenDmContainer(playerId);
+    if (otherUserId !== id) {
+      handleOpenDmContainer({
+        otherUserId,
+        otherUserName,
+        otherUserAvatar,
+      });
       return;
     }
-    console.log("자기 자신에게는 DM을 보낼 수 없습니다.");
   };
 
   return (
     <StMetaversePlayerCard onClick={onClickDMMessageHandler}>
       <div>
-        <MetaAvatar spaceAvatar={character} />
-        <span>{nickname}</span>
+        <MetaAvatar spaceAvatar={otherUserAvatar} />
+        <span>{otherUserName}</span>
       </div>
     </StMetaversePlayerCard>
   );

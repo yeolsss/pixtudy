@@ -1,4 +1,3 @@
-"use client";
 import MetaverseChatForm from "@/components/metaverse/metaverseChat/metaverseChatForm/MetaverseChatForm";
 import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseChatList/MetaverseChatList";
 import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";

@@ -1,26 +1,45 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
-import { useGetOtherUserInfo } from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { isCloseDm } from "@/redux/modules/dmSlice";
+import { setCloseDm } from "@/redux/modules/dmSlice";
 import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
 import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
+import { Tables } from "@/types/supabase";
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatHeader/MetaverseChatHeader";
 
 export default function MetaverseDmContainer() {
-  const { otherUserId } = useAppSelector((state) => state.dm);
+  const { otherUserId, spaceId, otherUserName, otherUserAvatar } =
+    useAppSelector((state) => state.dm);
   const dispatch = useAppDispatch();
+
+  // 현재 세션의 유저정보
+  const sessionUser = useAppSelector((state) => state.authSlice.user);
+  const { playerList } = usePlayerContext();
+  const currentPlayer = playerList.find(
+    (player) => player.playerId === sessionUser.id
+  );
+  let currentUser = { ...sessionUser };
+  if (sessionUser && currentPlayer) {
+    currentUser.display_name =
+      currentPlayer.nickname || sessionUser.display_name;
+  }
+
+  const otherUserInfo: Partial<Tables<"users">> = {
+    id: otherUserId,
+    display_name: otherUserName,
+  };
 
   // 메시지 정보를 저장하는 state
   const [messages, setMessages] = useState<getDmChannelMessagesReturns[]>([]);
   // 상대방 유저 정보
-  const otherUserInfo = useGetOtherUserInfo(otherUserId);
-
   // dm 채널 정보 custom hook
   const { connectChannel, currentDmChannel } = useDmChannel({
     otherUserInfo,
     setMessages,
+    currentUser,
   });
 
   // dm message 정보 custom hook
@@ -36,18 +55,23 @@ export default function MetaverseDmContainer() {
   }, [messages]);
 
   const handleCloseDmContainer = () => {
-    dispatch(isCloseDm());
+    dispatch(setCloseDm());
   };
 
   return (
     <StMetaverseDmChannel>
-      <button onClick={handleCloseDmContainer}>close</button>
+      <MetaverseChatHeader
+        title={otherUserName}
+        handler={handleCloseDmContainer}
+      />
       <StMessageWrapper ref={messageListRef}>
         {messages?.map((message) => (
           <StMessageCard key={message.id}>
-            <h3>{message.sender?.display_name}</h3>
+            <h3>
+              {message.sender_display_name || message.receiver_display_name}
+            </h3>
             <span>{message.message}</span>
-            <span>{message.created_at}</span>
+            {/*<span>{message.created_at}</span>*/}
           </StMessageCard>
         ))}
       </StMessageWrapper>
@@ -56,6 +80,7 @@ export default function MetaverseDmContainer() {
         setMessages={setMessages}
         otherUserInfo={otherUserInfo}
         connectChannel={connectChannel}
+        currentUser={currentUser}
       />
     </StMetaverseDmChannel>
   );

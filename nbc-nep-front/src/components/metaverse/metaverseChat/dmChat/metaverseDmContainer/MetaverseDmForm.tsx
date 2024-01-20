@@ -12,8 +12,9 @@ interface Props {
   setMessages: React.Dispatch<
     React.SetStateAction<getDmChannelMessagesReturns[]>
   >;
-  otherUserInfo: Tables<"users"> | null | undefined;
+  otherUserInfo: Partial<Tables<"users">> | null | undefined;
   connectChannel: (currentChannelId: string) => void;
+  currentUser: Tables<"users">;
 }
 
 export default function MetaverseDmForm({
@@ -21,10 +22,9 @@ export default function MetaverseDmForm({
   setMessages,
   otherUserInfo,
   connectChannel,
+  currentUser,
 }: Props) {
   const { otherUserId, spaceId } = useAppSelector((state) => state.dm);
-  // 현재 세션의 유저정보
-  const currentUser = useAppSelector((state) => state.authSlice.user);
 
   const sendMessage = useSendMessage();
 
@@ -60,6 +60,10 @@ export default function MetaverseDmForm({
                 dm_id: createdChannel.id,
                 id: "first_send",
                 message,
+                sender_id: currentUser.id,
+                sender_display_name: currentUser.display_name!,
+                receiver_display_name: otherUserInfo!.display_name!,
+                receiver_id: otherUserInfo!.id,
                 sender: currentUser,
                 receiver: otherUserInfo!,
               },

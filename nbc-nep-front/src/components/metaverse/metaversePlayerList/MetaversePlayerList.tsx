@@ -2,10 +2,21 @@ import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/meta
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";
-import { isOpenDm } from "@/redux/modules/dmSlice";
-import { setIsSomeSection } from "@/redux/modules/globalNavBarSlice";
+import { setIsOpenDm } from "@/redux/modules/dmSlice";
+import {
+  setIsCloseSomeSection,
+  setIsSomeSection,
+} from "@/redux/modules/globalNavBarSlice";
 import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
 import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
+import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatHeader/MetaverseChatHeader";
+import React from "react";
+
+export interface HandleOpenDmContainerPrams {
+  otherUserId: string;
+  otherUserName: string;
+  otherUserAvatar: string;
+}
 
 export default function MetaversePlayerList() {
   const dispatch = useAppDispatch();
@@ -17,7 +28,11 @@ export default function MetaversePlayerList() {
   const { spaceId } = usePlayerContext();
 
   // dm 채팅방 열기
-  const handleOpenDmContainer = (id: string) => {
+  const handleOpenDmContainer = ({
+    otherUserId,
+    otherUserName,
+    otherUserAvatar,
+  }: HandleOpenDmContainerPrams) => {
     const newIsSomeSection = {
       chatSection: true,
       settingsSection: false,
@@ -33,22 +48,35 @@ export default function MetaversePlayerList() {
     const newOpenDm = {
       isOpen: true,
       dmRoomId: "",
-      otherUserId: id,
+      otherUserId,
       spaceId,
+      otherUserName,
+      otherUserAvatar,
     };
-    dispatch(isOpenDm(newOpenDm));
+    dispatch(setIsOpenDm(newOpenDm));
+  };
+
+  const handleOnClickClosePlayerList = () => {
+    dispatch(setIsCloseSomeSection());
   };
 
   return (
     <>
       <StMetaversePlayerListWrapper $isOpenPlayerList={isOpenPlayerList}>
-        {playerList?.map((player) => (
-          <MetaversePlayerCard
-            key={player.playerId}
-            player={player}
-            handleOpenDmContainer={handleOpenDmContainer}
+        {isOpenPlayerList && (
+          <MetaverseChatHeader
+            title={"Player List"}
+            handler={handleOnClickClosePlayerList}
           />
-        ))}
+        )}
+        {isOpenPlayerList &&
+          playerList?.map((player) => (
+            <MetaversePlayerCard
+              key={player.playerId}
+              player={player}
+              handleOpenDmContainer={handleOpenDmContainer}
+            />
+          ))}
       </StMetaversePlayerListWrapper>
     </>
   );

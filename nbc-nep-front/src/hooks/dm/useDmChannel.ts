@@ -10,10 +10,11 @@ import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { useGetDmChannel } from "@/hooks/query/useSupabase";
 
 interface useDmChannelPrams {
-  otherUserInfo: Tables<"users"> | null | undefined;
+  otherUserInfo: Partial<Tables<"users">> | null | undefined;
   setMessages: React.Dispatch<
     React.SetStateAction<getDmChannelMessagesReturns[]>
   >;
+  currentUser: Tables<"users">;
 }
 
 interface useDmChannelReturns {
@@ -23,10 +24,12 @@ interface useDmChannelReturns {
 export default function useDmChannel({
   otherUserInfo,
   setMessages,
+  currentUser,
 }: useDmChannelPrams): useDmChannelReturns {
-  const { otherUserId, spaceId } = useAppSelector((state) => state.dm);
-  // 현재 세션의 유저정보
-  const currentUser = useAppSelector((state) => state.authSlice.user);
+  const { otherUserId, spaceId, otherUserName } = useAppSelector(
+    (state) => state.dm
+  );
+  useAppSelector((state) => state.dm);
   // 현재 구독중인 채널 정보
   const currentSubscribeChannel = useRef<RealtimeChannel | null>(null);
 
@@ -59,7 +62,7 @@ export default function useDmChannel({
   const newMessageInChannel = (
     payload: RealtimePostgresInsertPayload<Tables<"dm_messages">>
   ) => {
-    const newMessage = {
+    const newMessage: getDmChannelMessagesReturns = {
       id: payload.new.id,
       created_at: payload.new.created_at,
       dm_id: payload.new.dm_id,
@@ -68,11 +71,20 @@ export default function useDmChannel({
         currentUser.id === payload.new.receiver_id
           ? currentUser
           : otherUserInfo!,
+      sender_id:
+        currentUser?.id === payload.new.receiver_id
+          ? otherUserInfo?.id
+          : currentUser.id,
+      sender_display_name:
+        currentUser?.id === payload.new.receiver_id
+          ? otherUserName
+          : currentUser.display_name!,
       sender:
         currentUser.id === payload.new.receiver_id
           ? otherUserInfo!
           : currentUser,
     };
+
     setMessages((prev) => [...prev, newMessage]);
   };
 

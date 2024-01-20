@@ -1,4 +1,3 @@
-"use client";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";

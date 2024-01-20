@@ -9,7 +9,6 @@ interface UseDmMessageParams {
     React.SetStateAction<getDmChannelMessagesReturns[]>
   >;
 }
-interface UseDmMessageReturns {}
 export default function useDmMessage({
   currentDmChannel,
   setMessages,

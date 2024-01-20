@@ -44,8 +44,10 @@ export type DMListCard = {
   sender_id: string;
   sender_username: string;
   sender_avatar: string;
+  sender_display_name: string;
   receiver_id: string;
   receiver_username: string;
   receiver_avatar: string;
+  receiver_display_name: string;
   unread_count: number;
 };
