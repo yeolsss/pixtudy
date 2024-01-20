@@ -4,7 +4,7 @@ import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseCha
 import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";
-import MetaverseDmList from "@/components/metaverse/metaverseChat/metaverseDMList/MetaverseDMList";
+import MetaverseDmList from "@/components/metaverse/metaverseChat/dmChat/metaverseDMList/MetaverseDMList";
 
 export default function MetaverseChat() {
   const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
@@ -31,6 +31,7 @@ const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
   background-color: ${({ theme }) => theme.color.metaverse.secondary};
   display: flex;
   flex-direction: column;
+  max-height: 100vh;
   padding: ${({ theme, $isOpenChat }) =>
       $isOpenChat ? theme.spacing["24"] : "0"}
     ${({ theme, $isOpenChat }) => ($isOpenChat ? theme.spacing["20"] : "0")};

@@ -8,7 +8,7 @@ import { isOpenDm } from "@/redux/modules/dmSlice";
 interface Props {
   dm: DMListCard;
 }
-export default function MetaverseDmCard({ dm }: Props) {
+export default function MetaverseDMListCard({ dm }: Props) {
   const dispatch = useAppDispatch();
   const { id, spaceId } = usePlayerContext();
   const {

@@ -1,10 +1,10 @@
 import { useGetLastDMList } from "@/hooks/query/useSupabase";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import MetaverseDmCard from "@/components/metaverse/metaverseChat/metaverseDMCard/MetaverseDMCard";
+import MetaverseDMListCard from "@/components/metaverse/metaverseChat/dmChat/metaverseDMListCard/MetaverseDMListCard";
 import { useEffect } from "react";
 import { supabase } from "@/libs/supabase";
 import { useQueryClient } from "@tanstack/react-query";
-import MetaverseDmContainer from "@/components/metaverse/metaversePlayerList/metaverseDmContainer/MetaverseDmContainer";
+import MetaverseDmContainer from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmContainer";
 import { useAppSelector } from "@/hooks/useReduxTK";
 
 export default function MetaverseDmList() {
@@ -36,7 +36,9 @@ export default function MetaverseDmList() {
     <>
       {!isOpenDm ? (
         <div>
-          {dmList?.map((dm) => <MetaverseDmCard key={dm.message_id} dm={dm} />)}
+          {dmList?.map((dm) => (
+            <MetaverseDMListCard key={dm.message_id} dm={dm} />
+          ))}
         </div>
       ) : (
         <MetaverseDmContainer />
