@@ -1,7 +1,6 @@
 import SocialLogin from "@/components/auth/SocialLogin";
 import Link from "next/link";
 import React from "react";
-import styled from "styled-components";
 import * as St from "@/components/auth/styles/authCommon.styles";
 import AuthDivider from "@/components/auth/AuthDivider";
 import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
@@ -11,7 +10,7 @@ import AuthFooter from "@/components/auth/AuthFooter";
 
 export default function SignIn() {
   return (
-    <StSignInOuterContainer>
+    <St.AuthOuterContainer>
       <AuthHeroBanner formType="signIn" />
       <AuthFormContainer>
         <St.ChangeAuthPage>
@@ -24,12 +23,6 @@ export default function SignIn() {
         <AuthForm formType="signIn" />
         <AuthFooter />
       </AuthFormContainer>
-    </StSignInOuterContainer>
+    </St.AuthOuterContainer>
   );
 }
-
-const StSignInOuterContainer = styled.div`
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-`;

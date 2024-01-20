@@ -31,7 +31,8 @@ const StSignInOptions = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: ${(props) => props.theme.spacing["32"]} 0;
+  margin: ${(props) => props.theme.spacing["32"]} 0
+    ${(props) => props.theme.spacing["16"]} 0;
 
   & > section {
     display: flex;

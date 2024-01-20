@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const AuthOuterContainer = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+`;
+
 export const ChangeAuthPage = styled.span`
   position: absolute;
   top: ${(props) => props.theme.spacing["40"]};

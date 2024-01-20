@@ -15,6 +15,7 @@ export const StFormContainer = styled.div`
   align-items: center;
   width: 50%;
   background: ${(props) => props.theme.color.bg.secondary};
+  position: relative;
 
   & > div {
     padding-top: ${(props) => props.theme.spacing[118]};

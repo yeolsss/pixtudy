@@ -2,7 +2,7 @@ import { useSignInUser, useSignUpUser } from "@/hooks/query/useSupabase";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { closeModal, openLoginModal } from "@/redux/modules/modalSlice";
 import { useRouter } from "next/router";
-import React from "react";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { AuthFormType, getInputs } from "./utils/authUtils";
 import AuthInput from "./AuthInput";
@@ -17,6 +17,13 @@ export default function AuthForm({ formType }: Props) {
   const dispatch = useAppDispatch();
   const signIn = useSignInUser();
   const router = useRouter();
+  const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(
+    formType === "signIn" ? true : false
+  );
+
+  const handleOpenSignUpForm = () => {
+    setIsSignUpFormOpen(true);
+  };
 
   const {
     handleSubmit,
@@ -65,26 +72,12 @@ export default function AuthForm({ formType }: Props) {
   const inputs = getInputs(formType);
 
   return (
-    <StFormContainer onSubmit={handleSubmit(handleForm)} $formType={formType}>
-      {inputs?.map((input) => {
-        if (input.id === "signUp_check_pw") {
-          return (
-            <>
-              <AuthInput
-                key={input.id}
-                error={errors}
-                id={input.id}
-                placeholder={input.placeholder}
-                register={register}
-                type={input.type}
-                validate={input.validate}
-                watch={watch}
-              />
-              <span>영문, 숫자, 특수문자 포함 8~20자리를 입력해 주세요.</span>
-            </>
-          );
-        }
-        return (
+    <StFormContainer
+      onSubmit={handleSubmit(handleForm)}
+      $isOpen={isSignUpFormOpen}
+    >
+      <StInputContainer $isOpen={isSignUpFormOpen}>
+        {inputs?.map((input) => (
           <AuthInput
             key={input.id}
             error={errors}
@@ -95,31 +88,32 @@ export default function AuthForm({ formType }: Props) {
             validate={input.validate}
             watch={watch}
           />
-        );
-      })}
+        ))}
+      </StInputContainer>
 
       {formType === "signIn" && <SignInOptions />}
 
-      <button type="submit">
+      <button
+        type={formType === "signUp" && !isSignUpFormOpen ? "button" : "submit"}
+        onClick={
+          formType === "signUp" && !isSignUpFormOpen
+            ? handleOpenSignUpForm
+            : undefined
+        }
+      >
         {formType === "signIn" ? "로그인" : "이메일로 계정 만들기"}
       </button>
     </StFormContainer>
   );
 }
 
-const StFormContainer = styled.form<{ $formType: AuthFormType }>`
-  & > input + input {
-    margin-top: ${(props) => props.theme.spacing["16"]};
-    font-family: inherit;
-  }
-
-  & > input + span {
-    display: inline-block;
-    margin-top: ${(props) => props.theme.spacing["8"]};
-    margin-bottom: ${(props) => props.theme.spacing["16"]};
-  }
-
+const StFormContainer = styled.form<{
+  $isOpen: boolean;
+}>`
+  width: 100%;
   & > button {
+    margin-top: ${(props) =>
+      props.$isOpen ? props.theme.spacing["16"] : "0px"};
     width: 100%;
     font-family: var(--point-font);
     font-weight: bold;
@@ -127,16 +121,36 @@ const StFormContainer = styled.form<{ $formType: AuthFormType }>`
     height: ${(props) => props.theme.unit["56"]}px;
     border: 1px solid
       ${(props) =>
-        props.$formType === "signIn"
+        props.$isOpen
           ? props.theme.color.border.interactive["secondary-pressed"]
           : "transparent"};
     background: ${(props) =>
-      props.$formType === "signIn"
-        ? "transparent"
-        : props.theme.color.bg.brand};
+      props.$isOpen ? "transparent" : props.theme.color.bg.brand};
     color: ${(props) =>
-      props.$formType === "signIn"
+      props.$isOpen
         ? props.theme.color.text.interactive["secondary-pressed"]
         : props.theme.color.text.interactive.inverse};
+    transition:
+      margin ease-in-out 0.5s,
+      border ease-in-out 0.5s,
+      background ease-in-out 0.5s,
+      color ease-in-out 0.5s;
+  }
+`;
+
+const StInputContainer = styled.section<{ $isOpen: boolean }>`
+  max-height: ${(props) => (props.$isOpen ? "100%" : "0%")};
+  overflow-y: hidden;
+  transform-origin: top;
+  transform: ${(props) => (props.$isOpen ? "scaleY(1)" : "scaleY(0)")};
+  transition:
+    max-height ease-in-out 0.5s,
+    transform ease-in-out 0.3s;
+
+  width: 100%;
+
+  & > div + div {
+    margin-top: ${(props) => props.theme.spacing["16"]};
+    font-family: inherit;
   }
 `;
