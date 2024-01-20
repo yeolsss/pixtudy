@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import * as St from "@/components/auth/styles/authCommon.styles";
 import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
 import AuthFormContainer from "@/components/auth/AuthFormContainer";
@@ -8,7 +8,7 @@ import AuthForm from "@/components/auth/AuthForm";
 import AuthFooter from "@/components/auth/AuthFooter";
 import AuthDivider from "@/components/auth/AuthDivider";
 
-export default function index() {
+export function SignUp() {
   return (
     <St.AuthOuterContainer>
       <AuthFormContainer>
@@ -26,3 +26,9 @@ export default function index() {
     </St.AuthOuterContainer>
   );
 }
+
+SignUp.getLayout = function getLayout(page: ReactElement) {
+  return page;
+};
+
+export default SignUp;

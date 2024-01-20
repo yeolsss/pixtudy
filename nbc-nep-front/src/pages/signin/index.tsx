@@ -7,8 +7,9 @@ import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
 import AuthFormContainer from "@/components/auth/AuthFormContainer";
 import AuthForm from "@/components/auth/AuthForm";
 import AuthFooter from "@/components/auth/AuthFooter";
+import { ReactElement } from "react";
 
-export default function SignIn() {
+export function SignIn() {
   return (
     <St.AuthOuterContainer>
       <AuthHeroBanner formType="signIn" />
@@ -26,3 +27,9 @@ export default function SignIn() {
     </St.AuthOuterContainer>
   );
 }
+
+SignIn.getLayout = function getLayout(page: ReactElement) {
+  return page;
+};
+
+export default SignIn;

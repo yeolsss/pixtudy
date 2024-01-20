@@ -48,32 +48,32 @@ export const signInHandler = async ({
   password,
   platform,
 }: SignInHandlerArgs) => {
-  let error;
-
   switch (platform) {
     case "email":
-      if (email && password)
-        ({ error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        }));
-      break;
+      const { data: emailLoginData, error: emailLoginError } =
+        await supabase.auth.signInWithPassword({
+          email: email!,
+          password: password!,
+        });
+
+      if (emailLoginError) throw emailLoginError;
+      return emailLoginData;
     case "google":
     case "kakao":
     case "github":
-      ({ error } = await supabase.auth.signInWithOAuth({
-        provider: platform,
-        options: {
-          queryParams: {
-            access_type: "offline",
-            prompt: "consent",
+      const { data: oAuthLoginData, error: oAuthLoginError } =
+        await supabase.auth.signInWithOAuth({
+          provider: platform,
+          options: {
+            queryParams: {
+              access_type: "offline",
+              prompt: "consent",
+            },
           },
-        },
-      }));
-      break;
+        });
+      if (oAuthLoginError) throw oAuthLoginError;
+      return oAuthLoginData;
   }
-
-  if (error) throw error;
 };
 
 /**

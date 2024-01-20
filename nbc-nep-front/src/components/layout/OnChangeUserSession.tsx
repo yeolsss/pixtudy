@@ -1,7 +1,7 @@
 import { getUserSessionHandler } from "@/api/supabase/auth";
 import { supabase } from "@/libs/supabase";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { login, logout, setSaveLoginInfo } from "@/redux/modules/authSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { login, logout } from "@/redux/modules/authSlice";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -24,9 +24,9 @@ export default function OnChangeUserSession() {
             await setUserSession();
           }
         } else if (event === "SIGNED_IN") {
-          if (router.pathname === "/" && session) {
-            await router.push("/dashboard");
-            await setUserSession();
+          await setUserSession();
+          if (session?.user.app_metadata.provider !== "email") {
+            router.push("/dashboard");
           }
         } else if (event === "SIGNED_OUT") {
           // 로그아웃 시
@@ -46,9 +46,5 @@ export default function OnChangeUserSession() {
     };
   }, []);
 
-  // localstorage 저장된 로그인 정보 가져오기
-  useEffect(() => {
-    dispatch(setSaveLoginInfo(!!localStorage.getItem("saveLogin")));
-  }, []);
   return <></>;
 }

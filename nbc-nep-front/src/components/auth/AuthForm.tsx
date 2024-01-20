@@ -1,5 +1,5 @@
 import { useSignInUser, useSignUpUser } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import { AuthFormType, FormValues, getInputs } from "./utils/authUtils";
 import AuthInput from "./AuthInput";
 import styled from "styled-components";
 import SignInOptions from "./SignInOptions";
+import { setSaveLoginInfo } from "@/redux/modules/authSlice";
 
 interface Props {
   formType: AuthFormType;
@@ -19,6 +20,7 @@ export default function AuthForm({ formType }: Props) {
     formType === "signIn" ? true : false
   );
   const isSaveLogin = useAppSelector((state) => state.authSlice.isSaveInfo);
+  const dispatch = useAppDispatch();
 
   const handleOpenSignUpForm = () => {
     setIsSignUpFormOpen(true);
@@ -38,9 +40,12 @@ export default function AuthForm({ formType }: Props) {
   useEffect(() => {
     const savedLogin = localStorage.getItem("saveLogin");
     if (savedLogin) {
+      dispatch(setSaveLoginInfo(true));
       setValue("signIn_id", savedLogin);
+    } else {
+      dispatch(setSaveLoginInfo(false));
     }
-  }, [setValue]);
+  }, []);
 
   const handleForm: SubmitHandler<FieldValues> = (values) => {
     if (formType === "signIn") {
@@ -51,12 +56,16 @@ export default function AuthForm({ formType }: Props) {
           platform: "email",
         },
         {
-          onSuccess: () => {
-            reset();
-            if (isSaveLogin)
-              localStorage.setItem("saveLogin", values.signIn_id);
-            else localStorage.removeItem("saveLogin");
-            router.push("/");
+          onSuccess: (data) => {
+            console.log("로그인 성공");
+            if ("user" in data) {
+              if (isSaveLogin) {
+                localStorage.setItem("saveLogin", data.user.email!);
+              } else {
+                localStorage.removeItem("saveLogin");
+              }
+            }
+            router.push("/dashboard");
           },
         }
       );
