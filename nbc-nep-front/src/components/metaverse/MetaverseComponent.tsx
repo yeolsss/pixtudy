@@ -8,7 +8,7 @@ import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import VideoConference from "../video-conference/VideoConference";
-import PhaserSceneManager from "@/metaverse/scenes/PhaserSceneManager";
+import PhaserSceneManager from "@/metaverse/scenes/phaserSceneManager";
 
 const MetaverseComponent = () => {
   const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();
