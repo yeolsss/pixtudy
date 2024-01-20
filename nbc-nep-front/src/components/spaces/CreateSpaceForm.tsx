@@ -1,3 +1,4 @@
+import { FORM_CHARACTER } from "@/components/spaces/constants/constants";
 import { Dispatch, SetStateAction } from "react";
 import {
   FieldValues,
@@ -7,19 +8,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
-import { FORM_CHARACTER } from "@/components/spaces/constants/constants";
 import { Procedure, SpaceInfo } from "./types/space.types";
-
-/**
- * TODO:
- * 스페이스 생성할 때 ProfileFrom 컴포넌트도 가져와야 한다.
- * owner의 새 스페이스에서의 닉네임과 아바타를 설정할 수 있어야 하니까...
- * user flow :
- * 1. 스페이스 생성하기 버튼을 누른다.
- * 2. 스페이스 이름과 설명을 입력한다.
- * 3. 닉네임 과 아바타를 설정한다.
- * 3-1. 아바타를 설정하지 않으면 이전에 사용했던 아바타를 보여준다.
- */
 
 interface Props {
   setProcedure: Dispatch<SetStateAction<Procedure>>;

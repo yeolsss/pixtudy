@@ -1,6 +1,6 @@
 import { useGetOtherUserInfo } from "@/hooks/query/useSupabase";
 import { Dispatch, SetStateAction } from "react";
-import { FORM_CHARACTER } from "./constatns/constants";
+import { FORM_CHARACTER } from "./constants/constants";
 import { Procedure, SpaceInfo } from "./types/space.types";
 
 interface Props {

@@ -39,8 +39,6 @@ export default function InvitationCodeForm({
       return;
     }
     setSpaceInfo((prev) => ({ ...targetSpace }));
-    // setSpaceId(data.invitationCode);
-    // setOwnerId(targetSpace.owner);
   };
 
   const onInvitationCodeChange = (invitationCode: string) => {
