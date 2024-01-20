@@ -7,10 +7,8 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
-import {
-  Procedure,
-  SpaceInfo,
-} from "../modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
+import { FORM_CHARACTER } from "./constatns/constants";
+import { Procedure, SpaceInfo } from "./types/space.types";
 
 /**
  * TODO:
@@ -43,8 +41,8 @@ export default function CreateSpaceForm({
       title: data.spaceName,
       description: data.spaceDescription,
     };
-    setSpaceInfo((prev) => ({ ...spaceInfo }));
-    setProcedure("2");
+    setSpaceInfo(() => ({ ...spaceInfo }));
+    setProcedure(FORM_CHARACTER);
   };
 
   const fieldValues = [
@@ -82,9 +80,8 @@ export default function CreateSpaceForm({
     <StCreateSpaceForm onSubmit={handleSubmit(handleCreateSpaceSubmit)}>
       {fieldValues.map((fieldValue) =>
         fieldValue.type === "text" ? (
-          <>
+          <div key={fieldValue.name}>
             <input
-              key={fieldValue.name}
               type={fieldValue.type}
               placeholder={fieldValue.placeholder}
               {...fieldValue.register}
@@ -92,9 +89,9 @@ export default function CreateSpaceForm({
             {errors.spaceName && (
               <span>{errors.spaceName?.message as string}</span>
             )}
-          </>
+          </div>
         ) : (
-          <>
+          <div key={fieldValue.name}>
             <textarea
               key={fieldValue.name}
               placeholder={fieldValue.placeholder}
@@ -103,7 +100,7 @@ export default function CreateSpaceForm({
             {errors.spaceDescription && (
               <span>{errors.spaceDescription?.message as string}</span>
             )}
-          </>
+          </div>
         )
       )}
       <div>

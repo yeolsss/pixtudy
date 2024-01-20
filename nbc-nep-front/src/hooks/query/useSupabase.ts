@@ -75,15 +75,19 @@ export function useGetOtherUserInfo(otherUserId: string) {
 
 /* space */
 
-export function useCreateSpace() {
+export function useCreateSpace(
+  handleOnSuccess: (data: Tables<"spaces">) => void
+) {
   const client = useQueryClient();
+
   const {
     mutate: createSpace,
     isSuccess,
     isError,
   } = useMutation({
     mutationFn: createSpaceHandler,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      handleOnSuccess(data);
       client.invalidateQueries({ queryKey: ["userSpaces"] });
     },
     onError: (error) => {
@@ -107,12 +111,10 @@ export function useJoinSpace() {
   });
   return { joinSpace, isSuccess, isError };
 }
-// spaceId 로 스페이스를 조회하여 테이블 데이터를 가져온다.
-export function useGetSpace() {
-  const { mutate: validateSpace, isError } = useMutation({
-    mutationFn: getSpaceData,
-  });
-  return { validateSpace, isError };
+// spaceId 로 스페이스를 조회하여 테이블이 존재하는지 확인한다.
+export async function getSpace(spaceId: string) {
+  const space = await getSpaceData(spaceId);
+  return !!space;
 }
 
 // get current user spaces

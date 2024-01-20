@@ -1,4 +1,4 @@
-import { SpaceInfo } from "@/components/modal/spaceModals/createSpaceModal/CreateSpaceModalMainContainer";
+import { SpaceInfo } from "@/components/spaces/types/space.types";
 import { supabase } from "@/libs/supabase";
 import { Tables, TablesInsert } from "@/types/supabase";
 
@@ -10,11 +10,13 @@ export const createSpaceHandler = async (
     owner: spaceInfo.owner!,
     title: spaceInfo.title!,
   };
+
   const { data: spaceData, error } = await supabase
     .from("spaces")
     .insert(space)
     .select("*")
     .single();
+
   if (error) return Promise.reject(error);
 
   if (spaceData) {
