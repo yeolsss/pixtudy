@@ -6,7 +6,7 @@ import { supabase } from "@/supabase/supabase";
 import { useQueryClient } from "@tanstack/react-query";
 import MetaverseDmContainer from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmContainer";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatHeader/MetaverseChatHeader";
+import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import { setIsCloseSomeSection } from "@/redux/modules/globalNavBarSlice";
 import { setCloseDm } from "@/redux/modules/dmSlice";
 import { setCloseChat } from "@/redux/modules/chatTypeSlice";

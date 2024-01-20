@@ -1,5 +1,5 @@
-import { CurrentPlayer } from "@/metaverse/currentPlayer";
-import { OtherPlayersGroup } from "@/metaverse/otherPlayersGroup";
+import { CurrentPlayer } from "@/components/metaverse/libs/currentPlayer";
+import { OtherPlayersGroup } from "@/components/metaverse/libs/otherPlayersGroup";
 import { Player, Players } from "@/components/metaverse/types/metaverse";
 import Phaser from "phaser";
 import io, { Socket } from "socket.io-client";
@@ -14,9 +14,9 @@ const PLAYER_BODY_OFFSET_X = 0;
 const PLAYER_BODY_OFFSET_Y = 25;
 
 /**
- * CharacterScenes 클래스는 Phaser.Scene을 확장해서 게임 캐릭터의 동작을 관리한다.
+ * SceneClass 클래스는 Phaser.Scene을 확장해서 게임 캐릭터의 동작을 관리한다.
  */
-export class CharacterScenes extends Phaser.Scene {
+export class SceneClass extends Phaser.Scene {
   character?: CurrentPlayer;
   characterName?: Phaser.GameObjects.Text;
   otherPlayers?: OtherPlayersGroup;
@@ -27,7 +27,7 @@ export class CharacterScenes extends Phaser.Scene {
   isRunning: boolean = false;
 
   constructor(socket: Socket) {
-    super({ key: "CharacterScenes" });
+    super({ key: "SceneClass" });
     this.socket = socket;
   }
 

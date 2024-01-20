@@ -1,6 +1,6 @@
-import ModalHeader from "@/components/common/ModalHeader";
+import ModalHeader from "@/components/common/modal/ModalHeader";
 import ProfileForm from "@/components/spaces/ProfileForm";
-import { FORM_SPACE } from "@/components/spaces/constatns/constants";
+import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure } from "@/components/spaces/types/space.types";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { toggleJoinSpaceModal } from "@/redux/modules/modalSlice";

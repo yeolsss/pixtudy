@@ -1,5 +1,5 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import { Space_members } from "@/types/supabase.tables.type";
+import { Space_members } from "@/supabase/types/supabase.tables.type";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import SpaceCard from "./SpaceCard";

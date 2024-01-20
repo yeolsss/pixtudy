@@ -11,9 +11,9 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types/supabase";
 import AvatarInput from "./AvatarInput";
-import { FORM_SPACE } from "./constatns/constants";
+import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure, SpaceInfo, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {

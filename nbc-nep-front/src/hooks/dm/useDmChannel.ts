@@ -4,7 +4,7 @@ import {
   RealtimeChannel,
   RealtimePostgresInsertPayload,
 } from "@supabase/supabase-js";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types/supabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { useGetDmChannel } from "@/hooks/query/useSupabase";

@@ -23,7 +23,7 @@ import {
   getProducersByShareType,
   isAlreadyConsume,
   isEmptyTracks,
-} from "./lib/util";
+} from "@/components/video-conference/libs/util";
 import {
   AppData,
   ProducerForConsume,

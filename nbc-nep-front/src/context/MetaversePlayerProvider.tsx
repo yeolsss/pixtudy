@@ -2,7 +2,7 @@ import { getPlayerSpaceData } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { Player } from "@/components/metaverse/types/metaverse";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types/supabase";
 import { useRouter } from "next/router";
 import {
   createContext,

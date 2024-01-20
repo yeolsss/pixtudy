@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { StCTAButton } from "../common/commonStyles.styles";
+import { StCTAButton } from "../common/button/button.styles";
 import ModalPortal from "../modal/ModalPortal";
 import LoginModal from "../modal/authModals/loginModal/LoginModal";
 import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";

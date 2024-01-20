@@ -1,4 +1,4 @@
-import { TablesInsert } from "@/types/supabase";
+import { TablesInsert } from "@/supabase/types/supabase";
 
 export type FormSpace = "formSpace";
 

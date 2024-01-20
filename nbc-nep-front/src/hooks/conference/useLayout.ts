@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../useReduxTK";
-import { splitVideoSource } from "@/components/video-conference/lib/util";
+import { splitVideoSource } from "@/components/video-conference/libs/util";
 import { useEffect, useState } from "react";
 import { LayoutConsumersType } from "@/components/video-conference/types/ScreenShare.types";
 import { layoutClose } from "@/redux/modules/layoutSlice";

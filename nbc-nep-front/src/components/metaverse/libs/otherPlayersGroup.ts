@@ -1,4 +1,4 @@
-import { CurrentPlayer } from "@/metaverse/currentPlayer";
+import { CurrentPlayer } from "@/components/metaverse/libs/currentPlayer";
 import { Player } from "@/components/metaverse/types/metaverse";
 import Phaser from "phaser";
 

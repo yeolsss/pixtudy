@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
-import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseChatCard/MetaverseChatCard";
-import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatHeader/MetaverseChatHeader";
+import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatCard";
+import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { setCloseChat } from "@/redux/modules/chatTypeSlice";
 import { setIsCloseSomeSection } from "@/redux/modules/globalNavBarSlice";

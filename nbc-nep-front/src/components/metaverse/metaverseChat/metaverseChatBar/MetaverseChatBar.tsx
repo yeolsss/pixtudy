@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
 import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
-import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
+import { ChatType } from "@/components/metaverse/types/ChatType";
 
 export default function MetaverseChatBar() {
   const isOpenChatSection = useAppSelector(

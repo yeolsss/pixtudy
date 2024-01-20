@@ -1,4 +1,4 @@
-import { StCTALink } from "@/components/common/commonStyles.styles";
+import { StCTALink } from "@/components/common/button/button.styles";
 import Layout from "@/components/layout/Layout";
 import { ReactElement } from "react";
 import styled from "styled-components";

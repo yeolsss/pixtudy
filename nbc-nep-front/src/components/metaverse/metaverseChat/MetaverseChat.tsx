@@ -1,5 +1,5 @@
-import MetaverseChatForm from "@/components/metaverse/metaverseChat/metaverseChatForm/MetaverseChatForm";
-import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseChatList/MetaverseChatList";
+import MetaverseChatForm from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatForm";
+import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatList";
 import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";

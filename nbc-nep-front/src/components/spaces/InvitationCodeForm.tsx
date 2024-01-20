@@ -9,7 +9,7 @@ import {
   UseFormRegister,
   UseFormReset,
 } from "react-hook-form";
-import { FORM_CHARACTER } from "./constatns/constants";
+import { FORM_CHARACTER } from "@/components/spaces/constants/constants";
 import { Procedure } from "./types/space.types";
 
 interface Props {
