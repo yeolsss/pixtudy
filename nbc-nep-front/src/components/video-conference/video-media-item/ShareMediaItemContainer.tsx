@@ -1,13 +1,14 @@
-import useVideoSource from "@/hooks/conference/useVideoSource";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { Player } from "@/components/metaverse/types/metaverse";
-import styled from "styled-components";
-import ShareMediaItem from "../ShareMediaItem";
-import ShareScreenContainer from "../ShareScreenContainer";
 import {
+  getVideoSourcesExcludeAudio,
   isArrayEmpty,
   splitVideoSource,
 } from "@/components/video-conference/libs/util";
+import useVideoSource from "@/hooks/conference/useVideoSource";
+import { useAppSelector } from "@/hooks/useReduxTK";
+import styled from "styled-components";
+import ShareMediaItem from "../ShareMediaItem";
+import ShareScreenContainer from "../ShareScreenContainer";
 import { Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
@@ -27,7 +28,7 @@ export default function ShareMediaItemContainer({
   const layoutInfo = useAppSelector((state) => state.layoutSlice);
 
   const { producers } = useVideoSource();
-  const isEmptyProducers = isArrayEmpty(producers);
+  const isEmptyProducers = isArrayEmpty(getVideoSourcesExcludeAudio(producers));
 
   const findPlayer = (playerId: string) =>
     playerList.find((player) => player.playerId === playerId);
@@ -51,6 +52,7 @@ export default function ShareMediaItemContainer({
               nickname={currentPlayer?.nickname || ""}
               key={producer.id}
               videoSource={producer}
+              isCurrentPlayer={true}
             />
           ))}
           {!isEmptyScreenProducers && (

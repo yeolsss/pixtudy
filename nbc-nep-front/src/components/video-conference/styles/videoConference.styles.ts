@@ -1,9 +1,11 @@
 import { StPositionRelative } from "@/components/common/button/button.styles";
 import styled from "styled-components";
 
-export const StShareMediaItem = styled(StPositionRelative)`
-  width: ${(props) => props.theme.video.width};
-  height: ${(props) => props.theme.video.height};
+export const StShareMediaItem = styled(StPositionRelative)<{
+  $isAudio: boolean;
+}>`
+  width: ${(props) => (props.$isAudio ? 0 : props.theme.video.width)};
+  height: ${(props) => (props.$isAudio ? 0 : props.theme.video.height)};
 
   background-color: #27262e;
 

@@ -1,13 +1,14 @@
-import useVideoSource from "@/hooks/conference/useVideoSource";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { layoutOpen } from "@/redux/modules/layoutSlice";
 import { Player } from "@/components/metaverse/types/metaverse";
-import { useRef } from "react";
-import ShareMediaItem from "../ShareMediaItem";
 import {
+  getVideoSourcesExcludeAudio,
   isArrayEmpty,
   splitVideoSource,
 } from "@/components/video-conference/libs/util";
+import useVideoSource from "@/hooks/conference/useVideoSource";
+import { useAppDispatch } from "@/hooks/useReduxTK";
+import { layoutOpen } from "@/redux/modules/layoutSlice";
+import { useRef } from "react";
+import ShareMediaItem from "../ShareMediaItem";
 import {
   SPACING,
   StStackItem,
@@ -35,7 +36,9 @@ export default function OtherPlayerShareMediaItem({
     (consumer) => consumer.appData.playerId === player.playerId
   );
 
-  const isEmptyConsumers = isArrayEmpty(filteredConsumers);
+  const isEmptyConsumers = isArrayEmpty(
+    getVideoSourcesExcludeAudio(filteredConsumers)
+  );
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
   const isEmptyScreenConsumers = isArrayEmpty(screenConsumers);
@@ -63,6 +66,7 @@ export default function OtherPlayerShareMediaItem({
               key={consumer.id}
               nickname={player.nickname}
               videoSource={consumer}
+              isCurrentPlayer={false}
             />
           ))}
           {!isEmptyScreenConsumers && (
