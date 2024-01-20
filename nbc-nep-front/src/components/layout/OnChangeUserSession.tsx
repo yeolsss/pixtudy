@@ -17,32 +17,37 @@ export default function OnChangeUserSession() {
   /* 로그인 상태를 tracking*/
   useEffect(() => {
     // let currentSession = await supabase.auth.getSession();
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "INITIAL_SESSION") {
-        if (session) {
-          await setUserSession();
+    const trackingAuth = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === "INITIAL_SESSION") {
+          if (session) {
+            await setUserSession();
+          }
+        } else if (event === "SIGNED_IN") {
+          if (router.pathname === "/" && session) {
+            await router.push("/dashboard");
+            await setUserSession();
+          }
+        } else if (event === "SIGNED_OUT") {
+          // 로그아웃 시
+          dispatch(logout());
+          await router.push("/");
+        } else if (event === "PASSWORD_RECOVERY") {
+          // 비밀번호 찾기 페이지 들어갈 시
+        } else if (event === "TOKEN_REFRESHED") {
+          // 리프레시 토큰 작동시
+        } else if (event === "USER_UPDATED") {
+          // 유저 정보 업데이트 시
         }
-      } else if (event === "SIGNED_IN") {
-        if (router.pathname === "/" && session) {
-          await setUserSession();
-          await router.push("/dashboard");
-        }
-      } else if (event === "SIGNED_OUT") {
-        // 로그아웃 시
-        dispatch(logout());
-        await router.push("/");
-      } else if (event === "PASSWORD_RECOVERY") {
-        // 비밀번호 찾기 페이지 들어갈 시
-      } else if (event === "TOKEN_REFRESHED") {
-        // 리프레시 토큰 작동시
-      } else if (event === "USER_UPDATED") {
-        // 유저 정보 업데이트 시
       }
-    });
+    );
+    return () => {
+      trackingAuth.data.subscription.unsubscribe();
+    };
   }, []);
 
+  // localstorage 저장된 로그인 정보 가져오기
   useEffect(() => {
-    console.log(localStorage.getItem("saveLogin"));
     dispatch(setSaveLoginInfo(!!localStorage.getItem("saveLogin")));
   }, []);
   return <></>;

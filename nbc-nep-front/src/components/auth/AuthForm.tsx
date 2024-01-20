@@ -56,7 +56,7 @@ export default function AuthForm({ formType }: Props) {
             if (isSaveLogin)
               localStorage.setItem("saveLogin", values.signIn_id);
             else localStorage.removeItem("saveLogin");
-            router.push("/dashboard");
+            router.push("/");
           },
         }
       );

@@ -22,7 +22,7 @@ export default function Header() {
   };
 
   const handleToDashboard = () => {
-    router.push("/");
+    router.push("/dashboard");
   };
 
   const loginModeButton = [
