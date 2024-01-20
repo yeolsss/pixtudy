@@ -1,4 +1,4 @@
-import { LoginPlatformType } from "@/api/supabase/auth";
+import { SignInPlatformType } from "@/api/supabase/auth";
 import { useSignInUser } from "@/hooks/query/useSupabase";
 import Image from "next/image";
 import styled from "styled-components";
@@ -16,7 +16,7 @@ interface Props {
 export default function SocialLogin({ subText }: Props) {
   const signIn = useSignInUser();
 
-  const handleSocialLogin = (platform: LoginPlatformType) => {
+  const handleSocialLogin = (platform: SignInPlatformType) => {
     signIn({ platform });
   };
 
@@ -29,7 +29,7 @@ export default function SocialLogin({ subText }: Props) {
             <button
               key={btn.platform}
               onClick={() =>
-                handleSocialLogin(btn.platform as LoginPlatformType)
+                handleSocialLogin(btn.platform as SignInPlatformType)
               }
             >
               <Image src={btn.icon} alt="" />
