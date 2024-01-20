@@ -1,4 +1,4 @@
-import { Player, PlayerState } from "@/types/metaverse";
+import { Player, PlayerState } from "@/components/metaverse/types/metaverse";
 import styled from "styled-components";
 import StBadge from "../common/badge/Badge";
 import BadgeWrapper from "../common/badge/BadgeWrapper";

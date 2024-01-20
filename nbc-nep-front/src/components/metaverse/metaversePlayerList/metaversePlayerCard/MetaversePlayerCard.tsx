@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { Player } from "@/types/metaverse";
+import { Player } from "@/components/metaverse/types/metaverse";
 import styled from "styled-components";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import { HandleOpenDmContainerPrams } from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";

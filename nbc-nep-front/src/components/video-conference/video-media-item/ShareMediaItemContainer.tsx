@@ -1,6 +1,6 @@
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { Player } from "@/types/metaverse";
+import { Player } from "@/components/metaverse/types/metaverse";
 import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
 import ShareScreenContainer from "../ShareScreenContainer";

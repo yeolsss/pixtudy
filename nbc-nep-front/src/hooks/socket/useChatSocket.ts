@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
-import { Chat } from "@/types/metaverse";
+import { Chat } from "@/components/metaverse/types/metaverse";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 
 export default function useChatSocket(playerDisplayName: string | null = "") {

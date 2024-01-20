@@ -1,5 +1,5 @@
 import { SpaceInfo } from "@/components/spaces/types/space.types";
-import { supabase } from "@/libs/supabase";
+import { supabase } from "@/supabase/supabase";
 import { Tables, TablesInsert } from "@/types/supabase";
 
 export const createSpaceHandler = async (

@@ -1,6 +1,6 @@
 import { CurrentPlayer } from "@/metaverse/currentPlayer";
 import { OtherPlayersGroup } from "@/metaverse/otherPlayersGroup";
-import { Player, Players } from "@/types/metaverse";
+import { Player, Players } from "@/components/metaverse/types/metaverse";
 import Phaser from "phaser";
 import io, { Socket } from "socket.io-client";
 

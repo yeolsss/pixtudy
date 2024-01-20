@@ -2,7 +2,7 @@ import { useGetLastDMList } from "@/hooks/query/useSupabase";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import MetaverseDMListCard from "@/components/metaverse/metaverseChat/dmChat/metaverseDMListCard/MetaverseDMListCard";
 import React, { useEffect } from "react";
-import { supabase } from "@/libs/supabase";
+import { supabase } from "@/supabase/supabase";
 import { useQueryClient } from "@tanstack/react-query";
 import MetaverseDmContainer from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmContainer";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
