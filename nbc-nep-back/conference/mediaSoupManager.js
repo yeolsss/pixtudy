@@ -86,10 +86,32 @@ function getTransportParams(transport) {
   };
 }
 
+async function getTransportStats(transport, key) {
+  try {
+    if (!transport || !key) throw new Error("transport or key is null");
+
+    return await transport.getStats()[key];
+  } catch (error) {
+    console.error("getTransportStats error:", error);
+  }
+}
+
+async function connectTransport(transport, dtlsParameters) {
+  try {
+    if (getTransportStats(transport, "dtlsState") === "connected") return;
+
+    transport.connect({ dtlsParameters });
+  } catch (error) {
+    console.error(`while connect ${eventType} transport error:`, error);
+  }
+}
+
 module.exports = {
   createWorker,
   createWebRtcTransport,
   getRtcCapabilities,
   getTransportParams,
   isCanConsumeWithRouter,
+  getTransportStats,
+  connectTransport,
 };

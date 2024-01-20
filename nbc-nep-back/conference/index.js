@@ -7,6 +7,8 @@ const {
   getRtcCapabilities,
   getTransportParams,
   isCanConsumeWithRouter,
+  getTransportStats,
+  connectTransport,
 } = require("./mediaSoupManager");
 
 (async function () {
@@ -59,14 +61,16 @@ module.exports = function (io) {
       }
     });
 
-    socket.on("transport-send-connect", ({ dtlsParameters, playerId }) => {
-      const client = clients[playerId];
-      try {
-        client[SEND_TRANSPORT_KEY].connect({ dtlsParameters });
-      } catch (error) {
-        console.error("while connect send transport error:", error);
+    socket.on(
+      "transport-send-connect",
+      async ({ dtlsParameters, playerId }) => {
+        handleConnectTransport(
+          clients[playerId],
+          SEND_TRANSPORT_KEY,
+          dtlsParameters
+        );
       }
-    });
+    );
 
     socket.on(
       "transport-send-produce",
@@ -95,12 +99,11 @@ module.exports = function (io) {
     );
 
     socket.on("transport-recv-connect", ({ dtlsParameters, playerId }) => {
-      const client = clients[playerId];
-      try {
-        client[RECV_TRANSPORT_KEY].connect({ dtlsParameters });
-      } catch (error) {
-        console.error("while connect recv transport error:", error);
-      }
+      handleConnectTransport(
+        clients[playerId],
+        RECV_TRANSPORT_KEY,
+        dtlsParameters
+      );
     });
 
     // transport-recv-consume
@@ -221,4 +224,16 @@ module.exports = function (io) {
 
 function setTransport(client, transport, type) {
   client[type] = transport;
+}
+
+function handleConnectTransport(client, transportKey, dtlsParameters) {
+  try {
+    if (!client || !client[transportKey])
+      throw new Error("client or transport is null");
+
+    const transport = client[transportKey];
+    connectTransport(transport, dtlsParameters);
+  } catch (error) {
+    console.error("while connect transport error:", error);
+  }
 }
