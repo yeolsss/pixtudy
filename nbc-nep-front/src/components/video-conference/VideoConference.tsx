@@ -18,11 +18,12 @@ import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
+import { videoParams } from "./constants/constants";
 import {
   getProducersByShareType,
   isAlreadyConsume,
   isEmptyTracks,
-} from "./lib/util";
+} from "@/components/video-conference/libs/util";
 import {
   AppData,
   ProducerForConsume,
@@ -47,6 +48,7 @@ export default function VideoConference() {
     addProducer,
     removeConsumer,
     removeProducer,
+    isCanShare,
   } = useVideoSource();
 
   const {
@@ -260,13 +262,6 @@ export default function VideoConference() {
     }
   }
 
-  function isCanShare() {
-    return (
-      producers.filter((producer) => producer.appData.shareType === "screen")
-        .length < 3
-    );
-  }
-
   const screenCount = getProducersByShareType(producers, "screen").length;
 
   return (
@@ -305,44 +300,16 @@ export default function VideoConference() {
           stopShareSvg={MicOff}
         />
       </StDockContainer>
-      <StMediaItemWrapper>
-        {playerList.length !== 0 && (
-          <ShareMediaItemContainer
-            handleShareStopProducer={handleShareStopProducer}
-            // consumers={consumers}
-            // producers={producers}
-            playerList={playerList}
-            currentPlayerId={currentPlayerId}
-          />
-        )}
-      </StMediaItemWrapper>
+      {playerList.length !== 0 && (
+        <ShareMediaItemContainer
+          handleShareStopProducer={handleShareStopProducer}
+          playerList={playerList}
+          currentPlayerId={currentPlayerId}
+        />
+      )}
     </>
   );
 }
-
-const videoParams = {
-  // mediasoup params
-  encodings: [
-    {
-      rid: "r0",
-      maxBitrate: 100000,
-      scalabilityMode: "S1T3",
-    },
-    {
-      rid: "r1",
-      maxBitrate: 300000,
-      scalabilityMode: "S1T3",
-    },
-    {
-      rid: "r2",
-      maxBitrate: 900000,
-      scalabilityMode: "S1T3",
-    },
-  ],
-  codecOptions: {
-    videoGoogleStartBitrate: 1000,
-  },
-};
 
 const StDockContainer = styled.div`
   position: absolute;
@@ -363,13 +330,4 @@ const StDockContainer = styled.div`
 
   gap: 15px;
   width: 465px;
-`;
-const StMediaItemWrapper = styled.div`
-  position: absolute;
-
-  right: 20px;
-  top: 0px;
-
-  display: flex;
-  flex-direction: column;
 `;

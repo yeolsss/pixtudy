@@ -12,14 +12,19 @@ import {
   getLastDmMessageList,
   getSpaceUsers,
   getUserSpaces,
+  readDmMessage,
   sendMessage,
   sendMessageArgs,
 } from "@/api/supabase/dm";
-import { getSpaceData, joinSpaceHandler } from "@/api/supabase/space";
+import {
+  createSpaceHandler,
+  getSpaceData,
+  joinSpaceHandler,
+} from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
-import { Database, Tables } from "@/types/supabase";
-import { Space_members } from "@/types/supabase.tables.type";
-import { useMutation } from "@tanstack/react-query";
+import { Database, Tables } from "@/supabase/types/supabase";
+import { Space_members } from "@/supabase/types/supabase.tables.type";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "../useReduxTK";
 
 /* Auth */
@@ -69,6 +74,29 @@ export function useGetOtherUserInfo(otherUserId: string) {
 }
 
 /* space */
+
+export function useCreateSpace(
+  handleOnSuccess: (data: Tables<"spaces">) => void
+) {
+  const client = useQueryClient();
+
+  const {
+    mutate: createSpace,
+    isSuccess,
+    isError,
+  } = useMutation({
+    mutationFn: createSpaceHandler,
+    onSuccess: (data) => {
+      handleOnSuccess(data);
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+    },
+    onError: (error) => {
+      console.error("createSpaceError: ", error);
+    },
+  });
+  return { createSpace, isSuccess, isError };
+}
+
 // insert userData to space_members
 export function useJoinSpace() {
   const {
@@ -83,12 +111,10 @@ export function useJoinSpace() {
   });
   return { joinSpace, isSuccess, isError };
 }
-// spaceId 로 스페이스를 조회하여 테이블 데이터를 가져온다.
-export function useGetSpace() {
-  const { mutate: validateSpace, isError } = useMutation({
-    mutationFn: getSpaceData,
-  });
-  return { validateSpace, isError };
+// spaceId 로 스페이스를 조회하여 테이블이 존재하는지 확인한다.
+export async function getSpace(spaceId: string) {
+  const space = await getSpaceData(spaceId);
+  return !!space;
 }
 
 // get current user spaces
@@ -125,8 +151,7 @@ export function useGetDmChannel({
     queryFn: () => checkDmChannel({ receiverId, currentUserId, spaceId }),
     enabled: !!currentUserId,
   };
-  const data = useCustomQuery<string | null, Error>(getDmChannelOptions);
-  return data;
+  return useCustomQuery<string | null, Error>(getDmChannelOptions);
 }
 
 // Dm채널 유무 확인 후 기존 메시지 가져오기
@@ -180,4 +205,16 @@ export function useGetLastDMList(spaceId: string, userId: string) {
     Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"],
     Error
   >(queryOptions);
+}
+
+export function useReadDMMessage() {
+  const queryClient = useQueryClient();
+  const { mutate, isError, isPending } = useMutation({
+    mutationFn: readDmMessage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lastDMList"] });
+    },
+  });
+
+  return { mutate, isError, isPending };
 }

@@ -1,6 +1,6 @@
-import { supabase } from "@/libs/supabase";
-import { Tables } from "@/types/supabase";
-import { Space_members } from "@/types/supabase.tables.type";
+import { supabase } from "@/supabase/supabase";
+import { Tables } from "@/supabase/types/supabase";
+import { Space_members } from "@/supabase/types/supabase.tables.type";
 
 import { getUserSessionHandler } from "./auth";
 
@@ -67,28 +67,62 @@ export const checkDmChannel = async ({
   return dm_channel.data?.length ? dm_channel.data[0].id : null;
 };
 
-/**
- * 상대 유저 DM 채널에 따른 기존 메시지 가져오기
- * @param string|null dmChannel - 기존 메시지를 확인하기 위한 채널 id, 기존에 생성된 channel이 없다면 null
- * @returns getDmChannelMessagesReturns[]|[] 채널이 이미 있었다면 메시지 정보를 담은 배열, 없었다면 빈 배열
- */
 export interface getDmChannelMessagesReturns {
   id: string;
   created_at: string;
   dm_id: string;
   message: string;
-  sender: Tables<"users">;
-  receiver: Tables<"users">;
+  sender?: Partial<Tables<"users">>;
+  receiver?: Partial<Tables<"users">>;
+  sender_id?: string;
+  sender_display_name?: string;
+  receiver_id?: string;
+  receiver_display_name?: string;
 }
 
-export const getDmChannelMessages = async (dmChannel: string | null) => {
+/**
+ * 상대 유저 DM 채널에 따른 기존 메시지 가져오기
+ * @param string|null dmChannel - 기존 메시지를 확인하기 위한 채널 id, 기존에 생성된 channel이 없다면 null
+ * @returns getDmChannelMessagesReturns[]|[] 채널이 이미 있었다면 메시지 정보를 담은 배열, 없었다면 빈 배열
+ */
+/*export const getDmChannelMessages = async (dmChannel: string | null) => {
   // 채팅방이 없을 때는 빈배열 반환
   if (!dmChannel) return [];
   const channelMessages = await supabase.rpc("get_dm_channel_messages", {
     p_dm_channel: dmChannel,
   });
   return channelMessages.data as getDmChannelMessagesReturns[];
+};*/
+
+interface DmMessage {
+  id: string;
+  created_at: string;
+  dm_id: string;
+  receiver_id: string;
+  receiver_display_name: string;
+  message: string;
+  sender_id: string;
+  sender_display_name: string;
+}
+
+export const getDmChannelMessages = async (
+  dmChannel: string | null
+): Promise<getDmChannelMessagesReturns[]> => {
+  // 채팅방이 없을 때는 빈배열 반환
+  if (!dmChannel) return [];
+  const channelMessages = await supabase
+    .rpc("get_dm_channel_messages_test", {
+      p_dm_channel: dmChannel,
+    })
+    .returns<getDmChannelMessagesReturns[]>();
+  return channelMessages.data as getDmChannelMessagesReturns[];
 };
+
+interface createDmChannelArgs {
+  spaceId: string;
+  currentUserId: string;
+  receiverId: string;
+}
 
 /**
  * dm 채널을 supabase 상에 등록하는 로직
@@ -97,12 +131,6 @@ export const getDmChannelMessages = async (dmChannel: string | null) => {
  * @param string receiverId - 등록할 상대방 유저의 id;
  * @return table <dm_channels>
  */
-interface createDmChannelArgs {
-  spaceId: string;
-  currentUserId: string;
-  receiverId: string;
-}
-
 const createDmChannel = async ({
   spaceId,
   currentUserId,
@@ -122,6 +150,14 @@ const createDmChannel = async ({
   return newDmChannel;
 };
 
+export interface sendMessageArgs {
+  currentDmChannel: string | null;
+  message: string;
+  receiverId: string;
+  spaceId: string;
+  currentUserId: string;
+}
+
 /**
  * DM 메시지를 보내는 함수
  * 조건부 처리
@@ -136,13 +172,6 @@ const createDmChannel = async ({
  * @param string currentUserId - 현재 세션의 유저 id (sender)
  * @returns table <dm_channels> - 기존에 dm channel이 없어 생성한 경우에만 반환 (조건부)
  */
-export interface sendMessageArgs {
-  currentDmChannel: string | null;
-  message: string;
-  receiverId: string;
-  spaceId: string;
-  currentUserId: string;
-}
 export const sendMessage = async ({
   currentDmChannel,
   message,
@@ -188,4 +217,18 @@ export const getLastDmMessageList = async (spaceId: string, userId: string) => {
 
   if (error) console.error("Error fetching messages:", error);
   else return data;
+};
+
+interface ReadDmMessage {
+  roomId: string;
+  receiverId: string;
+}
+export const readDmMessage = async ({ roomId, receiverId }: ReadDmMessage) => {
+  const { error } = await supabase
+    .from("dm_messages")
+    .update({ checked: "R" })
+    .eq("dm_id", roomId)
+    .eq("receiver_id", receiverId)
+    .select();
+  if (error) throw new Error(error.message);
 };

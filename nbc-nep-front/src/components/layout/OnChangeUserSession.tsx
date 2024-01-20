@@ -1,7 +1,7 @@
 import { getUserSessionHandler } from "@/api/supabase/auth";
-import { supabase } from "@/libs/supabase";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { useAppDispatch } from "@/hooks/useReduxTK";
 import { login, logout } from "@/redux/modules/authSlice";
+import { supabase } from "@/supabase/supabase";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -16,7 +16,6 @@ export default function OnChangeUserSession() {
 
   /* 로그인 상태를 tracking*/
   useEffect(() => {
-    // let currentSession = await supabase.auth.getSession();
     const trackingAuth = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === "INITIAL_SESSION") {

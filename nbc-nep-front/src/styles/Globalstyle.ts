@@ -138,6 +138,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   :root {
+    --user-counter: #15e42a;
     --color-blue-50: #eff6ff;
     --color-blue-100: #dbeafe;
     --color-blue-200: #bfdbfe;
@@ -424,6 +425,9 @@ const GlobalStyle = styled.createGlobalStyle`
     --state-eating: #ffa047;
     --state-left-seat: #858585;
     --state-disturb: #ee3e3e;
+
+    --video-width: 175px;
+    --video-height: 130px;
   }
 
   * {
@@ -439,9 +443,12 @@ const GlobalStyle = styled.createGlobalStyle`
     min-width: 100%;
   }
 
-  header,
-  section {
+  header {
     max-width: 1200px;
+    margin: 0 auto;
+  }
+  main > section {
+    max-width: 1280px;
     margin: 0 auto;
   }
 
@@ -451,7 +458,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   input {
-    height: ${(props) => props.theme.unit[48]};
+    height: ${(props) => props.theme.unit[48]}px;
     border-radius: ${(props) => props.theme.border.radius[8]};
     border: 1px solid #d9d9d9;
     padding: ${(props) => props.theme.spacing[16]};
@@ -470,15 +477,18 @@ const GlobalStyle = styled.createGlobalStyle`
     color: ${(props) =>
       props.theme.color.text.interactive["secondary-pressed"]};
     background-color: ${(props) => props.theme.color.base.white};
-    font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
+    font-family: var(--sub-font);
+    font-weight: ${(props) => props.theme.body.lg.semibold.fontWeight};
     cursor: pointer;
 
     &:hover {
-      background-color: ${(props) => props.theme.color.bg["info-bold"]};
+      background-color: ${(props) =>
+        props.theme.color.bg.interactive["primary-hovered"]};
       color: ${(props) => props.theme.color.base.white};
     }
   }
   #__next {
+    height: 100vh;
   }
 `;
 

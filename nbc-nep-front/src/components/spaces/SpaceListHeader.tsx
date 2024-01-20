@@ -1,30 +1,56 @@
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { openJoinSpaceModal } from "@/redux/modules/modalSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import {
+  toggleCreateSpaceModal,
+  toggleJoinSpaceModal,
+} from "@/redux/modules/modalSlice";
 import styled from "styled-components";
+import ModalPortal from "../modal/ModalPortal";
+import CreateSpaceModal from "../modal/spaceModals/createSpaceModal/CreateSpaceModal";
+import JoinSpaceModal from "../modal/spaceModals/joinSpaceModal/JoinSpaceModal";
 import SpaceSearchForm from "./SpaceSearchForm";
 
 export default function SpaceListHeader() {
   const dispatch = useAppDispatch();
 
+  const { isCreateSpaceModalOpen, isJoinSpaceModalOpen } = useAppSelector(
+    (state) => state.modalSlice
+  );
+
   const handleOpenJoinSpaceModal = () => {
-    dispatch(openJoinSpaceModal());
+    dispatch(toggleJoinSpaceModal());
   };
-  const handleOpenCreateSpaceModal = () => {};
+  const handleOpenCreateSpaceModal = () => {
+    dispatch(toggleCreateSpaceModal());
+  };
 
   return (
-    <StHeaderWrapper>
-      <StNavContainer>
-        <button>최근 방문</button>
-        <button>나의 스페이스</button>
-      </StNavContainer>
-      <StButtonContainer>
-        <SpaceSearchForm />
-        <button onClick={handleOpenCreateSpaceModal}>
-          새로운 스페이스 만들기
-        </button>
-        <button onClick={handleOpenJoinSpaceModal}>초대 코드로 입장하기</button>
-      </StButtonContainer>
-    </StHeaderWrapper>
+    <>
+      <StHeaderWrapper>
+        <StNavContainer>
+          <button>최근 방문</button>
+          <button>나의 스페이스</button>
+        </StNavContainer>
+        <StButtonContainer>
+          <SpaceSearchForm />
+          <button onClick={handleOpenCreateSpaceModal}>
+            새로운 스페이스 만들기
+          </button>
+          <button onClick={handleOpenJoinSpaceModal}>
+            초대 코드로 입장하기
+          </button>
+        </StButtonContainer>
+      </StHeaderWrapper>
+      {isJoinSpaceModalOpen && (
+        <ModalPortal>
+          <JoinSpaceModal />
+        </ModalPortal>
+      )}
+      {isCreateSpaceModalOpen && (
+        <ModalPortal>
+          <CreateSpaceModal />
+        </ModalPortal>
+      )}
+    </>
   );
 }
 const StHeaderWrapper = styled.div`
@@ -34,7 +60,7 @@ const StHeaderWrapper = styled.div`
   gap: ${(props) => props.theme.spacing[16]};
   padding: 0 ${(props) => props.theme.spacing[16]};
   button {
-    height: ${(props) => props.theme.unit[48]};
+    height: ${(props) => props.theme.unit[48]}px;
     padding-top: ${(props) => props.theme.spacing[12]};
     padding-bottom: ${(props) => props.theme.spacing[12]};
     padding-right: ${(props) => props.theme.spacing[24]};

@@ -41,17 +41,17 @@ const conferenceSlice = createSlice({
       state.consumers.push(consumer);
     },
     removeConsumer: (state, action: PayloadAction<string>) => {
-      const consumerId = action.payload;
+      const streamId = action.payload;
 
       state.consumers = state.consumers.filter((consumer) => {
         try {
-          if (consumer.id === consumerId) {
+          if (consumer.appData.streamId === streamId) {
             consumer.close();
           }
         } catch (error) {
           console.error("consumer close failed", error);
         }
-        return !consumer.closed && consumer.id !== consumerId;
+        return !consumer.closed && consumer.id !== streamId;
       });
     },
   },

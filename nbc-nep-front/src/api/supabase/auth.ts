@@ -1,5 +1,5 @@
-import { supabase } from "@/libs/supabase";
-import { Tables } from "@/types/supabase";
+import { supabase } from "@/supabase/supabase";
+import { Tables } from "@/supabase/types/supabase";
 
 /**
  * Supabase 회원가입을 위한 함수

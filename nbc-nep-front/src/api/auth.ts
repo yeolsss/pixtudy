@@ -1,4 +1,4 @@
-import { supabase } from "@/libs/supabase";
+import { supabase } from "@/supabase/supabase";
 
 /**
  * Supabase 회원가입을 위한 함수

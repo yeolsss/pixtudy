@@ -1,6 +1,11 @@
 import { StaticImageData } from "next/image";
 
-export type ButtonType = "chat" | "settings" | "report" | "playerList";
+export type ButtonType =
+  | "chat"
+  | "settings"
+  | "report"
+  | "playerList"
+  | "close";
 export type IconButtonProperty = {
   buttonImage: StaticImageData;
   description: string;

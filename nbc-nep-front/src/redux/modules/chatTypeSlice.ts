@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
+import { ChatType } from "@/components/metaverse/types/ChatType";
 
 type Payload = {
   isOpenChat: boolean;
@@ -19,8 +19,12 @@ const chatTypeSlice = createSlice({
       state.isOpenChat = action.payload.isOpenChat;
       state.chatType = action.payload.chatType;
     },
+    setCloseChat: (state) => {
+      state.isOpenChat = false;
+      state.chatType = "GLOBAL";
+    },
   },
 });
 
-export const { setIsOpenChat } = chatTypeSlice.actions;
+export const { setIsOpenChat, setCloseChat } = chatTypeSlice.actions;
 export default chatTypeSlice.reducer;

@@ -1,3 +1,4 @@
+import { MAX_SHARE_SCREEN_SIZE } from "@/components/video-conference/constants/constants";
 import {
   Consumer,
   Producer,
@@ -28,9 +29,13 @@ export default function useVideoSource() {
     dispatch(addConsumerRedux(consumer));
   }
 
-  function removeConsumer(consumerId: string) {
-    dispatch(removeConsumerRedux(consumerId));
+  function removeConsumer(streamId: string) {
+    dispatch(removeConsumerRedux(streamId));
   }
+
+  const isCanShare =
+    producers.filter((producer) => producer.appData.shareType === "screen")
+      .length < MAX_SHARE_SCREEN_SIZE;
 
   return {
     producers,
@@ -39,5 +44,6 @@ export default function useVideoSource() {
     removeProducer,
     addConsumer,
     removeConsumer,
+    isCanShare,
   };
 }

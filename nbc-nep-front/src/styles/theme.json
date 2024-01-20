@@ -1,7 +1,8 @@
 {
   "color": {
     "metaverse": {
-      "primary": "#1F2542"
+      "primary": "#1F2542",
+      "secondary": "#374151"
     },
     "blue": {
       "50": "#EFF6FF",
@@ -642,5 +643,9 @@
         "count": 4
       }
     ]
+  },
+  "video": {
+    "width": "var(--video-width)",
+    "height": "var(--video-height)"
   }
 }

@@ -1,86 +1,83 @@
-import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/metaversePlayerCard/MetaversePlayerCard";
+import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import { useAppSelector } from "@/hooks/useReduxTK";
-import { supabase } from "@/libs/supabase";
-import { Tables } from "@/types/supabase";
-import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";
-import MetaverseDmContainer from "./metaverseDmContainer/MetaverseDmContainer";
+import { setIsOpenDm } from "@/redux/modules/dmSlice";
+import {
+  setIsCloseSomeSection,
+  setIsSomeSection,
+} from "@/redux/modules/globalNavBarSlice";
+import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
+import { ChatType } from "@/components/metaverse/types/ChatType";
+import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
+import React from "react";
+
+export interface HandleOpenDmContainerPrams {
+  otherUserId: string;
+  otherUserName: string;
+  otherUserAvatar: string;
+}
 
 export default function MetaversePlayerList() {
+  const dispatch = useAppDispatch();
   const isOpenPlayerList = useAppSelector(
     (state) => state.globalNavBar.playerList
   );
 
   const { playerList } = usePlayerContext();
   const { spaceId } = usePlayerContext();
-  // 열린 dm 채팅방
-  const [activateDmUsers, setActivateDmUsers] = useState<string[]>([]);
-
-  const currentUserId = useAppSelector((state) => state.authSlice.user.id);
-
-  // 현재 세션의 유저 id가 receiver로 지정된 메시지가 도착했을 때
-  const getNewMessage = (
-    payload: RealtimePostgresInsertPayload<Tables<"dm_messages">>
-  ) => {
-    setActivateDmUsers((prev) => {
-      if (prev.includes(payload.new.sender_id)) return prev;
-      else return [payload.new.sender_id, ...prev];
-    });
-  };
 
   // dm 채팅방 열기
-  const handleOpenDmContainer = (id: string) => {
-    setActivateDmUsers((prev) => {
-      if (prev.includes(id)) return prev;
-      else return [id, ...prev];
-    });
+  const handleOpenDmContainer = ({
+    otherUserId,
+    otherUserName,
+    otherUserAvatar,
+  }: HandleOpenDmContainerPrams) => {
+    const newIsSomeSection = {
+      chatSection: true,
+      settingsSection: false,
+      playerList: false,
+    };
+
+    dispatch(setIsSomeSection(newIsSomeSection));
+    const newIsOpenChat = {
+      isOpenChat: true,
+      chatType: "DM" as ChatType,
+    };
+    dispatch(setIsOpenChat(newIsOpenChat));
+    const newOpenDm = {
+      isOpen: true,
+      dmRoomId: "",
+      otherUserId,
+      spaceId,
+      otherUserName,
+      otherUserAvatar,
+    };
+    dispatch(setIsOpenDm(newOpenDm));
   };
 
-  // dm 채팅방 닫기
-  const handleCloseDmContainer = (user_id: string) => {
-    setActivateDmUsers((prev) => prev.filter((id) => id !== user_id));
+  const handleOnClickClosePlayerList = () => {
+    dispatch(setIsCloseSomeSection());
   };
-
-  // 현재 세션의 유저 id가 receiver로 지정된 메시지를 tracking하는 채널
-  useEffect(() => {
-    const dmChannel = supabase.channel(`dm_channel_${spaceId}`);
-    dmChannel
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "dm_messages",
-          filter: `receiver_id=eq.${currentUserId}`,
-        },
-        getNewMessage
-      )
-      .subscribe();
-  }, []);
 
   return (
     <>
       <StMetaversePlayerListWrapper $isOpenPlayerList={isOpenPlayerList}>
-        {playerList?.map((player) => (
-          <MetaversePlayerCard
-            key={player.playerId}
-            player={player}
-            handleOpenDmContainer={handleOpenDmContainer}
+        {isOpenPlayerList && (
+          <MetaverseChatHeader
+            title={"Player List"}
+            handler={handleOnClickClosePlayerList}
           />
-        ))}
+        )}
+        {isOpenPlayerList &&
+          playerList?.map((player) => (
+            <MetaversePlayerCard
+              key={player.playerId}
+              player={player}
+              handleOpenDmContainer={handleOpenDmContainer}
+            />
+          ))}
       </StMetaversePlayerListWrapper>
-      <StMetaverseDmContainers>
-        {activateDmUsers.map((user) => (
-          <MetaverseDmContainer
-            key={user}
-            otherUserId={user}
-            handleCloseDmContainer={handleCloseDmContainer}
-            spaceId={spaceId}
-          />
-        ))}
-      </StMetaverseDmContainers>
     </>
   );
 }
@@ -89,7 +86,7 @@ const StMetaversePlayerListWrapper = styled.div<{ $isOpenPlayerList: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "300px" : "0")};
+  width: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "240px" : "0")};
   padding: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "10px" : "0")};
   overflow: ${({ $isOpenPlayerList }) =>
     $isOpenPlayerList ? "scroll" : "hidden"};
@@ -97,19 +94,10 @@ const StMetaversePlayerListWrapper = styled.div<{ $isOpenPlayerList: boolean }>`
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
   z-index: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "100" : "-1")};
-  background-color: #1f2542;
+  background-color: ${({ theme }) => theme.color.metaverse.secondary};
   color: white;
 
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const StMetaverseDmContainers = styled.section`
-  position: absolute;
-  bottom: 0;
-  left: 200px;
-  display: flex;
-  z-index: 100;
-  background: green;
 `;
