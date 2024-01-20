@@ -45,7 +45,6 @@ module.exports = function (io) {
     // 클라이언트가 room에 들어왔을 경우, 초기 설정들을 해준다
     // socketId, roomName이라던가 ,transport들... 이미 있느
     socket.on("join-room", (spaceId, playerId) => {
-      console.log(`player ${playerId} joined ${spaceId}`);
       socket.playerId = playerId;
 
       clients[playerId] = {
