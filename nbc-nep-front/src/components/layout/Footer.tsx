@@ -26,8 +26,11 @@ export default function Footer() {
 }
 
 const StFooter = styled.footer`
-  width: 1200px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
