@@ -5,9 +5,10 @@ import { supabase } from "@/supabase/supabase";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-export default function OnChangeUserSession() {
+export default function ChangeUserSession() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   // 유저정보를 불러오는 코드
   const setUserSession = async () => {
     const data = await getUserSessionHandler();
