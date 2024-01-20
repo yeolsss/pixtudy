@@ -48,6 +48,7 @@ export default function VideoConference() {
     addProducer,
     removeConsumer,
     removeProducer,
+    removeProducerRefactor,
     isCanShare,
   } = useVideoSource();
 
@@ -235,6 +236,19 @@ export default function VideoConference() {
     }
   }
 
+  async function handleStopShareRefactor(type: ShareType) {
+    const producer = producers.find(
+      (producer) => producer.appData.shareType === type
+    );
+
+    if (!producer) {
+      console.error("no producer...");
+      return;
+    }
+
+    removeProducerRefactor(producer);
+  }
+
   async function handleShareStopProducer(producerId: string) {
     const producer = producers.find((producer) => producer.id === producerId);
 
@@ -283,7 +297,7 @@ export default function VideoConference() {
         <ShareButton
           type="webcam"
           onShare={handleShare}
-          onStopShare={handleStopShare}
+          onStopShare={handleStopShareRefactor}
           shareButtonText="카메라 켜기"
           stopSharingButtonText="카메라 끄기"
           shareSvg={CameraOn}
@@ -292,7 +306,7 @@ export default function VideoConference() {
         <ShareButton
           type="audio"
           onShare={handleShare}
-          onStopShare={handleStopShare}
+          onStopShare={handleStopShareRefactor}
           shareButtonText="마이크 켜기"
           stopSharingButtonText="마이크 끄기"
           shareSvg={MicOn}

@@ -36,6 +36,35 @@ const conferenceSlice = createSlice({
         return !producer.closed && producer.id !== producerId;
       });
     },
+    removeProducerRefactor: (state, action: PayloadAction<Producer>) => {
+      const producer = action.payload;
+      const producerId = producer.id;
+
+      try {
+        const track = producer.track;
+
+        if (!track) {
+          throw new Error("no track...");
+        }
+
+        track.enabled = false;
+
+        producer.pause();
+        producer.close();
+
+        state.producers = state.producers.filter((producer) => {
+          try {
+            if (producer.id === producerId) {
+              producer.close();
+            }
+          } catch (error) {
+            console.error("producer close failed", error);
+          }
+
+          return !producer.closed && producer.id !== producerId;
+        });
+      } catch (error) {}
+    },
     addConsumer: (state, action: PayloadAction<Consumer>) => {
       const consumer = action.payload;
       state.consumers.push(consumer);
@@ -57,7 +86,12 @@ const conferenceSlice = createSlice({
   },
 });
 
-export const { addConsumer, addProducer, removeConsumer, removeProducer } =
-  conferenceSlice.actions;
+export const {
+  addConsumer,
+  addProducer,
+  removeConsumer,
+  removeProducer,
+  removeProducerRefactor,
+} = conferenceSlice.actions;
 
 export default conferenceSlice.reducer;
