@@ -16,10 +16,9 @@ const client = axios.create({
 export const getUsersCount = async (spaceId: string) => {
   try {
     const response = await client.get(`/api/spaces/${spaceId}/users/count`);
-    console.log(response);
     const { count } = response.data as UserCount;
     return count;
   } catch (error) {
-    console.error;
+    console.error(error);
   }
 };

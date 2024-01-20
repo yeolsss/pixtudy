@@ -21,8 +21,14 @@ const globalNavBarSlice = createSlice({
       state.settingsSection = action.payload.settingsSection;
       state.playerList = action.payload.playerList;
     },
+    setIsCloseSomeSection: (state) => {
+      state.chatSection = false;
+      state.settingsSection = false;
+      state.playerList = false;
+    },
   },
 });
 
-export const { setIsSomeSection } = globalNavBarSlice.actions;
+export const { setIsSomeSection, setIsCloseSomeSection } =
+  globalNavBarSlice.actions;
 export default globalNavBarSlice.reducer;

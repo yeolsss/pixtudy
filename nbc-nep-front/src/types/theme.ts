@@ -38,6 +38,7 @@ export interface Color {
 
 export interface Metaverse {
   primary: string;
+  secondary: string;
 }
 
 export interface Blue {

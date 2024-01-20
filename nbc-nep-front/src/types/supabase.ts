@@ -238,6 +238,21 @@ export interface Database {
           user: string;
         }[];
       };
+      get_dm_channel_messages_test: {
+        Args: {
+          p_dm_channel: string;
+        };
+        Returns: {
+          id: string;
+          created_at: string;
+          dm_id: string;
+          receiver_id: string;
+          receiver_display_name: string;
+          message: string;
+          sender_id: string;
+          sender_display_name: string;
+        }[];
+      };
       get_last_dm_message_list: {
         Args: {
           input_space_id: string;
@@ -253,9 +268,11 @@ export interface Database {
           sender_id: string;
           sender_username: string;
           sender_avatar: string;
+          sender_display_name: string;
           receiver_id: string;
           receiver_username: string;
           receiver_avatar: string;
+          receiver_display_name: string;
           unread_count: number;
         }[];
       };
