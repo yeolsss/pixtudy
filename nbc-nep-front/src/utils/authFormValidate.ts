@@ -10,8 +10,7 @@ export function handleValidateEmail(value: string) {
 export function handleValidatePassword(value: string) {
   const pwReg = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s]).{8,}$/);
   return (
-    pwReg.test(value) ||
-    "비밀번호는 최소 8자 이상이며, 문자와 숫자를 각각 하나 이상 포함해야 합니다."
+    pwReg.test(value) || "문자, 숫자, 특수문자를 포함 8자리 이상을 입력하세요."
   );
 }
 

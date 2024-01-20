@@ -396,6 +396,7 @@ export interface Radius {
   "8": string;
   "12": string;
   "16": string;
+  "36": string;
   circle: string;
 }
 

@@ -1,14 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { AuthFormType } from "./utils/authUtils";
+import { useRouter } from "next/router";
 
 interface Props {
   formType: AuthFormType;
 }
 export default function AuthHeroBanner({ formType }: Props) {
+  const router = useRouter();
+  const handleToHome = () => router.push("/");
   return (
     <StHeroBannerTemp $formType={formType}>
-      <span>pixtudy</span>
+      <span onClick={handleToHome}>pixtudy</span>
     </StHeroBannerTemp>
   );
 }
@@ -21,6 +24,7 @@ const StHeroBannerTemp = styled.div<{ $formType: AuthFormType }>`
   position: relative;
 
   & > span {
+    cursor: pointer;
     display: inline-block;
     position: absolute;
     top: ${(props) => props.theme.spacing["48"]};

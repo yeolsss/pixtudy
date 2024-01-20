@@ -7,7 +7,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { AuthFormType, getInputs } from "./utils/authUtils";
 import AuthInput from "./AuthInput";
 import styled from "styled-components";
-import SignInOptions from "./signin/SignInOptions";
+import SignInOptions from "./SignInOptions";
 
 interface Props {
   formType: AuthFormType;
@@ -135,19 +135,24 @@ const StFormContainer = styled.form<{
       border ease-in-out 0.5s,
       background ease-in-out 0.5s,
       color ease-in-out 0.5s;
+
+    &:hover {
+      border-color: transparent;
+      background: ${(props) => props.theme.color.bg.brand};
+      color: ${(props) => props.theme.color.text.interactive.inverse};
+    }
   }
 `;
 
 const StInputContainer = styled.section<{ $isOpen: boolean }>`
-  max-height: ${(props) => (props.$isOpen ? "100%" : "0%")};
+  max-height: ${(props) => (props.$isOpen ? "100%" : "0px")};
+
   overflow-y: hidden;
   transform-origin: top;
   transform: ${(props) => (props.$isOpen ? "scaleY(1)" : "scaleY(0)")};
   transition:
     max-height ease-in-out 0.5s,
     transform ease-in-out 0.3s;
-
-  width: 100%;
 
   & > div + div {
     margin-top: ${(props) => props.theme.spacing["16"]};

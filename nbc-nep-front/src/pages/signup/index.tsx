@@ -19,7 +19,6 @@ export default function index() {
         <h1>같이 공부 시작해요!</h1>
         <SocialLogin subText="SNS로 3초 만에 시작하기" />
         <AuthDivider />
-
         <AuthForm formType="signUp" />
         <AuthFooter />
       </AuthFormContainer>
