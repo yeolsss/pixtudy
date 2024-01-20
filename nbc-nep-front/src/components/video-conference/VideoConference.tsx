@@ -1,3 +1,8 @@
+import {
+  getProducersByShareType,
+  isAlreadyConsume,
+  isEmptyTracks,
+} from "@/components/video-conference/libs/util";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDevice from "@/hooks/conference/useDevice";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
@@ -20,11 +25,6 @@ import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
 import { videoParams } from "./constants/constants";
 import {
-  getProducersByShareType,
-  isAlreadyConsume,
-  isEmptyTracks,
-} from "@/components/video-conference/libs/util";
-import {
   AppData,
   ProducerForConsume,
   RtpCapabilities,
@@ -36,7 +36,7 @@ import ShareMediaItemContainer from "./video-media-item/ShareMediaItemContainer"
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
 
-  const { playerList, spaceId } = usePlayerContext();
+  const { playerList, spaceId, findPlayerById } = usePlayerContext();
   const { id: currentPlayerId } = useAppSelector(
     (state) => state.authSlice.user
   );
@@ -70,12 +70,9 @@ export default function VideoConference() {
     playerId: currentPlayerId,
   });
 
-  const currentPlayer = playerList.find(
-    (player) => player.playerId === currentPlayerId
-  );
+  const currentPlayer = findPlayerById(currentPlayerId);
 
   useEffect(() => {
-    console.log("socket connected");
     socket.emit("join-room", spaceId, currentPlayerId);
 
     socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
