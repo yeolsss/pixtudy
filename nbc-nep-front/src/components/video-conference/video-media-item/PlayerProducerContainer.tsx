@@ -1,4 +1,8 @@
 import useSpread from "@/hooks/conference/useSpread";
+import useVideoSource from "@/hooks/conference/useVideoSource";
+import useSocket from "@/hooks/socket/useSocket";
+import { useAppSelector } from "@/hooks/useReduxTK";
+import { useEffect } from "react";
 import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
 import {
@@ -13,15 +17,32 @@ import { Producer } from "../types/ScreenShare.types";
 interface Props {
   producers: Producer[];
   nickname: string;
-  handleShareStopProducer: (producerId: string) => void;
 }
 
 export default function PlayerProducerContainer({
   producers,
   nickname,
-  handleShareStopProducer,
 }: Props) {
   const { toggleBoxRef, handleToggleOnSpreadMode, isSpreadMode } = useSpread();
+  const { socket, disconnect } = useSocket({ namespace: "/conference" });
+
+  const { id: currentPlayerId } = useAppSelector(
+    (state) => state.authSlice.user
+  );
+
+  const { removeProducer } = useVideoSource();
+
+  useEffect(() => {
+    return () => {
+      disconnect();
+    };
+  }, []);
+
+  function handleShareStop(producer: Producer) {
+    removeProducer(producer);
+
+    socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
+  }
 
   return (
     <StVideoWrapper ref={toggleBoxRef} onClick={handleToggleOnSpreadMode}>
@@ -34,9 +55,7 @@ export default function PlayerProducerContainer({
         >
           <ShareMediaItem nickname={nickname} videoSource={producer} />
           {isSpreadMode && (
-            <StRemoveProducerButton
-              onClick={() => handleShareStopProducer(producer.id)}
-            >
+            <StRemoveProducerButton onClick={() => handleShareStop(producer)}>
               x
             </StRemoveProducerButton>
           )}

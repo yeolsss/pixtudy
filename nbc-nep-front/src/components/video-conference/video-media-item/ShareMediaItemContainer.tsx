@@ -17,13 +17,11 @@ import PlayerProducerContainer from "./PlayerProducerContainer";
 interface Props {
   playerList: Player[];
   currentPlayerId: string;
-  handleShareStopProducer: (producerId: string) => void;
 }
 
 export default function ShareMediaItemContainer({
   playerList,
   currentPlayerId,
-  handleShareStopProducer,
 }: Props) {
   const layoutInfo = useAppSelector((state) => state.layoutSlice);
 
@@ -57,7 +55,6 @@ export default function ShareMediaItemContainer({
           ))}
           {!isEmptyScreenProducers && (
             <PlayerProducerContainer
-              handleShareStopProducer={handleShareStopProducer}
               nickname={currentPlayer?.nickname || ""}
               producers={screenProducers as Producer[]}
             />

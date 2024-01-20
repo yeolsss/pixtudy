@@ -48,7 +48,6 @@ export default function VideoConference() {
     addProducer,
     removeConsumer,
     removeProducer,
-    removeProducerRefactor,
     isCanShare,
   } = useVideoSource();
 
@@ -218,65 +217,10 @@ export default function VideoConference() {
       return;
     }
 
-    try {
-      const track = producer?.track;
-
-      if (!track) {
-        throw new Error("no track...");
-      }
-
-      track.enabled = false;
-      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
-      producer.pause();
-      producer.close();
-
-      removeProducer(producer.id);
-    } catch (error) {
-      console.error("handle stop share error", error);
-    }
-  }
-
-  async function handleStopShareRefactor(type: ShareType) {
-    const producer = producers.find(
-      (producer) => producer.appData.shareType === type
-    );
-
-    if (!producer) {
-      console.error("no producer...");
-      return;
-    }
-
-    removeProducerRefactor(producer);
+    removeProducer(producer);
 
     socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
   }
-
-  async function handleShareStopProducer(producerId: string) {
-    const producer = producers.find((producer) => producer.id === producerId);
-
-    if (!producer) {
-      console.error("no producer...");
-      return;
-    }
-
-    try {
-      const { track } = producer;
-      if (!track) {
-        throw new Error("no track..");
-      }
-
-      track.enabled = false;
-      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
-
-      producer.pause();
-      producer.close();
-
-      removeProducer(producer.id);
-    } catch (error) {
-      console.error("handle stop share error", error);
-    }
-  }
-
   const screenCount = getProducersByShareType(producers, "screen").length;
 
   return (
@@ -299,7 +243,7 @@ export default function VideoConference() {
         <ShareButton
           type="webcam"
           onShare={handleShare}
-          onStopShare={handleStopShareRefactor}
+          onStopShare={handleStopShare}
           shareButtonText="카메라 켜기"
           stopSharingButtonText="카메라 끄기"
           shareSvg={CameraOn}
@@ -308,7 +252,7 @@ export default function VideoConference() {
         <ShareButton
           type="audio"
           onShare={handleShare}
-          onStopShare={handleStopShareRefactor}
+          onStopShare={handleStopShare}
           shareButtonText="마이크 켜기"
           stopSharingButtonText="마이크 끄기"
           shareSvg={MicOn}
@@ -317,7 +261,6 @@ export default function VideoConference() {
       </StDockContainer>
       {playerList.length !== 0 && (
         <ShareMediaItemContainer
-          handleShareStopProducer={handleShareStopProducer}
           playerList={playerList}
           currentPlayerId={currentPlayerId}
         />
