@@ -43,6 +43,7 @@ interface SignInHandlerArgs {
   platform: SignInPlatformType;
 }
 
+const err = (e: never) => {};
 export const signInHandler = async ({
   email,
   password,
@@ -73,6 +74,9 @@ export const signInHandler = async ({
         });
       if (oAuthLoginError) throw oAuthLoginError;
       return oAuthLoginData;
+    default:
+      err(platform);
+      throw new Error("LoginError: 올바른 케이스가 아닙니다.");
   }
 };
 
