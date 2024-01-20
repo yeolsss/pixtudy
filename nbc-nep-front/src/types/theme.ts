@@ -143,6 +143,7 @@ export interface Grey {
   "700": string;
   "800": string;
   "900": string;
+  "sub-line": string;
 }
 
 export interface Base {
@@ -237,6 +238,7 @@ export interface Bg {
   "danger-bold": string;
   "danger-subtle": string;
   "inverse-bold": string;
+  brand: string;
   disabled: string;
   interactive: Interactive;
 }
@@ -319,6 +321,7 @@ export interface Border {
   danger: string;
   "danger-subtle": string;
   disabled: string;
+  "sub-line": string;
   interactive: Interactive4;
 }
 
@@ -337,37 +340,50 @@ export interface Unit {
   "4": number;
   "8": number;
   "12": number;
+  "13": number;
+  "14": number;
+  "15": number;
   "16": number;
+  "19-5": number;
   "20": number;
   "24": number;
   "32": number;
   "36": number;
   "40": number;
   "48": number;
+  "56": number;
   "64": number;
   "80": number;
   "96": number;
   "112": number;
   "128": number;
+  "130": number;
+  "181": number;
+  "412": number;
 }
 
 export interface Spacing {
   "0": string;
   "2": string;
   "4": string;
+  "6": string;
   "8": string;
   "12": string;
+  "14": string;
   "16": string;
+  "19-5": string;
   "20": string;
   "24": string;
   "32": string;
   "36": string;
   "40": string;
+  "44": string;
   "48": string;
   "64": string;
   "80": string;
   "96": string;
   "112": string;
+  "118": string;
   "128": string;
 }
 
@@ -382,6 +398,7 @@ export interface Radius {
   "8": string;
   "12": string;
   "16": string;
+  "36": string;
   circle: string;
 }
 
