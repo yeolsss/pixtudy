@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
+import { ChatType } from "@/components/metaverse/types/ChatType";
 
 type Payload = {
   isOpenChat: boolean;

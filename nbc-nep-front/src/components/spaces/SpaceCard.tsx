@@ -1,5 +1,5 @@
 import useGetUsersCount from "@/hooks/query/useGetUsersCount";
-import { Space_members } from "@/types/supabase.tables.type";
+import { Space_members } from "@/supabase/types/supabase.tables.type";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";

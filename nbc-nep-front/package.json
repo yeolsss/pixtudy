@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "supabase-type": "supabase gen types typescript --project-id lrklhpcxbdiunpubmvio > src/types/supabase.ts"
+    "supabase-type": "supabase gen types typescript --project-id lrklhpcxbdiunpubmvio > src/supabase/types/supabase.ts"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",

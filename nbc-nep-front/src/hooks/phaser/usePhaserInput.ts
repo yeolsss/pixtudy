@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PhaserSceneManager from "@/metaverse/scenes/phaserSceneManager";
+import PhaserSceneManager from "@/components/metaverse/libs/phaserSceneManager";
 
 type PhaserInputHook = {
   enableInput: () => void;

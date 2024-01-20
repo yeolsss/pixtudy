@@ -1,4 +1,4 @@
-import { Chat } from "@/types/metaverse";
+import { Chat } from "@/components/metaverse/types/metaverse";
 import React from "react";
 import styled from "styled-components";
 

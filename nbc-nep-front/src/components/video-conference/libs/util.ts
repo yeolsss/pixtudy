@@ -1,4 +1,4 @@
-import { Player } from "@/types/metaverse";
+import { Player } from "@/components/metaverse/types/metaverse";
 import { Consumer } from "mediasoup-client/lib/Consumer";
 import {
   Producer,

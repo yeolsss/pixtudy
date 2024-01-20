@@ -5,7 +5,7 @@ import useInput from "@/hooks/useInput";
 import { useSendMessage } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types/supabase";
 
 interface Props {
   currentDmChannel: string | null | undefined;
