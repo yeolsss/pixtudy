@@ -112,7 +112,6 @@ export const getUserSessionHandler =
  * @param string otherUserId - 정보를 가져올 유저 아이디
  * @returns table <users>
  */
-
 export const getOtherUserHandler = async (
   otherUserId: string
 ): Promise<Tables<"users"> | null> => {
@@ -122,4 +121,28 @@ export const getOtherUserHandler = async (
     .eq("id", otherUserId)
     .single();
   return userInfo;
+};
+
+/**
+ * 비밀번호 찾기 메일을 보내는 함수
+ * @param string email - 대상 email
+ */
+export const forgottenPasswordHandler = async (userEmail: string) => {
+  console.log(userEmail);
+  // (1) 등록된 유저인지 확인
+  const { data: checkUserData, error: checkUserError } = await supabase
+    .from("users")
+    .select(`*`)
+    .eq("email", userEmail);
+
+  if (checkUserError) throw checkUserError;
+
+  if (!!checkUserData.length) {
+    const { error: sendMailError } =
+      await supabase.auth.resetPasswordForEmail(userEmail);
+    if (sendMailError) throw sendMailError;
+    return `${userEmail} 계정에 메일을 발송하였습니다. 확인 후 비밀번호를 초기화하세요.`;
+  } else {
+    return "등록되지 않은 유저입니다.";
+  }
 };

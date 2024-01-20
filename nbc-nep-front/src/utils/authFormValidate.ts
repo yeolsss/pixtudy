@@ -1,5 +1,3 @@
-import { FieldValues, UseFormWatch } from "react-hook-form";
-
 // email validation check function
 export function handleValidateEmail(value: string) {
   const emailReg = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);

@@ -8,6 +8,7 @@ import AuthFormContainer from "@/components/auth/AuthFormContainer";
 import AuthForm from "@/components/auth/AuthForm";
 import AuthFooter from "@/components/auth/AuthFooter";
 import { ReactElement } from "react";
+import FindPasswordModal from "@/components/modal/findPasswordModal/FindPasswordModal";
 
 export function SignIn() {
   return (
@@ -24,6 +25,7 @@ export function SignIn() {
         <AuthForm formType="signIn" />
         <AuthFooter />
       </AuthFormContainer>
+      {<FindPasswordModal />}
     </St.AuthOuterContainer>
   );
 }

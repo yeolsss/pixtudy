@@ -3,6 +3,7 @@ import {
   signInHandler,
   logoutHandler,
   signUpHandler,
+  forgottenPasswordHandler,
 } from "@/api/supabase/auth";
 import {
   checkDmChannel,
@@ -217,4 +218,15 @@ export function useReadDMMessage() {
   });
 
   return { mutate, isError, isPending };
+}
+
+export function useFindPassword() {
+  const { mutate: findPassword } = useMutation({
+    mutationFn: forgottenPasswordHandler,
+    onSuccess: (data) => {
+      console.log("비밀번호 수정메일 보내기 완료", data);
+    },
+  });
+
+  return { findPassword };
 }

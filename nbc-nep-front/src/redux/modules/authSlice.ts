@@ -30,7 +30,7 @@ export const authSlice = createSlice({
     },
     logout: (state) => {
       state.isLogin = false;
-      state.user = initialUser;
+      state.user = { ...initialUser };
     },
     setSaveLoginInfo: (state, action: PayloadAction<boolean>) => {
       state.isSaveInfo = action.payload;
