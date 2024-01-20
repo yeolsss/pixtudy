@@ -1,3 +1,5 @@
+import { FieldValues, UseFormWatch } from "react-hook-form";
+
 // email validation check function
 export function handleValidateEmail(value: string) {
   const emailReg = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
@@ -17,4 +19,12 @@ export function handleValidatePassword(value: string) {
 export function handleValidateNickname(value: string) {
   const nicknameReg = new RegExp(/^.{2,8}$/);
   return nicknameReg.test(value) || "닉네임은 최소 2글자, 최대 8글자 입니다.";
+}
+
+// password check validation check function
+export function handleValidatePasswordMatch(
+  value: string,
+  watchValue?: string
+) {
+  return value === watchValue || "비밀번호가 일치하지 않습니다.";
 }

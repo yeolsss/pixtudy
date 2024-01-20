@@ -1,15 +1,25 @@
 import { useSignUpUser } from "@/hooks/query/useSupabase";
+import { useAppDispatch } from "@/hooks/useReduxTK";
+import { closeModal, openLoginModal } from "@/redux/modules/modalSlice";
 import {
   handleValidateEmail,
   handleValidateNickname,
   handleValidatePassword,
+  handleValidatePasswordMatch,
 } from "@/utils/authFormValidate";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import {
+  FieldValue,
+  FieldValues,
+  SubmitHandler,
+  UseFormWatch,
+  useForm,
+} from "react-hook-form";
 import styled from "styled-components";
 import AuthInput from "../AuthInput";
 
 export default function SignUpModalMainContainer() {
   const signUp = useSignUpUser();
+  const dispatch = useAppDispatch();
 
   const {
     handleSubmit,
@@ -32,14 +42,11 @@ export default function SignUpModalMainContainer() {
       {
         onSuccess: () => {
           reset();
+          dispatch(closeModal());
+          dispatch(openLoginModal());
         },
       }
     );
-  };
-
-  // password check validation check function
-  const handleValidatePasswordMatch = (value: string) => {
-    return value === watch("signup_pw") || "비밀번호가 일치하지 않습니다.";
   };
 
   // input list
@@ -84,12 +91,12 @@ export default function SignUpModalMainContainer() {
             <AuthInput
               key={inputInfo.id}
               id={inputInfo.id}
-              labelTitle={inputInfo.labelTitle}
               placeholder={inputInfo.placeholder}
               type={inputInfo.type}
               register={register}
               validate={inputInfo.validate}
               error={errors[inputInfo.id]}
+              watch={watch}
             />
           );
         })}

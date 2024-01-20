@@ -36,7 +36,7 @@ export function useSignUpUser() {
   return signUp;
 }
 // Login
-export function useLoginUser() {
+export function useSignInUser() {
   const { mutate: login } = useMutation({
     mutationFn: loginHandler,
     onError: (error) => {
