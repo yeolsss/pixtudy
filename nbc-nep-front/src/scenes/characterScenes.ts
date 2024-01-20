@@ -56,6 +56,7 @@ export class CharacterScenes extends Phaser.Scene {
 
     // current player setting
     this.socket.on("currentPlayers", (players: Players) => {
+      console.log("currentPlayers", players);
       Object.keys(players).forEach((id) => {
         if (players[id].socketId === this.socket?.id) {
           this.addPlayer(players[id], objLayer!);

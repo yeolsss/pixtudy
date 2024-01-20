@@ -10,13 +10,11 @@ export const createSpaceHandler = async (
     owner: spaceInfo.owner!,
     title: spaceInfo.title!,
   };
-
   const { data: spaceData, error } = await supabase
     .from("spaces")
     .insert(space)
     .select("*")
     .single();
-
   if (error) return Promise.reject(error);
 
   if (spaceData) {
@@ -59,7 +57,6 @@ export const getSpaceData = async (spaceId: string) => {
     console.error(error);
     return false;
   }
-
   return data;
 };
 

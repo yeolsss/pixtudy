@@ -1,5 +1,6 @@
 import ModalHeader from "@/components/common/ModalHeader";
 import ProfileForm from "@/components/spaces/ProfileForm";
+import SpacePreview from "@/components/spaces/SpacePreview";
 import { FORM_SPACE } from "@/components/spaces/constatns/constants";
 import { Procedure } from "@/components/spaces/types/space.types";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
@@ -14,8 +15,8 @@ export default function JoinSpaceModalMainContainer() {
     (state) => state.authSlice.user
   );
   const [spaceId, setSpaceId] = useState<string>("");
+  const [ownerId, setOwnerId] = useState<string>("");
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
-  const [isValidSpace, setIsValidSpace] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const {
@@ -37,16 +38,20 @@ export default function JoinSpaceModalMainContainer() {
       />
       <StModalContents>
         {procedure === FORM_SPACE ? (
-          <InvitationCodeForm
-            setProcedure={setProcedure}
-            spaceId={spaceId}
-            handleSubmit={handleSubmit}
-            setIsValidSpace={setIsValidSpace}
-            setSpaceId={setSpaceId}
-            register={register}
-            reset={reset}
-            errors={errors}
-          />
+          <>
+            <InvitationCodeForm
+              setSpaceId={setSpaceId}
+              setOwnerId={setOwnerId}
+              handleSubmit={handleSubmit}
+              register={register}
+              errors={errors}
+            />
+            <SpacePreview
+              setProcedure={setProcedure}
+              spaceId={spaceId}
+              ownerId={ownerId}
+            />
+          </>
         ) : (
           <ProfileForm
             setProcedure={setProcedure}

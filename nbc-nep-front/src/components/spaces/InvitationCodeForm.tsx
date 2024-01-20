@@ -7,45 +7,35 @@ import {
   SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister,
-  UseFormReset,
 } from "react-hook-form";
 import styled from "styled-components";
-import { FORM_CHARACTER } from "./constatns/constants";
-import { Procedure } from "./types/space.types";
 
 interface Props {
-  setProcedure: Dispatch<SetStateAction<Procedure>>;
+  setSpaceId: Dispatch<SetStateAction<string>>;
+  setOwnerId: Dispatch<SetStateAction<string>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
-  reset: UseFormReset<FieldValues>;
-  setIsValidSpace: React.Dispatch<React.SetStateAction<boolean>>;
   errors: FormState<FieldValues>["errors"];
-  setSpaceId: Dispatch<SetStateAction<string>>;
-  spaceId: string;
 }
 
 export default function InvitationCodeForm({
-  setProcedure,
+  setSpaceId,
+  setOwnerId,
   handleSubmit,
   register,
-  reset,
-  setIsValidSpace,
   errors,
-  setSpaceId,
-  spaceId,
 }: Props) {
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const userJoinedSpaces = useGetUserSpaces(userId);
 
   const handleInvitationSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const isExistsSpace = await getSpace(data.invitationCode);
-
-    if (!isExistsSpace) {
+    const targetSpace = await getSpace(data.invitationCode);
+    if (!targetSpace) {
       alert("초대 코드가 올바르지 않습니다.");
       return;
     }
     setSpaceId(data.invitationCode);
-    setProcedure(FORM_CHARACTER);
+    setOwnerId(targetSpace.owner);
   };
 
   const onInvitationCodeChange = (invitationCode: string) => {

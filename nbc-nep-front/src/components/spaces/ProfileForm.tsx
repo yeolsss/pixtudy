@@ -17,25 +17,25 @@ import { FORM_SPACE } from "./constatns/constants";
 import { Procedure, SpaceInfo, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {
-  spaceId?: string;
-  spaceInfo?: SpaceInfo;
   setProcedure: Dispatch<SetStateAction<Procedure>>;
   setSpaceInfo?: Dispatch<SetStateAction<SpaceInfo>>;
-  defaultDisplayName: string;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
+  spaceId?: string;
+  spaceInfo?: SpaceInfo;
+  defaultDisplayName: string;
   errors: FormState<FieldValues>["errors"];
   mode: "createSpace" | "joinSpace";
 }
 
 export default function ProfileForm({
-  spaceId = "",
-  spaceInfo: partialSpaceInfo,
   setProcedure,
   setSpaceInfo,
-  defaultDisplayName,
   handleSubmit,
   register,
+  spaceId = "",
+  spaceInfo: partialSpaceInfo,
+  defaultDisplayName,
   errors,
   mode,
 }: ProfileFormProps) {

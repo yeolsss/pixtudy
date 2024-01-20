@@ -36,6 +36,7 @@ chatServer(chatNamespace);
 const conferenceNamespace = io.of("/conference");
 conferenceServer(conferenceNamespace);
 
+// const PORT = process.env.NODE_ENV === "production" ? 8080 : 3001;
 const PORT = process.env.NODE_ENV === "production" ? 8080 : 3001;
 
 server.listen(PORT, () => {

@@ -14,7 +14,7 @@ const UserIcon = ({ fill }: Props) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_117_689)">
+      <g clipPath="url(#clip0_117_689)">
         <path
           d="M2.33333 3.49998H2V2.16665H2.33333V1.49998H2.66667V1.16665H3.33333V0.833313H4.66667V1.16665H5.33333V1.49998H5.66667V2.16665H6V3.49998H5.66667V4.16665H5.33333V4.49998H4.66667V4.83331H3.33333V4.49998H2.66667V4.16665H2.33333V3.49998Z"
           fill={fill ? USER_EXISTS : USER_NOT_EXISTS}
