@@ -1,4 +1,4 @@
-import { Database } from "@/types/supabase";
+import { Database } from "@/supabase/types/supabase";
 import { createClient } from "@supabase/supabase-js";
 
 // 사용자 키 (ANON_KEY)

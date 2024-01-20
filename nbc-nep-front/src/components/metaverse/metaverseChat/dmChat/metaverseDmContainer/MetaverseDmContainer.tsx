@@ -6,9 +6,9 @@ import { setCloseDm } from "@/redux/modules/dmSlice";
 import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
 import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types/supabase";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatHeader/MetaverseChatHeader";
+import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 
 export default function MetaverseDmContainer() {
   const { otherUserId, spaceId, otherUserName, otherUserAvatar } =

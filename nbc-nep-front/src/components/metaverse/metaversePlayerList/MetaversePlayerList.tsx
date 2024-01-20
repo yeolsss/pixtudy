@@ -1,4 +1,4 @@
-import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/metaversePlayerCard/MetaversePlayerCard";
+import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";
@@ -8,8 +8,8 @@ import {
   setIsSomeSection,
 } from "@/redux/modules/globalNavBarSlice";
 import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
-import { ChatType } from "@/components/metaverse/metaverseChat/types/ChatType";
-import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatHeader/MetaverseChatHeader";
+import { ChatType } from "@/components/metaverse/types/ChatType";
+import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import React from "react";
 
 export interface HandleOpenDmContainerPrams {

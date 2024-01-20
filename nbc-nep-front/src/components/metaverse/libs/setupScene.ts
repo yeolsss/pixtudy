@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
-export class ScenesMain extends Phaser.Scene {
+export class SetupScene extends Phaser.Scene {
   constructor() {
-    super({ key: "ScenesMain" });
+    super({ key: "SetupScene" });
   }
 
   preload() {
@@ -52,7 +52,7 @@ export class ScenesMain extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("CharacterScenes");
+    this.scene.start("SceneClass");
   }
 
   update() {}

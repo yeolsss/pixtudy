@@ -1,4 +1,4 @@
-import { DMListCard } from "@/types/metaverse";
+import { DMListCard } from "@/components/metaverse/types/metaverse";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import styled from "styled-components";

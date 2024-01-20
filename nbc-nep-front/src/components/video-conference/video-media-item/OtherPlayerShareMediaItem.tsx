@@ -1,10 +1,13 @@
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { layoutOpen } from "@/redux/modules/layoutSlice";
-import { Player } from "@/types/metaverse";
+import { Player } from "@/components/metaverse/types/metaverse";
 import { useRef } from "react";
 import ShareMediaItem from "../ShareMediaItem";
-import { isArrayEmpty, splitVideoSource } from "../lib/util";
+import {
+  isArrayEmpty,
+  splitVideoSource,
+} from "@/components/video-conference/libs/util";
 import {
   SPACING,
   StStackItem,

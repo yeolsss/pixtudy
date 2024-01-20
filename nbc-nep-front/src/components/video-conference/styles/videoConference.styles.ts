@@ -1,4 +1,4 @@
-import { StPositionRelative } from "@/components/common/commonStyles.styles";
+import { StPositionRelative } from "@/components/common/button/button.styles";
 import styled from "styled-components";
 
 export const StShareMediaItem = styled(StPositionRelative)`

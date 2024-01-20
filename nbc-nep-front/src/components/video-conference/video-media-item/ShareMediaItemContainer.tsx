@@ -1,10 +1,13 @@
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { Player } from "@/types/metaverse";
+import { Player } from "@/components/metaverse/types/metaverse";
 import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
 import ShareScreenContainer from "../ShareScreenContainer";
-import { isArrayEmpty, splitVideoSource } from "../lib/util";
+import {
+  isArrayEmpty,
+  splitVideoSource,
+} from "@/components/video-conference/libs/util";
 import { Producer } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";

@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
-import { characterOptions } from "./constatns/constants";
+import { characterOptions } from "@/components/spaces/constants/constants";
 
 interface Props {
   register: UseFormRegister<FieldValues>;

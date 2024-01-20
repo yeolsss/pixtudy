@@ -1,7 +1,7 @@
-import ModalHeader from "@/components/common/ModalHeader";
+import ModalHeader from "@/components/common/modal/ModalHeader";
 import CreateSpaceForm from "@/components/spaces/CreateSpaceForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
-import { FORM_SPACE } from "@/components/spaces/constatns/constants";
+import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure, SpaceInfo } from "@/components/spaces/types/space.types";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { toggleCreateSpaceModal } from "@/redux/modules/modalSlice";

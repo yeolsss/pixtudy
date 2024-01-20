@@ -1,5 +1,5 @@
 import { getUserSessionHandler } from "@/api/supabase/auth";
-import { supabase } from "@/libs/supabase";
+import { supabase } from "@/supabase/supabase";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { login, logout } from "@/redux/modules/authSlice";
 import { useRouter } from "next/router";

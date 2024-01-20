@@ -1,4 +1,4 @@
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types/supabase";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface AuthState {

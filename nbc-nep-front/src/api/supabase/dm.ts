@@ -1,6 +1,6 @@
-import { supabase } from "@/libs/supabase";
-import { Tables } from "@/types/supabase";
-import { Space_members } from "@/types/supabase.tables.type";
+import { supabase } from "@/supabase/supabase";
+import { Tables } from "@/supabase/types/supabase";
+import { Space_members } from "@/supabase/types/supabase.tables.type";
 
 import { getUserSessionHandler } from "./auth";
 

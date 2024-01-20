@@ -22,8 +22,8 @@ import {
   joinSpaceHandler,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
-import { Database, Tables } from "@/types/supabase";
-import { Space_members } from "@/types/supabase.tables.type";
+import { Database, Tables } from "@/supabase/types/supabase";
+import { Space_members } from "@/supabase/types/supabase.tables.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "../useReduxTK";
 

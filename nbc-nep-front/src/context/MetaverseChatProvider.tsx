@@ -1,7 +1,7 @@
 import useChatSocket from "@/hooks/socket/useChatSocket";
 import useInput from "@/hooks/useInput";
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { Chat } from "@/types/metaverse";
+import { Chat } from "@/components/metaverse/types/metaverse";
 import React, { createContext, PropsWithChildren, useContext } from "react";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 
