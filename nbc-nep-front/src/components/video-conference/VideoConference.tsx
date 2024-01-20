@@ -247,6 +247,8 @@ export default function VideoConference() {
     }
 
     removeProducerRefactor(producer);
+
+    socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
   }
 
   async function handleShareStopProducer(producerId: string) {
