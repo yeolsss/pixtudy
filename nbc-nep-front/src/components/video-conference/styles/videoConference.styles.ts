@@ -6,12 +6,14 @@ export const StShareMediaItem = styled(StPositionRelative)`
   height: ${(props) => props.theme.video.height};
 
   background-color: #27262e;
+
+  border-radius: ${(props) => props.theme.border.radius[8]};
 `;
 
 export const StShareMediaNickname = styled.p`
   position: absolute;
-  top: ${(props) => props.theme.spacing[4]};
-  left: ${(props) => props.theme.spacing[4]};
+  top: ${(props) => props.theme.spacing[8]};
+  left: ${(props) => props.theme.spacing[8]};
 
   color: white;
   z-index: 1;
