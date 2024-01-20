@@ -15,8 +15,8 @@ export default function SpaceList({ currentUserId }: Props) {
   const getUserSpaces = useGetUserSpaces(currentUserId);
   const { id } = useAppSelector((state) => state.authSlice.user);
   useEffect(() => {
-    if (getUserSpaces && id === currentUserId) setUserSpaces(getUserSpaces);
-  }, [currentUserId, id]);
+    if (getUserSpaces) setUserSpaces(getUserSpaces);
+  }, [getUserSpaces]);
 
   return (
     <StSpaceListWrapper>

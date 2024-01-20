@@ -120,7 +120,7 @@ export async function getSpace(spaceId: string) {
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {
   const getUserSpacesOptions = {
-    queryKey: ["userSpaces"],
+    queryKey: ["userSpaces", currentUserId],
     queryFn: () => getUserSpaces(currentUserId),
     enabled: !!currentUserId,
   };

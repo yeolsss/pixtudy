@@ -9,10 +9,13 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
+import { SpaceInfo } from "./types/space.types";
 
 interface Props {
   setSpaceId: Dispatch<SetStateAction<string>>;
   setOwnerId: Dispatch<SetStateAction<string>>;
+  // const [spaceInfo, setSpaceInfo] = useState<SpaceInfo | {}>({});
+  setSpaceInfo: Dispatch<SetStateAction<SpaceInfo | {}>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
@@ -21,6 +24,7 @@ interface Props {
 export default function InvitationCodeForm({
   setSpaceId,
   setOwnerId,
+  setSpaceInfo,
   handleSubmit,
   register,
   errors,
@@ -34,8 +38,9 @@ export default function InvitationCodeForm({
       alert("초대 코드가 올바르지 않습니다.");
       return;
     }
-    setSpaceId(data.invitationCode);
-    setOwnerId(targetSpace.owner);
+    setSpaceInfo((prev) => ({ ...targetSpace }));
+    // setSpaceId(data.invitationCode);
+    // setOwnerId(targetSpace.owner);
   };
 
   const onInvitationCodeChange = (invitationCode: string) => {

@@ -1,10 +1,11 @@
-import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import { useGetOtherUserInfo } from "@/hooks/query/useSupabase";
 import { Dispatch, SetStateAction } from "react";
 import { FORM_CHARACTER } from "./constatns/constants";
-import { Procedure } from "./types/space.types";
+import { Procedure, SpaceInfo } from "./types/space.types";
 
 interface Props {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
+  spaceInfo: SpaceInfo;
   spaceId: string;
   ownerId: string;
 }
@@ -16,29 +17,28 @@ interface Props {
  */
 export default function SpacePreview({
   setProcedure,
+  spaceInfo,
   spaceId,
   ownerId,
 }: Props) {
-  const data = useGetUserSpaces(ownerId);
-
+  const ownerInfo = useGetOtherUserInfo(spaceInfo.owner!);
   const handleToNextProcedure = () => {
     setProcedure(FORM_CHARACTER);
   };
-  console.log(data);
   return (
     <>
       <h2>스페이스 미리보기</h2>
-      {spaceId ? (
+      {spaceInfo.id ? (
         <div>
           {/* <Image src /> */}
-          <h2>ㅁ</h2>
-          <p>ㄴ</p>
-          <span>ㅇ</span>
+          <h2>{spaceInfo.title}</h2>
+          <h3>{ownerInfo?.display_name}의 스페이스</h3>
+          <p>{spaceInfo.description}</p>
         </div>
       ) : (
-        <div>ㄹ</div>
+        <div>없ㅋ음</div>
       )}
-      <button onClick={handleToNextProcedure}>입장하기</button>
+      <button onClick={handleToNextProcedure}>다음</button>
     </>
   );
 }

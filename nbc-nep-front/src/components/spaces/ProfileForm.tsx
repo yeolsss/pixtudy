@@ -18,7 +18,6 @@ import { Procedure, SpaceInfo, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
-  setSpaceInfo?: Dispatch<SetStateAction<SpaceInfo>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
   spaceId?: string;
@@ -30,7 +29,6 @@ interface ProfileFormProps {
 
 export default function ProfileForm({
   setProcedure,
-  setSpaceInfo,
   handleSubmit,
   register,
   spaceId = "",
@@ -58,7 +56,7 @@ export default function ProfileForm({
 
   useEffect(() => {
     if (joinSuccess) {
-      handleToSpace(spaceId);
+      handleToSpace(partialSpaceInfo?.id!);
       return;
     }
   }, [joinSuccess, createSuccess, spaceId]);
@@ -75,7 +73,7 @@ export default function ProfileForm({
     switch (mode) {
       case "joinSpace":
         const userProfile: UserProfile = {
-          space_id: spaceId,
+          space_id: partialSpaceInfo?.id!,
           space_avatar: data.avatar,
           space_display_name: data.nickname,
           user_id: userId,

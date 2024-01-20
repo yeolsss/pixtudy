@@ -57,7 +57,6 @@ export default function CreateSpaceModalMainContainer() {
           <ProfileForm
             setProcedure={setProcedure}
             spaceInfo={spaceInfo}
-            setSpaceInfo={setSpaceInfo}
             defaultDisplayName={display_name!}
             handleSubmit={handleSubmit}
             register={register}

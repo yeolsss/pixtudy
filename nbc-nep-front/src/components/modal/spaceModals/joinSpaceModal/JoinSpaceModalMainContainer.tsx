@@ -2,7 +2,7 @@ import ModalHeader from "@/components/common/ModalHeader";
 import ProfileForm from "@/components/spaces/ProfileForm";
 import SpacePreview from "@/components/spaces/SpacePreview";
 import { FORM_SPACE } from "@/components/spaces/constatns/constants";
-import { Procedure } from "@/components/spaces/types/space.types";
+import { Procedure, SpaceInfo } from "@/components/spaces/types/space.types";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { toggleJoinSpaceModal } from "@/redux/modules/modalSlice";
 import { useState } from "react";
@@ -16,6 +16,7 @@ export default function JoinSpaceModalMainContainer() {
   );
   const [spaceId, setSpaceId] = useState<string>("");
   const [ownerId, setOwnerId] = useState<string>("");
+  const [spaceInfo, setSpaceInfo] = useState<SpaceInfo | {}>({});
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
   const dispatch = useAppDispatch();
 
@@ -42,12 +43,14 @@ export default function JoinSpaceModalMainContainer() {
             <InvitationCodeForm
               setSpaceId={setSpaceId}
               setOwnerId={setOwnerId}
+              setSpaceInfo={setSpaceInfo}
               handleSubmit={handleSubmit}
               register={register}
               errors={errors}
             />
             <SpacePreview
               setProcedure={setProcedure}
+              spaceInfo={spaceInfo}
               spaceId={spaceId}
               ownerId={ownerId}
             />
@@ -55,6 +58,7 @@ export default function JoinSpaceModalMainContainer() {
         ) : (
           <ProfileForm
             setProcedure={setProcedure}
+            spaceInfo={spaceInfo}
             spaceId={spaceId}
             defaultDisplayName={displayName!}
             handleSubmit={handleSubmit}
