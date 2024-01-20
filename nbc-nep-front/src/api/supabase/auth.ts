@@ -1,3 +1,4 @@
+import { FindPasswordMessageType } from "@/components/auth/utils/authUtils";
 import { supabase } from "@/supabase/supabase";
 import { Tables } from "@/supabase/types/supabase";
 
@@ -126,9 +127,11 @@ export const getOtherUserHandler = async (
 /**
  * 비밀번호 찾기 메일을 보내는 함수
  * @param string email - 대상 email
+ * @returns string,string - 인증메일 송신 여부 메시지
  */
-export const forgottenPasswordHandler = async (userEmail: string) => {
-  console.log(userEmail);
+export const forgottenPasswordHandler = async (
+  userEmail: string
+): Promise<{ response: FindPasswordMessageType; message: string }> => {
   // (1) 등록된 유저인지 확인
   const { data: checkUserData, error: checkUserError } = await supabase
     .from("users")
@@ -141,8 +144,12 @@ export const forgottenPasswordHandler = async (userEmail: string) => {
     const { error: sendMailError } =
       await supabase.auth.resetPasswordForEmail(userEmail);
     if (sendMailError) throw sendMailError;
-    return `${userEmail} 계정에 메일을 발송하였습니다. 확인 후 비밀번호를 초기화하세요.`;
+    return {
+      response: "success",
+      message: `${userEmail} 계정에 메일을 발송하였습니다. 
+      확인 후 비밀번호를 초기화하세요.`,
+    };
   } else {
-    return "등록되지 않은 유저입니다.";
+    return { response: "fail", message: "등록되지 않은 유저입니다." };
   }
 };

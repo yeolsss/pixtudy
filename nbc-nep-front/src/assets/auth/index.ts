@@ -3,5 +3,6 @@ import google from "@/assets/auth/google.svg";
 import kakao from "@/assets/auth/kakao.svg";
 import info from "@/assets/auth/info.svg";
 import blind from "@/assets/auth/blind.svg";
+import success from "@/assets/auth/success.svg";
 
-export { github, google, kakao, info, blind };
+export { github, google, kakao, info, blind, success };

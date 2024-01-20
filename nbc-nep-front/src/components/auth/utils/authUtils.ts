@@ -14,7 +14,10 @@ export interface FormValues {
   signUp_pw?: string;
   signUp_nickname?: string;
   signUp_check_pw?: string;
+  find_password_email?: string;
 }
+
+export type FindPasswordMessageType = "success" | "fail";
 
 export const getInputs = (formType: AuthFormType) => {
   if (formType === "signIn") {
