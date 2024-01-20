@@ -1,28 +1,21 @@
 import { useLogoutUser } from "@/hooks/query/useSupabase";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { openLoginModal, openSignUpModal } from "@/redux/modules/modalSlice";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { StCTAButton } from "../common/button/button.styles";
-import ModalPortal from "../modal/ModalPortal";
-import LoginModal from "../modal/authModals/loginModal/LoginModal";
-import SignUpModal from "../modal/authModals/signUpModal/SignUpModal";
 
 export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
 
-  const modalStatus = useAppSelector((state) => state.modalSlice);
   const authStatus = useAppSelector((state) => state.authSlice);
 
-  const dispatch = useAppDispatch();
-
-  const handleOpenLoginModal = () => {
-    dispatch(openLoginModal());
+  const handleToLoginPage = () => {
+    router.push("/signin");
   };
 
-  const handleOpenSignUpModal = () => {
-    dispatch(openSignUpModal());
+  const handleToSignUpPage = () => {
+    router.push("/signup");
   };
 
   const handleLogout = () => {
@@ -35,8 +28,8 @@ export default function Header() {
 
   const loginModeButton = [{ text: "로그아웃", handler: handleLogout }];
   const logoutModeButton = [
-    { text: "LOGIN", handler: handleOpenLoginModal },
-    { text: "SIGNUP", handler: handleOpenSignUpModal },
+    { text: "LOGIN", handler: handleToLoginPage },
+    { text: "SIGNUP", handler: handleToSignUpPage },
   ];
   const currentButton = authStatus.isLogin ? loginModeButton : logoutModeButton;
 
@@ -58,18 +51,6 @@ export default function Header() {
           <StCTAButton onClick={handleToDashboard}>Dashboard</StCTAButton>
         </div>
       </StNavContainer>
-      {/* login 모달 */}
-      {modalStatus.isLoginModalOpen && (
-        <ModalPortal>
-          <LoginModal />
-        </ModalPortal>
-      )}
-      {/* 회원가입 모달 */}
-      {modalStatus.isSignUpModalOpen && (
-        <ModalPortal>
-          <SignUpModal />
-        </ModalPortal>
-      )}
     </>
   );
 }

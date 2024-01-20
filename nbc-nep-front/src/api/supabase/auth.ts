@@ -35,45 +35,49 @@ export const signUpHandler = async ({
  * @param string password - 로그인에 사용할 password (선택적 입력가능)
  * @param LoginPlatformType(string union) platform - 로그인 방식
  */
-export type LoginPlatformType = "email" | "google" | "kakao" | "github";
+export type SignInPlatformType = "email" | "google" | "kakao" | "github";
 
-interface LoginHandlerArgs {
+interface SignInHandlerArgs {
   email?: string;
   password?: string;
-  platform: LoginPlatformType;
+  platform: SignInPlatformType;
 }
 
-export const loginHandler = async ({
+const err = (e: never) => {};
+export const signInHandler = async ({
   email,
   password,
   platform,
-}: LoginHandlerArgs) => {
-  let data, error;
-
+}: SignInHandlerArgs) => {
   switch (platform) {
     case "email":
-      if (email && password)
-        ({ data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        }));
-      break;
+      const { data: emailLoginData, error: emailLoginError } =
+        await supabase.auth.signInWithPassword({
+          email: email!,
+          password: password!,
+        });
+
+      if (emailLoginError) throw emailLoginError;
+      return emailLoginData;
     case "google":
     case "kakao":
     case "github":
-      ({ data, error } = await supabase.auth.signInWithOAuth({
-        provider: platform,
-        options: {
-          queryParams: {
-            access_type: "offline",
-            prompt: "consent",
+      const { data: oAuthLoginData, error: oAuthLoginError } =
+        await supabase.auth.signInWithOAuth({
+          provider: platform,
+          options: {
+            queryParams: {
+              access_type: "offline",
+              prompt: "consent",
+            },
           },
-        },
-      }));
-      break;
+        });
+      if (oAuthLoginError) throw oAuthLoginError;
+      return oAuthLoginData;
+    default:
+      err(platform);
+      throw new Error("LoginError: 올바른 케이스가 아닙니다.");
   }
-
-  if (error) throw error;
 };
 
 /**
