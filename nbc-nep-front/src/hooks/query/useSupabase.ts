@@ -151,8 +151,7 @@ export function useGetDmChannel({
     queryFn: () => checkDmChannel({ receiverId, currentUserId, spaceId }),
     enabled: !!currentUserId,
   };
-  const data = useCustomQuery<string | null, Error>(getDmChannelOptions);
-  return data;
+  return useCustomQuery<string | null, Error>(getDmChannelOptions);
 }
 
 // Dm채널 유무 확인 후 기존 메시지 가져오기

@@ -3,6 +3,7 @@ import React from "react";
 import GlobalNavBarIconWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/GlobalNavBarIconWrapper";
 import Image from "next/image";
 import HomeIcon from "@/assets/icons/LogoSection.svg";
+import CloseButton from "@/components/metaverse/globalNavBar/CloseButton";
 
 export default function GlobalNavBar() {
   return (
@@ -12,7 +13,10 @@ export default function GlobalNavBar() {
           <Image src={HomeIcon} alt={"홈 버튼"} width={24} height={24} />
         </StHomeLink>
       </StTopIcon>
-      <GlobalNavBarIconWrapper />
+      <div>
+        <GlobalNavBarIconWrapper />
+        <CloseButton />
+      </div>
     </StGlobalNavBar>
   );
 }

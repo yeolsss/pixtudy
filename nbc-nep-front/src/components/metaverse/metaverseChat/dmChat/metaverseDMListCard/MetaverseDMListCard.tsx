@@ -3,37 +3,40 @@ import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import styled from "styled-components";
 import { useAppDispatch } from "@/hooks/useReduxTK";
-import { isOpenDm } from "@/redux/modules/dmSlice";
+import { setIsOpenDm } from "@/redux/modules/dmSlice";
 
 interface Props {
   dm: DMListCard;
 }
-export default function MetaverseDmCard({ dm }: Props) {
+export default function MetaverseDMListCard({ dm }: Props) {
   const dispatch = useAppDispatch();
   const { id, spaceId } = usePlayerContext();
   const {
     room_id,
     message,
     sender_id,
-    sender_username,
     sender_avatar,
+    sender_display_name,
     receiver_id,
-    receiver_username,
     receiver_avatar,
+    receiver_display_name,
     unread_count,
   } = dm;
 
   const otherUserId = id === sender_id ? receiver_id : sender_id;
-  const otherUserName = id === sender_id ? receiver_username : sender_username;
   const otherUserAvatar = id === sender_id ? receiver_avatar : sender_avatar;
+  const otherUserName =
+    id === sender_id ? receiver_display_name : sender_display_name;
 
   const handleOnClickOpenDMChat = () => {
     dispatch(
-      isOpenDm({
+      setIsOpenDm({
         isOpen: true,
         dmRoomId: room_id,
         otherUserId,
         spaceId,
+        otherUserName,
+        otherUserAvatar,
       })
     );
   };
@@ -45,7 +48,6 @@ export default function MetaverseDmCard({ dm }: Props) {
       </StMetaverseAvatarWrapper>
       <StMetaverseDMCard>
         <div>
-          <span>보낸사람 : </span>
           <span>{otherUserName}</span>
         </div>
         <div>

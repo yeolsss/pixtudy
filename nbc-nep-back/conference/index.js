@@ -7,6 +7,7 @@ const {
   getRtcCapabilities,
   getTransportParams,
   isCanConsumeWithRouter,
+  connectTransport,
 } = require("./mediaSoupManager");
 
 (async function () {
@@ -19,13 +20,34 @@ module.exports = function (io) {
   io.on("connection", (socket) => {
     // socket이 연결이 된다면, 그 socket에 대한 정보를 여기서 초기화를 애초에 해줘야겠다.fc
     socket.on("disconnect", () => {
-      console.log("socket disconnect", socket.id);
+      try {
+        const playerId = socket.playerId;
+        const client = clients[playerId];
+
+        if (!client) return;
+        console.log("disconnect", playerId);
+        socket.to(client.spaceId).emit("client-disconnected", playerId);
+
+        if (client[SEND_TRANSPORT_KEY]) client[SEND_TRANSPORT_KEY].close();
+        if (client[RECV_TRANSPORT_KEY]) client[RECV_TRANSPORT_KEY].close();
+
+        if (client.producers)
+          client.producers.forEach((producer) => producer.close());
+        if (client.consumers)
+          client.consumers.forEach((consumer) => consumer.close());
+
+        delete clients[playerId];
+      } catch (error) {
+        console.error("while disconnect error:", error);
+      }
     });
 
     // 클라이언트가 room에 들어왔을 경우, 초기 설정들을 해준다
     // socketId, roomName이라던가 ,transport들... 이미 있느
     socket.on("join-room", (spaceId, playerId) => {
       console.log(`player ${playerId} joined ${spaceId}`);
+      socket.playerId = playerId;
+
       clients[playerId] = {
         spaceId: spaceId,
         [SEND_TRANSPORT_KEY]: null,
@@ -59,14 +81,16 @@ module.exports = function (io) {
       }
     });
 
-    socket.on("transport-send-connect", ({ dtlsParameters, playerId }) => {
-      const client = clients[playerId];
-      try {
-        client[SEND_TRANSPORT_KEY].connect({ dtlsParameters });
-      } catch (error) {
-        console.error("while connect send transport error:", error);
+    socket.on(
+      "transport-send-connect",
+      async ({ dtlsParameters, playerId }) => {
+        handleConnectTransport(
+          clients[playerId],
+          SEND_TRANSPORT_KEY,
+          dtlsParameters
+        );
       }
-    });
+    );
 
     socket.on(
       "transport-send-produce",
@@ -95,12 +119,11 @@ module.exports = function (io) {
     );
 
     socket.on("transport-recv-connect", ({ dtlsParameters, playerId }) => {
-      const client = clients[playerId];
-      try {
-        client[RECV_TRANSPORT_KEY].connect({ dtlsParameters });
-      } catch (error) {
-        console.error("while connect recv transport error:", error);
-      }
+      handleConnectTransport(
+        clients[playerId],
+        RECV_TRANSPORT_KEY,
+        dtlsParameters
+      );
     });
 
     // transport-recv-consume
@@ -154,14 +177,17 @@ module.exports = function (io) {
 
     socket.on("transport-close", (playerId) => {
       const client = clients[playerId];
+      if (!client) return;
       try {
-        client[SEND_TRANSPORT_KEY].close();
-        client[RECV_TRANSPORT_KEY].close();
+        if (client[SEND_TRANSPORT_KEY]) client[SEND_TRANSPORT_KEY].close();
+        if (client[RECV_TRANSPORT_KEY]) client[RECV_TRANSPORT_KEY].close();
 
-        client.producers.forEach((producer) => producer.close());
-        client.consumers.forEach((consumer) => consumer.close());
+        if (client.producers)
+          client.producers.forEach((producer) => producer.close());
+        if (client.consumers)
+          client.consumers.forEach((consumer) => consumer.close());
 
-        clients[playerId] = null;
+        delete clients[playerId];
       } catch (error) {
         console.error("while close transport error:", error);
       }
@@ -221,4 +247,16 @@ module.exports = function (io) {
 
 function setTransport(client, transport, type) {
   client[type] = transport;
+}
+
+function handleConnectTransport(client, transportKey, dtlsParameters) {
+  try {
+    if (!client || !client[transportKey])
+      throw new Error("client or transport is null");
+
+    const transport = client[transportKey];
+    connectTransport(transport, dtlsParameters);
+  } catch (error) {
+    console.error("while connect transport error:", error);
+  }
 }

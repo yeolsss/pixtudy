@@ -469,6 +469,7 @@ const GlobalStyle = styled.createGlobalStyle`
     }
   }
   #__next {
+    height: 100vh;
   }
 `;
 
