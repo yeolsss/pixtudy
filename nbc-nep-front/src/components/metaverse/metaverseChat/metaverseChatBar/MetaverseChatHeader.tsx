@@ -23,6 +23,7 @@ const StMetaverseDmHeader = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   padding: 10px 0;
+
   > h1 {
     font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
     font-family: ${({ theme }) => theme.body.lg.regular.fontFamily};
