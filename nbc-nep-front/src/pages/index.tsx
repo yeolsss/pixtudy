@@ -46,7 +46,7 @@ const StHeroBanner = styled.div`
   background-image: url("./assets/home_bg_layer.png");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 0 ${(props) => props.theme.spacing[48]};
+  background-position: 0px ${(props) => props.theme.spacing[128]};
 `;
 
 const StHeroBannerWrapper = styled.div`
@@ -62,7 +62,7 @@ const StHeroBannerWrapper = styled.div`
 `;
 
 const StHeroBannerTitle = styled.h1`
-  color: ${(props) => props.theme.color.text.interactive.primary};
+  color: ${(props) => props.theme.color.text.primary};
   font-family: var(--point-font);
   font-size: ${(props) => props.theme.heading.desktop["4xl"].fontSize};
   font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
