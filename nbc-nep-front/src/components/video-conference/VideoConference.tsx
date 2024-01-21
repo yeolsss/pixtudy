@@ -1,3 +1,8 @@
+import {
+  getProducersByShareType,
+  isAlreadyConsume,
+  isEmptyTracks,
+} from "@/components/video-conference/libs/util";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDevice from "@/hooks/conference/useDevice";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
@@ -20,23 +25,18 @@ import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
 import { videoParams } from "./constants/constants";
 import {
-  getProducersByShareType,
-  isAlreadyConsume,
-  isEmptyTracks,
-} from "@/components/video-conference/libs/util";
-import {
   AppData,
   ProducerForConsume,
   RtpCapabilities,
   ShareType,
   TransPortParams,
 } from "./types/ScreenShare.types";
-import ShareMediaItemContainer from "./video-media-item/ShareMediaItemContainer";
+import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
 
-  const { playerList, spaceId } = usePlayerContext();
+  const { playerList, spaceId, findPlayerById } = usePlayerContext();
   const { id: currentPlayerId } = useAppSelector(
     (state) => state.authSlice.user
   );
@@ -70,12 +70,9 @@ export default function VideoConference() {
     playerId: currentPlayerId,
   });
 
-  const currentPlayer = playerList.find(
-    (player) => player.playerId === currentPlayerId
-  );
+  const currentPlayer = findPlayerById(currentPlayerId);
 
   useEffect(() => {
-    console.log("socket connected");
     socket.emit("join-room", spaceId, currentPlayerId);
 
     socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
@@ -83,6 +80,8 @@ export default function VideoConference() {
     socket.on("new-producer", handleConsumeNewProducer);
 
     socket.on("producer-closed", handleProducerClose);
+
+    socket.on("closed-consumer", removeConsumer);
 
     return () => {
       socket.emit("transport-close", currentPlayerId);
@@ -218,50 +217,10 @@ export default function VideoConference() {
       return;
     }
 
-    try {
-      const track = producer?.track;
+    removeProducer(producer);
 
-      if (!track) {
-        throw new Error("no track...");
-      }
-
-      track.enabled = false;
-      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
-      producer.pause();
-      producer.close();
-
-      removeProducer(producer.id);
-    } catch (error) {
-      console.error("handle stop share error", error);
-    }
+    socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
   }
-
-  async function handleShareStopProducer(producerId: string) {
-    const producer = producers.find((producer) => producer.id === producerId);
-
-    if (!producer) {
-      console.error("no producer...");
-      return;
-    }
-
-    try {
-      const { track } = producer;
-      if (!track) {
-        throw new Error("no track..");
-      }
-
-      track.enabled = false;
-      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
-
-      producer.pause();
-      producer.close();
-
-      removeProducer(producer.id);
-    } catch (error) {
-      console.error("handle stop share error", error);
-    }
-  }
-
   const screenCount = getProducersByShareType(producers, "screen").length;
 
   return (
@@ -301,10 +260,9 @@ export default function VideoConference() {
         />
       </StDockContainer>
       {playerList.length !== 0 && (
-        <ShareMediaItemContainer
-          handleShareStopProducer={handleShareStopProducer}
+        <VideoSourceDisplayContainer
           playerList={playerList}
-          currentPlayerId={currentPlayerId}
+          currentPlayer={currentPlayer!}
         />
       )}
     </>

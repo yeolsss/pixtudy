@@ -14,6 +14,7 @@ export default function useSocket({ namespace }: Props) {
 
   useEffect(() => {
     if (socketRef.current?.connected) return;
+
     const socket = socketRef.current;
     socket.on("connect", () => {
       console.log("connect socket in useSocket.ts");
@@ -21,6 +22,7 @@ export default function useSocket({ namespace }: Props) {
   }, []);
 
   function disconnect() {
+    console.log("socket disconnect");
     socketRef.current?.disconnect();
   }
 
