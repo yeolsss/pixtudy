@@ -33,6 +33,7 @@ export default function ChangeUserSession() {
           dispatch(logout());
           await router.push("/");
         } else if (event === "PASSWORD_RECOVERY") {
+          console.log(session);
           // 비밀번호 찾기 페이지 들어갈 시
         } else if (event === "TOKEN_REFRESHED") {
           // 리프레시 토큰 작동시

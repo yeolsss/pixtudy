@@ -9,8 +9,13 @@ import AuthForm from "@/components/auth/AuthForm";
 import AuthFooter from "@/components/auth/AuthFooter";
 import { ReactElement } from "react";
 import FindPasswordModal from "@/components/modal/findPasswordModal/FindPasswordModal";
+import { useAppSelector } from "@/hooks/useReduxTK";
+import ModalPortal from "@/components/modal/ModalPortal";
 
 export function SignIn() {
+  const isFindPasswordModalOpen = useAppSelector(
+    (state) => state.modalSlice.isFindPasswordModalOpen
+  );
   return (
     <St.AuthOuterContainer>
       <AuthHeroBanner formType="signIn" />
@@ -25,7 +30,11 @@ export function SignIn() {
         <AuthForm formType="signIn" />
         <AuthFooter />
       </AuthFormContainer>
-      {<FindPasswordModal />}
+      {isFindPasswordModalOpen && (
+        <ModalPortal>
+          <FindPasswordModal />
+        </ModalPortal>
+      )}
     </St.AuthOuterContainer>
   );
 }

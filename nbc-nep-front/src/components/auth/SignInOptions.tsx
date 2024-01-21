@@ -3,12 +3,17 @@ import React from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setSaveLoginInfo } from "@/redux/modules/authSlice";
+import { toggleFindPasswordModal } from "@/redux/modules/modalSlice";
 
 export default function SignInOptions() {
   const isCheck = useAppSelector((state) => state.authSlice.isSaveInfo);
   const dispatch = useAppDispatch();
   const handleIsCheck = () => {
     dispatch(setSaveLoginInfo(!isCheck));
+  };
+
+  const handleOpenFindPasswordModal = () => {
+    dispatch(toggleFindPasswordModal());
   };
 
   return (
@@ -30,7 +35,7 @@ export default function SignInOptions() {
           <span>로그인 정보 저장하기</span>
         </StSaveLoginInfoToggleCheckBox>
       </section>
-      <Link href={"#"}>비밀번호 찾기</Link>
+      <span onClick={handleOpenFindPasswordModal}>비밀번호 찾기</span>
     </StSignInOptions>
   );
 }
@@ -50,9 +55,13 @@ const StSignInOptions = styled.div`
       font-size: ${(props) => props.theme.unit["12"]}px;
     }
   }
-  & a {
+  & > span {
     font-size: ${(props) => props.theme.unit["14"]}px;
+    cursor: pointer;
     color: #d93f21;
+    &:hover {
+      text-decoration: underline;
+    }
   }
   & input {
     display: none;

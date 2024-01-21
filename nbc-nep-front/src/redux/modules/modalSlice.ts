@@ -1,15 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface ModalState {
-  isLoginModalOpen: boolean;
-  isSignUpModalOpen: boolean;
+  isFindPasswordModalOpen: boolean;
   isJoinSpaceModalOpen: boolean;
   isCreateSpaceModalOpen: boolean;
 }
 
 const initialState: ModalState = {
-  isLoginModalOpen: false,
-  isSignUpModalOpen: false,
+  isFindPasswordModalOpen: false,
   isJoinSpaceModalOpen: false,
   isCreateSpaceModalOpen: false,
 };
@@ -21,11 +19,8 @@ export const modalSlice = createSlice({
     closeModal: (state) => {
       return (state = initialState);
     },
-    openLoginModal: (state) => {
-      state.isLoginModalOpen = !state.isLoginModalOpen;
-    },
-    openSignUpModal: (state) => {
-      state.isSignUpModalOpen = !state.isSignUpModalOpen;
+    toggleFindPasswordModal: (state) => {
+      state.isFindPasswordModalOpen = !state.isFindPasswordModalOpen;
     },
     toggleJoinSpaceModal: (state) => {
       state.isJoinSpaceModalOpen = !state.isJoinSpaceModalOpen;
@@ -38,8 +33,7 @@ export const modalSlice = createSlice({
 
 export const {
   closeModal,
-  openLoginModal,
-  openSignUpModal,
+  toggleFindPasswordModal,
   toggleJoinSpaceModal,
   toggleCreateSpaceModal,
 } = modalSlice.actions;
