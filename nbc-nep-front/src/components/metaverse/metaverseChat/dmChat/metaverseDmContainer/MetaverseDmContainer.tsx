@@ -2,13 +2,11 @@ import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { setCloseDm } from "@/redux/modules/dmSlice";
 import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
 import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
 import { Tables } from "@/supabase/types/supabase";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 
 export default function MetaverseDmContainer() {
   const { otherUserId, spaceId, otherUserName, otherUserAvatar } =
@@ -54,16 +52,8 @@ export default function MetaverseDmContainer() {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   }, [messages]);
 
-  const handleCloseDmContainer = () => {
-    dispatch(setCloseDm());
-  };
-
   return (
     <StMetaverseDmChannel>
-      <MetaverseChatHeader
-        title={otherUserName}
-        handler={handleCloseDmContainer}
-      />
       <StMessageWrapper ref={messageListRef}>
         {messages?.map((message) => (
           <StMessageCard key={message.id}>
@@ -87,7 +77,7 @@ export default function MetaverseDmContainer() {
 }
 
 const StMetaverseDmChannel = styled.div`
-  max-height: 100%;
+  height: 100%;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -99,7 +89,8 @@ const StMessageWrapper = styled.ul`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing["12"]};
   overflow-y: scroll;
-  max-height: 80%;
+  min-height: 90%;
+  max-height: 90%;
   font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
   font-family: ${({ theme }) => theme.body.sm.regular.fontFamily};
   word-break: break-all;

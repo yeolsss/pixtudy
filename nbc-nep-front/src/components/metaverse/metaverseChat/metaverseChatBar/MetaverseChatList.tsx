@@ -1,21 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
 import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatCard";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
-import { useAppDispatch } from "@/hooks/useReduxTK";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setCloseChat } from "@/redux/modules/chatTypeSlice";
 import { setIsCloseSomeSection } from "@/redux/modules/globalNavBarSlice";
 import { setCloseDm } from "@/redux/modules/dmSlice";
+import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 
 export default function MetaverseChatList() {
   const { chatList } = useMetaverseChatContext();
   const dispatch = useAppDispatch();
+  const { handleSetGlobalChatAlarmState } = useChatAlarm();
+  const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
   const handleOnClickCloseChat = () => {
     dispatch(setIsCloseSomeSection());
     dispatch(setCloseDm());
     dispatch(setCloseChat());
   };
+
+  useEffect(() => {
+    if (isOpenChat && chatType === "GLOBAL")
+      handleSetGlobalChatAlarmState(false);
+  }, [isOpenChat]);
+
+  useEffect(() => {
+    if (isOpenChat && chatType === "GLOBAL")
+      handleSetGlobalChatAlarmState(false);
+    return () => {
+      if (isOpenChat && chatType === "GLOBAL")
+        handleSetGlobalChatAlarmState(false);
+    };
+  }, [chatList]);
+
   return (
     <>
       <StMetaverseChatList>
