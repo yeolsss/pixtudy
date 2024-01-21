@@ -21,16 +21,22 @@ export default function ChangeUserSession() {
       async (event, session) => {
         if (event === "INITIAL_SESSION") {
           if (session) {
+            // 쿠키생성
+            document.cookie = `pixtudy-access-token=${session?.access_token}; Path=/; Max-Age=${session?.expires_in}; Secure; SameSite=Strict`;
             await setUserSession();
           }
         } else if (event === "SIGNED_IN") {
+          console.log(session);
+          // 쿠키생성
+          document.cookie = `pixtudy-access-token=${session?.access_token}; Path=/; Max-Age=${session?.expires_in}; Secure; SameSite=Strict`;
           await setUserSession();
           if (session?.user.app_metadata.provider !== "email") {
             router.push("/dashboard");
           }
         } else if (event === "SIGNED_OUT") {
-          // 로그아웃 시
           dispatch(logout());
+          // 쿠키삭제
+          document.cookie = `pixtudy-access-token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
           await router.push("/");
         } else if (event === "PASSWORD_RECOVERY") {
           // 비밀번호 찾기 페이지 들어갈 시
