@@ -65,6 +65,7 @@ const StHeaderWrapper = styled.div`
     padding-bottom: ${(props) => props.theme.spacing[12]};
     padding-right: ${(props) => props.theme.spacing[24]};
     padding-left: ${(props) => props.theme.spacing[24]};
+    font-size: ${(props) => props.theme.body.lg.regular.fontSize};
   }
 `;
 

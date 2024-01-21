@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
@@ -43,6 +44,7 @@ const StSpaceListWrapper = styled.section`
   padding-bottom: ${(props) => props.theme.spacing[32]};
   padding-left: ${(props) => props.theme.spacing[40]};
   padding-right: ${(props) => props.theme.spacing[40]};
+  margin-bottom: ${(props) => props.theme.spacing[64]};
 `;
 
 const StSpaceList = styled.ul`

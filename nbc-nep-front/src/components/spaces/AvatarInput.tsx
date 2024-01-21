@@ -1,7 +1,7 @@
+import { characterOptions } from "@/components/spaces/constants/constants";
 import { ChangeEvent, useState } from "react";
 import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
-import { characterOptions } from "@/components/spaces/constants/constants";
 
 interface Props {
   register: UseFormRegister<FieldValues>;
@@ -35,7 +35,7 @@ function AvatarInput({ register, errors }: Props) {
             {...restParam}
           />
           <label htmlFor={option.value} key={option.label}>
-            <StSpan resource={option.src}></StSpan>
+            <StAvatar resource={option.src}></StAvatar>
           </label>
         </StInputWrapper>
       ))}
@@ -72,7 +72,7 @@ const StInputWrapper = styled.div<{ $isSelected: boolean }>`
   }
 `;
 
-const StSpan = styled.span`
+export const StAvatar = styled.span`
   background-image: url(${(props) => props.resource});
   background-position: center;
   display: inline-block;

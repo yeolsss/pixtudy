@@ -1,5 +1,5 @@
 import { useCreateSpace, useJoinSpace } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { validateNickname } from "@/utils/spaceFormValidate";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useEffect } from "react";
@@ -11,18 +11,20 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
+import { FORM_SPACE } from "@/components/spaces/constants/constants";
+import {
+  resetCreateSpaceInfo,
+  resetJoinSpaceInfo,
+  setUserProfile,
+} from "@/redux/modules/spaceSlice";
 import { Tables } from "@/supabase/types/supabase";
 import AvatarInput from "./AvatarInput";
-import { FORM_SPACE } from "@/components/spaces/constants/constants";
-import { Procedure, SpaceInfo, UserProfile } from "./types/space.types";
+import { Procedure, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
-  spaceId?: string;
-  spaceInfo?: SpaceInfo;
-  defaultDisplayName: string;
   errors: FormState<FieldValues>["errors"];
   mode: "createSpace" | "joinSpace";
 }
@@ -31,35 +33,38 @@ export default function ProfileForm({
   setProcedure,
   handleSubmit,
   register,
-  spaceId = "",
-  spaceInfo: partialSpaceInfo,
-  defaultDisplayName,
   errors,
   mode,
 }: ProfileFormProps) {
-  const {
-    joinSpace,
-    isSuccess: joinSuccess,
-    isError: joinError,
-  } = useJoinSpace();
+  const { createSpaceInfo, joinSpaceInfo } = useAppSelector(
+    (state) => state.spaceSlice
+  );
+  const { id: userId, display_name } = useAppSelector(
+    (state) => state.authSlice.user
+  );
+  const dispatch = useAppDispatch();
+  const { joinSpace, joinSuccess, joinError } = useJoinSpace();
+  const { createSpace, createSuccess, createError } = useCreateSpace(
+    (data: Tables<"spaces">) => {
+      handleToSpace(data.id);
+    }
+  );
+  console.log("createSpaceInfo: ", createSpaceInfo);
+  console.log("joinSpaceInfo: ", joinSpaceInfo);
 
-  const {
-    createSpace,
-    isSuccess: createSuccess,
-    isError: createError,
-  } = useCreateSpace((data: Tables<"spaces">) => {
-    handleToSpace(data.id);
-  });
-
-  const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const router = useRouter();
 
   useEffect(() => {
     if (joinSuccess) {
-      handleToSpace(partialSpaceInfo?.id!);
+      handleToSpace(joinSpaceInfo?.id!);
+      dispatch(resetJoinSpaceInfo());
       return;
     }
-  }, [joinSuccess, createSuccess, spaceId]);
+    if (createSuccess) {
+      dispatch(resetCreateSpaceInfo());
+      return;
+    }
+  }, [joinSuccess, createSuccess]);
 
   const handleToSpace = async (space_id: string) => {
     await router.replace(`/metaverse/${space_id!}`);
@@ -70,36 +75,41 @@ export default function ProfileForm({
   };
 
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
-    switch (mode) {
-      case "joinSpace":
-        const userProfile: UserProfile = {
-          space_id: partialSpaceInfo?.id!,
-          space_avatar: data.avatar,
-          space_display_name: data.nickname,
-          user_id: userId,
-        };
-        joinSpace(userProfile);
-        break;
-      case "createSpace":
-        console.log(data);
-        const spaceInfo: SpaceInfo = {
-          title: partialSpaceInfo?.title,
-          owner: userId,
-          space_display_name: data.nickname,
-          space_avatar: data.avatar,
-          description: partialSpaceInfo?.description,
-        };
-        createSpace(spaceInfo);
-        break;
-      default:
-        break;
-    }
+    // switch (mode) {
+    //   case "joinSpace":
+    //     const userProfile: JoinSpaceInfo = {
+    //       ...joinSpaceInfo,
+    //       space_avatar: data.avatar,
+    //       space_display_name: data.nickname,
+    //     };
+    //     joinSpace(userProfile);
+    //     if (joinError) console.log(joinError);
+    //     break;
+    //   case "createSpace":
+    //     const spaceInfo: CreateSpaceInfo = {
+    //       ...createSpaceInfo,
+    //       owner: userId,
+    //       space_display_name: data.nickname,
+    //       space_avatar: data.avatar,
+    //     };
+    //     createSpace(spaceInfo);
+    //     if (createError) console.log(createError);
+    //     break;
+    //   default:
+    //     break;
+    // }
+    const userProfile: UserProfile = {
+      avatar: data.avatar,
+      display_name: data.nickname,
+    };
+    dispatch(setUserProfile(userProfile));
+    setProcedure(FORM_SPACE);
   };
 
   return (
     <form onSubmit={handleSubmit(handleProfileSubmit)}>
       <input
-        defaultValue={defaultDisplayName}
+        defaultValue={display_name!}
         type="text"
         placeholder="닉네임"
         {...register("nickname", {

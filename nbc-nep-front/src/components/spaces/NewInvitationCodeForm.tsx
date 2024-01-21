@@ -1,10 +1,5 @@
-//@ts-nocheck
-import { testGet } from "@/api/supabase/space";
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import useInput from "@/hooks/useInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { setJoinSpaceInfo } from "@/redux/modules/spaceSlice";
-import { useMutation } from "@tanstack/react-query";
 import {
   FieldValues,
   FormState,
@@ -22,7 +17,7 @@ interface Props {
   errors: FormState<FieldValues>["errors"];
 }
 
-export default function InvitationCodeForm({
+export default function NewInvitationCodeForm({
   handleSubmit,
   register,
   reset,
@@ -32,36 +27,31 @@ export default function InvitationCodeForm({
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
   const userJoinedSpaces = useGetUserSpaces(userId);
   // console.log(userJoinedSpaces);
-  const { mutate } = useMutation({
-    mutationFn: (code: string) => testGet(code),
-    onSuccess: (res: any) => {
-      const { data } = res;
-      const targetSpace = data;
-      console.log(targetSpace);
-      dispatch(
-        setJoinSpaceInfo({
-          title: targetSpace?.title!,
-          description: targetSpace?.description!,
-          owner: targetSpace?.owner!,
-          user_id: userId,
-          space_id: targetSpace?.id!,
-        })
-      );
-    },
-    onError: (error: any) => console.error(error),
-  });
+
   const handleInvitationSubmit: SubmitHandler<FieldValues> = async (data) => {
-    try {
-      mutate(data.invitationCode);
-      reset({ invitationCode: "" });
-      // 이 부분 이후로 진행이 안 됌
-    } catch (error) {
-      console.error(error);
-    }
-    /* if (!targetSpace) {
-      console.log("초대 코드가 올바르지 않습니다.");
-      return;
-    } */
+    // const targetSpace = await getSpace(data.invitationCode);
+    // try {
+    //   console.log("얘가 실행이 안됨");
+    //   const targetSpace = await getSpace(data.invitationCode);
+    //   console.log(targetSpace);
+    //   // reset({ invitationCode: "" });
+    //   // 이 부분 이후로 진행이 안 됌
+    //   // dispatch(
+    //   //   setJoinSpaceInfo({
+    //   //     title: targetSpace?.title!,
+    //   //     description: targetSpace?.description!,
+    //   //     owner: targetSpace?.owner!,
+    //   //     user_id: userId,
+    //   //     space_id: targetSpace?.id!,
+    //   //   })
+    //   // );
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    // if (!targetSpace) {
+    //   console.log("초대 코드가 올바르지 않습니다.");
+    //   return;
+    // }
   };
 
   const onInvitationCodeChange = (invitationCode: string) => {
@@ -70,10 +60,9 @@ export default function InvitationCodeForm({
       : true;
   };
 
-  const [value, _, handleChange] = useInput("");
-
   return (
-    <form onSubmit={handleSubmit(handleInvitationSubmit)}>
+    // <form onSubmit={handleSubmit(handleInvitationSubmit)}>
+    <form>
       <input
         autoComplete="off"
         type="text"
@@ -86,7 +75,6 @@ export default function InvitationCodeForm({
       {errors.invitationCode && (
         <p>{errors.invitationCode.message as string}</p>
       )}
-      <button type="submit">입장하기</button>
     </form>
   );
 }

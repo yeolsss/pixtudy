@@ -1,7 +1,7 @@
 import {
   getOtherUserHandler,
-  signInHandler,
   logoutHandler,
+  signInHandler,
   signUpHandler,
 } from "@/api/supabase/auth";
 import {
@@ -82,8 +82,8 @@ export function useCreateSpace(
 
   const {
     mutate: createSpace,
-    isSuccess,
-    isError,
+    isSuccess: createSuccess,
+    isError: createError,
   } = useMutation({
     mutationFn: createSpaceHandler,
     onSuccess: (data) => {
@@ -94,28 +94,39 @@ export function useCreateSpace(
       console.error("createSpaceError: ", error);
     },
   });
-  return { createSpace, isSuccess, isError };
+  return { createSpace, createSuccess, createError };
 }
 
 // insert userData to space_members
 export function useJoinSpace() {
   const {
     mutate: joinSpace,
-    isSuccess,
-    isError,
+    isSuccess: joinSuccess,
+    isError: joinError,
   } = useMutation({
     mutationFn: joinSpaceHandler,
     onError: (error) => {
       console.error("joinSpaceError: ", error);
     },
   });
-  return { joinSpace, isSuccess, isError };
+  return { joinSpace, joinSuccess, joinError };
 }
 // spaceId 로 스페이스를 조회하여 테이블이 존재하는지 확인한다.
 export async function getSpace(spaceId: string) {
-  const space = await getSpaceData(spaceId);
-  return space;
+  try {
+    const response = await getSpaceData(spaceId);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 }
+
+// export function testQuery = (spaceId: string) => {
+//   const {} = useQuery({
+//     queryKey: ["test" , spaceId],
+//     queryFn: () => getSpaceData(spaceId),
+//   })
+// }
 
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {

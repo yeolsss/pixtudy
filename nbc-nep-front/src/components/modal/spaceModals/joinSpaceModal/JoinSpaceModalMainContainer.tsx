@@ -1,22 +1,18 @@
 import ModalHeader from "@/components/common/modal/ModalHeader";
+import InvitationCodeForm from "@/components/spaces/InvitationCodeForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
+import ProfilePreview from "@/components/spaces/ProfilePreview";
 import SpacePreview from "@/components/spaces/SpacePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
-import { Procedure, SpaceInfo } from "@/components/spaces/types/space.types";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { Procedure } from "@/components/spaces/types/space.types";
+import { useAppDispatch } from "@/hooks/useReduxTK";
 import { toggleJoinSpaceModal } from "@/redux/modules/modalSlice";
+import { resetJoinSpaceInfo } from "@/redux/modules/spaceSlice";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import InvitationCodeForm from "../../../spaces/InvitationCodeForm";
 
 export default function JoinSpaceModalMainContainer() {
-  const { id: userId, display_name: displayName } = useAppSelector(
-    (state) => state.authSlice.user
-  );
-  const [spaceId, setSpaceId] = useState<string>("");
-  const [ownerId, setOwnerId] = useState<string>("");
-  const [spaceInfo, setSpaceInfo] = useState<SpaceInfo | {}>({});
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
   const dispatch = useAppDispatch();
 
@@ -27,43 +23,35 @@ export default function JoinSpaceModalMainContainer() {
     formState: { errors },
   } = useForm({ mode: "onSubmit" });
 
+  const handleCloseModal = () => {
+    dispatch(toggleJoinSpaceModal());
+    dispatch(resetJoinSpaceInfo());
+  };
+
   return (
     <StModalContainer>
-      <ModalHeader
-        text={"스페이스 입장하기"}
-        handler={() => dispatch(toggleJoinSpaceModal())}
-      />
-      <StModalContents>
-        {procedure === FORM_SPACE ? (
-          <>
-            <InvitationCodeForm
-              setSpaceId={setSpaceId}
-              setOwnerId={setOwnerId}
-              setSpaceInfo={setSpaceInfo}
-              handleSubmit={handleSubmit}
-              register={register}
-              errors={errors}
-            />
-            <SpacePreview
-              setProcedure={setProcedure}
-              spaceInfo={spaceInfo}
-              spaceId={spaceId}
-              ownerId={ownerId}
-            />
-          </>
-        ) : (
-          <ProfileForm
-            setProcedure={setProcedure}
-            spaceInfo={spaceInfo}
-            spaceId={spaceId}
-            defaultDisplayName={displayName!}
+      <ModalHeader text={"스페이스 입장하기"} handler={handleCloseModal} />
+      <StModalContents></StModalContents>
+      {procedure === FORM_SPACE ? (
+        <>
+          <ProfilePreview setProcedure={setProcedure} />
+          <InvitationCodeForm
             handleSubmit={handleSubmit}
             register={register}
+            reset={reset}
             errors={errors}
-            mode="joinSpace"
           />
-        )}
-      </StModalContents>
+          <SpacePreview setProcedure={setProcedure} />
+        </>
+      ) : (
+        <ProfileForm
+          setProcedure={setProcedure}
+          handleSubmit={handleSubmit}
+          register={register}
+          errors={errors}
+          mode="joinSpace"
+        />
+      )}
     </StModalContainer>
   );
 }

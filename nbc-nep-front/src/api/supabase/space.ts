@@ -1,9 +1,9 @@
-import { SpaceInfo } from "@/components/spaces/types/space.types";
+import { CreateSpaceInfo } from "@/components/spaces/types/space.types";
 import { supabase } from "@/supabase/supabase";
 import { Tables, TablesInsert } from "@/supabase/types/supabase";
 
 export const createSpaceHandler = async (
-  spaceInfo: SpaceInfo
+  spaceInfo: CreateSpaceInfo
 ): Promise<Tables<"spaces">> => {
   const space: TablesInsert<"spaces"> = {
     description: spaceInfo.description!,
@@ -47,17 +47,36 @@ export const joinSpaceHandler = async (
 };
 
 export const getSpaceData = async (spaceId: string) => {
-  const { data, error } = await supabase
-    .from("spaces")
-    .select("*")
-    .eq("id", spaceId)
-    .single();
+  try {
+    const { data, status, error } = await supabase
+      .from("spaces")
+      .select("*")
+      .eq("id", spaceId)
+      .single();
 
-  if (error) {
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  } catch (error) {
     console.error(error);
-    return false;
   }
-  return data;
+};
+
+export const testGet = async (spaceId: string) => {
+  console.log("test get space id is : ", spaceId);
+  console.log("1");
+  try {
+    const response = await supabase
+      .from("spaces")
+      .select("*")
+      .eq("id", spaceId)
+      .single();
+    console.log("2");
+    return response;
+  } catch (error) {
+    console.error("12", error);
+  }
 };
 
 export const getPlayerSpaceData = async (
