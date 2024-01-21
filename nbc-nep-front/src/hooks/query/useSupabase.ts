@@ -111,22 +111,18 @@ export function useJoinSpace() {
   });
   return { joinSpace, joinSuccess, joinError };
 }
-// spaceId 로 스페이스를 조회하여 테이블이 존재하는지 확인한다.
-export async function getSpace(spaceId: string) {
-  try {
-    const response = await getSpaceData(spaceId);
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-}
 
-// export function testQuery = (spaceId: string) => {
-//   const {} = useQuery({
-//     queryKey: ["test" , spaceId],
-//     queryFn: () => getSpaceData(spaceId),
-//   })
-// }
+export function useGetSpace() {
+  const client = useQueryClient();
+  const { mutate: getSpace } = useMutation({
+    mutationFn: (code: string) => getSpaceData(code),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+    },
+    onError: (error: any) => console.error(error),
+  });
+  return getSpace;
+}
 
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {

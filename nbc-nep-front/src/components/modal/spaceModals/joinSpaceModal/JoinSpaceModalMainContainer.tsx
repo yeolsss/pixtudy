@@ -1,8 +1,7 @@
 import ModalHeader from "@/components/common/modal/ModalHeader";
-import InvitationCodeForm from "@/components/spaces/InvitationCodeForm";
+import InvitationCodeForm from "@/components/spaces/JoinSpaceForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
 import ProfilePreview from "@/components/spaces/ProfilePreview";
-import SpacePreview from "@/components/spaces/SpacePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure } from "@/components/spaces/types/space.types";
 import { useAppDispatch } from "@/hooks/useReduxTK";
@@ -31,27 +30,28 @@ export default function JoinSpaceModalMainContainer() {
   return (
     <StModalContainer>
       <ModalHeader text={"스페이스 입장하기"} handler={handleCloseModal} />
-      <StModalContents></StModalContents>
-      {procedure === FORM_SPACE ? (
-        <>
-          <ProfilePreview setProcedure={setProcedure} />
-          <InvitationCodeForm
+      <StModalContents>
+        {procedure === FORM_SPACE ? (
+          <>
+            <ProfilePreview setProcedure={setProcedure} />
+            <InvitationCodeForm
+              setProcedure={setProcedure}
+              handleSubmit={handleSubmit}
+              register={register}
+              reset={reset}
+              errors={errors}
+            />
+          </>
+        ) : (
+          <ProfileForm
+            setProcedure={setProcedure}
             handleSubmit={handleSubmit}
             register={register}
-            reset={reset}
             errors={errors}
+            mode="joinSpace"
           />
-          <SpacePreview setProcedure={setProcedure} />
-        </>
-      ) : (
-        <ProfileForm
-          setProcedure={setProcedure}
-          handleSubmit={handleSubmit}
-          register={register}
-          errors={errors}
-          mode="joinSpace"
-        />
-      )}
+        )}
+      </StModalContents>
     </StModalContainer>
   );
 }
@@ -63,7 +63,6 @@ export const StModalContainer = styled.div`
   transform: translate(-50%, -50%);
   z-index: 10;
   background: white;
-  width: 50rem;
   border-radius: ${(props) => props.theme.border.radius[8]};
 `;
 
@@ -71,9 +70,10 @@ export const StModalContents = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: ${(props) => props.theme.spacing[16]};
+  width: ${(props) => props.theme.unit[460]}px;
+  padding: ${(props) => props.theme.spacing[32]};
   /* justify-content: center; */
-  width: 100%;
-  padding: ${(props) => props.theme.spacing[24]};
   padding-top: 0;
   height: 100%;
 `;

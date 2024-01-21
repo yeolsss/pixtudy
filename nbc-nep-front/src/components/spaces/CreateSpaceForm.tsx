@@ -1,10 +1,6 @@
-import {
-  FORM_CHARACTER,
-  fieldValues,
-} from "@/components/spaces/constants/constants";
-import { useAppDispatch } from "@/hooks/useReduxTK";
+import { fieldValues } from "@/components/spaces/constants/constants";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setCreateSpaceInfo } from "@/redux/modules/spaceSlice";
-import { Dispatch, SetStateAction } from "react";
 import {
   FieldValues,
   FormState,
@@ -13,61 +9,72 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
-import ProfilePreview from "./ProfilePreview";
-import { CreateSpaceInfo, Procedure } from "./types/space.types";
+import { StContentsContainer, StInputWrapper } from "./JoinSpaceForm";
+import { CreateSpaceInfo } from "./types/space.types";
 
 interface Props {
-  setProcedure: Dispatch<SetStateAction<Procedure>>;
   handleSubmit: UseFormHandleSubmit<FieldValues>;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
 }
 
 export default function CreateSpaceForm({
-  setProcedure,
   register,
   handleSubmit,
   errors,
 }: Props) {
   const dispatch = useAppDispatch();
+  const userProfile = useAppSelector((state) => state.spaceSlice.userProfile);
+  const createSpaceInfo = useAppSelector(
+    (state) => state.spaceSlice.createSpaceInfo
+  );
 
   const handleCreateSpaceSubmit: SubmitHandler<FieldValues> = (data) => {
     const spaceInfo: CreateSpaceInfo = {
       title: data.spaceName,
       description: data.spaceDescription,
     };
-    dispatch(setCreateSpaceInfo(spaceInfo));
-    setProcedure(FORM_CHARACTER);
+    dispatch(setCreateSpaceInfo({ ...spaceInfo, ...userProfile }));
   };
+  console.log(createSpaceInfo);
 
   return (
     <StCreateSpaceForm onSubmit={handleSubmit(handleCreateSpaceSubmit)}>
-      <ProfilePreview setProcedure={setProcedure} />
-      {fieldValues.map((fieldValue) =>
-        fieldValue.type === "text" ? (
-          <div key={fieldValue.name}>
-            <input
-              type={fieldValue.type}
-              placeholder={fieldValue.placeholder}
-              {...register(fieldValue.name, fieldValue.register)}
-            />
-            {errors.spaceName && (
-              <span>{errors.spaceName?.message as string}</span>
-            )}
-          </div>
-        ) : (
-          <div key={fieldValue.name}>
-            <textarea
-              key={fieldValue.name}
-              placeholder={fieldValue.placeholder}
-              {...register(fieldValue.name, fieldValue.register)}
-            />
-            {errors.spaceDescription && (
-              <span>{errors.spaceDescription?.message as string}</span>
-            )}
-          </div>
-        )
-      )}
+      <StCreateContentsContainer>
+        <div>
+          {fieldValues.map((fieldValue) =>
+            fieldValue.type === "text" ? (
+              <div key={fieldValue.name}>
+                <label htmlFor="">스페이스 이름</label>
+                <StCreateInputWrapper key={fieldValue.name}>
+                  <input
+                    type={fieldValue.type}
+                    placeholder={fieldValue.placeholder}
+                    {...register(fieldValue.name, fieldValue.register)}
+                  />
+                  {errors.spaceName && (
+                    <span>{errors.spaceName?.message as string}</span>
+                  )}
+                </StCreateInputWrapper>
+              </div>
+            ) : (
+              <div key={fieldValue.name}>
+                <label htmlFor="">스페이스 설명</label>
+                <StCreateInputWrapper key={fieldValue.name}>
+                  <textarea
+                    key={fieldValue.name}
+                    placeholder={fieldValue.placeholder}
+                    {...register(fieldValue.name, fieldValue.register)}
+                  />
+                  {errors.spaceDescription && (
+                    <span>{errors.spaceDescription?.message as string}</span>
+                  )}
+                </StCreateInputWrapper>
+              </div>
+            )
+          )}
+        </div>
+      </StCreateContentsContainer>
       <div>
         <button type="submit">스페이스 생성하기</button>
       </div>
@@ -80,4 +87,19 @@ const StCreateSpaceForm = styled.form`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: fit-content;
+`;
+
+const StCreateContentsContainer = styled(StContentsContainer)`
+  width: 100%;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    gap: ${(props) => props.theme.spacing[12]};
+  }
+`;
+
+const StCreateInputWrapper = styled(StInputWrapper)`
+  height: auto;
 `;

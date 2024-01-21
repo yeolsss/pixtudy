@@ -25,6 +25,7 @@ const initialState: SpaceState = {
   userProfile: {
     avatar: "",
     display_name: "",
+    owner: "",
   },
 };
 

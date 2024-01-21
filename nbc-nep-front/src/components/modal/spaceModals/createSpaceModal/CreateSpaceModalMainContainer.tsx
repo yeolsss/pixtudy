@@ -1,6 +1,7 @@
 import ModalHeader from "@/components/common/modal/ModalHeader";
 import CreateSpaceForm from "@/components/spaces/CreateSpaceForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
+import ProfilePreview from "@/components/spaces/ProfilePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure } from "@/components/spaces/types/space.types";
 import { useAppDispatch } from "@/hooks/useReduxTK";
@@ -33,12 +34,14 @@ export default function CreateSpaceModalMainContainer() {
       <ModalHeader text="스페이스 만들기" handler={handleCloseModal} />
       <StModalContents>
         {procedure === FORM_SPACE ? (
-          <CreateSpaceForm
-            setProcedure={setProcedure}
-            handleSubmit={handleSubmit}
-            register={register}
-            errors={errors}
-          />
+          <>
+            <ProfilePreview setProcedure={setProcedure} />
+            <CreateSpaceForm
+              handleSubmit={handleSubmit}
+              register={register}
+              errors={errors}
+            />
+          </>
         ) : (
           <ProfileForm
             setProcedure={setProcedure}

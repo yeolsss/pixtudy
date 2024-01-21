@@ -48,7 +48,7 @@ export const joinSpaceHandler = async (
 
 export const getSpaceData = async (spaceId: string) => {
   try {
-    const { data, status, error } = await supabase
+    const { data, error } = await supabase
       .from("spaces")
       .select("*")
       .eq("id", spaceId)
@@ -57,25 +57,10 @@ export const getSpaceData = async (spaceId: string) => {
     if (error) {
       throw new Error(error.message);
     }
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);
-  }
-};
-
-export const testGet = async (spaceId: string) => {
-  console.log("test get space id is : ", spaceId);
-  console.log("1");
-  try {
-    const response = await supabase
-      .from("spaces")
-      .select("*")
-      .eq("id", spaceId)
-      .single();
-    console.log("2");
-    return response;
-  } catch (error) {
-    console.error("12", error);
   }
 };
 

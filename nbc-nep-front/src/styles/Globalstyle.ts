@@ -465,9 +465,20 @@ const GlobalStyle = styled.createGlobalStyle`
   input {
     height: ${(props) => props.theme.unit[48]}px;
     border-radius: ${(props) => props.theme.border.radius[8]};
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${(props) => props.theme.color.border.secondary};
     padding: ${(props) => props.theme.spacing[16]};
     padding: ${(props) => props.theme.spacing[16]};
+  }
+
+  textarea {
+    width: 100%;
+    resize: none;
+    height: ${(props) => props.theme.unit[64]}px;
+    padding: ${(props) => props.theme.spacing[12]};
+    border-radius: ${(props) => props.theme.border.radius[8]};
+    border: 1px solid ${(props) => props.theme.color.border.secondary};
+    font-family: var(--main-font);
+    font-size: ${(props) => props.theme.body.md.medium.fontSize};
   }
 
   button {

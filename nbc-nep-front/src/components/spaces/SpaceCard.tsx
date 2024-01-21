@@ -112,5 +112,6 @@ const StButtonContainer = styled.div`
   button {
     border-color: ${(props) => props.theme.color.border.interactive.secondary};
     border-radius: ${(props) => props.theme.border.radius[8]};
+    font-size: ${(props) => props.theme.body.lg.regular.fontSize};
   }
 `;

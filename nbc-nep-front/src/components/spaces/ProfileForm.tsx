@@ -75,32 +75,10 @@ export default function ProfileForm({
   };
 
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
-    // switch (mode) {
-    //   case "joinSpace":
-    //     const userProfile: JoinSpaceInfo = {
-    //       ...joinSpaceInfo,
-    //       space_avatar: data.avatar,
-    //       space_display_name: data.nickname,
-    //     };
-    //     joinSpace(userProfile);
-    //     if (joinError) console.log(joinError);
-    //     break;
-    //   case "createSpace":
-    //     const spaceInfo: CreateSpaceInfo = {
-    //       ...createSpaceInfo,
-    //       owner: userId,
-    //       space_display_name: data.nickname,
-    //       space_avatar: data.avatar,
-    //     };
-    //     createSpace(spaceInfo);
-    //     if (createError) console.log(createError);
-    //     break;
-    //   default:
-    //     break;
-    // }
     const userProfile: UserProfile = {
       avatar: data.avatar,
       display_name: data.nickname,
+      owner: userId,
     };
     dispatch(setUserProfile(userProfile));
     setProcedure(FORM_SPACE);

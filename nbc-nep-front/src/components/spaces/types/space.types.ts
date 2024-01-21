@@ -19,4 +19,5 @@ export type JoinSpaceInfo = TablesInsert<"space_members"> &
 export type UserProfile = {
   avatar: string;
   display_name: string;
+  owner: string;
 };
