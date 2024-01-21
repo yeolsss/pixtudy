@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "s": "next build && next start",
     "start": "next start",
     "lint": "next lint",
     "supabase-type": "supabase gen types typescript --project-id lrklhpcxbdiunpubmvio > src/supabase/types/supabase.ts"

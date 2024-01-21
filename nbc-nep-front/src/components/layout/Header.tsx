@@ -32,7 +32,7 @@ export default function Header() {
     { text: "SIGNUP", handler: handleToSignUpPage },
   ];
   const currentButton = authStatus.isLogin ? loginModeButton : logoutModeButton;
-
+  console.log(authStatus);
   return (
     <>
       <StNavContainer>

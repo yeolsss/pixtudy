@@ -51,11 +51,13 @@ export const signInHandler = async ({
 }: SignInHandlerArgs) => {
   switch (platform) {
     case "email":
+      console.log("여기까지");
       const { data: emailLoginData, error: emailLoginError } =
         await supabase.auth.signInWithPassword({
           email: email!,
           password: password!,
         });
+      console.log("왔어");
 
       if (emailLoginError) throw emailLoginError;
       return emailLoginData;

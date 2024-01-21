@@ -25,6 +25,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action: PayloadAction<Tables<"users">>) => {
+      console.log("로그인 된거야?:", action.payload);
       state.isLogin = true;
       state.user = action.payload;
     },

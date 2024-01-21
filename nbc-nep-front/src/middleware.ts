@@ -6,13 +6,20 @@ export function middleware(request: NextRequest) {
   const sessionToken = request.cookies.get("pixtudy-access-token");
   const { pathname } = request.nextUrl;
 
+  console.log("middleware path name is : ", pathname);
+  console.log("session token is : ", sessionToken);
+
   if (
     !sessionToken &&
-    (pathname === "/dashboard" || pathname.startsWith("/metaverse"))
+    (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse"))
   ) {
     return NextResponse.redirect(new URL("/signin", request.url));
   }
-  if (sessionToken && (pathname === "/signin" || pathname === "/signup")) {
+
+  if (
+    sessionToken &&
+    (pathname.startsWith("/signin") || pathname.startsWith("/signup"))
+  ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
