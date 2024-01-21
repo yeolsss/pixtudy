@@ -421,6 +421,8 @@ const GlobalStyle = styled.createGlobalStyle`
     --point-font: "Galmuri11", sans-serif;
     --sub-font: "NeoDunggeunmo", sans-serif;
 
+    --default-font: sans-serif;
+
     --state-online: #15e42a;
     --state-eating: #ffa047;
     --state-left-seat: #858585;

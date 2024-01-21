@@ -71,7 +71,7 @@ const StHeroBannerTitle = styled.h1`
 
 const StHeroBannerDescription = styled.p`
   color: ${(props) => props.theme.color.text.secondary};
-  font-family: var(--sub-font);
+  font-family: var(--default-font);
   font-size: ${(props) => props.theme.body.lg.medium.fontSize};
 
   line-height: ${(props) => props.theme.spacing["24"]};
@@ -80,7 +80,7 @@ const StHeroBannerDescription = styled.p`
 const StLink = styled(StCTALink)`
   text-decoration: none;
   font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
-  font-family: ${(props) => props.theme.body.lg.medium.fontFamily};
+  font-family: var(--default-font);
 
   border-radius: ${(props) => props.theme.border.radius[8]};
 

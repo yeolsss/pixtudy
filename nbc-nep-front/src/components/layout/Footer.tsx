@@ -77,6 +77,9 @@ const Nav = styled.nav`
     align-items: center;
     gap: ${(props) => props.theme.spacing[16]};
   }
+  li {
+    font-family: var(--default-font);
+  }
 `;
 
 const Author = styled(Link)`
