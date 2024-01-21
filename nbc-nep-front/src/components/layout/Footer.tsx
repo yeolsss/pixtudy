@@ -4,23 +4,25 @@ import styled from "styled-components";
 export default function Footer() {
   return (
     <StFooter>
-      <Heading>픽터디</Heading>
-      <ContentWrapper>
-        <CopyRight>
-          spartacodingclub © 2024. All rights reserved. <br />
-        </CopyRight>
-        <Nav>
-          <ul>
-            <li>Privacy Policy</li>
-            <li>Cookies</li>
-            <li>LegalAdvice</li>
-            <li>FAQ</li>
-          </ul>
-        </Nav>
-        <Author href="https://github.com/yeolsss/nbc-nep">
-          Made by 창립멤버
-        </Author>
-      </ContentWrapper>
+      <StWrapper>
+        <Heading>픽터디</Heading>
+        <ContentWrapper>
+          <CopyRight>
+            spartacodingclub © 2024. All rights reserved. <br />
+          </CopyRight>
+          <Nav>
+            <ul>
+              <li>Privacy Policy</li>
+              <li>Cookies</li>
+              <li>LegalAdvice</li>
+              <li>FAQ</li>
+            </ul>
+          </Nav>
+          <Author href="https://github.com/yeolsss/nbc-nep">
+            Made by 창립멤버
+          </Author>
+        </ContentWrapper>
+      </StWrapper>
     </StFooter>
   );
 }
@@ -31,14 +33,10 @@ const StFooter = styled.footer`
   left: 0;
 
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing[40]};
 
+  margin: 0 auto;
   padding: ${(props) =>
     `${props.theme.spacing[20]} ${props.theme.spacing[20]}`};
-  margin: 0 auto;
 
   border-top: 1px solid ${(props) => props.theme.color.grey[200]};
 
@@ -50,6 +48,16 @@ const StFooter = styled.footer`
     line-height: ${(props) => props.theme.body.sm.regular.lineHeight};
     letter-spacing: ${(props) => props.theme.body.sm.regular.letterSpacing};
   }
+`;
+
+const StWrapper = styled.div`
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+  gap: ${(props) => props.theme.spacing[40]};
 `;
 
 const ContentWrapper = styled.div`
