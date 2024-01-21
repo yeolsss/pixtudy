@@ -8,7 +8,6 @@ import useDmMessage from "@/hooks/dm/useDmMessage";
 import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
 import { Tables } from "@/supabase/types/supabase";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 
 export default function MetaverseDmContainer() {
   const { otherUserId, spaceId, otherUserName, otherUserAvatar } =
@@ -60,10 +59,6 @@ export default function MetaverseDmContainer() {
 
   return (
     <StMetaverseDmChannel>
-      <MetaverseChatHeader
-        title={otherUserName}
-        handler={handleCloseDmContainer}
-      />
       <StMessageWrapper ref={messageListRef}>
         {messages?.map((message) => (
           <StMessageCard key={message.id}>

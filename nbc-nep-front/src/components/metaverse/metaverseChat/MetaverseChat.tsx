@@ -11,7 +11,7 @@ export default function MetaverseChat() {
   return (
     <MetaverseChatProvider>
       <StMetaverseGlobalChatWrapper $isOpenChat={isOpenChat}>
-        {isOpenChat && chatType === "GLOBAL" ? (
+        {chatType === "GLOBAL" ? (
           <>
             <MetaverseChatList />
             <MetaverseChatForm />
