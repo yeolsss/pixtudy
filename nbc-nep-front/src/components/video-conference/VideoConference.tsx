@@ -262,7 +262,7 @@ export default function VideoConference() {
       {playerList.length !== 0 && (
         <ShareMediaItemContainer
           playerList={playerList}
-          currentPlayerId={currentPlayerId}
+          currentPlayer={currentPlayer!}
         />
       )}
     </>

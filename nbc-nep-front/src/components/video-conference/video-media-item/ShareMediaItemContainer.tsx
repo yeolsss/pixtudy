@@ -16,22 +16,17 @@ import PlayerProducerContainer from "./PlayerProducerContainer";
 
 interface Props {
   playerList: Player[];
-  currentPlayerId: string;
+  currentPlayer: Player;
 }
 
 export default function ShareMediaItemContainer({
   playerList,
-  currentPlayerId,
+  currentPlayer,
 }: Props) {
   const layoutInfo = useAppSelector((state) => state.layoutSlice);
 
   const { producers } = useVideoSource();
   const isEmptyProducers = isArrayEmpty(getVideoSourcesExcludeAudio(producers));
-
-  const findPlayer = (playerId: string) =>
-    playerList.find((player) => player.playerId === playerId);
-
-  const currentPlayer = findPlayer(currentPlayerId);
 
   const [camAndAudioProducers, screenProducers] = splitVideoSource(producers);
   const isEmptyScreenProducers = isArrayEmpty(screenProducers);
@@ -64,7 +59,7 @@ export default function ShareMediaItemContainer({
       {playerList.map((player) => (
         <OtherPlayerShareMediaItem
           player={player}
-          currentPlayerId={currentPlayerId}
+          currentPlayerId={currentPlayer.playerId}
           key={player.playerId}
         />
       ))}
