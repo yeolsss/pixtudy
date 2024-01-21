@@ -81,6 +81,10 @@ const StNavContainer = styled.header`
 
   p {
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
+    font-weight: ${(props) => props.theme.body.lg.regular.fontWeight};
+    color: ${(props) => props.theme.color.text.primary};
+    font-family: var(--sub-font);
+    letter-spacing: ${(props) => props.theme.body.lg.regular.letterSpacing};
   }
 `;
 
