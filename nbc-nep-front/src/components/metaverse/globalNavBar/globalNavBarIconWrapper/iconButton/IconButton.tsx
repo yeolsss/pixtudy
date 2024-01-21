@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import StBadge from "@/components/common/badge/Badge";
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function IconButton({
   buttonImage,
@@ -14,11 +14,21 @@ export default function IconButton({
   const { dmChatStates, globalChatState } = useAppSelector(
     (state) => state.chatAlarm
   );
-  const [alarmState, setAlarmState] = useState<boolean>();
+  const [alarmState, setAlarmState] = useState<boolean>(
+    globalChatState ||
+      (!!dmChatStates ? dmChatStates.some((dm) => dm.state) : false)
+  );
+
+  useEffect(() => {
+    setAlarmState(
+      globalChatState ||
+        (!!dmChatStates ? dmChatStates.some((dm) => dm.state) : false)
+    );
+  }, [dmChatStates, globalChatState]);
   return (
     <StButton onClick={handleOnClick}>
       <Image src={buttonImage} alt={description} width={"32"} height={"32"} />
-      {type === "chat" && (
+      {alarmState && type === "chat" && (
         <StBadge color={"var(--state-online)"} x={30} y={30} />
       )}
     </StButton>

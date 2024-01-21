@@ -20,7 +20,7 @@ const chatAlarmSlice = createSlice({
     setChatAlarmState: (state, action: PayloadAction<ChatAlarmPayload>) => {
       console.log(action.payload);
       state.globalChatState = action.payload.globalChatState;
-      state.dmChatStates = [...action.payload.dmChatStates];
+      state.dmChatStates = action.payload.dmChatStates;
     },
   },
 });

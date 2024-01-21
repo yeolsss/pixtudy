@@ -17,9 +17,23 @@ export default function useChatAlarm() {
   };
 
   // 배열을 받아올 수 있을듯.
-  const handleSetDmChatAlarmState = (dm: dmChatAlarmState[]) => {
-    console.log(dm);
+  const handleSetDmChatAlarmState = (
+    dm: dmChatAlarmState[],
+    dm_id: string = ""
+  ) => {
+    if (dm_id !== "") {
+    }
+
+    dispatch(
+      setChatAlarmState({
+        globalChatState: globalChatState,
+        dmChatStates: dm,
+      })
+    );
   };
 
-  return { handleSetGlobalChatAlarmState, handleSetDmChatAlarmState };
+  return {
+    handleSetGlobalChatAlarmState,
+    handleSetDmChatAlarmState,
+  };
 }

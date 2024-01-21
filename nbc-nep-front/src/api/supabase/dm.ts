@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/supabase";
-import { Tables } from "@/supabase/types/supabase";
+import { Database, Tables } from "@/supabase/types/supabase";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 
 /**
@@ -188,11 +188,21 @@ export const sendMessage = async ({
   }
 };
 
-export const getLastDmMessageList = async (spaceId: string, userId: string) => {
-  const { data, error } = await supabase.rpc("get_last_dm_message_list", {
-    input_space_id: spaceId,
-    input_user_id: userId,
-  });
+export const getLastDmMessageList = async (
+  spaceId: string,
+  userId: string
+): Promise<
+  | Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
+  | undefined
+> => {
+  const { data, error } = await supabase
+    .rpc("get_last_dm_message_list", {
+      input_space_id: spaceId,
+      input_user_id: userId,
+    })
+    .returns<
+      Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
+    >();
 
   if (error) console.error("Error fetching messages:", error);
   else return data;
