@@ -1,4 +1,7 @@
+import MicOff from "@/assets/dock-icons/mic-off.svg";
+import MicOn from "@/assets/dock-icons/mic-on.svg";
 import { Player } from "@/components/metaverse/types/metaverse";
+import Image from "next/image";
 import ShareMediaItem from "../ShareMediaItem";
 import { getVideoSourcesExcludeAudio, isArrayEmpty } from "../libs/util";
 import { VideoSource } from "../types/ScreenShare.types";
@@ -24,8 +27,15 @@ export default function PlayerMediaDisplay({
     camAndAudioVideoSources.length &&
     camAndAudioVideoSources.length !== excludedAudioVideoSource.length;
 
-  const AudioBadge = isAudioOn ? <p>공유 중</p> : <p>공유 중 아님</p>;
-
+  const AudioBadge = (
+    <Image
+      src={isAudioOn ? MicOn : MicOff}
+      width={24}
+      height={24}
+      style={{ position: "absolute", left: 10, bottom: 10 }}
+      alt={"mic image"}
+    />
+  );
   return (
     <>
       {!isVideoOn ? (
