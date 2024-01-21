@@ -54,7 +54,7 @@ export default function PlayerMediaDisplay({
               videoSource={videoSource}
               isCurrentPlayer={isCurrentPlayer}
             >
-              {AudioBadge}
+              {videoSource.appData.shareType === "webcam" && AudioBadge}
             </ShareMediaItem>
           ))}
         </>

@@ -10,6 +10,8 @@ export const StShareMediaItem = styled(StPositionRelative)<{
   background-color: #27262e;
 
   border-radius: ${(props) => props.theme.border.radius[8]};
+
+  ${(props) => props.$isAudio && "position: absolute"};
 `;
 
 export const StShareMediaNickname = styled.p`
