@@ -55,9 +55,7 @@ export default function PlayerProducerContainer({
         >
           <ShareMediaItem nickname={nickname} videoSource={producer} />
           {isSpreadMode && (
-            <StRemoveProducerButton onClick={() => handleShareStop(producer)}>
-              x
-            </StRemoveProducerButton>
+            <StRemoveProducerButton onClick={() => handleShareStop(producer)} />
           )}
         </StStackItem>
       ))}
@@ -69,6 +67,10 @@ const StRemoveProducerButton = styled.button`
   background-color: ${(props) => props.theme.color.bg["danger-bold"]};
   width: 20px;
   height: 20px;
+
+  outline: none;
+  padding: 0;
+  margin: 0;
 
   position: absolute;
 
