@@ -31,7 +31,7 @@ import {
   ShareType,
   TransPortParams,
 } from "./types/ScreenShare.types";
-import ShareMediaItemContainer from "./video-media-item/ShareMediaItemContainer";
+import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
@@ -260,7 +260,7 @@ export default function VideoConference() {
         />
       </StDockContainer>
       {playerList.length !== 0 && (
-        <ShareMediaItemContainer
+        <VideoSourceDisplayContainer
           playerList={playerList}
           currentPlayer={currentPlayer!}
         />

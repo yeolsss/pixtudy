@@ -1,6 +1,5 @@
 import { Player } from "@/components/metaverse/types/metaverse";
 import {
-  getVideoSourcesExcludeAudio,
   isArrayEmpty,
   splitVideoSource,
 } from "@/components/video-conference/libs/util";
@@ -14,7 +13,7 @@ import {
   StStackItem,
   StVideoWrapper,
 } from "../styles/videoConference.styles";
-import DefaultShareMediaItem from "./DefaultShareMediaItem";
+import PlayerMediaDisplay from "./PlayerMediaDisplay";
 
 interface Props {
   currentPlayerId: string;
@@ -27,7 +26,6 @@ export default function OtherPlayerShareMediaItem({
 }: Props) {
   const dispatch = useAppDispatch();
   const videosContainerRef = useRef<HTMLDivElement | null>(null);
-
   const { consumers } = useVideoSource();
 
   if (currentPlayerId === player.playerId) return null;
@@ -36,9 +34,6 @@ export default function OtherPlayerShareMediaItem({
     (consumer) => consumer.appData.playerId === player.playerId
   );
 
-  const isEmptyConsumers = isArrayEmpty(
-    getVideoSourcesExcludeAudio(filteredConsumers)
-  );
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
   const isEmptyScreenConsumers = isArrayEmpty(screenConsumers);
@@ -54,42 +49,30 @@ export default function OtherPlayerShareMediaItem({
 
   return (
     <>
-      {isEmptyConsumers ? (
-        <DefaultShareMediaItem
-          nickname={player.nickname}
-          avatar={player.character}
-        />
-      ) : (
-        <>
-          {camAndAudioConsumers.map((consumer) => (
-            <ShareMediaItem
+      <PlayerMediaDisplay
+        camAndAudioVideoSources={camAndAudioConsumers}
+        player={player}
+        isCurrentPlayer={false}
+      />
+      {!isEmptyScreenConsumers && (
+        <StVideoWrapper
+          ref={videosContainerRef}
+          onClick={handleToggleVideosLayout}
+        >
+          {screenConsumers.map((consumer, index) => (
+            <StStackItem
               key={consumer.id}
-              nickname={player.nickname}
-              videoSource={consumer}
-              isCurrentPlayer={false}
-            />
-          ))}
-          {!isEmptyScreenConsumers && (
-            <StVideoWrapper
-              ref={videosContainerRef}
-              onClick={handleToggleVideosLayout}
+              $isSpread={false}
+              $x={index * SPACING}
+              $y={index * SPACING}
             >
-              {screenConsumers.map((consumer, index) => (
-                <StStackItem
-                  key={consumer.id}
-                  $isSpread={false}
-                  $x={index * SPACING}
-                  $y={index * SPACING}
-                >
-                  <ShareMediaItem
-                    nickname={player.nickname}
-                    videoSource={consumer}
-                  />
-                </StStackItem>
-              ))}
-            </StVideoWrapper>
-          )}
-        </>
+              <ShareMediaItem
+                nickname={player.nickname}
+                videoSource={consumer}
+              />
+            </StStackItem>
+          ))}
+        </StVideoWrapper>
       )}
     </>
   );

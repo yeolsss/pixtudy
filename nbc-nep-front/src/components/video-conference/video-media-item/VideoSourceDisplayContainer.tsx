@@ -1,17 +1,15 @@
 import { Player } from "@/components/metaverse/types/metaverse";
 import {
-  getVideoSourcesExcludeAudio,
   isArrayEmpty,
   splitVideoSource,
 } from "@/components/video-conference/libs/util";
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";
-import ShareMediaItem from "../ShareMediaItem";
 import ShareScreenContainer from "../ShareScreenContainer";
 import { Producer } from "../types/ScreenShare.types";
-import DefaultShareMediaItem from "./DefaultShareMediaItem";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
+import PlayerMediaDisplay from "./PlayerMediaDisplay";
 import PlayerProducerContainer from "./PlayerProducerContainer";
 
 interface Props {
@@ -19,42 +17,29 @@ interface Props {
   currentPlayer: Player;
 }
 
-export default function ShareMediaItemContainer({
+export default function VideoSourceDisplayContainer({
   playerList,
   currentPlayer,
 }: Props) {
   const layoutInfo = useAppSelector((state) => state.layoutSlice);
 
   const { producers } = useVideoSource();
-  const isEmptyProducers = isArrayEmpty(getVideoSourcesExcludeAudio(producers));
 
   const [camAndAudioProducers, screenProducers] = splitVideoSource(producers);
   const isEmptyScreenProducers = isArrayEmpty(screenProducers);
 
   return (
     <StContainer>
-      {isEmptyProducers ? (
-        <DefaultShareMediaItem
-          nickname={currentPlayer?.nickname}
-          avatar={currentPlayer?.character}
+      <PlayerMediaDisplay
+        camAndAudioVideoSources={camAndAudioProducers}
+        player={currentPlayer}
+        isCurrentPlayer={true}
+      />
+      {!isEmptyScreenProducers && (
+        <PlayerProducerContainer
+          nickname={currentPlayer?.nickname || ""}
+          producers={screenProducers as Producer[]}
         />
-      ) : (
-        <>
-          {camAndAudioProducers.map((producer) => (
-            <ShareMediaItem
-              nickname={currentPlayer?.nickname || ""}
-              key={producer.id}
-              videoSource={producer}
-              isCurrentPlayer={true}
-            />
-          ))}
-          {!isEmptyScreenProducers && (
-            <PlayerProducerContainer
-              nickname={currentPlayer?.nickname || ""}
-              producers={screenProducers as Producer[]}
-            />
-          )}
-        </>
       )}
       {playerList.map((player) => (
         <OtherPlayerShareMediaItem

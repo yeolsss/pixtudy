@@ -1,3 +1,4 @@
+import { PropsWithChildren } from "react";
 import {
   StAudio,
   StShareMediaItem,
@@ -16,7 +17,8 @@ export default function ShareMediaItem({
   videoSource,
   nickname,
   isCurrentPlayer,
-}: Props) {
+  children,
+}: PropsWithChildren<Props>) {
   const { track } = videoSource;
 
   if (!track) return null;
@@ -53,6 +55,7 @@ export default function ShareMediaItem({
           }}
         />
       )}
+      {children}
     </StShareMediaItem>
   );
 }
