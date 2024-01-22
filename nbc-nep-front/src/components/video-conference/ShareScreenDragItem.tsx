@@ -38,9 +38,9 @@ export default function ShareScreenDragItem({
           </button>
         )}
         <TransformWrapper
-          wheel={{ activationKeys: ["Control"] }}
+          wheel={{ activationKeys: ["Control", "Meta"] }}
           panning={{
-            activationKeys: ["Control"],
+            activationKeys: ["Control", "Meta"],
             disabled: active ? false : true,
           }}
         >
