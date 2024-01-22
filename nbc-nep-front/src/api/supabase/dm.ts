@@ -64,26 +64,6 @@ export interface getDmChannelMessagesReturns {
  * @param string|null dmChannel - 기존 메시지를 확인하기 위한 채널 id, 기존에 생성된 channel이 없다면 null
  * @returns getDmChannelMessagesReturns[]|[] 채널이 이미 있었다면 메시지 정보를 담은 배열, 없었다면 빈 배열
  */
-/*export const getDmChannelMessages = async (dmChannel: string | null) => {
-  // 채팅방이 없을 때는 빈배열 반환
-  if (!dmChannel) return [];
-  const channelMessages = await supabase.rpc("get_dm_channel_messages", {
-    p_dm_channel: dmChannel,
-  });
-  return channelMessages.data as getDmChannelMessagesReturns[];
-};*/
-
-interface DmMessage {
-  id: string;
-  created_at: string;
-  dm_id: string;
-  receiver_id: string;
-  receiver_display_name: string;
-  message: string;
-  sender_id: string;
-  sender_display_name: string;
-}
-
 export const getDmChannelMessages = async (
   dmChannel: string | null
 ): Promise<getDmChannelMessagesReturns[]> => {
