@@ -21,6 +21,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    router.push("/");
   };
 
   const handleToDashboard = () => {
@@ -33,7 +34,6 @@ export default function Header() {
     { text: "SIGNUP", handler: handleToSignUpPage },
   ];
   const currentButton = authStatus.isLogin ? loginModeButton : logoutModeButton;
-
   return (
     <>
       <StNavContainer>

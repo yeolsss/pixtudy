@@ -12,13 +12,16 @@ import { setSaveLoginInfo } from "@/redux/modules/authSlice";
 interface Props {
   formType: AuthFormType;
 }
+
 export default function AuthForm({ formType }: Props) {
   const signUp = useSignUpUser();
   const signIn = useSignInUser();
   const router = useRouter();
+
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(
     formType === "signIn" ? true : false
   );
+
   const isSaveLogin = useAppSelector((state) => state.authSlice.isSaveInfo);
   const dispatch = useAppDispatch();
 
@@ -39,6 +42,7 @@ export default function AuthForm({ formType }: Props) {
 
   useEffect(() => {
     const savedLogin = localStorage.getItem("saveLogin");
+
     if (savedLogin) {
       dispatch(setSaveLoginInfo(true));
       setValue("signIn_id", savedLogin);
@@ -56,8 +60,8 @@ export default function AuthForm({ formType }: Props) {
           platform: "email",
         },
         {
-          onSuccess: (data) => {
-            console.log("로그인 성공");
+          onSuccess: async (data) => {
+            console.log(data);
             if ("user" in data) {
               if (isSaveLogin) {
                 localStorage.setItem("saveLogin", data.user.email!);
@@ -65,7 +69,7 @@ export default function AuthForm({ formType }: Props) {
                 localStorage.removeItem("saveLogin");
               }
             }
-            router.push("/dashboard");
+            router.push("/redirect");
           },
         }
       );

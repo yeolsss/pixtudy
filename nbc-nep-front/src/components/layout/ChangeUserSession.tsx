@@ -1,49 +1,55 @@
-import { getUserSessionHandler } from "@/api/supabase/auth";
 import { useAppDispatch } from "@/hooks/useReduxTK";
-import { login, logout } from "@/redux/modules/authSlice";
+import { fetchUser, logout } from "@/redux/modules/authSlice";
 import { supabase } from "@/supabase/supabase";
-import { useRouter } from "next/router";
+import { Session } from "@supabase/supabase-js";
 import { useEffect } from "react";
 
 export default function ChangeUserSession() {
   const dispatch = useAppDispatch();
-  const router = useRouter();
-
   // 유저정보를 불러오는 코드
-  const setUserSession = async () => {
-    const data = await getUserSessionHandler();
-    dispatch(login(data!));
+  const setUserSession = async (session: Session) => {
+    dispatch(fetchUser(session));
   };
 
-  /* 로그인 상태를 tracking*/
   useEffect(() => {
-    const trackingAuth = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event === "INITIAL_SESSION") {
-          if (session) {
-            await setUserSession();
-          }
-        } else if (event === "SIGNED_IN") {
-          await setUserSession();
-          if (session?.user.app_metadata.provider !== "email") {
-            router.push("/dashboard");
-          }
-        } else if (event === "SIGNED_OUT") {
-          // 로그아웃 시
-          dispatch(logout());
-          await router.push("/");
-        } else if (event === "PASSWORD_RECOVERY") {
-          // 비밀번호 찾기 페이지 들어갈 시
-        } else if (event === "TOKEN_REFRESHED") {
-          // 리프레시 토큰 작동시
-        } else if (event === "USER_UPDATED") {
-          // 유저 정보 업데이트 시
-        }
+    //TODO: 로직 개선중
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(event, session);
+      if (session) {
+        document.cookie = `access_token=${session.access_token}; Path=/; Max-Age=${session.expires_in}`;
+      } else {
+        document.cookie = `access_token=; Path=/; Max-Age=0`;
       }
-    );
-    return () => {
-      trackingAuth.data.subscription.unsubscribe();
-    };
+
+      switch (event) {
+        case "INITIAL_SESSION":
+          await setUserSession(session!);
+          break;
+        case "SIGNED_IN":
+          await setUserSession(session!);
+          break;
+        case "SIGNED_OUT":
+          dispatch(logout());
+          break;
+      }
+      // Send a request to your API route
+      /* const res = await fetch("/api/login", {
+        method: "POST",
+        headers: new Headers({ "Content-Type": "application/json" }),
+        credentials: "same-origin",
+        body: JSON.stringify({ event, session }),
+      });
+
+      const { message } = await res.json();
+
+      if (message === "initialSession") {
+        await setUserSession(session!);
+      } else if (message === "login") {
+        await setUserSession(session!);
+      } else if (message === "logout") {
+        dispatch(logout());
+      } */
+    });
   }, []);
 
   return <></>;
