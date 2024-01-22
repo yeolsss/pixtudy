@@ -1,6 +1,7 @@
 import ChangeUserSession from "@/components/layout/ChangeUserSession";
 import StoreProvider from "@/redux/StoreProvier";
 import GlobalStyle, { theme } from "@/styles/Globalstyle";
+import "@/supabase/supabase";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";

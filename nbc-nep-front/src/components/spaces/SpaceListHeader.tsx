@@ -65,6 +65,7 @@ const StHeaderWrapper = styled.div`
     padding-bottom: ${(props) => props.theme.spacing[12]};
     padding-right: ${(props) => props.theme.spacing[24]};
     padding-left: ${(props) => props.theme.spacing[24]};
+    font-size: ${(props) => props.theme.body.lg.regular.fontSize};
   }
 `;
 
@@ -72,6 +73,7 @@ const StNavContainer = styled.div`
   display: flex;
   gap: ${(props) => props.theme.spacing[32]};
   button {
+    position: relative;
     border: none;
     font-family: var(--point-font);
     font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
@@ -82,6 +84,16 @@ const StNavContainer = styled.div`
       color: ${(props) =>
         props.theme.color.text.interactive["secondary-pressed"]};
     }
+  }
+  & > button:nth-child(2)::before {
+    content: "";
+    position: absolute;
+    top: var(--unit-18);
+    left: -16px;
+    display: block;
+    width: 1px;
+    height: var(--unit-20);
+    background-color: ${(props) => props.theme.color.grey[300]};
   }
 `;
 

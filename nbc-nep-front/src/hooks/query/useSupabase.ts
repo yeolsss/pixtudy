@@ -81,8 +81,8 @@ export function useCreateSpace(
 
   const {
     mutate: createSpace,
-    isSuccess,
-    isError,
+    isSuccess: createSuccess,
+    isError: createError,
   } = useMutation({
     mutationFn: createSpaceHandler,
     onSuccess: (data) => {
@@ -93,33 +93,40 @@ export function useCreateSpace(
       console.error("createSpaceError: ", error);
     },
   });
-  return { createSpace, isSuccess, isError };
+  return { createSpace, createSuccess, createError };
 }
 
 // insert userData to space_members
 export function useJoinSpace() {
   const {
     mutate: joinSpace,
-    isSuccess,
-    isError,
+    isSuccess: joinSuccess,
+    isError: joinError,
   } = useMutation({
     mutationFn: joinSpaceHandler,
     onError: (error) => {
       console.error("joinSpaceError: ", error);
     },
   });
-  return { joinSpace, isSuccess, isError };
+  return { joinSpace, joinSuccess, joinError };
 }
-// spaceId 로 스페이스를 조회하여 테이블이 존재하는지 확인한다.
-export async function getSpace(spaceId: string) {
-  const space = await getSpaceData(spaceId);
-  return !!space;
+
+export function useGetSpace() {
+  const client = useQueryClient();
+  const { mutate: getSpace } = useMutation({
+    mutationFn: (code: string) => getSpaceData(code),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+    },
+    onError: (error: any) => console.error(error),
+  });
+  return getSpace;
 }
 
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {
   const getUserSpacesOptions = {
-    queryKey: ["userSpaces"],
+    queryKey: ["userSpaces", currentUserId],
     queryFn: () => getUserSpaces(currentUserId),
     enabled: !!currentUserId,
   };

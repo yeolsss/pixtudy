@@ -1,5 +1,6 @@
 import { useLogoutUser } from "@/hooks/query/useSupabase";
 import { useAppSelector } from "@/hooks/useReduxTK";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { StCTAButton } from "../common/button/button.styles";
@@ -37,7 +38,7 @@ export default function Header() {
     <>
       <StNavContainer>
         <div>
-          <span onClick={() => router.push("/")}>Pixtudy</span>
+          <Link href="/">Pixtudy</Link>
           <StNavButton>서비스 소개</StNavButton>
           <StNavButton>고객지원</StNavButton>
         </div>
@@ -64,7 +65,7 @@ const StNavContainer = styled.header`
   align-items: center;
   font-family: var(--sub-font);
 
-  span {
+  a {
     display: block;
     color: ${(props) => props.theme.color.text.interactive.primary};
     font-family: var(--point-font);
@@ -80,6 +81,10 @@ const StNavContainer = styled.header`
 
   p {
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
+    font-weight: ${(props) => props.theme.body.lg.regular.fontWeight};
+    color: ${(props) => props.theme.color.text.primary};
+    font-family: var(--sub-font);
+    letter-spacing: ${(props) => props.theme.body.lg.regular.letterSpacing};
   }
 `;
 
