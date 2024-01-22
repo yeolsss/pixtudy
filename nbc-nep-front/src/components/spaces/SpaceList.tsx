@@ -15,6 +15,13 @@ export default function SpaceList({ currentUserId }: Props) {
   const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
   const getUserSpaces = useGetUserSpaces(currentUserId);
   const { id } = useAppSelector((state) => state.authSlice.user);
+  const { createSpaceInfo, joinSpaceInfo } = useAppSelector(
+    (state) => state.spaceSlice
+  );
+
+  // console.log("createSpaceInfo: ", createSpaceInfo);
+  console.log("joinSpaceInfo: ", joinSpaceInfo);
+
   useEffect(() => {
     if (getUserSpaces) setUserSpaces(getUserSpaces);
   }, [getUserSpaces]);

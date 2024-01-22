@@ -1,6 +1,10 @@
 import { fieldValues } from "@/components/spaces/constants/constants";
+import { useCreateSpace } from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setCreateSpaceInfo } from "@/redux/modules/spaceSlice";
+import { Tables } from "@/supabase/types/supabase";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import {
   FieldValues,
   FormState,
@@ -9,7 +13,11 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
-import { StContentsContainer, StInputWrapper } from "./JoinSpaceForm";
+import {
+  StContentsContainer,
+  StFormCTAButton,
+  StInputWrapper,
+} from "./JoinSpaceForm";
 import { CreateSpaceInfo } from "./types/space.types";
 
 interface Props {
@@ -24,10 +32,26 @@ export default function CreateSpaceForm({
   errors,
 }: Props) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const userProfile = useAppSelector((state) => state.spaceSlice.userProfile);
+  const { createSpace, createSuccess, createError } = useCreateSpace(
+    (data: Tables<"spaces">) => {
+      handleToSpace(data.id);
+    }
+  );
   const createSpaceInfo = useAppSelector(
     (state) => state.spaceSlice.createSpaceInfo
   );
+
+  useEffect(() => {
+    if (createSuccess) {
+      return;
+    }
+  }, [createSuccess]);
+
+  const handleToSpace = async (space_id: string) => {
+    await router.replace(`/metaverse/${space_id!}`);
+  };
 
   const handleCreateSpaceSubmit: SubmitHandler<FieldValues> = (data) => {
     const spaceInfo: CreateSpaceInfo = {
@@ -35,8 +59,16 @@ export default function CreateSpaceForm({
       description: data.spaceDescription,
     };
     dispatch(setCreateSpaceInfo({ ...spaceInfo, ...userProfile }));
+    console.log("Create space info from selector:", createSpaceInfo);
+    createSpace({
+      description: spaceInfo.description,
+      owner: userProfile.owner,
+      title: spaceInfo.title,
+      space_avatar: userProfile.avatar,
+      space_display_name: userProfile.display_name,
+      user_id: userProfile.owner,
+    });
   };
-  console.log(createSpaceInfo);
 
   return (
     <StCreateSpaceForm onSubmit={handleSubmit(handleCreateSpaceSubmit)}>
@@ -76,7 +108,7 @@ export default function CreateSpaceForm({
         </div>
       </StCreateContentsContainer>
       <div>
-        <button type="submit">스페이스 생성하기</button>
+        <StFormCTAButton type="submit">스페이스 생성하기</StFormCTAButton>
       </div>
     </StCreateSpaceForm>
   );
@@ -96,7 +128,11 @@ const StCreateContentsContainer = styled(StContentsContainer)`
   & > div {
     display: flex;
     flex-direction: column;
-    gap: ${(props) => props.theme.spacing[12]};
+    gap: ${(props) => props.theme.spacing[16]};
+  }
+
+  & + div {
+    width: 100%;
   }
 `;
 

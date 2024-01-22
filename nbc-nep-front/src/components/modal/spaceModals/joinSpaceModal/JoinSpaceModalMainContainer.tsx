@@ -30,9 +30,9 @@ export default function JoinSpaceModalMainContainer() {
   return (
     <StModalContainer>
       <ModalHeader text={"스페이스 입장하기"} handler={handleCloseModal} />
-      <StModalContents>
+      <StModalJoinSpaceContents>
         {procedure === FORM_SPACE ? (
-          <>
+          <div>
             <ProfilePreview setProcedure={setProcedure} />
             <InvitationCodeForm
               setProcedure={setProcedure}
@@ -41,7 +41,7 @@ export default function JoinSpaceModalMainContainer() {
               reset={reset}
               errors={errors}
             />
-          </>
+          </div>
         ) : (
           <ProfileForm
             setProcedure={setProcedure}
@@ -51,7 +51,7 @@ export default function JoinSpaceModalMainContainer() {
             mode="joinSpace"
           />
         )}
-      </StModalContents>
+      </StModalJoinSpaceContents>
     </StModalContainer>
   );
 }
@@ -76,4 +76,12 @@ export const StModalContents = styled.div`
   /* justify-content: center; */
   padding-top: 0;
   height: 100%;
+`;
+
+const StModalJoinSpaceContents = styled(StModalContents)`
+  padding: 0;
+  & > div {
+    width: 100%;
+    padding: ${(props) => props.theme.spacing[32]};
+  }
 `;

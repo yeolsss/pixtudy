@@ -1,7 +1,16 @@
 //@ts-nocheck
-import { useGetSpace, useGetUserSpaces } from "@/hooks/query/useSupabase";
+import {
+  useGetSpace,
+  useGetUserSpaces,
+  useJoinSpace,
+} from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { setJoinSpaceInfo } from "@/redux/modules/spaceSlice";
+import {
+  resetJoinSpaceInfo,
+  setJoinSpaceInfo,
+} from "@/redux/modules/spaceSlice";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import {
   FieldValues,
   FormState,
@@ -31,8 +40,24 @@ export default function InvitationCodeForm({
 }: Props) {
   const dispatch = useAppDispatch();
   const { id: userId } = useAppSelector((state) => state.authSlice.user);
+  const userProfile = useAppSelector((state) => state.spaceSlice.userProfile);
+  const { joinSpaceInfo } = useAppSelector((state) => state.spaceSlice);
+  const { joinSpace, joinError, joinSuccess } = useJoinSpace();
   const userJoinedSpaces = useGetUserSpaces(userId);
+  const router = useRouter();
   const getSpace = useGetSpace();
+
+  useEffect(() => {
+    if (joinSuccess) {
+      handleToSpace(joinSpaceInfo?.id!);
+      dispatch(resetJoinSpaceInfo());
+      return;
+    }
+  }, [joinSuccess]);
+
+  const handleToSpace = async (space_id: string) => {
+    await router.replace(`/metaverse/${space_id!}`);
+  };
 
   const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
     getSpace(data.invitationCode, {
@@ -53,6 +78,15 @@ export default function InvitationCodeForm({
     return userJoinedSpaces?.some((space) => space.space_id === invitationCode)
       ? "이미 멤버인 스페이스입니다."
       : true;
+  };
+
+  const handleJoinSpace = () => {
+    joinSpace({
+      space_id: joinSpaceInfo.id,
+      space_avatar: userProfile.avatar,
+      space_display_name: userProfile.display_name,
+      user_id: userProfile.owner,
+    });
   };
 
   return (
@@ -81,7 +115,7 @@ export default function InvitationCodeForm({
         )}
       </StContentsContainer>
       <SpacePreview setProcedure={setProcedure} />
-      <StFormCTAButton type="button" disabled="true">
+      <StFormCTAButton type="button" onClick={handleJoinSpace}>
         입장하기
       </StFormCTAButton>
     </StForm>
@@ -97,7 +131,7 @@ export const StContentsContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: ${(props) => props.theme.spacing[12]};
+  margin-bottom: ${(props) => props.theme.spacing[16]};
 
   & > div {
     display: flex;

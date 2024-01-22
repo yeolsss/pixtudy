@@ -9,6 +9,7 @@ interface SpaceState {
   createSpaceInfo: CreateSpaceInfo;
   joinSpaceInfo: JoinSpaceInfo;
   userProfile: UserProfile;
+  avatar: string;
 }
 
 const initialState: SpaceState = {
@@ -27,6 +28,7 @@ const initialState: SpaceState = {
     display_name: "",
     owner: "",
   },
+  avatar: "NPC1",
 };
 
 export const spaceSlice = createSlice({
@@ -34,6 +36,7 @@ export const spaceSlice = createSlice({
   initialState,
   reducers: {
     setCreateSpaceInfo: (state, action: PayloadAction<CreateSpaceInfo>) => {
+      // state.createSpaceInfo = { ...state.createSpaceInfo, ...action.payload };
       state.createSpaceInfo = action.payload;
     },
     setJoinSpaceInfo: (state, action: PayloadAction<JoinSpaceInfo>) => {
@@ -50,6 +53,9 @@ export const spaceSlice = createSlice({
       state.joinSpaceInfo = initialState.joinSpaceInfo;
       state.userProfile = initialState.userProfile;
     },
+    setAvatar: (state, action: PayloadAction<string>) => {
+      state.avatar = action.payload;
+    },
   },
 });
 
@@ -59,5 +65,6 @@ export const {
   setUserProfile,
   resetCreateSpaceInfo,
   resetJoinSpaceInfo,
+  setAvatar,
 } = spaceSlice.actions;
 export default spaceSlice.reducer;

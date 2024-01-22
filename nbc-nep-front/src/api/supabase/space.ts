@@ -5,6 +5,7 @@ import { Tables, TablesInsert } from "@/supabase/types/supabase";
 export const createSpaceHandler = async (
   spaceInfo: CreateSpaceInfo
 ): Promise<Tables<"spaces">> => {
+  console.log(spaceInfo);
   const space: TablesInsert<"spaces"> = {
     description: spaceInfo.description!,
     owner: spaceInfo.owner!,

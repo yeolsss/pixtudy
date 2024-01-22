@@ -40,7 +40,7 @@ export default function SpacePreview({ setProcedure }: Props) {
         </StSpacePreviewContainer>
       ) : (
         <StPreviewDisabled>
-          초대코드를 입력해서 스페이스에 입장해 보세요!
+          초대코드를 입력해서 스페이스의 정보를 확인해보세요!
         </StPreviewDisabled>
       )}
     </StSpacePreview>
@@ -52,7 +52,7 @@ const StSpacePreview = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: ${(props) => props.theme.spacing[12]};
+  margin-bottom: ${(props) => props.theme.spacing[16]};
   h2 {
     font-family: var(--sub-font);
     font-size: ${(props) => props.theme.body.md.medium.fontSize};
@@ -60,7 +60,7 @@ const StSpacePreview = styled.div`
 `;
 
 const StSpacePreviewContainer = styled.div`
-  gap: ${(props) => props.theme.spacing[12]};
+  gap: ${(props) => props.theme.spacing[16]};
   margin-top: ${(props) => props.theme.spacing[6]};
   background-color: ${(props) => props.theme.color.bg.secondary};
   border-radius: ${(props) => props.theme.border.radius[12]};
