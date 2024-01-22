@@ -18,7 +18,6 @@ const chatAlarmSlice = createSlice({
   initialState,
   reducers: {
     setChatAlarmState: (state, action: PayloadAction<ChatAlarmPayload>) => {
-      console.log(action.payload);
       state.globalChatState = action.payload.globalChatState;
       state.dmChatStates = action.payload.dmChatStates;
     },

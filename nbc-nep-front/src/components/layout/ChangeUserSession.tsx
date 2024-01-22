@@ -1,10 +1,7 @@
-import { getUserSessionHandler } from "@/api/supabase/auth";
 import { useAppDispatch } from "@/hooks/useReduxTK";
-import { fetchUser, login, logout } from "@/redux/modules/authSlice";
+import { fetchUser, logout } from "@/redux/modules/authSlice";
 import { supabase } from "@/supabase/supabase";
 import { Session } from "@supabase/supabase-js";
-import { useRouter } from "next/router";
-import { NextResponse } from "next/server";
 import { useEffect } from "react";
 
 export default function ChangeUserSession() {
@@ -15,6 +12,7 @@ export default function ChangeUserSession() {
   };
 
   useEffect(() => {
+    //TODO: 로직 개선중
     supabase.auth.onAuthStateChange(async (event, session) => {
       console.log(event, session);
       if (session) {

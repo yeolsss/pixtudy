@@ -1,17 +1,23 @@
 import { StPositionRelative } from "@/components/common/button/button.styles";
 import styled from "styled-components";
 
-export const StShareMediaItem = styled(StPositionRelative)`
-  width: ${(props) => props.theme.video.width};
-  height: ${(props) => props.theme.video.height};
+export const StShareMediaItem = styled(StPositionRelative)<{
+  $isAudio: boolean;
+}>`
+  width: ${(props) => (props.$isAudio ? 0 : props.theme.video.width)};
+  height: ${(props) => (props.$isAudio ? 0 : props.theme.video.height)};
 
   background-color: #27262e;
+
+  border-radius: ${(props) => props.theme.border.radius[8]};
+
+  ${(props) => props.$isAudio && "position: absolute"};
 `;
 
 export const StShareMediaNickname = styled.p`
   position: absolute;
-  top: ${(props) => props.theme.spacing[4]};
-  left: ${(props) => props.theme.spacing[4]};
+  top: ${(props) => props.theme.spacing[8]};
+  left: ${(props) => props.theme.spacing[8]};
 
   color: white;
   z-index: 1;
