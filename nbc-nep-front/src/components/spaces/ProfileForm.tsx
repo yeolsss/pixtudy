@@ -39,9 +39,6 @@ export default function ProfileForm({
   const dispatch = useAppDispatch();
   const { joinSpace, joinSuccess, joinError } = useJoinSpace();
 
-  console.log("createSpaceInfo: ", createSpaceInfo);
-  console.log("joinSpaceInfo: ", joinSpaceInfo);
-
   const router = useRouter();
 
   const handleToPrevious = () => {

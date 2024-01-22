@@ -1,24 +1,27 @@
 import { useSignInUser, useSignUpUser } from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { AuthFormType, FormValues, getInputs } from "./utils/authUtils";
-import AuthInput from "./AuthInput";
-import styled from "styled-components";
-import SignInOptions from "./SignInOptions";
 import { setSaveLoginInfo } from "@/redux/modules/authSlice";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import styled from "styled-components";
+import AuthInput from "./AuthInput";
+import SignInOptions from "./SignInOptions";
+import { AuthFormType, FormValues, getInputs } from "./utils/authUtils";
 
 interface Props {
   formType: AuthFormType;
 }
+
 export default function AuthForm({ formType }: Props) {
   const signUp = useSignUpUser();
   const signIn = useSignInUser();
   const router = useRouter();
+
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(
     formType === "signIn" ? true : false
   );
+
   const isSaveLogin = useAppSelector((state) => state.authSlice.isSaveInfo);
   const dispatch = useAppDispatch();
 
@@ -39,6 +42,7 @@ export default function AuthForm({ formType }: Props) {
 
   useEffect(() => {
     const savedLogin = localStorage.getItem("saveLogin");
+
     if (savedLogin) {
       dispatch(setSaveLoginInfo(true));
       setValue("signIn_id", savedLogin);
@@ -56,8 +60,7 @@ export default function AuthForm({ formType }: Props) {
           platform: "email",
         },
         {
-          onSuccess: (data) => {
-            console.log("로그인 성공");
+          onSuccess: async (data) => {
             if ("user" in data) {
               if (isSaveLogin) {
                 localStorage.setItem("saveLogin", data.user.email!);
@@ -65,7 +68,7 @@ export default function AuthForm({ formType }: Props) {
                 localStorage.removeItem("saveLogin");
               }
             }
-            router.push("/dashboard");
+            router.push("/redirect");
           },
         }
       );

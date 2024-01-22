@@ -9,6 +9,7 @@ import VideoConference from "../video-conference/VideoConference";
 import { SetupScene } from "@/components/metaverse/libs/setupScene";
 import { SceneClass } from "@/components/metaverse/libs/sceneClass";
 import PhaserSceneManager from "@/components/metaverse/libs/phaserSceneManager";
+import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
 
 const MetaverseComponent = () => {
   const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();
@@ -65,7 +66,9 @@ const MetaverseComponent = () => {
   return (
     <StMetaverseWrapper>
       <GlobalNavBar />
-      <MetaverseChatBar />
+      <MetaverseChatProvider>
+        <MetaverseChatBar />
+      </MetaverseChatProvider>
       <MetaversePlayerList />
       <StMetaverseMain id="phaser-metaverse" />
       <VideoConference />

@@ -6,7 +6,7 @@ type Payload = {
   chatType: ChatType;
 };
 
-const initialState = {
+const initialState: Payload = {
   isOpenChat: false,
   chatType: "GLOBAL",
 };

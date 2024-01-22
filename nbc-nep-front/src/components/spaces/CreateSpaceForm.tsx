@@ -59,7 +59,6 @@ export default function CreateSpaceForm({
       description: data.spaceDescription,
     };
     dispatch(setCreateSpaceInfo({ ...spaceInfo, ...userProfile }));
-    console.log("Create space info from selector:", createSpaceInfo);
     createSpace({
       description: spaceInfo.description,
       owner: userProfile.owner,

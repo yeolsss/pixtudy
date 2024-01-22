@@ -7,7 +7,7 @@ import {
   addConsumer as addConsumerRedux,
   addProducer as addProducerRedux,
   removeConsumer as removeConsumerRedux,
-  removeProducer as removeProducerRedux,
+  removeProducer as removeProducerRefactorRedux,
 } from "../../redux/modules/conferenceSlice";
 import { useAppDispatch, useAppSelector } from "../useReduxTK";
 
@@ -21,8 +21,8 @@ export default function useVideoSource() {
     dispatch(addProducerRedux(producer));
   }
 
-  function removeProducer(producerId: string) {
-    dispatch(removeProducerRedux(producerId));
+  function removeProducer(producer: Producer) {
+    dispatch(removeProducerRefactorRedux(producer));
   }
 
   function addConsumer(consumer: Consumer) {
@@ -41,9 +41,9 @@ export default function useVideoSource() {
     producers,
     consumers,
     addProducer,
-    removeProducer,
     addConsumer,
     removeConsumer,
+    removeProducer,
     isCanShare,
   };
 }

@@ -425,6 +425,7 @@ const GlobalStyle = styled.createGlobalStyle`
     --sub-font: "NeoDunggeunmo", sans-serif;
 
     --button-opacity: rgba(0, 0, 0, 0.5);
+    --default-font: sans-serif;
 
     --state-online: #15e42a;
     --state-eating: #ffa047;

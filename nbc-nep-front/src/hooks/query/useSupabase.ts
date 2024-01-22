@@ -10,7 +10,6 @@ import {
   getDmChannelMessages,
   getDmChannelMessagesReturns,
   getLastDmMessageList,
-  getSpaceUsers,
   getUserSpaces,
   readDmMessage,
   sendMessage,
@@ -132,18 +131,6 @@ export function useGetUserSpaces(currentUserId: string) {
     enabled: !!currentUserId,
   };
   return useCustomQuery<Space_members[], Error>(getUserSpacesOptions);
-}
-
-// get current space all users
-export function useGetCurrentSpaceUsers(spaceId: string) {
-  const getCurrentSpaceUsersOptions = {
-    queryKey: ["currentSpaceUsers", spaceId],
-    queryFn: () => getSpaceUsers(spaceId),
-    enabled: !!spaceId,
-  };
-  return useCustomQuery<Space_members[] | null, Error>(
-    getCurrentSpaceUsersOptions
-  );
 }
 
 /* dm */

@@ -4,7 +4,7 @@ import styled from "styled-components";
 export default function Footer() {
   return (
     <StFooter>
-      <div>
+      <StWrapper>
         <Heading>픽터디</Heading>
         <ContentWrapper>
           <CopyRight>
@@ -22,7 +22,7 @@ export default function Footer() {
             Made by 창립멤버
           </Author>
         </ContentWrapper>
-      </div>
+      </StWrapper>
     </StFooter>
   );
 }
@@ -39,9 +39,9 @@ const StFooter = styled.footer`
   background-color: ${(props) => props.theme.color.base.white};
   gap: ${(props) => props.theme.spacing[40]};
 
+  margin: 0 auto;
   padding: ${(props) =>
     `${props.theme.spacing[20]} ${props.theme.spacing[20]}`};
-  margin: 0 auto;
 
   border-top: 1px solid ${(props) => props.theme.color.grey[200]};
 
@@ -57,6 +57,16 @@ const StFooter = styled.footer`
     max-width: 1200px;
     width: 100%;
   }
+`;
+
+const StWrapper = styled.div`
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+  gap: ${(props) => props.theme.spacing[40]};
 `;
 
 const ContentWrapper = styled.div`
@@ -83,6 +93,9 @@ const Nav = styled.nav`
     flex-direction: row;
     align-items: center;
     gap: ${(props) => props.theme.spacing[16]};
+  }
+  li {
+    font-family: var(--default-font);
   }
 `;
 

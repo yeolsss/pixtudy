@@ -62,7 +62,6 @@ export default function InvitationCodeForm({
   const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
     getSpace(data.invitationCode, {
       onSuccess: (targetSpace) => {
-        console.log(targetSpace);
         dispatch(setJoinSpaceInfo(targetSpace));
         reset({ invitationCode: "" });
       },
