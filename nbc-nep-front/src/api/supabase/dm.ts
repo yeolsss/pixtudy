@@ -1,8 +1,6 @@
-import { supabase } from "@/libs/supabase";
-import { Tables } from "@/types/supabase";
-import { Space_members } from "@/types/supabase.tables.type";
-
-import { getUserSessionHandler } from "./auth";
+import { supabase } from "@/supabase/supabase";
+import { Database, Tables } from "@/supabase/types/supabase";
+import { Space_members } from "@/supabase/types/supabase.tables.type";
 
 /**
  * 유저의 space 정보를 가져오는 함수
@@ -19,25 +17,6 @@ export const getUserSpaces = async (
     .returns<Space_members[]>();
   if (error) throw error;
   return userSpaces;
-};
-
-/**
- * 스페이스 별 전체 유저정보를 가져오는 함수
- * @param string space_id - 스페이스의 전체유저를 가져올 space id 값
- * @returns -> join table <space_members & users>
- */
-export const getSpaceUsers = async (
-  space_id: string
-): Promise<Space_members[] | null> => {
-  const currentUser = await getUserSessionHandler();
-  const { data } = await supabase
-    .from("space_members")
-    .select(`*, users(*)`)
-    .filter("space_id", "eq", space_id)
-    .filter("user_id", "neq", currentUser?.id)
-    .returns<Space_members[]>();
-
-  return data;
 };
 
 /**
@@ -67,28 +46,62 @@ export const checkDmChannel = async ({
   return dm_channel.data?.length ? dm_channel.data[0].id : null;
 };
 
-/**
- * 상대 유저 DM 채널에 따른 기존 메시지 가져오기
- * @param string|null dmChannel - 기존 메시지를 확인하기 위한 채널 id, 기존에 생성된 channel이 없다면 null
- * @returns getDmChannelMessagesReturns[]|[] 채널이 이미 있었다면 메시지 정보를 담은 배열, 없었다면 빈 배열
- */
 export interface getDmChannelMessagesReturns {
   id: string;
   created_at: string;
   dm_id: string;
   message: string;
-  sender: Tables<"users">;
-  receiver: Tables<"users">;
+  sender?: Partial<Tables<"users">>;
+  receiver?: Partial<Tables<"users">>;
+  sender_id?: string;
+  sender_display_name?: string;
+  receiver_id?: string;
+  receiver_display_name?: string;
 }
 
-export const getDmChannelMessages = async (dmChannel: string | null) => {
+/**
+ * 상대 유저 DM 채널에 따른 기존 메시지 가져오기
+ * @param string|null dmChannel - 기존 메시지를 확인하기 위한 채널 id, 기존에 생성된 channel이 없다면 null
+ * @returns getDmChannelMessagesReturns[]|[] 채널이 이미 있었다면 메시지 정보를 담은 배열, 없었다면 빈 배열
+ */
+/*export const getDmChannelMessages = async (dmChannel: string | null) => {
   // 채팅방이 없을 때는 빈배열 반환
   if (!dmChannel) return [];
   const channelMessages = await supabase.rpc("get_dm_channel_messages", {
     p_dm_channel: dmChannel,
   });
   return channelMessages.data as getDmChannelMessagesReturns[];
+};*/
+
+interface DmMessage {
+  id: string;
+  created_at: string;
+  dm_id: string;
+  receiver_id: string;
+  receiver_display_name: string;
+  message: string;
+  sender_id: string;
+  sender_display_name: string;
+}
+
+export const getDmChannelMessages = async (
+  dmChannel: string | null
+): Promise<getDmChannelMessagesReturns[]> => {
+  // 채팅방이 없을 때는 빈배열 반환
+  if (!dmChannel) return [];
+  const channelMessages = await supabase
+    .rpc("get_dm_channel_messages_test", {
+      p_dm_channel: dmChannel,
+    })
+    .returns<getDmChannelMessagesReturns[]>();
+  return channelMessages.data as getDmChannelMessagesReturns[];
 };
+
+interface createDmChannelArgs {
+  spaceId: string;
+  currentUserId: string;
+  receiverId: string;
+}
 
 /**
  * dm 채널을 supabase 상에 등록하는 로직
@@ -97,12 +110,6 @@ export const getDmChannelMessages = async (dmChannel: string | null) => {
  * @param string receiverId - 등록할 상대방 유저의 id;
  * @return table <dm_channels>
  */
-interface createDmChannelArgs {
-  spaceId: string;
-  currentUserId: string;
-  receiverId: string;
-}
-
 const createDmChannel = async ({
   spaceId,
   currentUserId,
@@ -122,6 +129,14 @@ const createDmChannel = async ({
   return newDmChannel;
 };
 
+export interface sendMessageArgs {
+  currentDmChannel: string | null;
+  message: string;
+  receiverId: string;
+  spaceId: string;
+  currentUserId: string;
+}
+
 /**
  * DM 메시지를 보내는 함수
  * 조건부 처리
@@ -136,13 +151,6 @@ const createDmChannel = async ({
  * @param string currentUserId - 현재 세션의 유저 id (sender)
  * @returns table <dm_channels> - 기존에 dm channel이 없어 생성한 경우에만 반환 (조건부)
  */
-export interface sendMessageArgs {
-  currentDmChannel: string | null;
-  message: string;
-  receiverId: string;
-  spaceId: string;
-  currentUserId: string;
-}
 export const sendMessage = async ({
   currentDmChannel,
   message,
@@ -180,12 +188,36 @@ export const sendMessage = async ({
   }
 };
 
-export const getLastDmMessageList = async (spaceId: string, userId: string) => {
-  const { data, error } = await supabase.rpc("get_last_dm_message_list", {
-    input_space_id: spaceId,
-    input_user_id: userId,
-  });
+export const getLastDmMessageList = async (
+  spaceId: string,
+  userId: string
+): Promise<
+  | Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
+  | undefined
+> => {
+  const { data, error } = await supabase
+    .rpc("get_last_dm_message_list", {
+      input_space_id: spaceId,
+      input_user_id: userId,
+    })
+    .returns<
+      Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
+    >();
 
   if (error) console.error("Error fetching messages:", error);
   else return data;
+};
+
+interface ReadDmMessage {
+  roomId: string;
+  receiverId: string;
+}
+export const readDmMessage = async ({ roomId, receiverId }: ReadDmMessage) => {
+  const { error } = await supabase
+    .from("dm_messages")
+    .update({ checked: "R" })
+    .eq("dm_id", roomId)
+    .eq("receiver_id", receiverId)
+    .select();
+  if (error) throw new Error(error.message);
 };

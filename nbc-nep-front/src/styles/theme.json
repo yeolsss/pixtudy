@@ -1,7 +1,8 @@
 {
   "color": {
     "metaverse": {
-      "primary": "#1F2542"
+      "primary": "#1F2542",
+      "secondary": "#374151"
     },
     "blue": {
       "50": "#EFF6FF",
@@ -97,7 +98,8 @@
       "600": "#4B5563",
       "700": "#374151",
       "800": "#1F2937",
-      "900": "#030712"
+      "900": "#030712",
+      "sub-line": "#dbdbdb"
     },
     "base": {
       "black": "#000000",
@@ -185,6 +187,7 @@
       "danger-subtle": "var(--color-danger-50)",
       "inverse-bold": "var(--color-neutral-800)",
       "disabled": "var(--color-neutral-300)",
+      "brand": "var(--color-blue-600)",
       "interactive": {
         "primary": "var(--color-brand-600)",
         "primary-hovered": "var(--color-brand-700)",
@@ -257,6 +260,7 @@
       "danger": "var(--color-danger-600)",
       "danger-subtle": "var(--color-danger-100)",
       "disabled": "var(--color-neutral-500)",
+      "sub-line": "var(--color-grey-sub-line)",
       "interactive": {
         "primary": "var(--color-brand-600)",
         "primary-hovered": "var(--color-brand-700)",
@@ -273,37 +277,52 @@
     "4": 4,
     "8": 8,
     "12": 12,
+    "13": 13,
+    "14": 14,
+    "15": 15,
     "16": 16,
+    "19-5": 19.5,
     "20": 20,
     "24": 24,
     "32": 32,
     "36": 36,
     "40": 40,
+    "44": 44,
     "48": 48,
+    "56": 56,
     "64": 64,
     "80": 80,
     "96": 96,
     "112": 112,
-    "128": 128
+    "128": 128,
+    "130": 130,
+    "181": 181,
+    "412": 412
   },
   "spacing": {
     "0": "var(--unit-0)",
     "2": "var(--unit-2)",
     "4": "var(--unit-4)",
+    "6": "var(--unit-6)",
     "8": "var(--unit-8)",
     "12": "var(--unit-12)",
+    "14": "var(--unit-14)",
     "16": "var(--unit-16)",
+    "19-5": "var(--unit-19-5)",
     "20": "var(--unit-20)",
     "24": "var(--unit-24)",
     "32": "var(--unit-32)",
     "36": "var(--unit-36)",
     "40": "var(--unit-40)",
+    "44": "var(--unit-44)",
     "48": "var(--unit-48)",
     "64": "var(--unit-64)",
     "80": "var(--unit-80)",
     "96": "var(--unit-96)",
     "112": "var(--unit-112)",
-    "128": "var(--unit-128)"
+    "118": "var(--unit-118)",
+    "128": "var(--unit-128)",
+    "181": "var(--unit-181)"
   },
   "border": {
     "radius": {
@@ -313,6 +332,7 @@
       "8": "var(--unit-8)",
       "12": "var(--unit-12)",
       "16": "var(--unit-16)",
+      "36": "var(--unit-36)",
       "circle": "9999px"
     }
   },
@@ -623,5 +643,9 @@
         "count": 4
       }
     ]
+  },
+  "video": {
+    "width": "var(--video-width)",
+    "height": "var(--video-height)"
   }
 }

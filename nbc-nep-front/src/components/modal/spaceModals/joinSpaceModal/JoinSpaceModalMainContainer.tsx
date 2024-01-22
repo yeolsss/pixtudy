@@ -1,8 +1,9 @@
+import ModalHeader from "@/components/common/modal/ModalHeader";
 import ProfileForm from "@/components/spaces/ProfileForm";
-import { useJoinSpace } from "@/hooks/query/useSupabase";
+import { FORM_SPACE } from "@/components/spaces/constants/constants";
+import { Procedure } from "@/components/spaces/types/space.types";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { openJoinSpaceModal } from "@/redux/modules/modalSlice";
-import { useRouter } from "next/router";
+import { toggleJoinSpaceModal } from "@/redux/modules/modalSlice";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -13,10 +14,9 @@ export default function JoinSpaceModalMainContainer() {
     (state) => state.authSlice.user
   );
   const [spaceId, setSpaceId] = useState<string>("");
+  const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
   const [isValidSpace, setIsValidSpace] = useState<boolean>(false);
-  const join = useJoinSpace();
   const dispatch = useAppDispatch();
-  const router = useRouter();
 
   const {
     handleSubmit,
@@ -29,39 +29,41 @@ export default function JoinSpaceModalMainContainer() {
   // input에 초대코드를 입력하고 버튼을 클릭할시 spaces table에 검색해서 있으면 OK
   // 닉네임과 아바타 선택은 한 화면에서 진행. 그러면? 초대커드 검증 여부에 따라 렌더링
 
-  const handleCancelBtnClick = () => {
-    dispatch(openJoinSpaceModal());
-  };
-
   return (
     <StModalContainer>
-      <h2>Space에 입장하기</h2>
-      {!isValidSpace ? (
-        <InvitationCodeForm
-          spaceId={spaceId}
-          handleSubmit={handleSubmit}
-          handleCancelBtnClick={handleCancelBtnClick}
-          setIsValidSpace={setIsValidSpace}
-          setSpaceId={setSpaceId}
-          register={register}
-          reset={reset}
-          errors={errors}
-        />
-      ) : (
-        <ProfileForm
-          spaceId={spaceId}
-          defaultDisplayName={displayName!}
-          handleSubmit={handleSubmit}
-          handleCancelBtnClick={handleCancelBtnClick}
-          register={register}
-          errors={errors}
-        />
-      )}
+      <ModalHeader
+        text={"스페이스 입장하기"}
+        handler={() => dispatch(toggleJoinSpaceModal())}
+      />
+      <StModalContents>
+        {procedure === FORM_SPACE ? (
+          <InvitationCodeForm
+            setProcedure={setProcedure}
+            spaceId={spaceId}
+            handleSubmit={handleSubmit}
+            setIsValidSpace={setIsValidSpace}
+            setSpaceId={setSpaceId}
+            register={register}
+            reset={reset}
+            errors={errors}
+          />
+        ) : (
+          <ProfileForm
+            setProcedure={setProcedure}
+            spaceId={spaceId}
+            defaultDisplayName={displayName!}
+            handleSubmit={handleSubmit}
+            register={register}
+            errors={errors}
+            mode="joinSpace"
+          />
+        )}
+      </StModalContents>
     </StModalContainer>
   );
 }
 
-const StModalContainer = styled.div`
+export const StModalContainer = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -70,4 +72,16 @@ const StModalContainer = styled.div`
   background: white;
   width: 50rem;
   height: 50rem;
+  border-radius: ${(props) => props.theme.border.radius[8]};
+`;
+
+export const StModalContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  width: 100%;
+  padding: ${(props) => props.theme.spacing[24]};
+  padding-top: 0;
+  height: 100%;
 `;

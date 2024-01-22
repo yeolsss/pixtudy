@@ -1,3 +1,4 @@
+import { MAX_SHARE_SCREEN_SIZE } from "@/components/video-conference/constants/constants";
 import {
   Consumer,
   Producer,
@@ -6,7 +7,7 @@ import {
   addConsumer as addConsumerRedux,
   addProducer as addProducerRedux,
   removeConsumer as removeConsumerRedux,
-  removeProducer as removeProducerRedux,
+  removeProducer as removeProducerRefactorRedux,
 } from "../../redux/modules/conferenceSlice";
 import { useAppDispatch, useAppSelector } from "../useReduxTK";
 
@@ -20,24 +21,29 @@ export default function useVideoSource() {
     dispatch(addProducerRedux(producer));
   }
 
-  function removeProducer(producerId: string) {
-    dispatch(removeProducerRedux(producerId));
+  function removeProducer(producer: Producer) {
+    dispatch(removeProducerRefactorRedux(producer));
   }
 
   function addConsumer(consumer: Consumer) {
     dispatch(addConsumerRedux(consumer));
   }
 
-  function removeConsumer(consumerId: string) {
-    dispatch(removeConsumerRedux(consumerId));
+  function removeConsumer(streamId: string) {
+    dispatch(removeConsumerRedux(streamId));
   }
+
+  const isCanShare =
+    producers.filter((producer) => producer.appData.shareType === "screen")
+      .length < MAX_SHARE_SCREEN_SIZE;
 
   return {
     producers,
     consumers,
     addProducer,
-    removeProducer,
     addConsumer,
     removeConsumer,
+    removeProducer,
+    isCanShare,
   };
 }

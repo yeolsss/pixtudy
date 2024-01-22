@@ -88,6 +88,7 @@ const GlobalStyle = styled.createGlobalStyle`
   section,
   summary,
   time,
+  button,
   mark,
   audio,
   video {
@@ -97,6 +98,7 @@ const GlobalStyle = styled.createGlobalStyle`
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+    font-family: var(--main-font);
   }
   /* HTML5 display-role reset for older browsers */
   article,
@@ -135,12 +137,8 @@ const GlobalStyle = styled.createGlobalStyle`
     border-spacing: 0;
   }
 
-  * {
-    box-sizing: border-box;
-    font-family: var(--main-font);
-  }
-
   :root {
+    --user-counter: #15e42a;
     --color-blue-50: #eff6ff;
     --color-blue-100: #dbeafe;
     --color-blue-200: #bfdbfe;
@@ -221,25 +219,36 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-grey-700: #374151;
     --color-grey-800: #1f2937;
     --color-grey-900: #030712;
+    --color-grey-sub-line: #dbdbdb;
     --color-base-black: #000000;
     --color-base-white: #ffffff;
     --unit-0: 0px;
     --unit-2: 2px;
     --unit-4: 4px;
+    --unit-6: 6px;
     --unit-8: 8px;
     --unit-12: 12px;
+    --unit-13: 13px;
+    --unit-14: 14px;
+    --unit-15: 15px;
     --unit-16: 16px;
+    --unit-19-5: 19.5px;
     --unit-20: 20px;
     --unit-24: 24px;
     --unit-32: 32px;
     --unit-36: 36px;
     --unit-40: 40px;
+    --unit-44: 44px;
     --unit-48: 48px;
+    --unit-56: 56px;
     --unit-64: 64px;
     --unit-80: 80px;
     --unit-96: 96px;
     --unit-112: 112px;
+    --unit-118: 118px;
     --unit-128: 128px;
+    --unit-130: 130px;
+    --unit-412: 412px;
     --color-brand-50: var(--color-blue-50);
     --color-brand-100: var(--color-blue-100);
     --color-brand-200: var(--color-blue-200);
@@ -344,6 +353,7 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-bg-inverse-bold: var(--color-neutral-700);
     --color-bg-inverse-bolder: var(--color-neutral-800);
     --color-bg-disabled: var(--color-neutral-300);
+    --color-bg-brand: var(--color-blue-600);
     --color-icon-primary: var(--color-neutral-800);
     --color-icon-brand: var(--color-brand-700);
     --color-icon-interactive-primary: var(--color-brand-600);
@@ -374,22 +384,27 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-border-danger: var(--color-danger-600);
     --color-border-danger-subtle: var(--color-danger-100);
     --color-border-disabled: var(--color-neutral-400);
+    --color-border-sub-line: var(--color-grey-sub-line);
     --spacing-0: var(--unit-0);
     --spacing-2: var(--unit-2);
     --spacing-4: var(--unit-4);
+    --spacing-6: var(--unit-6);
     --spacing-8: var(--unit-8);
     --spacing-12: var(--unit-12);
     --spacing-16: var(--unit-16);
+    --spacing-19-5: var(--unit-19-5);
     --spacing-20: var(--unit-20);
     --spacing-24: var(--unit-24);
     --spacing-32: var(--unit-32);
     --spacing-36: var(--unit-36);
     --spacing-40: var(--unit-40);
+    --spacing-44: var(--unit-44);
     --spacing-48: var(--unit-48);
     --spacing-64: var(--unit-64);
     --spacing-80: var(--unit-80);
     --spacing-96: var(--unit-96);
     --spacing-112: var(--unit-112);
+    --spacing-118: var(--unit-118);
     --spacing-128: var(--unit-128);
     --border-radius-0: var(--unit-0);
     --border-radius-2: var(--unit-2);
@@ -397,6 +412,7 @@ const GlobalStyle = styled.createGlobalStyle`
     --border-radius-8: var(--unit-8);
     --border-radius-12: var(--unit-12);
     --border-radius-16: var(--unit-16);
+    --border-radius-36: var(--unit-36);
     --border-radius-circle: "9999px";
     --color-border-interactive-secondary: var(--color-neutral-600);
     --color-border-interactive-secondary-hovered: var(--color-neutral-700);
@@ -409,24 +425,40 @@ const GlobalStyle = styled.createGlobalStyle`
     --state-eating: #ffa047;
     --state-left-seat: #858585;
     --state-disturb: #ee3e3e;
+
+    --video-width: 175px;
+    --video-height: 130px;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   Html {
     font-size: 62.5%;
   }
+
   body {
     margin: unset;
     min-width: 100%;
   }
 
-  header,
-  section {
+  header {
     max-width: 1200px;
     margin: 0 auto;
   }
+  main > section {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  a {
+    text-decoration: none;
+    color: ${(props) => props.theme.color.text.primary};
+  }
 
   input {
-    height: ${(props) => props.theme.unit[48]};
+    height: ${(props) => props.theme.unit[48]}px;
     border-radius: ${(props) => props.theme.border.radius[8]};
     border: 1px solid #d9d9d9;
     padding: ${(props) => props.theme.spacing[16]};
@@ -445,15 +477,18 @@ const GlobalStyle = styled.createGlobalStyle`
     color: ${(props) =>
       props.theme.color.text.interactive["secondary-pressed"]};
     background-color: ${(props) => props.theme.color.base.white};
-    font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
+    font-family: var(--sub-font);
+    font-weight: ${(props) => props.theme.body.lg.semibold.fontWeight};
     cursor: pointer;
 
     &:hover {
-      background-color: ${(props) => props.theme.color.bg["info-bold"]};
+      background-color: ${(props) =>
+        props.theme.color.bg.interactive["primary-hovered"]};
       color: ${(props) => props.theme.color.base.white};
     }
   }
   #__next {
+    height: 100vh;
   }
 `;
 

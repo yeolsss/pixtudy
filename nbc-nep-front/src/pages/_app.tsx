@@ -1,5 +1,5 @@
-import OnChangeUserSession from "@/components/layout/OnChangeUserSession";
-import StoreProvider from "@/libs/StoreProvier";
+import ChangeUserSession from "@/components/layout/ChangeUserSession";
+import StoreProvider from "@/redux/StoreProvier";
 import GlobalStyle, { theme } from "@/styles/Globalstyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
         <DndProvider backend={HTML5Backend}>
-          <OnChangeUserSession />
+          <ChangeUserSession />
           <ThemeProvider theme={theme}>
             <GlobalStyle />
             {getLayout(
