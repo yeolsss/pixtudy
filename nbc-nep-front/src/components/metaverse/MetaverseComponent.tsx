@@ -1,24 +1,44 @@
 import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
+import PhaserSceneManager from "@/components/metaverse/libs/phaserSceneManager";
+import { SceneClass } from "@/components/metaverse/libs/sceneClass";
+import { SetupScene } from "@/components/metaverse/libs/setupScene";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
+import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import Phaser from "phaser";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import VideoConference from "../video-conference/VideoConference";
-import { SetupScene } from "@/components/metaverse/libs/setupScene";
-import { SceneClass } from "@/components/metaverse/libs/sceneClass";
-import PhaserSceneManager from "@/components/metaverse/libs/phaserSceneManager";
-import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
+import {
+  GAME_FPS,
+  GAME_GRAVITY,
+  GAME_HEIGHT,
+  GAME_WIDTH,
+  VERTICAL_BORDER_OFFSET,
+} from "./constants/constant";
+import { Game } from "./types/metaverse";
 
 const MetaverseComponent = () => {
   const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();
 
+  const gameRef = useRef<Game | null>();
+
   useEffect(() => {
     let game: Phaser.Game | undefined;
+
     const resize = () => {
       if (game) {
-        game.scale.resize(window.innerWidth, window.innerHeight - 2);
+        game.scale.resize(
+          window.innerWidth,
+          window.innerHeight - VERTICAL_BORDER_OFFSET
+        );
+      }
+      if (gameRef.current) {
+        gameRef.current.scale.resize(
+          window.innerWidth,
+          window.innerHeight - VERTICAL_BORDER_OFFSET
+        );
       }
     };
 
@@ -26,16 +46,16 @@ const MetaverseComponent = () => {
       const config = {
         type: Phaser.AUTO,
         width: window.innerWidth,
-        height: window.innerHeight - 2,
+        height: window.innerHeight - VERTICAL_BORDER_OFFSET,
         parent: "phaser-metaverse",
         physics: {
           default: "arcade",
           arcade: {
-            gravity: { y: 0 },
+            gravity: GAME_GRAVITY,
             debug: false,
-            width: 1280,
-            height: 800,
-            fps: 60,
+            width: GAME_WIDTH,
+            height: GAME_HEIGHT,
+            fps: GAME_FPS,
           },
         },
         scene: [SetupScene, SceneClass],
