@@ -1,13 +1,13 @@
 import { useSignInUser, useSignUpUser } from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { AuthFormType, FormValues, getInputs } from "./utils/authUtils";
-import AuthInput from "./AuthInput";
-import styled from "styled-components";
-import SignInOptions from "./SignInOptions";
 import { setSaveLoginInfo } from "@/redux/modules/authSlice";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import styled from "styled-components";
+import AuthInput from "./AuthInput";
+import SignInOptions from "./SignInOptions";
+import { AuthFormType, FormValues, getInputs } from "./utils/authUtils";
 
 interface Props {
   formType: AuthFormType;
@@ -61,7 +61,6 @@ export default function AuthForm({ formType }: Props) {
         },
         {
           onSuccess: async (data) => {
-            console.log(data);
             if ("user" in data) {
               if (isSaveLogin) {
                 localStorage.setItem("saveLogin", data.user.email!);

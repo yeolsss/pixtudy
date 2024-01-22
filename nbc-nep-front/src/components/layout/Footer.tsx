@@ -28,11 +28,16 @@ export default function Footer() {
 }
 
 const StFooter = styled.footer`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-
+  position: fixed;
   width: 100%;
+  bottom: 0;
+  left: 0%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.color.base.white};
+  gap: ${(props) => props.theme.spacing[40]};
 
   margin: 0 auto;
   padding: ${(props) =>
@@ -47,6 +52,10 @@ const StFooter = styled.footer`
     font-weight: ${(props) => props.theme.body.sm.regular.fontWeight};
     line-height: ${(props) => props.theme.body.sm.regular.lineHeight};
     letter-spacing: ${(props) => props.theme.body.sm.regular.letterSpacing};
+  }
+  & > div {
+    max-width: 1200px;
+    width: 100%;
   }
 `;
 

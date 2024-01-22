@@ -360,6 +360,7 @@ export interface Unit {
   "130": number;
   "181": number;
   "412": number;
+  "460": number;
 }
 
 export interface Spacing {

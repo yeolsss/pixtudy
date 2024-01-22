@@ -6,8 +6,18 @@ export type FormCharacter = "formCharacter";
 
 export type Procedure = FormSpace | FormCharacter;
 
-export type SpaceInfo = Partial<
-  TablesInsert<"spaces"> & { space_display_name: string; space_avatar: string }
+// export type CreateSpaceInfo = Partial<
+//   TablesInsert<"spaces"> & { space_display_name: string; space_avatar: string }
+// >;
+export type CreateSpaceInfo = Partial<
+  TablesInsert<"spaces"> & TablesInsert<"space_members">
 >;
 
-export type UserProfile = TablesInsert<"space_members">;
+export type JoinSpaceInfo = TablesInsert<"space_members"> &
+  Pick<TablesInsert<"spaces">, "title" | "description" | "owner">;
+
+export type UserProfile = {
+  avatar: string;
+  display_name: string;
+  owner: string;
+};
