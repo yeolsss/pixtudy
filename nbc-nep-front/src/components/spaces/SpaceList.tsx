@@ -58,6 +58,7 @@ const StSpaceList = styled.ul`
   width: 100%;
   gap: ${(props) => props.theme.spacing[24]};
   margin-right: -${(props) => props.theme.spacing[24]};
+  margin-bottom: 64px;
   li {
     width: calc(25% - ${(props) => props.theme.spacing[24]});
   }
