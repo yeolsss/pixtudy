@@ -50,7 +50,7 @@ const StHeroBanner = styled.div`
   background-image: url("./assets/home_bg_layer.png");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 0 ${(props) => props.theme.spacing[48]};
+  background-position: 0px ${(props) => props.theme.spacing[128]};
 `;
 
 const StHeroBannerWrapper = styled.div`
@@ -66,7 +66,7 @@ const StHeroBannerWrapper = styled.div`
 `;
 
 const StHeroBannerTitle = styled.h1`
-  color: ${(props) => props.theme.color.text.interactive.primary};
+  color: ${(props) => props.theme.color.text.primary};
   font-family: var(--point-font);
   font-size: ${(props) => props.theme.heading.desktop["4xl"].fontSize};
   font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
@@ -75,7 +75,7 @@ const StHeroBannerTitle = styled.h1`
 
 const StHeroBannerDescription = styled.p`
   color: ${(props) => props.theme.color.text.secondary};
-  font-family: var(--sub-font);
+  font-family: var(--default-font);
   font-size: ${(props) => props.theme.body.lg.medium.fontSize};
 
   line-height: ${(props) => props.theme.spacing["24"]};
@@ -84,7 +84,7 @@ const StHeroBannerDescription = styled.p`
 const StLink = styled(StCTALink)`
   text-decoration: none;
   font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
-  font-family: ${(props) => props.theme.body.lg.medium.fontFamily};
+  font-family: var(--default-font);
 
   border-radius: ${(props) => props.theme.border.radius[8]};
 

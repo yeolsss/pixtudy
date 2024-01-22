@@ -30,8 +30,8 @@ export default function PlayerMediaDisplay({
   const AudioBadge = (
     <Image
       src={isAudioOn ? MicOn : MicOff}
-      width={24}
-      height={24}
+      width={20}
+      height={20}
       style={{ position: "absolute", left: 10, bottom: 10 }}
       alt={"mic image"}
     />
