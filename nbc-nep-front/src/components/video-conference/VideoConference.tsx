@@ -3,11 +3,11 @@ import {
   isAlreadyConsume,
   isEmptyTracks,
 } from "@/components/video-conference/libs/util";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDevice from "@/hooks/conference/useDevice";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
+import usePlayer from "@/hooks/metaverse/usePlayer";
 import useSocket from "@/hooks/socket/useSocket";
 import { useAppSelector } from "@/hooks/useReduxTK";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
@@ -36,7 +36,8 @@ import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayCo
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
 
-  const { playerList, spaceId, findPlayerById } = usePlayerContext();
+  // const { playerList, spaceId, findPlayerById } = usePlayerContext();
+  const { playerList, spaceId, findPlayerById } = usePlayer();
   const { id: currentPlayerId } = useAppSelector(
     (state) => state.authSlice.user
   );
