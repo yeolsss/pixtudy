@@ -1,5 +1,6 @@
 import { supabase } from "@/supabase/supabase";
 import { Tables } from "@/supabase/types/supabase";
+import { Session } from "@supabase/supabase-js";
 
 /**
  * Supabase 회원가입을 위한 함수
@@ -92,20 +93,19 @@ export const logoutHandler = async () => {
  * Supabase 현재 로그인 된 유저 정보를 가져오는 함수
  * @returns table <users|null>
  */
-export const getUserSessionHandler =
-  async (): Promise<Tables<"users"> | null> => {
-    const { data: currentUsersSession } = await supabase.auth.getSession();
-    if (!currentUsersSession) {
-      return null;
-    } else {
-      const { data: currentUserInfo } = await supabase
-        .from("users")
-        .select(`*`)
-        .eq("id", currentUsersSession.session?.user.id!)
-        .single();
-      return currentUserInfo;
-    }
-  };
+// export const getUserSessionHandler = async (
+//   session: Session
+// ): Promise<Tables<"users"> | null> => {
+export const getUserSessionHandler = async (session: Session): Promise<any> => {
+  const { data: currentUserInfo, error } = await supabase
+    .from("users")
+    .select(`*`)
+    .eq("id", session.user.id!)
+    .single();
+
+  if (error) throw error;
+  return currentUserInfo;
+};
 
 /**
  * Supabase 특정 유저 정보를 가져오는 함수
