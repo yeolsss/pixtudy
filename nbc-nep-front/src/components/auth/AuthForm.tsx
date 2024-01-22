@@ -60,7 +60,7 @@ export default function AuthForm({ formType }: Props) {
           platform: "email",
         },
         {
-          onSuccess: (data) => {
+          onSuccess: async (data) => {
             console.log(data);
             if ("user" in data) {
               if (isSaveLogin) {
@@ -69,7 +69,7 @@ export default function AuthForm({ formType }: Props) {
                 localStorage.removeItem("saveLogin");
               }
             }
-            router.push("/dashboard");
+            router.push("/redirect");
           },
         }
       );
