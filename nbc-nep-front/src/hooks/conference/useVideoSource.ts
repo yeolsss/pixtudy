@@ -66,7 +66,7 @@ export default function useVideoSource() {
     producers.filter((producer) => producer.appData.shareType === "screen")
       .length < MAX_SHARE_SCREEN_SIZE;
 
-  const filterConsumerById = (playerId: string) =>
+  const filterConsumersById = (playerId: string) =>
     consumers.filter((consumer) => consumer.appData.playerId === playerId);
 
   const findProducerByShareType = (type: ShareType) =>
@@ -83,7 +83,7 @@ export default function useVideoSource() {
     addConsumer,
     removeConsumer,
     isCanShare,
-    filterConsumerById,
+    filterConsumersById,
     findProducerByShareType,
     filterProducersByShareType,
   };
