@@ -1,8 +1,8 @@
 import { getPlayerSpaceData } from "@/api/supabase/space";
+import { Player } from "@/components/metaverse/types/metaverse";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { Player } from "@/types/metaverse";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types/supabase";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -18,6 +18,7 @@ type PlayerContextType = {
   id: string;
   playerSpaceInfoData: Tables<"space_members"> | undefined;
   display_name: string | null;
+  findPlayerById: (playerId: string) => Player | undefined;
 };
 
 const initialState: PlayerContextType = {
@@ -26,6 +27,7 @@ const initialState: PlayerContextType = {
   id: "",
   playerSpaceInfoData: {} as Tables<"space_members">,
   display_name: "",
+  findPlayerById: () => undefined,
 };
 
 const PlayerContext = createContext<PlayerContextType>(initialState);
@@ -66,12 +68,17 @@ export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
+  function findPlayerById(playerId: string) {
+    return playerList.find((player) => player.playerId === playerId);
+  }
+
   const value = {
     playerList,
     spaceId,
     id,
     playerSpaceInfoData,
     display_name,
+    findPlayerById,
   };
 
   return (

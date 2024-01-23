@@ -1,4 +1,4 @@
-import { Player } from "@/types/metaverse";
+import { Player } from "@/components/metaverse/types/metaverse";
 import { types } from "mediasoup-client";
 
 export type RtpCapabilities = types.RtpCapabilities;

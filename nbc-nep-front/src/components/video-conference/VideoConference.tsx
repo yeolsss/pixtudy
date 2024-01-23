@@ -1,3 +1,8 @@
+import {
+  getProducersByShareType,
+  isAlreadyConsume,
+  isEmptyTracks,
+} from "@/components/video-conference/libs/util";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDevice from "@/hooks/conference/useDevice";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
@@ -18,11 +23,7 @@ import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
-import {
-  getProducersByShareType,
-  isAlreadyConsume,
-  isEmptyTracks,
-} from "./lib/util";
+import { videoParams } from "./constants/constants";
 import {
   AppData,
   ProducerForConsume,
@@ -30,12 +31,12 @@ import {
   ShareType,
   TransPortParams,
 } from "./types/ScreenShare.types";
-import ShareMediaItemContainer from "./video-media-item/ShareMediaItemContainer";
+import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
 
-  const { playerList, spaceId } = usePlayerContext();
+  const { playerList, spaceId, findPlayerById } = usePlayerContext();
   const { id: currentPlayerId } = useAppSelector(
     (state) => state.authSlice.user
   );
@@ -47,6 +48,7 @@ export default function VideoConference() {
     addProducer,
     removeConsumer,
     removeProducer,
+    isCanShare,
   } = useVideoSource();
 
   const {
@@ -68,12 +70,9 @@ export default function VideoConference() {
     playerId: currentPlayerId,
   });
 
-  const currentPlayer = playerList.find(
-    (player) => player.playerId === currentPlayerId
-  );
+  const currentPlayer = findPlayerById(currentPlayerId);
 
   useEffect(() => {
-    console.log("socket connected");
     socket.emit("join-room", spaceId, currentPlayerId);
 
     socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
@@ -81,6 +80,8 @@ export default function VideoConference() {
     socket.on("new-producer", handleConsumeNewProducer);
 
     socket.on("producer-closed", handleProducerClose);
+
+    socket.on("closed-consumer", removeConsumer);
 
     return () => {
       socket.emit("transport-close", currentPlayerId);
@@ -216,57 +217,10 @@ export default function VideoConference() {
       return;
     }
 
-    try {
-      const track = producer?.track;
+    removeProducer(producer);
 
-      if (!track) {
-        throw new Error("no track...");
-      }
-
-      track.enabled = false;
-      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
-      producer.pause();
-      producer.close();
-
-      removeProducer(producer.id);
-    } catch (error) {
-      console.error("handle stop share error", error);
-    }
+    socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
   }
-
-  async function handleShareStopProducer(producerId: string) {
-    const producer = producers.find((producer) => producer.id === producerId);
-
-    if (!producer) {
-      console.error("no producer...");
-      return;
-    }
-
-    try {
-      const { track } = producer;
-      if (!track) {
-        throw new Error("no track..");
-      }
-
-      track.enabled = false;
-      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
-
-      producer.pause();
-      producer.close();
-
-      removeProducer(producer.id);
-    } catch (error) {
-      console.error("handle stop share error", error);
-    }
-  }
-
-  function isCanShare() {
-    return (
-      producers.filter((producer) => producer.appData.shareType === "screen")
-        .length < 3
-    );
-  }
-
   const screenCount = getProducersByShareType(producers, "screen").length;
 
   return (
@@ -305,44 +259,15 @@ export default function VideoConference() {
           stopShareSvg={MicOff}
         />
       </StDockContainer>
-      <StMediaItemWrapper>
-        {playerList.length !== 0 && (
-          <ShareMediaItemContainer
-            handleShareStopProducer={handleShareStopProducer}
-            // consumers={consumers}
-            // producers={producers}
-            playerList={playerList}
-            currentPlayerId={currentPlayerId}
-          />
-        )}
-      </StMediaItemWrapper>
+      {playerList.length !== 0 && (
+        <VideoSourceDisplayContainer
+          playerList={playerList}
+          currentPlayer={currentPlayer!}
+        />
+      )}
     </>
   );
 }
-
-const videoParams = {
-  // mediasoup params
-  encodings: [
-    {
-      rid: "r0",
-      maxBitrate: 100000,
-      scalabilityMode: "S1T3",
-    },
-    {
-      rid: "r1",
-      maxBitrate: 300000,
-      scalabilityMode: "S1T3",
-    },
-    {
-      rid: "r2",
-      maxBitrate: 900000,
-      scalabilityMode: "S1T3",
-    },
-  ],
-  codecOptions: {
-    videoGoogleStartBitrate: 1000,
-  },
-};
 
 const StDockContainer = styled.div`
   position: absolute;
@@ -363,13 +288,4 @@ const StDockContainer = styled.div`
 
   gap: 15px;
   width: 465px;
-`;
-const StMediaItemWrapper = styled.div`
-  position: absolute;
-
-  right: 20px;
-  top: 0px;
-
-  display: flex;
-  flex-direction: column;
 `;

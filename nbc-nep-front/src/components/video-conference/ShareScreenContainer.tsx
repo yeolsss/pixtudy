@@ -5,7 +5,7 @@ import {
   currentLayoutIndex,
   formatGridTemplateVideos,
   getGridStyle,
-} from "./lib/dnd";
+} from "@/components/video-conference/libs/dnd";
 import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
 import ShareScreenDragItem from "./ShareScreenDragItem";
 import { useAppSelector } from "@/hooks/useReduxTK";

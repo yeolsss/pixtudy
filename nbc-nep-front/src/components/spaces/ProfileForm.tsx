@@ -1,8 +1,8 @@
 import { useJoinSpace } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
-import { TablesInsert } from "@/types/supabase";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { validateNickname } from "@/utils/spaceFormValidate";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   FieldValues,
   FormState,
@@ -10,73 +10,109 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
-import AvatarInput from "./AvatarInput";
+
+import { FORM_SPACE, srcBase } from "@/components/spaces/constants/constants";
+import { setUserProfile } from "@/redux/modules/spaceSlice";
+import styled from "styled-components";
+import AvatarInput, { StAvatar } from "./AvatarInput";
+import { Procedure, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {
-  spaceId: string;
-  defaultDisplayName: string;
+  setProcedure: Dispatch<SetStateAction<Procedure>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
-  handleCancelBtnClick: () => void;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
+  mode: "createSpace" | "joinSpace";
 }
 
 export default function ProfileForm({
-  spaceId,
-  defaultDisplayName,
+  setProcedure,
   handleSubmit,
-  handleCancelBtnClick,
   register,
   errors,
+  mode,
 }: ProfileFormProps) {
-  const { joinSpace, isSuccess, isError } = useJoinSpace();
-  const { id: userId } = useAppSelector((state) => state.authSlice.user);
+  const { createSpaceInfo, joinSpaceInfo, userProfile } = useAppSelector(
+    (state) => state.spaceSlice
+  );
+  const user = useAppSelector((state) => state.authSlice.user);
+  const dispatch = useAppDispatch();
+  const { joinSpace, joinSuccess, joinError } = useJoinSpace();
+
   const router = useRouter();
 
-  useEffect(() => {
-    if (isSuccess) {
-      handleToSpace(spaceId);
-    }
-  }, [isSuccess, spaceId]);
-
-  const validateNickname = (nickname: string) => {
-    const nicknameReg = new RegExp(/^.{2,12}$/);
-    return (
-      nicknameReg.test(nickname) ||
-      "닉네임은 2글자 이상 12글자 이내여야 합니다."
-    );
-  };
-
-  const handleToSpace = async (space_id: string) => {
-    await router.replace(`/metaverse/${space_id!}`);
+  const handleToPrevious = () => {
+    setProcedure(FORM_SPACE);
   };
 
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
-    const userProfile: TablesInsert<"space_members"> = {
-      space_id: spaceId,
-      space_avatar: data.avatar,
-      space_display_name: data.nickname,
-      user_id: userId,
+    const userProfile: UserProfile = {
+      avatar: data.avatar,
+      display_name: data.nickname,
+      owner: user.id,
     };
-    joinSpace(userProfile);
+    dispatch(setUserProfile(userProfile));
+    setProcedure(FORM_SPACE);
   };
 
   return (
-    <form onSubmit={handleSubmit(handleProfileSubmit)}>
-      <input
-        defaultValue={defaultDisplayName}
-        type="text"
-        placeholder="닉네임"
-        {...register("nickname", {
-          required: "닉네임을 입력해주십시오.",
-          validate: validateNickname,
-        })}
-      />
-      {errors.nickname && <span>{errors.nickname.message as string}</span>}
-      <AvatarInput register={register} />
+    <StProfileForm onSubmit={handleSubmit(handleProfileSubmit)}>
+      <StCurrentProfile>
+        <StAvatarWrapper>
+          <StAvatar resource={`${srcBase + userProfile.avatar}.png`} />
+        </StAvatarWrapper>
+        <StInputWrapper>
+          <label htmlFor="nickname">닉네임</label>
+          <input
+            id="nickname"
+            defaultValue={user.display_name!}
+            type="text"
+            placeholder="닉네임"
+            {...register("nickname", {
+              required: "닉네임을 입력해주십시오.",
+              validate: validateNickname,
+            })}
+          />
+        </StInputWrapper>
+        {errors.nickname && <span>{errors.nickname.message as string}</span>}
+      </StCurrentProfile>
+      <AvatarInput register={register} errors={errors} />
       {errors.avatar && <span>errors.avatar.message</span>}
       <button type="submit">확인</button>
-      <button onClick={handleCancelBtnClick}>취소</button>
-    </form>
+      <button type="button" onClick={handleToPrevious}>
+        뒤로 가기
+      </button>
+    </StProfileForm>
   );
 }
+
+const StProfileForm = styled.form``;
+
+const StCurrentProfile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${(props) => props.theme.spacing[16]};
+  label {
+    font-family: var(--sub-font);
+  }
+  //prettier-ignore
+  padding: ${(props) => props.theme.spacing[24]} ${(props) =>
+    props.theme.spacing[0]};
+`;
+
+const StAvatarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: ${(props) => props.theme.color.bg.secondary};
+  //prettier-ignore
+  padding: ${(props) => props.theme.spacing[16]} ${(props) =>
+    props.theme.spacing[64]};
+  border-radius: ${(props) => props.theme.border.radius[12]};
+`;
+
+const StInputWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;

@@ -30,8 +30,22 @@ async function createWorker() {
 }
 
 async function createWebRtcTransport() {
+  let listenIps;
+  if (process.env.NODE_ENV === "production") {
+    listenIps = [
+      {
+        ip: process.env.MEDIA_SOUP_PRIVATE_IP,
+        announcedIp: process.env.MEDIA_SOUP_PUBLIC_IP,
+      },
+    ];
+  } else if (process.env.NODE_ENV === "development") {
+    listenIps = [{ ip: "127.0.0.1", announcedIp: null }];
+  } else {
+    console.error("process.env.NODE_ENV is not set");
+  }
+
   const transport = await router.createWebRtcTransport({
-    listenIps: [{ ip: "127.0.0.1", announcedIp: null }],
+    listenIps,
     enableUdp: true,
     enableTcp: true,
     preferUdp: true,
@@ -72,10 +86,32 @@ function getTransportParams(transport) {
   };
 }
 
+async function getTransportStats(transport, key) {
+  try {
+    if (!transport || !key) throw new Error("transport or key is null");
+
+    return await transport.getStats()[key];
+  } catch (error) {
+    console.error("getTransportStats error:", error);
+  }
+}
+
+async function connectTransport(transport, dtlsParameters) {
+  try {
+    if (getTransportStats(transport, "dtlsState") === "connected") return;
+
+    transport.connect({ dtlsParameters });
+  } catch (error) {
+    console.error(`while connect ${eventType} transport error:`, error);
+  }
+}
+
 module.exports = {
   createWorker,
   createWebRtcTransport,
   getRtcCapabilities,
   getTransportParams,
   isCanConsumeWithRouter,
+  getTransportStats,
+  connectTransport,
 };

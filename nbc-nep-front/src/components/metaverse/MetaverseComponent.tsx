@@ -2,12 +2,14 @@ import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import { CharacterScenes } from "@/scenes/characterScenes";
-import { ScenesMain } from "@/scenes/scenesMain";
 import Phaser from "phaser";
 import { useEffect } from "react";
 import styled from "styled-components";
 import VideoConference from "../video-conference/VideoConference";
+import { SetupScene } from "@/components/metaverse/libs/setupScene";
+import { SceneClass } from "@/components/metaverse/libs/sceneClass";
+import PhaserSceneManager from "@/components/metaverse/libs/phaserSceneManager";
+import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
 
 const MetaverseComponent = () => {
   const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();
@@ -30,13 +32,13 @@ const MetaverseComponent = () => {
           default: "arcade",
           arcade: {
             gravity: { y: 0 },
-            debug: true,
+            debug: false,
             width: 1280,
             height: 800,
             fps: 60,
           },
         },
-        scene: [ScenesMain, CharacterScenes],
+        scene: [SetupScene, SceneClass],
       };
 
       game = new Phaser.Game(config);
@@ -50,6 +52,8 @@ const MetaverseComponent = () => {
         spaceId,
       });
 
+      PhaserSceneManager.setGameInstance(game);
+
       window.addEventListener("resize", resize);
     }
 
@@ -62,7 +66,9 @@ const MetaverseComponent = () => {
   return (
     <StMetaverseWrapper>
       <GlobalNavBar />
-      <MetaverseChatBar />
+      <MetaverseChatProvider>
+        <MetaverseChatBar />
+      </MetaverseChatProvider>
       <MetaversePlayerList />
       <StMetaverseMain id="phaser-metaverse" />
       <VideoConference />

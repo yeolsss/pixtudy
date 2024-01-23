@@ -1,3 +1,4 @@
+import { PropsWithChildren } from "react";
 import {
   StAudio,
   StShareMediaItem,
@@ -9,24 +10,27 @@ import { VideoSource } from "./types/ScreenShare.types";
 interface Props {
   videoSource: VideoSource;
   nickname: string;
-  spread?: number;
+  isCurrentPlayer?: boolean;
 }
 
 export default function ShareMediaItem({
   videoSource,
   nickname,
-  spread,
-}: Props) {
-  const { track, appData } = videoSource;
+  isCurrentPlayer,
+  children,
+}: PropsWithChildren<Props>) {
+  const { track } = videoSource;
 
   if (!track) return null;
 
   const stream = new MediaStream([track]);
   const type = track.kind;
 
+  const isAudio = type === "audio";
+
   return (
-    <StShareMediaItem $spread={spread}>
-      <StShareMediaNickname>{nickname}</StShareMediaNickname>
+    <StShareMediaItem $isAudio={isAudio}>
+      {!isAudio && <StShareMediaNickname>{nickname}</StShareMediaNickname>}
       {type === "video" ? (
         <StVideo
           playsInline
@@ -42,6 +46,7 @@ export default function ShareMediaItem({
         <StAudio
           playsInline
           autoPlay
+          muted={isCurrentPlayer}
           ref={(audioRef) => {
             if (!audioRef) {
               return;
@@ -50,6 +55,7 @@ export default function ShareMediaItem({
           }}
         />
       )}
+      {children}
     </StShareMediaItem>
   );
 }

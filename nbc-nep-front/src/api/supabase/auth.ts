@@ -1,5 +1,6 @@
-import { supabase } from "@/libs/supabase";
-import { Tables } from "@/types/supabase";
+import { supabase } from "@/supabase/supabase";
+import { Tables } from "@/supabase/types/supabase";
+import { Session } from "@supabase/supabase-js";
 
 /**
  * Supabase 회원가입을 위한 함수
@@ -35,45 +36,49 @@ export const signUpHandler = async ({
  * @param string password - 로그인에 사용할 password (선택적 입력가능)
  * @param LoginPlatformType(string union) platform - 로그인 방식
  */
-export type LoginPlatformType = "email" | "google" | "kakao" | "github";
+export type SignInPlatformType = "email" | "google" | "kakao" | "github";
 
-interface LoginHandlerArgs {
+interface SignInHandlerArgs {
   email?: string;
   password?: string;
-  platform: LoginPlatformType;
+  platform: SignInPlatformType;
 }
 
-export const loginHandler = async ({
+const err = (e: never) => {};
+export const signInHandler = async ({
   email,
   password,
   platform,
-}: LoginHandlerArgs) => {
-  let data, error;
-
+}: SignInHandlerArgs) => {
   switch (platform) {
     case "email":
-      if (email && password)
-        ({ data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        }));
-      break;
+      const { data: emailLoginData, error: emailLoginError } =
+        await supabase.auth.signInWithPassword({
+          email: email!,
+          password: password!,
+        });
+
+      if (emailLoginError) throw emailLoginError;
+      return emailLoginData;
     case "google":
     case "kakao":
     case "github":
-      ({ data, error } = await supabase.auth.signInWithOAuth({
-        provider: platform,
-        options: {
-          queryParams: {
-            access_type: "offline",
-            prompt: "consent",
+      const { data: oAuthLoginData, error: oAuthLoginError } =
+        await supabase.auth.signInWithOAuth({
+          provider: platform,
+          options: {
+            queryParams: {
+              access_type: "offline",
+              prompt: "consent",
+            },
           },
-        },
-      }));
-      break;
+        });
+      if (oAuthLoginError) throw oAuthLoginError;
+      return oAuthLoginData;
+    default:
+      err(platform);
+      throw new Error("LoginError: 올바른 케이스가 아닙니다.");
   }
-
-  if (error) throw error;
 };
 
 /**
@@ -88,20 +93,19 @@ export const logoutHandler = async () => {
  * Supabase 현재 로그인 된 유저 정보를 가져오는 함수
  * @returns table <users|null>
  */
-export const getUserSessionHandler =
-  async (): Promise<Tables<"users"> | null> => {
-    const { data: currentUsersSession } = await supabase.auth.getSession();
-    if (!currentUsersSession) {
-      return null;
-    } else {
-      const { data: currentUserInfo } = await supabase
-        .from("users")
-        .select(`*`)
-        .eq("id", currentUsersSession.session?.user.id!)
-        .single();
-      return currentUserInfo;
-    }
-  };
+// export const getUserSessionHandler = async (
+//   session: Session
+// ): Promise<Tables<"users"> | null> => {
+export const getUserSessionHandler = async (session: Session): Promise<any> => {
+  const { data: currentUserInfo, error } = await supabase
+    .from("users")
+    .select(`*`)
+    .eq("id", session.user.id!)
+    .single();
+
+  if (error) throw error;
+  return currentUserInfo;
+};
 
 /**
  * Supabase 특정 유저 정보를 가져오는 함수

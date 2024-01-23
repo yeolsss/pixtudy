@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ShareType } from "./types/ScreenShare.types";
 
@@ -9,7 +9,7 @@ interface Props {
   type: ShareType;
   shareButtonText: string;
   stopSharingButtonText: string;
-  isCanShare?: () => boolean;
+  isCanShare?: boolean;
   shareSvg: any;
   stopShareSvg: any;
 }
@@ -25,30 +25,40 @@ export default function ShareButton({
   shareSvg,
   children,
 }: PropsWithChildren<Props>) {
-  const [isShare, setIsShare] = useState(isCanShare && !isCanShare());
+  const [isShare, setIsShare] = useState(false);
+
+  const isScreenShareType = type === "screen";
+
+  useEffect(() => {
+    if (isCanShare === undefined) return;
+    setIsShare(!isCanShare);
+  }, [isCanShare]);
 
   const handleClickShareButton = async () => {
     try {
+      if (isCanShare === undefined) {
+        setIsShare(true);
+      }
       const mediaStream: MediaStream = await getMediaStreamByType(type);
       onShare(mediaStream, type);
-
-      if (!isCanShare || !isCanShare()) {
-        setIsShare(true);
-        return;
-      }
     } catch (err) {
+      setIsShare(false);
       console.error("on error when start capture", err);
     }
   };
 
   const handleClickStopShareButton = () => {
     onStopShare && onStopShare(type);
-    setIsShare(false);
+    if (isCanShare === undefined) {
+      setIsShare(false);
+    }
   };
 
   return (
     <StShareButtonWrapper
       onClick={isShare ? handleClickStopShareButton : handleClickShareButton}
+      $isScreenShareType={isScreenShareType}
+      $isShare={isShare}
     >
       <Image
         src={isShare ? shareSvg : stopShareSvg}
@@ -62,7 +72,10 @@ export default function ShareButton({
   );
 }
 
-const StShareButtonWrapper = styled.div`
+const StShareButtonWrapper = styled.div<{
+  $isScreenShareType: boolean;
+  $isShare: boolean;
+}>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -71,6 +84,9 @@ const StShareButtonWrapper = styled.div`
   cursor: pointer;
   gap: ${(props) => props.theme.spacing[4]};
   color: ${(props) => props.theme.color.text.interactive.inverse};
+
+  ${(props) =>
+    props.$isScreenShareType && props.$isShare && "cursor:not-allowed;"}
 `;
 
 const getMediaStreamByType = async (type: ShareType) => {

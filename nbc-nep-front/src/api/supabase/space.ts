@@ -1,5 +1,38 @@
-import { supabase } from "@/libs/supabase";
-import { Tables, TablesInsert } from "@/types/supabase";
+import { CreateSpaceInfo } from "@/components/spaces/types/space.types";
+import { supabase } from "@/supabase/supabase";
+import { Tables, TablesInsert } from "@/supabase/types/supabase";
+
+export const createSpaceHandler = async (
+  spaceInfo: CreateSpaceInfo
+): Promise<Tables<"spaces">> => {
+  console.log(spaceInfo);
+  const space: TablesInsert<"spaces"> = {
+    description: spaceInfo.description!,
+    owner: spaceInfo.owner!,
+    title: spaceInfo.title!,
+  };
+  const { data: spaceData, error } = await supabase
+    .from("spaces")
+    .insert(space)
+    .select("*")
+    .single();
+  if (error) return Promise.reject(error);
+
+  if (spaceData) {
+    const ownerInfo: TablesInsert<"space_members"> = {
+      space_id: spaceData.id,
+      user_id: spaceData.owner,
+      space_avatar: spaceInfo.space_avatar,
+      space_display_name: spaceInfo.space_display_name,
+    };
+    const { data, error } = await supabase
+      .from("space_members")
+      .insert(ownerInfo);
+    if (error) return Promise.reject(error);
+  }
+
+  return spaceData;
+};
 
 export const joinSpaceHandler = async (
   user: TablesInsert<"space_members">
@@ -15,18 +48,21 @@ export const joinSpaceHandler = async (
 };
 
 export const getSpaceData = async (spaceId: string) => {
-  const { data, error } = await supabase
-    .from("spaces")
-    .select("*")
-    .eq("id", spaceId)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from("spaces")
+      .select("*")
+      .eq("id", spaceId)
+      .single();
 
-  if (error) {
+    if (error) {
+      throw new Error(error.message);
+    }
+    console.log(data);
+    return data;
+  } catch (error) {
     console.error(error);
-    return false;
   }
-
-  return data;
 };
 
 export const getPlayerSpaceData = async (

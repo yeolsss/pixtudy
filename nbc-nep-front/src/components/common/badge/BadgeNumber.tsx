@@ -32,7 +32,7 @@ const StBadgeNumber = styled(StBadge)<{
 
   width: 20px;
   height: 20px;
-  font-size: 18px;
+  font-size: ${(props) => props.theme.body.md.medium.fontSize};
   border-radius: ${(props) => props.theme.border.radius.circle};
 
   display: flex;
