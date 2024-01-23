@@ -1,5 +1,4 @@
 import {
-  getProducersByShareType,
   isAlreadyConsume,
   isEmptyTracks,
 } from "@/components/video-conference/libs/util";
@@ -43,12 +42,13 @@ export default function VideoConference() {
 
   const {
     consumers,
-    producers,
     addConsumer,
     addProducer,
     removeConsumer,
     removeProducer,
     isCanShare,
+    findProducerByShareType,
+    filterProducersByShareType,
   } = useVideoSource();
 
   const {
@@ -208,9 +208,7 @@ export default function VideoConference() {
   }
 
   async function handleStopShare(type: ShareType) {
-    const producer = producers.find(
-      (producer) => producer.appData.shareType === type
-    );
+    const producer = findProducerByShareType(type);
 
     if (!producer) {
       console.error("no producer...");
@@ -221,7 +219,7 @@ export default function VideoConference() {
 
     socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
   }
-  const screenCount = getProducersByShareType(producers, "screen").length;
+  const screenCount = filterProducersByShareType("screen").length;
 
   return (
     <>
