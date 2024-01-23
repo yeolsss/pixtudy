@@ -263,6 +263,6 @@ const StDockContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
 
-  gap: 15px;
+  gap: ${(props) => props.theme.unit[15]};
   width: 465px;
 `;
