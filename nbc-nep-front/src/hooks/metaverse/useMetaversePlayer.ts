@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAppSelector } from "../useReduxTK";
 
-const usePlayer = () => {
+const useMetaversePlayer = () => {
   const { id, display_name } = useAppSelector((state) => state.authSlice.user);
   const { playerList, setPlayerList } = usePlayerList((state) => state);
 
@@ -16,7 +16,7 @@ const usePlayer = () => {
 
   const spaceId = isSpaceIdString ? (router.query.space_id as string) : "";
 
-  const playerSpaceInfoData = useQuery({
+  const { data: playerSpaceInfoData } = useQuery({
     queryKey: ["playerSpaceInfo", spaceId],
     queryFn: () => getPlayerSpaceData(spaceId),
     enabled: !!spaceId,
@@ -51,4 +51,4 @@ const usePlayer = () => {
   };
 };
 
-export default usePlayer;
+export default useMetaversePlayer;

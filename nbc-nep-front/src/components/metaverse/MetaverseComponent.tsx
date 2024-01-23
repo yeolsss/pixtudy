@@ -5,7 +5,7 @@ import { SetupScene } from "@/components/metaverse/libs/setupScene";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import Phaser from "phaser";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
@@ -20,7 +20,8 @@ import {
 import { Game } from "./types/metaverse";
 
 const MetaverseComponent = () => {
-  const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();
+  const { spaceId, playerSpaceInfoData, id, display_name } =
+    useMetaversePlayer();
 
   const gameRef = useRef<Game | null>();
 
