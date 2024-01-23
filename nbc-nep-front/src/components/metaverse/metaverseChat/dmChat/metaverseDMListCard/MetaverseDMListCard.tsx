@@ -1,16 +1,18 @@
 import { DMListCard } from "@/components/metaverse/types/metaverse";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+// import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
-import styled from "styled-components";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { setIsOpenDm } from "@/redux/modules/dmSlice";
+import styled from "styled-components";
 
 interface Props {
   dm: DMListCard;
 }
 export default function MetaverseDMListCard({ dm }: Props) {
   const dispatch = useAppDispatch();
-  const { id, spaceId } = usePlayerContext();
+  // const { id, spaceId } = usePlayerContext();
+  const { id, spaceId } = useMetaversePlayer();
   const {
     room_id,
     message,

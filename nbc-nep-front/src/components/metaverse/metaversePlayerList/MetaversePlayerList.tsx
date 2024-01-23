@@ -1,16 +1,16 @@
 import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+// import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
+import { ChatType } from "@/components/metaverse/types/ChatType";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import styled from "styled-components";
+import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
 import { setIsOpenDm } from "@/redux/modules/dmSlice";
 import {
   setIsCloseSomeSection,
   setIsSomeSection,
 } from "@/redux/modules/globalNavBarSlice";
-import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
-import { ChatType } from "@/components/metaverse/types/ChatType";
-import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
-import React from "react";
+import styled from "styled-components";
 
 export interface HandleOpenDmContainerPrams {
   otherUserId: string;
@@ -24,8 +24,9 @@ export default function MetaversePlayerList() {
     (state) => state.globalNavBar.playerList
   );
 
-  const { playerList } = usePlayerContext();
-  const { spaceId } = usePlayerContext();
+  // const { playerList } = usePlayerContext();
+  // const { spaceId } = usePlayerContext();
+  const { playerList, spaceId } = useMetaversePlayer();
 
   // dm 채팅방 열기
   const handleOpenDmContainer = ({
