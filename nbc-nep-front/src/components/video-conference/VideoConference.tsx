@@ -9,7 +9,6 @@ import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import useSocket from "@/hooks/socket/useSocket";
 import { useAppSelector } from "@/hooks/useReduxTK";
-import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
 import { useEffect } from "react";
 import styled from "styled-components";
 import CameraOff from "../../assets/dock-icons/camera-off.svg";
@@ -25,6 +24,7 @@ import ShareButton from "./ShareButton";
 import { videoParams } from "./constants/constants";
 import {
   AppData,
+  MediaConsumeParams,
   ProducerForConsume,
   RtpCapabilities,
   ShareType,
@@ -64,7 +64,7 @@ export default function VideoConference() {
     playerId: currentPlayerId,
   });
 
-  const { recvTransport, createRecvTransport } = useRecvTransport({
+  const { consume, createRecvTransport } = useRecvTransport({
     socket,
     createRecvTransportWithDevice,
     playerId: currentPlayerId,
@@ -123,32 +123,11 @@ export default function VideoConference() {
       socket.emit(
         "transport-recv-consume",
         { rtpCapabilities, producerId, appData, playerId: currentPlayerId },
-        async (data: {
-          id: string;
-          producerId: string;
-          kind: "audio" | "video";
-          rtpParameters: RtpParameters;
-        }) => {
-          const { id, producerId, kind, rtpParameters } = data;
-
-          const consumer = await recvTransport.current?.consume({
-            id,
-            producerId,
-            kind,
-            rtpParameters,
-            appData,
-          });
-
-          consumer?.on("@close", () => {
-            console.log("basic close consumer");
-          });
-
-          consumer?.observer.on("close", () => {
-            console.log("close consumer");
-          });
+        async (params: MediaConsumeParams) => {
+          const consumer = await consume({ ...params, appData });
 
           if (!consumer) {
-            throw new Error("consumer가 없다...있어야 하는데...");
+            throw new Error("no consumer");
           }
 
           addConsumer(consumer);
