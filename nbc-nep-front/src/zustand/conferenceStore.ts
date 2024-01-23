@@ -61,3 +61,5 @@ const conferenceStore = create<ConferenceState>()((set) => ({
       return { producers: state.producers };
     }),
 }));
+
+export default conferenceStore;

@@ -1,4 +1,4 @@
-import { MAX_SHARE_SCREEN_SIZE } from "@/components/video-conference/constants/constants";
+/* import { MAX_SHARE_SCREEN_SIZE } from "@/components/video-conference/constants/constants";
 import {
   Consumer,
   Producer,
@@ -45,5 +45,37 @@ export default function useVideoSource() {
     removeConsumer,
     removeProducer,
     isCanShare,
+  };
+} */
+
+import { MAX_SHARE_SCREEN_SIZE } from "@/components/video-conference/constants/constants";
+import conferenceStore from "@/zustand/conferenceStore";
+
+export default function useVideoSource() {
+  const {
+    producers,
+    consumers,
+    addConsumer,
+    addProducer,
+    removeConsumer,
+    removeProducer,
+  } = conferenceStore();
+
+  const isCanShare =
+    producers.filter((producer) => producer.appData.shareType === "screen")
+      .length < MAX_SHARE_SCREEN_SIZE;
+
+  const filterConsumerById = (playerId: string) =>
+    consumers.filter((consumer) => consumer.appData.playerId === playerId);
+
+  return {
+    producers,
+    consumers,
+    addProducer,
+    removeProducer,
+    addConsumer,
+    removeConsumer,
+    isCanShare,
+    filterConsumerById,
   };
 }
