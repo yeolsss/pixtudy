@@ -1,13 +1,13 @@
-import React from "react";
-import { useAppDispatch, useAppSelector } from "../useReduxTK";
 import { splitVideoSource } from "@/components/video-conference/libs/util";
-import { useEffect, useState } from "react";
 import { LayoutConsumersType } from "@/components/video-conference/types/ScreenShare.types";
 import { layoutClose } from "@/redux/modules/layoutSlice";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../useReduxTK";
+import useVideoSource from "./useVideoSource";
 
 export default function useLayout() {
   const dispatch = useAppDispatch();
-  const consumers = useAppSelector((state) => state.conferenceSlice.consumers);
+  const { consumers } = useVideoSource();
   const layoutInfo = useAppSelector((state) => state.layoutSlice);
   const [videos, setVideos] = useState<LayoutConsumersType[]>([]);
 
