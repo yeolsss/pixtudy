@@ -68,7 +68,7 @@ export default function AuthForm({ formType }: Props) {
                 localStorage.removeItem("saveLogin");
               }
             }
-            router.push("/redirect");
+            router.push("/dashboard");
           },
         }
       );

@@ -7,9 +7,6 @@ const styled = { createGlobalStyle };
 export const theme: Root = themeData as Root;
 
 const GlobalStyle = styled.createGlobalStyle`
-  @import url("//cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@1.530/neodgm/style.css");
-  @import url("https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css");
-
   html,
   body,
   div,
