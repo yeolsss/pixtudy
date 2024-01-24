@@ -26,13 +26,11 @@ export default function OtherPlayerShareMediaItem({
 }: Props) {
   const dispatch = useAppDispatch();
   const videosContainerRef = useRef<HTMLDivElement | null>(null);
-  const { consumers } = useVideoSource();
+  const { filterConsumersById } = useVideoSource();
 
   if (currentPlayerId === player.playerId) return null;
 
-  const filteredConsumers = consumers.filter(
-    (consumer) => consumer.appData.playerId === player.playerId
-  );
+  const filteredConsumers = filterConsumersById(player.playerId);
 
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);

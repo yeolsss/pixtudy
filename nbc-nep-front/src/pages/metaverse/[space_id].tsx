@@ -1,8 +1,7 @@
+import CustomHead from "@/SEO/CustomHead";
+import LoadingProgress from "@/components/common/loading/LoadingProgress";
 import { MetaversePlayerProvider } from "@/context/MetaversePlayerProvider";
 import dynamic from "next/dynamic";
-import LoadingProgress from "@/components/common/loading/LoadingProgress";
-import CustomHead from "@/SEO/CustomHead";
-import React from "react";
 
 const GameComponentWithNoSSR = dynamic(
   () => import("@/components/metaverse/MetaverseComponent"),
@@ -23,3 +22,6 @@ export default function Metaverse() {
     </MetaversePlayerProvider>
   );
 }
+export const getServerSideProps = async () => {
+  return {};
+};

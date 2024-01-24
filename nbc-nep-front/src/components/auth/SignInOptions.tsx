@@ -1,14 +1,12 @@
+import useAuth from "@/zustand/authStore";
 import Link from "next/link";
-import React from "react";
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { setSaveLoginInfo } from "@/redux/modules/authSlice";
 
 export default function SignInOptions() {
-  const isCheck = useAppSelector((state) => state.authSlice.isSaveInfo);
-  const dispatch = useAppDispatch();
+  const { isSaveLoginInfo: isCheck, setSaveLoginInfo } = useAuth();
+
   const handleIsCheck = () => {
-    dispatch(setSaveLoginInfo(!isCheck));
+    setSaveLoginInfo(!isCheck);
   };
 
   return (

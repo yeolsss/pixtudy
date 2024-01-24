@@ -1,8 +1,8 @@
-import { useAppSelector } from "@/hooks/useReduxTK";
-import { Player } from "@/components/metaverse/types/metaverse";
-import styled from "styled-components";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import { HandleOpenDmContainerPrams } from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
+import { Player } from "@/components/metaverse/types/metaverse";
+import useAuth from "@/zustand/authStore";
+import styled from "styled-components";
 
 interface Props {
   player: Player;
@@ -17,7 +17,9 @@ export default function MetaversePlayerCard({
   player,
   handleOpenDmContainer,
 }: Props) {
-  const { id } = useAppSelector((state) => state.authSlice.user);
+  const {
+    user: { id },
+  } = useAuth();
 
   const {
     playerId: otherUserId,

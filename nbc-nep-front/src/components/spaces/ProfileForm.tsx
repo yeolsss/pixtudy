@@ -1,7 +1,5 @@
-import { useJoinSpace } from "@/hooks/query/useSupabase";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { validateNickname } from "@/utils/spaceFormValidate";
-import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import {
   FieldValues,
@@ -13,6 +11,7 @@ import {
 
 import { FORM_SPACE, srcBase } from "@/components/spaces/constants/constants";
 import { setUserProfile } from "@/redux/modules/spaceSlice";
+import useAuth from "@/zustand/authStore";
 import styled from "styled-components";
 import AvatarInput, { StAvatar } from "./AvatarInput";
 import { Procedure, UserProfile } from "./types/space.types";
@@ -32,14 +31,9 @@ export default function ProfileForm({
   errors,
   mode,
 }: ProfileFormProps) {
-  const { createSpaceInfo, joinSpaceInfo, userProfile } = useAppSelector(
-    (state) => state.spaceSlice
-  );
-  const user = useAppSelector((state) => state.authSlice.user);
+  const { userProfile } = useAppSelector((state) => state.spaceSlice);
+  const { user } = useAuth();
   const dispatch = useAppDispatch();
-  const { joinSpace, joinSuccess, joinError } = useJoinSpace();
-
-  const router = useRouter();
 
   const handleToPrevious = () => {
     setProcedure(FORM_SPACE);

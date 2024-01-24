@@ -1,6 +1,5 @@
 import { useSignInUser, useSignUpUser } from "@/hooks/query/useSupabase";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { setSaveLoginInfo } from "@/redux/modules/authSlice";
+import useAuth from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -22,8 +21,7 @@ export default function AuthForm({ formType }: Props) {
     formType === "signIn" ? true : false
   );
 
-  const isSaveLogin = useAppSelector((state) => state.authSlice.isSaveInfo);
-  const dispatch = useAppDispatch();
+  const { isSaveLoginInfo, setSaveLoginInfo } = useAuth();
 
   const handleOpenSignUpForm = () => {
     setIsSignUpFormOpen(true);
@@ -44,10 +42,10 @@ export default function AuthForm({ formType }: Props) {
     const savedLogin = localStorage.getItem("saveLogin");
 
     if (savedLogin) {
-      dispatch(setSaveLoginInfo(true));
+      setSaveLoginInfo(true);
       setValue("signIn_id", savedLogin);
     } else {
-      dispatch(setSaveLoginInfo(false));
+      setSaveLoginInfo(false);
     }
   }, []);
 
@@ -62,13 +60,13 @@ export default function AuthForm({ formType }: Props) {
         {
           onSuccess: async (data) => {
             if ("user" in data) {
-              if (isSaveLogin) {
+              if (isSaveLoginInfo) {
                 localStorage.setItem("saveLogin", data.user.email!);
               } else {
                 localStorage.removeItem("saveLogin");
               }
             }
-            router.push("/redirect");
+            router.push("/dashboard");
           },
         }
       );

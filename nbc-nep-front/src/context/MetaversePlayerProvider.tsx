@@ -1,8 +1,8 @@
 import { getPlayerSpaceData } from "@/api/supabase/space";
 import { Player } from "@/components/metaverse/types/metaverse";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { Tables } from "@/supabase/types/supabase";
+import useAuth from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -33,9 +33,12 @@ const initialState: PlayerContextType = {
 const PlayerContext = createContext<PlayerContextType>(initialState);
 
 export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
-  // custom hook
-  const { id, display_name } = useAppSelector((state) => state.authSlice.user);
+  const {
+    user: { id, display_name },
+  } = useAuth();
+
   const [playerList, setPlayerList] = useState<Player[]>([]);
+
   const router = useRouter();
   const spaceId =
     typeof router.query.space_id === "string" ? router.query.space_id : "";
@@ -49,6 +52,7 @@ export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
       staleTime: Infinity,
     },
   };
+
   const playerSpaceInfoData = useCustomQuery<Tables<"space_members">, Error>(
     playerSpaceInfoOptions
   );
