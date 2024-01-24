@@ -3,8 +3,8 @@ import {
   isArrayEmpty,
   splitVideoSource,
 } from "@/components/video-conference/libs/util";
+import useLayout from "@/hooks/conference/useLayout";
 import useVideoSource from "@/hooks/conference/useVideoSource";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import styled from "styled-components";
 import ShareScreenContainer from "../ShareScreenContainer";
 import { Producer } from "../types/ScreenShare.types";
@@ -21,8 +21,7 @@ export default function VideoSourceDisplayContainer({
   playerList,
   currentPlayer,
 }: Props) {
-  const layoutInfo = useAppSelector((state) => state.layoutSlice);
-
+  const { isOpen } = useLayout();
   const { producers } = useVideoSource();
 
   const [camAndAudioProducers, screenProducers] = splitVideoSource(producers);
@@ -48,7 +47,7 @@ export default function VideoSourceDisplayContainer({
           key={player.playerId}
         />
       ))}
-      {layoutInfo.isOpen && <ShareScreenContainer />}
+      {isOpen && <ShareScreenContainer />}
     </StContainer>
   );
 }
