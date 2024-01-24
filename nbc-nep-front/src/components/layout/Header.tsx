@@ -31,6 +31,10 @@ export default function Header() {
     router.push("/dashboard");
   };
 
+  const handleToBoards = () => {
+    router.push("/boards");
+  };
+
   const loginModeButton = [{ text: "로그아웃", handler: handleLogout }];
   const logoutModeButton = [
     { text: "LOGIN", handler: handleToLoginPage },
@@ -44,6 +48,7 @@ export default function Header() {
           <Link href="/">Pixtudy</Link>
           <StNavButton>서비스 소개</StNavButton>
           <StNavButton>고객지원</StNavButton>
+          <StNavButton onClick={handleToBoards}>boards</StNavButton>
         </div>
         <div>
           {isLogin && <p>{display_name}</p>}
