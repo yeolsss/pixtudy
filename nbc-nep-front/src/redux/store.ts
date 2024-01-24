@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import authSlice from "./modules/authSlice";
 import chatAlarm from "./modules/chatAlarmSlice";
 import chatType from "./modules/chatTypeSlice";
 import conferenceSlice from "./modules/conferenceSlice";
@@ -14,7 +13,6 @@ export const makeStore = () => {
   return configureStore({
     reducer: {
       modalSlice,
-      authSlice,
       spaceSlice,
       globalNavBar,
       chatType,

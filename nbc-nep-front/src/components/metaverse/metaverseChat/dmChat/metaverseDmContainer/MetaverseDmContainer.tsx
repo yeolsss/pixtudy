@@ -1,25 +1,24 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
-import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { Tables } from "@/supabase/types/supabase";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import useAuth from "@/zustand/authStore";
+import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 
 export default function MetaverseDmContainer() {
   const { otherUserId, spaceId, otherUserName, otherUserAvatar } =
     useAppSelector((state) => state.dm);
-  const dispatch = useAppDispatch();
 
   // 현재 세션의 유저정보
-  const sessionUser = useAppSelector((state) => state.authSlice.user);
-  const { playerList } = usePlayerContext();
-  const currentPlayer = playerList.find(
-    (player) => player.playerId === sessionUser.id
-  );
+  const { user: sessionUser } = useAuth();
+  const { findPlayerById } = usePlayerContext();
+  const currentPlayer = findPlayerById(sessionUser.id);
   let currentUser = { ...sessionUser };
+
   if (sessionUser && currentPlayer) {
     currentUser.display_name =
       currentPlayer.nickname || sessionUser.display_name;
