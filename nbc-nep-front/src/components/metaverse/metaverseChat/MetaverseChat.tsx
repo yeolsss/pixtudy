@@ -3,18 +3,17 @@ import MetaverseChatForm from "@/components/metaverse/metaverseChat/metaverseCha
 import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatList";
 import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
 import { DMListCard } from "@/components/metaverse/types/metaverse";
-import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
 import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import { useGetLastDMList } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/supabase/supabase";
+import useChatType from "@/zustand/chatTypeStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import styled from "styled-components";
 
 export default function MetaverseChat() {
-  const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
+  const { isOpenChat, chatType } = useChatType();
   const { id, spaceId } = usePlayerContext();
   const { handleSetDmChatAlarmState } = useChatAlarm();
   const dmList = useGetLastDMList(spaceId, id);
@@ -50,18 +49,16 @@ export default function MetaverseChat() {
   }, [dmList]);
 
   return (
-    <MetaverseChatProvider>
-      <StMetaverseGlobalChatWrapper $isOpenChat={isOpenChat}>
-        {chatType === "GLOBAL" ? (
-          <>
-            <MetaverseChatList />
-            <MetaverseChatForm />
-          </>
-        ) : (
-          <MetaverseDmList dmList={dmList} />
-        )}
-      </StMetaverseGlobalChatWrapper>
-    </MetaverseChatProvider>
+    <StMetaverseGlobalChatWrapper $isOpenChat={isOpenChat}>
+      {chatType === "GLOBAL" ? (
+        <>
+          <MetaverseChatList />
+          <MetaverseChatForm />
+        </>
+      ) : (
+        <MetaverseDmList dmList={dmList} />
+      )}
+    </StMetaverseGlobalChatWrapper>
   );
 }
 

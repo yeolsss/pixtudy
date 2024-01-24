@@ -3,19 +3,17 @@ import chartIcon from "@/assets/icons/Comments.svg";
 import reportIcon from "@/assets/icons/User Headset.svg";
 import usersIcon from "@/assets/icons/Users.svg";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
-import { ChatType } from "@/components/metaverse/types/ChatType";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
-import { setCloseDm } from "@/redux/modules/dmSlice";
+import useChatType from "@/zustand/chatTypeStore";
+import useDm from "@/zustand/dmStore";
 import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
-  const dispatch = useAppDispatch();
-
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
     useGlobalNavBar();
+  const { closeDm } = useDm();
+  const { openChat } = useChatType();
 
   return [
     {
@@ -26,12 +24,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
         setSectionVisibility(
           changeSectionVisibility("isChatSectionOn", !isChatSectionOn)
         );
-
-        const updateIsOpenChat = {
-          isOpenChat: !isChatSectionOn,
-          chatType: "GLOBAL" as ChatType,
-        };
-        dispatch(setIsOpenChat(updateIsOpenChat));
+        openChat("GLOBAL");
       },
     },
     {
@@ -51,12 +44,8 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       description: "접속자 정보",
       type: "playerList",
       handleOnClick: () => {
-        const updateIsOpenChat = {
-          isOpenChat: false,
-          chatType: "GLOBAL" as ChatType,
-        };
-        dispatch(setCloseDm());
-        dispatch(setIsOpenChat(updateIsOpenChat));
+        closeDm();
+        openChat("GLOBAL");
 
         setSectionVisibility(
           changeSectionVisibility("isPlayerListOn", !isPlayerListOn)

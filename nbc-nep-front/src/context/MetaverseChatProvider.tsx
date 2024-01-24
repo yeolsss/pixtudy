@@ -13,6 +13,7 @@ type MetaverseChatContext = {
   handleFocus: () => void;
   handleBlur: () => void;
 };
+
 const initialState: MetaverseChatContext = {
   chatInput: "",
   chatList: [] as Chat[],
@@ -36,6 +37,7 @@ export const MetaverseChatProvider = ({ children }: PropsWithChildren) => {
   );
 
   const { chatList, sendChatMessage } = useChatSocket(currentPlayer?.nickname);
+
   const handleOnSubmitChat = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!chatInput) return;
