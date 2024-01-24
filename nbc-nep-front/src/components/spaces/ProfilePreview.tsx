@@ -1,6 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { setUserProfile } from "@/redux/modules/spaceSlice";
 import useAuth from "@/zustand/authStore";
+import useSpace from "@/zustand/spaceStore";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import { StAvatar } from "./AvatarInput";
@@ -13,10 +12,11 @@ interface Props {
 
 export default function ProfilePreview({ setProcedure }: Props) {
   const { user } = useAuth();
-  const { avatar, display_name } = useAppSelector(
-    (state) => state.spaceSlice.userProfile
-  );
-  const dispatch = useAppDispatch();
+  const {
+    userProfile: { avatar, display_name },
+    setUserProfile,
+  } = useSpace();
+
   const getAvatarResource = () => {
     return srcBase + avatar + ".png";
   };
@@ -27,13 +27,11 @@ export default function ProfilePreview({ setProcedure }: Props) {
 
   useEffect(() => {
     if (user && !avatar) {
-      dispatch(
-        setUserProfile({
-          avatar: "NPC1",
-          display_name: user.display_name!,
-          owner: user.id,
-        })
-      );
+      setUserProfile({
+        avatar: "NPC1",
+        display_name: user.display_name!,
+        owner: user.id,
+      });
     }
   }, [user]);
 

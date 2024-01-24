@@ -1,8 +1,8 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { useGetDmChannel } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/supabase/supabase";
 import { Tables } from "@/supabase/types/supabase";
+import useDm from "@/zustand/dmStore";
 import {
   RealtimeChannel,
   RealtimePostgresInsertPayload,
@@ -21,14 +21,13 @@ interface useDmChannelReturns {
   connectChannel: (currentChannelId: string) => void;
   currentDmChannel: string | null | undefined;
 }
+
 export default function useDmChannel({
   otherUserInfo,
   setMessages,
   currentUser,
 }: useDmChannelPrams): useDmChannelReturns {
-  const { otherUserId, spaceId, otherUserName } = useAppSelector(
-    (state) => state.dm
-  );
+  const { otherUserId, spaceId, otherUserName } = useDm();
   // 현재 구독중인 채널 정보
   const currentSubscribeChannel = useRef<RealtimeChannel | null>(null);
 
@@ -61,27 +60,26 @@ export default function useDmChannel({
   const newMessageInChannel = (
     payload: RealtimePostgresInsertPayload<Tables<"dm_messages">>
   ) => {
+    const alter = <T>(func: () => boolean) => {
+      return (a: T, b: T) => (func() ? a : b);
+    };
+    const checkNewReceiverIsCurrentUser = () =>
+      currentUser.id === payload.new.receiver_id;
+
+    const getUser = alter<Partial<Tables<"users">>>(
+      checkNewReceiverIsCurrentUser
+    );
+    const getString = alter<string | undefined>(checkNewReceiverIsCurrentUser);
+
     const newMessage: getDmChannelMessagesReturns = {
       id: payload.new.id,
       created_at: payload.new.created_at,
       dm_id: payload.new.dm_id,
       message: payload.new.message,
-      receiver:
-        currentUser.id === payload.new.receiver_id
-          ? currentUser
-          : otherUserInfo!,
-      sender_id:
-        currentUser?.id === payload.new.receiver_id
-          ? otherUserInfo?.id
-          : currentUser.id,
-      sender_display_name:
-        currentUser?.id === payload.new.receiver_id
-          ? otherUserName
-          : currentUser.display_name!,
-      sender:
-        currentUser.id === payload.new.receiver_id
-          ? otherUserInfo!
-          : currentUser,
+      receiver: getUser(currentUser, otherUserInfo!),
+      sender_id: getString(otherUserInfo?.id, currentUser.id),
+      sender_display_name: getString(otherUserName, currentUser.display_name!),
+      sender: getUser(otherUserInfo!, currentUser),
     };
 
     setMessages((prev) => [...prev, newMessage]);

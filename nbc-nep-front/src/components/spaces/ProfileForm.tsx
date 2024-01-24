@@ -1,4 +1,3 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { validateNickname } from "@/utils/spaceFormValidate";
 import { Dispatch, SetStateAction } from "react";
 import {
@@ -10,8 +9,8 @@ import {
 } from "react-hook-form";
 
 import { FORM_SPACE, srcBase } from "@/components/spaces/constants/constants";
-import { setUserProfile } from "@/redux/modules/spaceSlice";
 import useAuth from "@/zustand/authStore";
+import useSpace from "@/zustand/spaceStore";
 import styled from "styled-components";
 import AvatarInput, { StAvatar } from "./AvatarInput";
 import { Procedure, UserProfile } from "./types/space.types";
@@ -31,21 +30,20 @@ export default function ProfileForm({
   errors,
   mode,
 }: ProfileFormProps) {
-  const { userProfile } = useAppSelector((state) => state.spaceSlice);
+  const { userProfile, setUserProfile } = useSpace();
   const { user } = useAuth();
-  const dispatch = useAppDispatch();
 
   const handleToPrevious = () => {
     setProcedure(FORM_SPACE);
   };
 
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
-    const userProfile: UserProfile = {
+    const newUserProfile: UserProfile = {
       avatar: data.avatar,
       display_name: data.nickname,
       owner: user.id,
     };
-    dispatch(setUserProfile(userProfile));
+    setUserProfile(newUserProfile);
     setProcedure(FORM_SPACE);
   };
 

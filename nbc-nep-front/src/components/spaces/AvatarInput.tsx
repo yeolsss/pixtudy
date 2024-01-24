@@ -1,5 +1,5 @@
 import { characterOptions } from "@/components/spaces/constants/constants";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import useSpace from "@/zustand/spaceStore";
 import { ChangeEvent, useState } from "react";
 import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
@@ -10,8 +10,9 @@ interface Props {
 }
 
 function AvatarInput({ register, errors }: Props) {
-  const { avatar } = useAppSelector((state) => state.spaceSlice.userProfile);
-  const dispatch = useAppDispatch();
+  const {
+    userProfile: { avatar },
+  } = useSpace();
   const [selectedAvatar, setSelectedAvatar] = useState(avatar);
 
   const { onChange, ...restParam } = register("avatar");

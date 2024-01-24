@@ -4,12 +4,8 @@ import {
   useGetUserSpaces,
   useJoinSpace,
 } from "@/hooks/query/useSupabase";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import {
-  resetJoinSpaceInfo,
-  setJoinSpaceInfo,
-} from "@/redux/modules/spaceSlice";
 import useAuth from "@/zustand/authStore";
+import useSpace from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import {
@@ -25,7 +21,6 @@ import { StCTAButton } from "../common/button/button.styles";
 import SpacePreview from "./SpacePreview";
 
 interface Props {
-  setProcedure: Dispatch<SetStateAction<Procedure>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
   reset: UseFormReset<FieldValues>;
@@ -33,27 +28,26 @@ interface Props {
 }
 
 export default function InvitationCodeForm({
-  setProcedure,
   handleSubmit,
   register,
   reset,
   errors,
 }: Props) {
-  const dispatch = useAppDispatch();
   const { user } = useAuth();
   const userId = user.id;
 
-  const userProfile = useAppSelector((state) => state.spaceSlice.userProfile);
-  const { joinSpaceInfo } = useAppSelector((state) => state.spaceSlice);
-  const { joinSpace, joinError, joinSuccess } = useJoinSpace();
+  const { userProfile, joinSpaceInfo, resetJoinSpaceInfo, setJoinSpaceInfo } =
+    useSpace();
+  const { joinSpace, joinSuccess } = useJoinSpace();
   const userJoinedSpaces = useGetUserSpaces(userId);
+
   const router = useRouter();
   const getSpace = useGetSpace();
 
   useEffect(() => {
     if (joinSuccess) {
       handleToSpace(joinSpaceInfo?.id!);
-      dispatch(resetJoinSpaceInfo());
+      resetJoinSpaceInfo();
       return;
     }
   }, [joinSuccess]);
@@ -65,7 +59,7 @@ export default function InvitationCodeForm({
   const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
     getSpace(data.invitationCode, {
       onSuccess: (targetSpace) => {
-        dispatch(setJoinSpaceInfo(targetSpace));
+        setJoinSpaceInfo(targetSpace);
         reset({ invitationCode: "" });
       },
       onError: (error) => {
@@ -116,7 +110,7 @@ export default function InvitationCodeForm({
           </StErrorMessage>
         )}
       </StContentsContainer>
-      <SpacePreview setProcedure={setProcedure} />
+      <SpacePreview />
       <StFormCTAButton type="button" onClick={handleJoinSpace}>
         입장하기
       </StFormCTAButton>

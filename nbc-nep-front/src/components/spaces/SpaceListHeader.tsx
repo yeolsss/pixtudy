@@ -1,8 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import {
-  toggleCreateSpaceModal,
-  toggleJoinSpaceModal,
-} from "@/redux/modules/modalSlice";
+import useModal from "@/hooks/modal/useModal";
 import styled from "styled-components";
 import ModalPortal from "../modal/ModalPortal";
 import CreateSpaceModal from "../modal/spaceModals/createSpaceModal/CreateSpaceModal";
@@ -10,17 +6,18 @@ import JoinSpaceModal from "../modal/spaceModals/joinSpaceModal/JoinSpaceModal";
 import SpaceSearchForm from "./SpaceSearchForm";
 
 export default function SpaceListHeader() {
-  const dispatch = useAppDispatch();
-
-  const { isCreateSpaceModalOpen, isJoinSpaceModalOpen } = useAppSelector(
-    (state) => state.modalSlice
-  );
+  const {
+    isCreateSpaceModalOpen,
+    isJoinSpaceModalOpen,
+    openJoinSpaceModal,
+    openCreateSpaceModal,
+  } = useModal();
 
   const handleOpenJoinSpaceModal = () => {
-    dispatch(toggleJoinSpaceModal());
+    openJoinSpaceModal();
   };
   const handleOpenCreateSpaceModal = () => {
-    dispatch(toggleCreateSpaceModal());
+    openCreateSpaceModal();
   };
 
   return (

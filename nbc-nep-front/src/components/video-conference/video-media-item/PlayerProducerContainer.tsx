@@ -1,7 +1,7 @@
 import useSpread from "@/hooks/conference/useSpread";
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import useSocket from "@/hooks/socket/useSocket";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
 import styled from "styled-components";
 import ShareMediaItem from "../ShareMediaItem";
@@ -26,9 +26,9 @@ export default function PlayerProducerContainer({
   const { toggleBoxRef, handleToggleOnSpreadMode, isSpreadMode } = useSpread();
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
 
-  const { id: currentPlayerId } = useAppSelector(
-    (state) => state.authSlice.user
-  );
+  const {
+    user: { id: currentPlayerId },
+  } = useAuth();
 
   const { removeProducer } = useVideoSource();
 

@@ -1,6 +1,4 @@
-//@ts-nocheck
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -14,9 +12,6 @@ interface Props {
 export default function SpaceList({ currentUserId }: Props) {
   const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
   const getUserSpaces = useGetUserSpaces(currentUserId);
-  const { createSpaceInfo, joinSpaceInfo } = useAppSelector(
-    (state) => state.spaceSlice
-  );
 
   useEffect(() => {
     if (getUserSpaces) setUserSpaces(getUserSpaces);

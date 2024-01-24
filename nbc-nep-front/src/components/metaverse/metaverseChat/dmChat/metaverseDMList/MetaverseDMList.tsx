@@ -1,12 +1,10 @@
 import MetaverseDMListCard from "@/components/metaverse/metaverseChat/dmChat/metaverseDMListCard/MetaverseDMListCard";
-import React from "react";
 import MetaverseDmContainer from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmContainer";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
-import { setIsCloseSomeSection } from "@/redux/modules/globalNavBarSlice";
-import { setCloseDm } from "@/redux/modules/dmSlice";
-import { setCloseChat } from "@/redux/modules/chatTypeSlice";
 import { Database } from "@/supabase/types/supabase";
+import useChatType from "@/zustand/chatTypeStore";
+import useDm from "@/zustand/dmStore";
+import useGlobalNavBar from "@/zustand/globalNavBarStore";
 
 interface Props {
   dmList:
@@ -15,20 +13,19 @@ interface Props {
 }
 
 export default function MetaverseDmList({ dmList }: Props) {
-  const { isOpenChat } = useAppSelector((state) => state.chatType);
-  const { isOpen: isOpenDm, otherUserName } = useAppSelector(
-    (state) => state.dm
-  );
-  const dispatch = useAppDispatch();
+  const { isOpenChat, closeChat } = useChatType();
+  const { isOpen: isOpenDm, otherUserName, closeDm } = useDm();
+
+  const { resetAllSections } = useGlobalNavBar();
 
   const handleOnClickCloseChat = () => {
-    dispatch(setIsCloseSomeSection());
-    dispatch(setCloseDm());
-    dispatch(setCloseChat());
+    resetAllSections();
+    closeDm();
+    closeChat();
   };
 
   const handleCloseDmContainer = () => {
-    dispatch(setCloseDm());
+    closeDm();
   };
 
   return (

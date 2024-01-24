@@ -104,7 +104,7 @@ export const getUserSessionHandler = async (session: Session): Promise<any> => {
     .eq("id", session.user.id!)
     .single();
 
-  if (error) throw error;
+  if (error) return Promise.reject(error);
   return currentUserInfo;
 };
 
