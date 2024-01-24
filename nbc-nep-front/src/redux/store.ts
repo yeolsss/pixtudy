@@ -4,7 +4,6 @@ import chatAlarm from "./modules/chatAlarmSlice";
 import chatType from "./modules/chatTypeSlice";
 import conferenceSlice from "./modules/conferenceSlice";
 import dm from "./modules/dmSlice";
-import globalNavBar from "./modules/globalNavBarSlice";
 import layoutSlice from "./modules/layoutSlice";
 import modalSlice from "./modules/modalSlice";
 import spaceSlice from "./modules/spaceSlice";
@@ -14,7 +13,6 @@ export const makeStore = () => {
     reducer: {
       modalSlice,
       spaceSlice,
-      globalNavBar,
       chatType,
       layoutSlice,
       conferenceSlice,

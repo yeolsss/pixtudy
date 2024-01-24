@@ -1,21 +1,22 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
 import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatCard";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
+import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
+import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setCloseChat } from "@/redux/modules/chatTypeSlice";
-import { setIsCloseSomeSection } from "@/redux/modules/globalNavBarSlice";
 import { setCloseDm } from "@/redux/modules/dmSlice";
-import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import useGlobalNavBar from "@/zustand/globalNavBarStore";
+import { useEffect } from "react";
+import styled from "styled-components";
 
 export default function MetaverseChatList() {
   const { chatList } = useMetaverseChatContext();
   const dispatch = useAppDispatch();
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
   const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
+  const { resetAllSections } = useGlobalNavBar();
   const handleOnClickCloseChat = () => {
-    dispatch(setIsCloseSomeSection());
+    resetAllSections();
     dispatch(setCloseDm());
     dispatch(setCloseChat());
   };
