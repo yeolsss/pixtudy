@@ -33,9 +33,9 @@ const initialState: PlayerContextType = {
 const PlayerContext = createContext<PlayerContextType>(initialState);
 
 export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
+  // custom hook
   const { id, display_name } = useAppSelector((state) => state.authSlice.user);
   const [playerList, setPlayerList] = useState<Player[]>([]);
-
   const router = useRouter();
   const spaceId =
     typeof router.query.space_id === "string" ? router.query.space_id : "";
@@ -49,7 +49,6 @@ export const MetaversePlayerProvider = ({ children }: PropsWithChildren) => {
       staleTime: Infinity,
     },
   };
-
   const playerSpaceInfoData = useCustomQuery<Tables<"space_members">, Error>(
     playerSpaceInfoOptions
   );
