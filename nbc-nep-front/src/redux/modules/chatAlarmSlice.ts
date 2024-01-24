@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type ChatAlarmPayload = {
   globalChatState: boolean;
