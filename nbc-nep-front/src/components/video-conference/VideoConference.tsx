@@ -2,7 +2,6 @@ import {
   isAlreadyConsume,
   isEmptyTracks,
 } from "@/components/video-conference/libs/util";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDevice from "@/hooks/conference/useDevice";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
@@ -31,11 +30,12 @@ import {
   TransPortParams,
 } from "./types/ScreenShare.types";
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
 
-  const { playerList, spaceId, findPlayerById } = usePlayerContext();
+  const { playerList, spaceId, findPlayerById } = useMetaversePlayer();
   const {
     user: { id: currentPlayerId },
   } = useAuth();

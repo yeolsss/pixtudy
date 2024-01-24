@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
 import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatCard";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
@@ -8,6 +7,7 @@ import { setCloseChat } from "@/redux/modules/chatTypeSlice";
 import { setIsCloseSomeSection } from "@/redux/modules/globalNavBarSlice";
 import { setCloseDm } from "@/redux/modules/dmSlice";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
 
 export default function MetaverseChatList() {
   const { chatList } = useMetaverseChatContext();
