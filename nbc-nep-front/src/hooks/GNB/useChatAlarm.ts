@@ -18,5 +18,7 @@ export default function useChatAlarm() {
   return {
     handleSetGlobalChatAlarmState,
     handleSetDmChatAlarmState,
+    dmChatStates,
+    globalChatState,
   };
 }
