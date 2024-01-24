@@ -6,14 +6,14 @@ import { DMListCard } from "@/components/metaverse/types/metaverse";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useGetLastDMList } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/supabase/supabase";
+import useChatType from "@/zustand/chatTypeStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import styled from "styled-components";
 
 export default function MetaverseChat() {
-  const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
+  const { isOpenChat, chatType } = useChatType();
   const { id, spaceId } = useMetaversePlayer();
   const { handleSetDmChatAlarmState } = useChatAlarm();
   const dmList = useGetLastDMList(spaceId, id);

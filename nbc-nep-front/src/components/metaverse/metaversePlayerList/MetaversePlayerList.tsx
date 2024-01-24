@@ -1,9 +1,7 @@
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
-import { ChatType } from "@/components/metaverse/types/ChatType";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
-import { setIsOpenDm } from "@/redux/modules/dmSlice";
+import useChatType from "@/zustand/chatTypeStore";
+import useDm from "@/zustand/dmStore";
 import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
@@ -17,13 +15,13 @@ export interface HandleOpenDmContainerPrams {
 }
 
 export default function MetaversePlayerList() {
-  const dispatch = useAppDispatch();
-
   const { isPlayerListOn, setSectionVisibility, resetAllSections } =
     useGlobalNavBar();
 
   const { playerList } = useMetaversePlayer();
   const { spaceId } = useMetaversePlayer();
+  const { openDm } = useDm();
+  const { openChat } = useChatType();
 
   // dm 채팅방 열기
   const handleOpenDmContainer = ({
@@ -32,20 +30,17 @@ export default function MetaversePlayerList() {
     otherUserAvatar,
   }: HandleOpenDmContainerPrams) => {
     setSectionVisibility(changeSectionVisibility("isChatSectionOn", true));
-    const newIsOpenChat = {
-      isOpenChat: true,
-      chatType: "DM" as ChatType,
-    };
-    dispatch(setIsOpenChat(newIsOpenChat));
-    const newOpenDm = {
+
+    openChat("DM");
+
+    openDm({
       isOpen: true,
       dmRoomId: "",
       otherUserId,
       spaceId,
       otherUserName,
       otherUserAvatar,
-    };
-    dispatch(setIsOpenDm(newOpenDm));
+    });
   };
 
   const handleOnClickClosePlayerList = () => {

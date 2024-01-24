@@ -1,11 +1,11 @@
-import React from "react";
-import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
-import { useQueryClient } from "@tanstack/react-query";
-import useInput from "@/hooks/useInput";
-import { useSendMessage } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
+import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
+import { useSendMessage } from "@/hooks/query/useSupabase";
+import useInput from "@/hooks/useInput";
 import { Tables } from "@/supabase/types/supabase";
+import useDm from "@/zustand/dmStore";
+import { useQueryClient } from "@tanstack/react-query";
+import React from "react";
 
 interface Props {
   currentDmChannel: string | null | undefined;
@@ -24,8 +24,7 @@ export default function MetaverseDmForm({
   connectChannel,
   currentUser,
 }: Props) {
-  const { otherUserId, spaceId } = useAppSelector((state) => state.dm);
-
+  const { otherUserId, spaceId } = useDm();
   const sendMessage = useSendMessage();
 
   const inputRef = useFocusOutInput();
@@ -39,7 +38,9 @@ export default function MetaverseDmForm({
   const handleOnSubmitDM = async (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
     const message = DMMessage;
+
     if (!message) return;
+
     sendMessage(
       {
         currentDmChannel: currentDmChannel!,

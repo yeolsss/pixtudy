@@ -1,16 +1,6 @@
-import { useAppDispatch } from "@/hooks/useReduxTK";
 import styled from "styled-components";
 
 export default function BackDrop() {
-  const dispatch = useAppDispatch();
-
-  /**
-   * 이거 없애면 안될까?
-   */
-  // const handleBackDropClose = () => {
-  //   dispatch(closeModal());
-  // };
-
   return <StBackDrop />;
 }
 
