@@ -1,5 +1,5 @@
 import { useLogoutUser } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import useAuth from "@/zustand/authStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -9,7 +9,10 @@ export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
 
-  const authStatus = useAppSelector((state) => state.authSlice);
+  const {
+    isLogin,
+    user: { display_name },
+  } = useAuth();
 
   const handleToLoginPage = () => {
     router.push("/signin");
@@ -33,7 +36,7 @@ export default function Header() {
     { text: "LOGIN", handler: handleToLoginPage },
     { text: "SIGNUP", handler: handleToSignUpPage },
   ];
-  const currentButton = authStatus.isLogin ? loginModeButton : logoutModeButton;
+  const currentButton = isLogin ? loginModeButton : logoutModeButton;
   return (
     <>
       <StNavContainer>
@@ -43,7 +46,7 @@ export default function Header() {
           <StNavButton>고객지원</StNavButton>
         </div>
         <div>
-          {authStatus?.isLogin && <p>{authStatus.user.display_name}</p>}
+          {isLogin && <p>{display_name}</p>}
           {currentButton.map((btn, index) => (
             <StNavButton key={index} onClick={btn.handler}>
               {btn.text}
