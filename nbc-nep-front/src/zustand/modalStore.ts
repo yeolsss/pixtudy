@@ -1,20 +1,16 @@
 import { create } from "zustand";
 
 interface ModalState {
-  isLoginModalOpen: boolean;
-  isSignUpModalOpen: boolean;
   isJoinSpaceModalOpen: boolean;
   isCreateSpaceModalOpen: boolean;
 }
 
 interface ModalStoreState extends ModalState {
   openModal: (kind: keyof ModalState) => void;
-  closeModal: (kind: keyof ModalState) => void;
+  closeModal: () => void;
 }
 
 const initialState = {
-  isLoginModalOpen: false,
-  isSignUpModalOpen: false,
   isJoinSpaceModalOpen: false,
   isCreateSpaceModalOpen: false,
 };
@@ -25,7 +21,7 @@ const modalStore = create<ModalStoreState>()((set) => ({
     set(() => ({
       [kind]: true,
     })),
-  closeModal: (kind: keyof ModalState) =>
+  closeModal: () =>
     set(() => ({
       ...initialState,
     })),
