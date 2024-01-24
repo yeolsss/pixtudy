@@ -4,7 +4,7 @@ import { create } from "zustand";
 interface AuthState {
   isLogin: boolean;
   user: Tables<"users">;
-  isSaveInfo: boolean;
+  isSaveLoginInfo: boolean;
   login: (user: Tables<"users">) => void;
   logout: () => void;
   setSaveLoginInfo: (isRememberLoginInfo: boolean) => void;
@@ -17,10 +17,10 @@ const initialUser = {
   id: "",
 };
 
-const authStore = create<AuthState>()((set) => ({
+const useAuth = create<AuthState>()((set) => ({
   isLogin: false,
   user: initialUser,
-  isSaveInfo: false,
+  isSaveLoginInfo: false,
   login: (user: Tables<"users">) => set(() => ({ isLogin: true, user })),
   logout: () =>
     set(() => ({
@@ -28,7 +28,7 @@ const authStore = create<AuthState>()((set) => ({
       user: { ...initialUser },
     })),
   setSaveLoginInfo: (isRememberLoginInfo: boolean) =>
-    set(() => ({ isSaveInfo: isRememberLoginInfo })),
+    set(() => ({ isSaveLoginInfo: isRememberLoginInfo })),
 }));
 
-export default authStore;
+export default useAuth;
