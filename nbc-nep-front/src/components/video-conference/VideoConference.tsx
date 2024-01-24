@@ -8,7 +8,7 @@ import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import useSocket from "@/hooks/socket/useSocket";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
 import styled from "styled-components";
 import CameraOff from "../../assets/dock-icons/camera-off.svg";
@@ -36,9 +36,9 @@ export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
 
   const { playerList, spaceId, findPlayerById } = usePlayerContext();
-  const { id: currentPlayerId } = useAppSelector(
-    (state) => state.authSlice.user
-  );
+  const {
+    user: { id: currentPlayerId },
+  } = useAuth();
 
   const {
     consumers,
