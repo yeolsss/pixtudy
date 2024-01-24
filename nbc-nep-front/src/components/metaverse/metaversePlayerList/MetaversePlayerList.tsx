@@ -1,16 +1,14 @@
-import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import styled from "styled-components";
-import { setIsOpenDm } from "@/redux/modules/dmSlice";
-import {
-  setIsCloseSomeSection,
-  setIsSomeSection,
-} from "@/redux/modules/globalNavBarSlice";
-import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
-import { ChatType } from "@/components/metaverse/types/ChatType";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
-import React from "react";
+import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
+import { ChatType } from "@/components/metaverse/types/ChatType";
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import { useAppDispatch } from "@/hooks/useReduxTK";
+import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
+import { setIsOpenDm } from "@/redux/modules/dmSlice";
+import useGlobalNavBar, {
+  changeSectionVisibility,
+} from "@/zustand/globalNavBarStore";
+import styled from "styled-components";
 
 export interface HandleOpenDmContainerPrams {
   otherUserId: string;
@@ -20,9 +18,9 @@ export interface HandleOpenDmContainerPrams {
 
 export default function MetaversePlayerList() {
   const dispatch = useAppDispatch();
-  const isOpenPlayerList = useAppSelector(
-    (state) => state.globalNavBar.playerList
-  );
+
+  const { isPlayerListOn, setSectionVisibility, resetAllSections } =
+    useGlobalNavBar();
 
   const { playerList } = usePlayerContext();
   const { spaceId } = usePlayerContext();
@@ -33,13 +31,7 @@ export default function MetaversePlayerList() {
     otherUserName,
     otherUserAvatar,
   }: HandleOpenDmContainerPrams) => {
-    const newIsSomeSection = {
-      chatSection: true,
-      settingsSection: false,
-      playerList: false,
-    };
-
-    dispatch(setIsSomeSection(newIsSomeSection));
+    setSectionVisibility(changeSectionVisibility("isChatSectionOn", true));
     const newIsOpenChat = {
       isOpenChat: true,
       chatType: "DM" as ChatType,
@@ -57,19 +49,19 @@ export default function MetaversePlayerList() {
   };
 
   const handleOnClickClosePlayerList = () => {
-    dispatch(setIsCloseSomeSection());
+    resetAllSections();
   };
 
   return (
     <>
-      <StMetaversePlayerListWrapper $isOpenPlayerList={isOpenPlayerList}>
-        {isOpenPlayerList && (
+      <StMetaversePlayerListWrapper $isPlayerListOn={isPlayerListOn}>
+        {isPlayerListOn && (
           <MetaverseChatHeader
             title={"Player List"}
             handler={handleOnClickClosePlayerList}
           />
         )}
-        {isOpenPlayerList &&
+        {isPlayerListOn &&
           playerList?.map((player) => (
             <MetaversePlayerCard
               key={player.playerId}
@@ -82,18 +74,17 @@ export default function MetaversePlayerList() {
   );
 }
 
-const StMetaversePlayerListWrapper = styled.div<{ $isOpenPlayerList: boolean }>`
+const StMetaversePlayerListWrapper = styled.div<{ $isPlayerListOn: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "240px" : "0")};
-  padding: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "10px" : "0")};
-  overflow: ${({ $isOpenPlayerList }) =>
-    $isOpenPlayerList ? "scroll" : "hidden"};
+  width: ${({ $isPlayerListOn }) => ($isPlayerListOn ? "240px" : "0")};
+  padding: ${({ $isPlayerListOn }) => ($isPlayerListOn ? "10px" : "0")};
+  overflow: ${({ $isPlayerListOn }) => ($isPlayerListOn ? "scroll" : "hidden")};
   transition:
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
-  z-index: ${({ $isOpenPlayerList }) => ($isOpenPlayerList ? "100" : "-1")};
+  z-index: ${({ $isPlayerListOn }) => ($isPlayerListOn ? "100" : "-1")};
   background-color: ${({ theme }) => theme.color.metaverse.secondary};
   color: white;
 

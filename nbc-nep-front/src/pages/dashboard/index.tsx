@@ -18,7 +18,7 @@ Dashboard.getLayout = function getLayout(page: ReactElement) {
 };
 
 export const getServerSideProps = async () => {
-  return {};
+  return { props: {} };
 };
 
 export default Dashboard;

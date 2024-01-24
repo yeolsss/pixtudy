@@ -1,8 +1,7 @@
 import { fieldValues } from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { setCreateSpaceInfo } from "@/redux/modules/spaceSlice";
 import { Tables } from "@/supabase/types/supabase";
+import useSpace from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import {
@@ -31,16 +30,12 @@ export default function CreateSpaceForm({
   handleSubmit,
   errors,
 }: Props) {
-  const dispatch = useAppDispatch();
   const router = useRouter();
-  const userProfile = useAppSelector((state) => state.spaceSlice.userProfile);
-  const { createSpace, createSuccess, createError } = useCreateSpace(
+  const { userProfile, setCreateSpaceInfo } = useSpace();
+  const { createSpace, createSuccess } = useCreateSpace(
     (data: Tables<"spaces">) => {
       handleToSpace(data.id);
     }
-  );
-  const createSpaceInfo = useAppSelector(
-    (state) => state.spaceSlice.createSpaceInfo
   );
 
   useEffect(() => {
@@ -58,7 +53,7 @@ export default function CreateSpaceForm({
       title: data.spaceName,
       description: data.spaceDescription,
     };
-    dispatch(setCreateSpaceInfo({ ...spaceInfo, ...userProfile }));
+    setCreateSpaceInfo({ ...spaceInfo, ...userProfile });
     createSpace({
       description: spaceInfo.description,
       owner: userProfile.owner,
