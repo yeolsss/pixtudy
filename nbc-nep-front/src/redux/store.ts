@@ -4,12 +4,10 @@ import chatAlarm from "./modules/chatAlarmSlice";
 import chatType from "./modules/chatTypeSlice";
 import dm from "./modules/dmSlice";
 import layoutSlice from "./modules/layoutSlice";
-import modalSlice from "./modules/modalSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      modalSlice,
       chatType,
       layoutSlice,
       dm,
