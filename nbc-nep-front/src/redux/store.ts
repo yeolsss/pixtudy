@@ -5,13 +5,11 @@ import chatType from "./modules/chatTypeSlice";
 import dm from "./modules/dmSlice";
 import layoutSlice from "./modules/layoutSlice";
 import modalSlice from "./modules/modalSlice";
-import spaceSlice from "./modules/spaceSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       modalSlice,
-      spaceSlice,
       chatType,
       layoutSlice,
       dm,

@@ -1,28 +1,17 @@
 import { useGetOtherUserInfo } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import useSpace from "@/zustand/spaceStore";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { FORM_CHARACTER } from "./constants/constants";
-import { Procedure } from "./types/space.types";
 
-interface Props {
-  setProcedure: Dispatch<SetStateAction<Procedure>>;
-}
 /**
  * useGetOtherUserInfo, useGetUserSpaces,
  *
  * @param param0
  * @returns
  */
-export default function SpacePreview({ setProcedure }: Props) {
-  const joinSpaceInfo = useAppSelector(
-    (state) => state.spaceSlice.joinSpaceInfo
-  );
+export default function SpacePreview() {
+  const { joinSpaceInfo } = useSpace();
   const ownerInfo = useGetOtherUserInfo(joinSpaceInfo?.owner);
-  const handleToNextProcedure = () => {
-    setProcedure(FORM_CHARACTER);
-  };
 
   return (
     <StSpacePreview>

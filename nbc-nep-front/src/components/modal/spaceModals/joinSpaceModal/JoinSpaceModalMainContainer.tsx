@@ -6,7 +6,7 @@ import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure } from "@/components/spaces/types/space.types";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { toggleJoinSpaceModal } from "@/redux/modules/modalSlice";
-import { resetJoinSpaceInfo } from "@/redux/modules/spaceSlice";
+import useSpace from "@/zustand/spaceStore";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -14,6 +14,7 @@ import styled from "styled-components";
 export default function JoinSpaceModalMainContainer() {
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
   const dispatch = useAppDispatch();
+  const { resetJoinSpaceInfo } = useSpace();
 
   const {
     handleSubmit,
@@ -24,7 +25,7 @@ export default function JoinSpaceModalMainContainer() {
 
   const handleCloseModal = () => {
     dispatch(toggleJoinSpaceModal());
-    dispatch(resetJoinSpaceInfo());
+    resetJoinSpaceInfo();
   };
 
   return (
@@ -35,7 +36,6 @@ export default function JoinSpaceModalMainContainer() {
           <div>
             <ProfilePreview setProcedure={setProcedure} />
             <InvitationCodeForm
-              setProcedure={setProcedure}
               handleSubmit={handleSubmit}
               register={register}
               reset={reset}

@@ -37,7 +37,7 @@ const initialState = {
   avatar: "NPC1",
 };
 
-const SpaceStore = create<SpaceState>()((set) => ({
+const useSpace = create<SpaceState>()((set) => ({
   ...initialState,
   setAvatar: (avatar: string) => set({ avatar }),
   setCreateSpaceInfo: (spaceInfo: CreateSpaceInfo) =>
@@ -61,4 +61,4 @@ const SpaceStore = create<SpaceState>()((set) => ({
     }),
 }));
 
-export default SpaceStore;
+export default useSpace;

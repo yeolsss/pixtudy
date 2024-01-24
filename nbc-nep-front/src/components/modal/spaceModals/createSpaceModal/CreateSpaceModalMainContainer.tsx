@@ -6,7 +6,7 @@ import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure } from "@/components/spaces/types/space.types";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { toggleCreateSpaceModal } from "@/redux/modules/modalSlice";
-import { resetCreateSpaceInfo } from "@/redux/modules/spaceSlice";
+import useSpace from "@/zustand/spaceStore";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -17,6 +17,7 @@ import {
 export default function CreateSpaceModalMainContainer() {
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
   const dispatch = useAppDispatch();
+  const { resetCreateSpaceInfo } = useSpace();
 
   const {
     handleSubmit,
@@ -26,7 +27,7 @@ export default function CreateSpaceModalMainContainer() {
 
   const handleCloseModal = () => {
     dispatch(toggleCreateSpaceModal());
-    dispatch(resetCreateSpaceInfo());
+    resetCreateSpaceInfo();
   };
 
   return (
