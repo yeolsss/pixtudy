@@ -1,5 +1,4 @@
 import CheckUserSession from "@/components/layout/CheckUserSession";
-import StoreProvider from "@/redux/StoreProvier";
 import GlobalStyle, { theme } from "@/styles/Globalstyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
@@ -23,19 +22,17 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <StoreProvider>
-        <DndProvider backend={HTML5Backend}>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <CheckUserSession />
-            {getLayout(
-              <>
-                <Component {...pageProps} />
-              </>
-            )}
-          </ThemeProvider>
-        </DndProvider>
-      </StoreProvider>
+      <DndProvider backend={HTML5Backend}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <CheckUserSession />
+          {getLayout(
+            <>
+              <Component {...pageProps} />
+            </>
+          )}
+        </ThemeProvider>
+      </DndProvider>
     </QueryClientProvider>
   );
 }
