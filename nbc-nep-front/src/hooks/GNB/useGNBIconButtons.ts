@@ -6,7 +6,7 @@ import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNa
 import { ChatType } from "@/components/metaverse/types/ChatType";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
-import { setCloseDm } from "@/redux/modules/dmSlice";
+import useDm from "@/zustand/dmStore";
 import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
@@ -16,6 +16,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
 
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
     useGlobalNavBar();
+  const { closeDm } = useDm();
 
   return [
     {
@@ -55,7 +56,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
           isOpenChat: false,
           chatType: "GLOBAL" as ChatType,
         };
-        dispatch(setCloseDm());
+        closeDm();
         dispatch(setIsOpenChat(updateIsOpenChat));
 
         setSectionVisibility(

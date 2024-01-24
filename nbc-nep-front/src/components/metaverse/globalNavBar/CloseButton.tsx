@@ -2,16 +2,17 @@ import CloseIcon from "@/assets/icons/Close.svg";
 import IconButton from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButton";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { setCloseChat } from "@/redux/modules/chatTypeSlice";
-import { setCloseDm } from "@/redux/modules/dmSlice";
+import useDm from "@/zustand/dmStore";
 import useGlobalNavBar from "@/zustand/globalNavBarStore";
 import styled from "styled-components";
 
 export default function CloseButton() {
   const dispatch = useAppDispatch();
   const { resetAllSections } = useGlobalNavBar();
+  const { closeDm } = useDm();
   const handleOnClickClose = () => {
     resetAllSections();
-    dispatch(setCloseDm());
+    closeDm();
     dispatch(setCloseChat());
   };
 
