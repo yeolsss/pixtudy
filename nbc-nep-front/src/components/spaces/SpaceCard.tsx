@@ -2,7 +2,6 @@ import useGetUsersCount from "@/hooks/query/useGetUsersCount";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import styled from "styled-components";
 import UserIcon from "../common/UserIcon";
 
@@ -12,7 +11,6 @@ interface Props {
 
 export default function SpaceCard({ space }: Props) {
   const { data: count, isLoading } = useGetUsersCount(space?.space_id!);
-  const [usersCount, setUsersCount] = useState<number>(0);
   const router = useRouter();
 
   const handleToSpace = async (space_id: string) => {

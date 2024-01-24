@@ -2,12 +2,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 export default function SpaceSearchForm() {
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+  const { register } = useForm({ mode: "onSubmit" });
 
   return (
     <StSearchInput

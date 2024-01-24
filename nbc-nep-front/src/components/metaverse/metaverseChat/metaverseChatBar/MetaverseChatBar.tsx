@@ -1,13 +1,12 @@
-import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
 import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
 import { ChatType } from "@/components/metaverse/types/ChatType";
+import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { setIsOpenChat } from "@/redux/modules/chatTypeSlice";
+import useGlobalNavBar from "@/zustand/globalNavBarStore";
+import styled from "styled-components";
 
 export default function MetaverseChatBar() {
-  const isOpenChatSection = useAppSelector(
-    (state) => state.globalNavBar.chatSection
-  );
+  const { isChatSectionOn } = useGlobalNavBar();
   const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
   const dispatch = useAppDispatch();
 
@@ -22,7 +21,7 @@ export default function MetaverseChatBar() {
 
   return (
     <>
-      <StMetaverseChatBar $isOpenChatSection={isOpenChatSection}>
+      <StMetaverseChatBar $isOpenChatSection={isChatSectionOn}>
         <StChatWrapperTitle>
           <h1>chat</h1>
         </StChatWrapperTitle>

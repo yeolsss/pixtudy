@@ -4,10 +4,10 @@ import usePlayerList from "@/zustand/metaversePlayer";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useAppSelector } from "../useReduxTK";
+import useAuth from "@/zustand/authStore";
 
 const useMetaversePlayer = () => {
-  const { id, display_name } = useAppSelector((state) => state.authSlice.user);
+  const { id, display_name } = useAuth((state) => state.user);
   const { playerList, setPlayerList } = usePlayerList((state) => state);
 
   const router = useRouter();

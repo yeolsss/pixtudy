@@ -4,16 +4,16 @@ import ProfileForm from "@/components/spaces/ProfileForm";
 import ProfilePreview from "@/components/spaces/ProfilePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure } from "@/components/spaces/types/space.types";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { toggleJoinSpaceModal } from "@/redux/modules/modalSlice";
-import { resetJoinSpaceInfo } from "@/redux/modules/spaceSlice";
+import useModal from "@/hooks/modal/useModal";
+import useSpace from "@/zustand/spaceStore";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 export default function JoinSpaceModalMainContainer() {
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
-  const dispatch = useAppDispatch();
+  const { resetJoinSpaceInfo } = useSpace();
+  const { closeModal } = useModal();
 
   const {
     handleSubmit,
@@ -23,8 +23,8 @@ export default function JoinSpaceModalMainContainer() {
   } = useForm({ mode: "onSubmit" });
 
   const handleCloseModal = () => {
-    dispatch(toggleJoinSpaceModal());
-    dispatch(resetJoinSpaceInfo());
+    closeModal();
+    resetJoinSpaceInfo();
   };
 
   return (
@@ -35,7 +35,6 @@ export default function JoinSpaceModalMainContainer() {
           <div>
             <ProfilePreview setProcedure={setProcedure} />
             <InvitationCodeForm
-              setProcedure={setProcedure}
               handleSubmit={handleSubmit}
               register={register}
               reset={reset}
@@ -73,7 +72,6 @@ export const StModalContents = styled.div`
   gap: ${(props) => props.theme.spacing[16]};
   width: ${(props) => props.theme.unit[460]}px;
   padding: ${(props) => props.theme.spacing[32]};
-  /* justify-content: center; */
   padding-top: 0;
   height: 100%;
 `;

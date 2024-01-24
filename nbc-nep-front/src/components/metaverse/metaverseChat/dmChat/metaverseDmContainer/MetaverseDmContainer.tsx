@@ -3,24 +3,19 @@ import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaver
 import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { Tables } from "@/supabase/types/supabase";
+import useAuth from "@/zustand/authStore";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-// import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 
 export default function MetaverseDmContainer() {
   const { otherUserId, spaceId, otherUserName, otherUserAvatar } =
     useAppSelector((state) => state.dm);
-  const dispatch = useAppDispatch();
 
   // 현재 세션의 유저정보
-  const sessionUser = useAppSelector((state) => state.authSlice.user);
-  // const { playerList } = usePlayerContext();
+  const { user: sessionUser } = useAuth();
   const { findPlayerById } = useMetaversePlayer();
-  // const currentPlayer = playerList.find(
-  //   (player) => player.playerId === sessionUser.id
-  // );
   const currentPlayer = findPlayerById(sessionUser.id);
   let currentUser = { ...sessionUser };
   if (sessionUser && currentPlayer) {

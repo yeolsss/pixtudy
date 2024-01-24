@@ -22,5 +22,5 @@ export default function Metaverse() {
   );
 }
 export const getServerSideProps = async () => {
-  return {};
+  return { props: {} };
 };
