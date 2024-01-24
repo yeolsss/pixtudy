@@ -1,11 +1,7 @@
+import { supabase } from "@/supabase/supabase";
 import { Tables } from "@/supabase/types/supabase";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Session } from "@supabase/supabase-js";
 
-export const supabase = createClientComponentClient({
-  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-});
+import { Session } from "@supabase/supabase-js";
 
 /**
  * Supabase 회원가입을 위한 함수

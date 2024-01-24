@@ -1,6 +1,6 @@
-import { supabase } from "@/api/supabase/auth";
 import { useAppDispatch } from "@/hooks/useReduxTK";
 import { fetchUser, logout } from "@/redux/modules/authSlice";
+import { supabase } from "@/supabase/supabase";
 import { useEffect } from "react";
 
 export default function CheckUserSession() {
