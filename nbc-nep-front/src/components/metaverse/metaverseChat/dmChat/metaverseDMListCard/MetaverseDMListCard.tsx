@@ -1,6 +1,6 @@
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import { DMListCard } from "@/components/metaverse/types/metaverse";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useDm from "@/zustand/dmStore";
 import styled from "styled-components";
 
@@ -8,7 +8,7 @@ interface Props {
   dm: DMListCard;
 }
 export default function MetaverseDMListCard({ dm }: Props) {
-  const { id, spaceId } = usePlayerContext();
+  const { id, spaceId } = useMetaversePlayer();
   const { openDm } = useDm();
   const {
     room_id,

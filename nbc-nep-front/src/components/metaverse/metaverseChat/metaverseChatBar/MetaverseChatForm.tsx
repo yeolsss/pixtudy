@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
 import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
+import useChat from "@/hooks/chat/useChat";
 
 export default function MetaverseChatForm() {
   const {
@@ -10,7 +10,7 @@ export default function MetaverseChatForm() {
     chatInput,
     handleFocus,
     handleBlur,
-  } = useMetaverseChatContext();
+  } = useChat();
   const inputRef = useFocusOutInput();
 
   return (
