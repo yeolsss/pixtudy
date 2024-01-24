@@ -1,5 +1,6 @@
 import { supabase } from "@/supabase/supabase";
 import { Tables } from "@/supabase/types/supabase";
+
 import { Session } from "@supabase/supabase-js";
 
 /**

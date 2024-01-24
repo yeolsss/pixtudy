@@ -1,13 +1,13 @@
+import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
+import { useGetDmChannel } from "@/hooks/query/useSupabase";
+import { useAppSelector } from "@/hooks/useReduxTK";
 import { supabase } from "@/supabase/supabase";
-import React, { useEffect, useRef } from "react";
+import { Tables } from "@/supabase/types/supabase";
 import {
   RealtimeChannel,
   RealtimePostgresInsertPayload,
 } from "@supabase/supabase-js";
-import { Tables } from "@/supabase/types/supabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
-import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
-import { useGetDmChannel } from "@/hooks/query/useSupabase";
+import React, { useEffect, useRef } from "react";
 
 interface useDmChannelPrams {
   otherUserInfo: Partial<Tables<"users">> | null | undefined;
@@ -29,7 +29,6 @@ export default function useDmChannel({
   const { otherUserId, spaceId, otherUserName } = useAppSelector(
     (state) => state.dm
   );
-  useAppSelector((state) => state.dm);
   // 현재 구독중인 채널 정보
   const currentSubscribeChannel = useRef<RealtimeChannel | null>(null);
 

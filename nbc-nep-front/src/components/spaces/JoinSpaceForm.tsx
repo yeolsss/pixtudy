@@ -9,6 +9,7 @@ import {
   resetJoinSpaceInfo,
   setJoinSpaceInfo,
 } from "@/redux/modules/spaceSlice";
+import useAuth from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import {
@@ -39,7 +40,9 @@ export default function InvitationCodeForm({
   errors,
 }: Props) {
   const dispatch = useAppDispatch();
-  const { id: userId } = useAppSelector((state) => state.authSlice.user);
+  const { user } = useAuth();
+  const userId = user.id;
+
   const userProfile = useAppSelector((state) => state.spaceSlice.userProfile);
   const { joinSpaceInfo } = useAppSelector((state) => state.spaceSlice);
   const { joinSpace, joinError, joinSuccess } = useJoinSpace();

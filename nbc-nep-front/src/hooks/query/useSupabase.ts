@@ -23,8 +23,8 @@ import {
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
+import useAuth from "@/zustand/authStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAppSelector } from "../useReduxTK";
 
 /* Auth */
 /* user */
@@ -139,7 +139,9 @@ export function useGetDmChannel({
   receiverId,
   spaceId,
 }: Omit<checkDmChannelArgs, "currentUserId">) {
-  const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+  const {
+    user: { id: currentUserId },
+  } = useAuth();
   const getDmChannelOptions = {
     queryKey: ["dmChannel", receiverId],
     queryFn: () => checkDmChannel({ receiverId, currentUserId, spaceId }),
@@ -162,7 +164,9 @@ export function useGetDmMessages(dmChannel: string | null) {
 
 // 메시지 보내기
 export function useSendMessage() {
-  const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+  const {
+    user: { id: currentUserId },
+  } = useAuth();
   const { mutate: message } = useMutation({
     mutationFn: ({
       currentDmChannel,
