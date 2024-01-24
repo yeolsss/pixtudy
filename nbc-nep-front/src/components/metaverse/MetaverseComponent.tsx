@@ -4,7 +4,6 @@ import { SceneClass } from "@/components/metaverse/libs/sceneClass";
 import { SetupScene } from "@/components/metaverse/libs/setupScene";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
-import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import Phaser from "phaser";
 import { useEffect, useRef } from "react";
@@ -79,9 +78,7 @@ const MetaverseComponent = () => {
   return (
     <StMetaverseWrapper>
       <GlobalNavBar />
-      <MetaverseChatProvider>
-        <MetaverseChatBar />
-      </MetaverseChatProvider>
+      <MetaverseChatBar />
       <MetaversePlayerList />
       <StMetaverseMain id="phaser-metaverse" />
       <VideoConference />

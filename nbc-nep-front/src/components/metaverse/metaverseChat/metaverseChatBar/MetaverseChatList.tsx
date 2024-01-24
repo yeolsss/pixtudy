@@ -1,6 +1,5 @@
 import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatCard";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
-import { useMetaverseChatContext } from "@/context/MetaverseChatProvider";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setCloseChat } from "@/redux/modules/chatTypeSlice";
@@ -8,9 +7,10 @@ import { setCloseDm } from "@/redux/modules/dmSlice";
 import useGlobalNavBar from "@/zustand/globalNavBarStore";
 import { useEffect } from "react";
 import styled from "styled-components";
+import useChat from "@/hooks/chat/useChat";
 
 export default function MetaverseChatList() {
-  const { chatList } = useMetaverseChatContext();
+  const { chatList } = useChat();
   const dispatch = useAppDispatch();
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
   const { isOpenChat, chatType } = useAppSelector((state) => state.chatType);
