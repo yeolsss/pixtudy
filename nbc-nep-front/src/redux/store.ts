@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import chatAlarm from "./modules/chatAlarmSlice";
 import chatType from "./modules/chatTypeSlice";
-import conferenceSlice from "./modules/conferenceSlice";
 import dm from "./modules/dmSlice";
 import layoutSlice from "./modules/layoutSlice";
 import modalSlice from "./modules/modalSlice";
@@ -15,7 +14,6 @@ export const makeStore = () => {
       spaceSlice,
       chatType,
       layoutSlice,
-      conferenceSlice,
       dm,
       chatAlarm,
     },
