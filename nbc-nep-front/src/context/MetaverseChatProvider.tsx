@@ -1,9 +1,9 @@
+import { Chat } from "@/components/metaverse/types/metaverse";
+import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useChatSocket from "@/hooks/socket/useChatSocket";
 import useInput from "@/hooks/useInput";
-import { useAppSelector } from "@/hooks/useReduxTK";
-import { Chat } from "@/components/metaverse/types/metaverse";
+import useAuth from "@/zustand/authStore";
 import React, { createContext, PropsWithChildren, useContext } from "react";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 
 type MetaverseChatContext = {
   chatInput: string;
@@ -28,9 +28,9 @@ export const MetaverseChatProvider = ({ children }: PropsWithChildren) => {
   const [chatInput, setChatInput, handleOnChangeChat, handleFocus, handleBlur] =
     useInput<string>("");
   const { playerList } = usePlayerContext();
-  const { id: currentPlayerId } = useAppSelector(
-    (state) => state.authSlice.user
-  );
+  const {
+    user: { id: currentPlayerId },
+  } = useAuth();
   const currentPlayer = playerList.find(
     (player) => player.playerId === currentPlayerId
   );
