@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import { setUserProfile } from "@/redux/modules/spaceSlice";
+import useAuth from "@/zustand/authStore";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import { StAvatar } from "./AvatarInput";
@@ -11,7 +12,7 @@ interface Props {
 }
 
 export default function ProfilePreview({ setProcedure }: Props) {
-  const user = useAppSelector((state) => state.authSlice.user);
+  const { user } = useAuth();
   const { avatar, display_name } = useAppSelector(
     (state) => state.spaceSlice.userProfile
   );
