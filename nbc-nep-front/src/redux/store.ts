@@ -1,12 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import chatType from "./modules/chatTypeSlice";
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {
-      chatType,
-    },
+    reducer: {},
   });
 };
 
