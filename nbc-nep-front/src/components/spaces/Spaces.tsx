@@ -1,9 +1,10 @@
-import { useAppSelector } from "@/hooks/useReduxTK";
+import useAuth from "@/zustand/authStore";
 import styled from "styled-components";
 import SpaceList from "./SpaceList";
 
 export default function Spaces() {
-  const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+  const { user } = useAuth();
+  const currentUserId = user.id;
 
   return (
     <>
