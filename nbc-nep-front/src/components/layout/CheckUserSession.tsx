@@ -1,19 +1,19 @@
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { fetchUser, logout } from "@/redux/modules/authSlice";
+import { getUserSessionHandler } from "@/api/supabase/auth";
 import { supabase } from "@/supabase/supabase";
+import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
 
 export default function CheckUserSession() {
-  const dispatch = useAppDispatch();
+  const { logout, login } = useAuth();
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
         if (!session) return;
-
-        dispatch(fetchUser(session));
+        const user = await getUserSessionHandler(session);
+        login(user);
       } else if (event === "SIGNED_OUT") {
-        dispatch(logout());
+        logout();
       }
     });
   }, []);
