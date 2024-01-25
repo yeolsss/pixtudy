@@ -4,7 +4,7 @@ export default function useModal() {
   const {
     isCreateSpaceModalOpen,
     isJoinSpaceModalOpen,
-    isFindPasswordModalOpen,
+    isForgetPasswordModalOpen,
     openModal,
     closeModal,
   } = modalStore();
@@ -13,14 +13,14 @@ export default function useModal() {
 
   const openCreateSpaceModal = () => openModal("isCreateSpaceModalOpen");
 
-  const openFindPasswordModal = () => openModal("isFindPasswordModalOpen");
+  const openForgetPasswordModal = () => openModal("isForgetPasswordModalOpen");
   return {
     isCreateSpaceModalOpen,
     isJoinSpaceModalOpen,
-    isFindPasswordModalOpen,
+    isForgetPasswordModalOpen,
     openJoinSpaceModal,
     openCreateSpaceModal,
-    openFindPasswordModal,
+    openForgetPasswordModal,
     closeModal,
   };
 }

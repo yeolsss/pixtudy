@@ -1,4 +1,4 @@
-import { FindPasswordMessageType } from "@/components/auth/utils/authUtils";
+import { ForgetPasswordMessageType } from "@/components/auth/utils/authUtils";
 import { supabase } from "@/supabase/supabase";
 import { Tables } from "@/supabase/types/supabase";
 
@@ -135,7 +135,7 @@ export const getOtherUserHandler = async (
  */
 export const forgottenPasswordHandler = async (
   userEmail: string
-): Promise<{ response: FindPasswordMessageType; message: string }> => {
+): Promise<{ response: ForgetPasswordMessageType; message: string }> => {
   // (1) 등록된 유저인지 확인
   const { data: checkUserData, error: checkUserError } = await supabase
     .from("users")
@@ -148,7 +148,7 @@ export const forgottenPasswordHandler = async (
     const { error: sendMailError } = await supabase.auth.resetPasswordForEmail(
       userEmail,
       {
-        redirectTo: "http://localhost:3000/findpassword",
+        redirectTo: "http://localhost:3000/changepassword",
       }
     );
     if (sendMailError) throw sendMailError;

@@ -1,13 +1,13 @@
 import useModal from "@/hooks/modal/useModal";
 import BackDrop from "../BackDrop";
-import FindPasswordModalMainContainer from "./FindPasswordModalMainContainer";
+import ForgetPasswordModalMainContainer from "./ForgetPasswordModalMainContainer";
 
-export default function FindPasswordModal() {
+export default function ForgetPasswordModal() {
   const { closeModal } = useModal();
   return (
     <>
       <BackDrop closeModal={closeModal} />
-      <FindPasswordModalMainContainer />
+      <ForgetPasswordModalMainContainer />
     </>
   );
 }

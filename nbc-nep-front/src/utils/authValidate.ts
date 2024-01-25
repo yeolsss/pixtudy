@@ -47,7 +47,7 @@ export function authValidation(errorMessage: string, mode: AuthFormType) {
       if (mode === "signUp") {
         toast.error("회원가입 오류");
       }
-      if (mode === "findPassword") {
+      if (mode === "changePassword") {
         toast.error("비밀번호 변경 오류");
       }
       break;

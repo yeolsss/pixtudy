@@ -20,7 +20,10 @@ export default function CheckUserSession() {
           if (!session) return;
           getUserSessionHandler(session)
             .then((userData) => {
-              if (!sessionRef.current && router.pathname !== "/findpassword") {
+              if (
+                !sessionRef.current &&
+                router.pathname !== "/changepassword"
+              ) {
                 toast.success(`${userData.display_name}님 로그인 성공`);
                 sessionRef.current = session;
               }
@@ -33,7 +36,7 @@ export default function CheckUserSession() {
 
         case "SIGNED_OUT":
           sessionRef.current = null;
-          if (router.pathname !== "/findpassword") {
+          if (router.pathname !== "/changepassword") {
             toast.error("로그아웃 되었습니다");
           }
           logout();

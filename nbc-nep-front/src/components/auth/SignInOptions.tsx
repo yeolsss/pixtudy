@@ -4,14 +4,14 @@ import styled from "styled-components";
 
 export default function SignInOptions() {
   const { isSaveLoginInfo: isCheck, setSaveLoginInfo } = useAuth();
-  const { openFindPasswordModal } = useModal();
+  const { openForgetPasswordModal } = useModal();
 
   const handleIsCheck = () => {
     setSaveLoginInfo(!isCheck);
   };
 
-  const handleOpenFindPasswordModal = () => {
-    openFindPasswordModal();
+  const handleOpenForgetPasswordModal = () => {
+    openForgetPasswordModal();
   };
 
   return (
@@ -33,7 +33,7 @@ export default function SignInOptions() {
           <span>로그인 정보 저장하기</span>
         </StSaveLoginInfoToggleCheckBox>
       </section>
-      <span onClick={handleOpenFindPasswordModal}>비밀번호 찾기</span>
+      <span onClick={handleOpenForgetPasswordModal}>비밀번호 찾기</span>
     </StSignInOptions>
   );
 }

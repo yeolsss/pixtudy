@@ -220,15 +220,15 @@ export function useReadDMMessage() {
   return { mutate, isError, isPending };
 }
 
-export function useFindPassword() {
-  const { mutate: findPassword } = useMutation({
+export function useForgetPassword() {
+  const { mutate: forgetPassword } = useMutation({
     mutationFn: forgottenPasswordHandler,
     onSuccess: (data) => {
       console.log("비밀번호 수정메일 보내기 완료", data);
     },
   });
 
-  return { findPassword };
+  return { forgetPassword };
 }
 
 export function useUpdateUserPw() {
@@ -238,7 +238,7 @@ export function useUpdateUserPw() {
       console.log(data);
     },
     onError: (error) => {
-      authValidation(error.message, "findPassword");
+      authValidation(error.message, "changePassword");
     },
   });
   return updateUser;

@@ -7,14 +7,14 @@ import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
 import SocialLogin from "@/components/auth/SocialLogin";
 import * as St from "@/components/auth/styles/authCommon.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
-import FindPasswordModal from "@/components/modal/findPasswordModal/FindPasswordModal";
+import ForgetPasswordModal from "@/components/modal/forgetPasswordModal/ForgetPasswordModal";
 import useModal from "@/hooks/modal/useModal";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
 import Link from "next/link";
 import { ReactElement, useEffect } from "react";
 export function SignIn() {
-  const { isFindPasswordModalOpen } = useModal();
+  const { isForgetPasswordModalOpen } = useModal();
 
   useEffect(() => {
     const message = getCookie("message");
@@ -42,9 +42,9 @@ export function SignIn() {
           <AuthForm formType="signIn" />
           <AuthFooter />
         </AuthFormContainer>
-        {isFindPasswordModalOpen && (
+        {isForgetPasswordModalOpen && (
           <ModalPortal>
-            <FindPasswordModal />
+            <ForgetPasswordModal />
           </ModalPortal>
         )}
       </St.AuthOuterContainer>

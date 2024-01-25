@@ -92,7 +92,7 @@ export default function AuthForm({ formType }: Props) {
         }
       );
     }
-    if (formType === "findPassword") {
+    if (formType === "changePassword") {
       updatePw(values.findPw_pw, {
         onSuccess: () => {
           setIsUpdatePw(true);
@@ -117,14 +117,14 @@ export default function AuthForm({ formType }: Props) {
     if (formType === "signUp" && !isSignUpFormOpen) {
       return handleOpenSignUpForm;
     }
-    if (formType === "findPassword" && isUpdatePw) {
+    if (formType === "changePassword" && isUpdatePw) {
       return handleToSignIn;
     }
   };
 
   const buttonText = () => {
     switch (formType) {
-      case "findPassword":
+      case "changePassword":
         return isUpdatePw ? "로그인 하러 가기" : "비밀번호 업데이트";
       case "signIn":
         return "로그인";
@@ -169,7 +169,7 @@ export default function AuthForm({ formType }: Props) {
       <button
         type={
           (formType === "signUp" && !isSignUpFormOpen) ||
-          (formType === "findPassword" && isUpdatePw)
+          (formType === "changePassword" && isUpdatePw)
             ? "button"
             : "submit"
         }

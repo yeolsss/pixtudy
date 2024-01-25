@@ -1,17 +1,17 @@
 import { info, success } from "@/assets/auth";
 import AuthInput from "@/components/auth/AuthInput";
 import {
-  FindPasswordMessageType,
+  ForgetPasswordMessageType,
   FormValues,
 } from "@/components/auth/utils/authUtils";
-import { useFindPassword } from "@/hooks/query/useSupabase";
+import { useForgetPassword } from "@/hooks/query/useSupabase";
 import { handleValidateEmail } from "@/utils/authValidate";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 
-export default function FindPasswordModalForm({}) {
+export default function ForgetPasswordModalForm({}) {
   const {
     handleSubmit,
     register,
@@ -21,16 +21,16 @@ export default function FindPasswordModalForm({}) {
     mode: "onChange",
   });
 
-  const { findPassword } = useFindPassword();
+  const { forgetPassword } = useForgetPassword();
 
   const [alertMessage, setAlertMessage] = useState<{
-    response: FindPasswordMessageType;
+    response: ForgetPasswordMessageType;
     message: string;
   } | null>();
 
   const handleSendFindMail: SubmitHandler<FormValues> = (values) => {
-    if (values["find_password_email"]) {
-      findPassword(values["find_password_email"], {
+    if (values["forget_password_email"]) {
+      forgetPassword(values["forget_password_email"], {
         onSuccess: (message) => {
           setAlertMessage(message);
         },
@@ -40,13 +40,13 @@ export default function FindPasswordModalForm({}) {
 
   useEffect(() => {
     setAlertMessage(null);
-  }, [errors["find_password_email"]]);
+  }, [errors["forget_password_email"]]);
 
   return (
-    <StFindPasswordModalForm onSubmit={handleSubmit(handleSendFindMail)}>
+    <StForgetPasswordModalForm onSubmit={handleSubmit(handleSendFindMail)}>
       <AuthInput
         error={errors}
-        id="find_password_email"
+        id="forget_password_email"
         placeholder="이메일을 입력하세요"
         register={register}
         type="email"
@@ -54,7 +54,7 @@ export default function FindPasswordModalForm({}) {
         watch={watch}
       />
 
-      {!!alertMessage && !errors["find_password_email"] && (
+      {!!alertMessage && !errors["forget_password_email"] && (
         <span>
           <Image
             src={alertMessage.response === "fail" ? info : success}
@@ -64,11 +64,11 @@ export default function FindPasswordModalForm({}) {
         </span>
       )}
       <button>메일 보내기</button>
-    </StFindPasswordModalForm>
+    </StForgetPasswordModalForm>
   );
 }
 
-const StFindPasswordModalForm = styled.form`
+const StForgetPasswordModalForm = styled.form`
   display: flex;
   flex-direction: column;
   width: ${(props) => props.theme.unit["412"]}px;

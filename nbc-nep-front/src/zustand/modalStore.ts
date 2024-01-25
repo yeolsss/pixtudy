@@ -3,7 +3,7 @@ import { create } from "zustand";
 interface ModalState {
   isJoinSpaceModalOpen: boolean;
   isCreateSpaceModalOpen: boolean;
-  isFindPasswordModalOpen: boolean;
+  isForgetPasswordModalOpen: boolean;
 }
 
 interface ModalStoreState extends ModalState {
@@ -14,7 +14,7 @@ interface ModalStoreState extends ModalState {
 const initialState = {
   isJoinSpaceModalOpen: false,
   isCreateSpaceModalOpen: false,
-  isFindPasswordModalOpen: false,
+  isForgetPasswordModalOpen: false,
 };
 
 const modalStore = create<ModalStoreState>()((set) => ({

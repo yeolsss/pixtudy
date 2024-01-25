@@ -7,7 +7,7 @@ const PAGES_PATH = [
   { path: "/metaverse", dynamic: true },
   { path: "/signin", dynamic: false },
   { path: "/signup", dynamic: false },
-  { path: "/findpassword", dynamic: false },
+  { path: "/changepassword", dynamic: false },
 ];
 
 export async function middleware(request: NextRequest) {

@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import FindPasswordModalForm from "./FindPasswordModalForm";
+import ForgetPasswordModalForm from "./ForgetPasswordModalForm";
 
-export default function FindPasswordModalMainContainer() {
+export default function ForgetPasswordModalMainContainer() {
   return (
     <StModalContainer>
       <h2>비밀번호 찾기</h2>
       <span>이메일을 인증을 통해 비밀번호를 재설정 하세요.</span>
-      <FindPasswordModalForm />
+      <ForgetPasswordModalForm />
     </StModalContainer>
   );
 }

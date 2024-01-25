@@ -5,7 +5,7 @@ import {
   handleValidatePasswordMatch,
 } from "@/utils/authValidate";
 
-export type AuthFormType = "signUp" | "signIn" | "findPassword";
+export type AuthFormType = "signUp" | "signIn" | "changePassword";
 
 export interface FormValues {
   signIn_id?: string;
@@ -14,10 +14,10 @@ export interface FormValues {
   signUp_pw?: string;
   signUp_nickname?: string;
   signUp_check_pw?: string;
-  find_password_email?: string;
+  forget_password_email?: string;
 }
 
-export type FindPasswordMessageType = "success" | "fail";
+export type ForgetPasswordMessageType = "success" | "fail";
 
 export const getInputs = (formType: AuthFormType) => {
   if (formType === "signIn") {
@@ -64,7 +64,7 @@ export const getInputs = (formType: AuthFormType) => {
       },
     ];
   }
-  if (formType === "findPassword") {
+  if (formType === "changePassword") {
     return [
       {
         id: "findPw_pw",
