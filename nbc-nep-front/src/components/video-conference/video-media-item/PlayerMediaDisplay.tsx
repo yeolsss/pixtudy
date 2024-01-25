@@ -3,7 +3,10 @@ import MicOn from "@/assets/dock-icons/mic-on.svg";
 import { Player } from "@/components/metaverse/types/metaverse";
 import Image from "next/image";
 import ShareMediaItem from "../ShareMediaItem";
-import { getVideoSourcesExcludeAudio, isArrayEmpty } from "../libs/util";
+import {
+  findVideoSourceByType,
+  getVideoSourcesExcludeAudio,
+} from "../libs/util";
 import { VideoSource } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 
@@ -22,10 +25,21 @@ export default function PlayerMediaDisplay({
     camAndAudioVideoSources
   );
 
-  const isVideoOn = !isArrayEmpty(excludedAudioVideoSource);
+  const audioVideoSource = findVideoSourceByType(
+    camAndAudioVideoSources,
+    "audio"
+  );
+  const webCamVideoSource = findVideoSourceByType(
+    camAndAudioVideoSources,
+    "webcam"
+  );
+
+  /* const isVideoOn = !isArrayEmpty(excludedAudioVideoSource);
   const isAudioOn =
     camAndAudioVideoSources.length &&
-    camAndAudioVideoSources.length !== excludedAudioVideoSource.length;
+    camAndAudioVideoSources.length !== excludedAudioVideoSource.length; */
+  const isVideoOn = !!webCamVideoSource;
+  const isAudioOn = !!audioVideoSource;
 
   const AudioBadge = (
     <Image
@@ -38,26 +52,29 @@ export default function PlayerMediaDisplay({
   );
   return (
     <>
-      {!isVideoOn ? (
+      {!isVideoOn && (
         <DefaultShareMediaItem
           nickname={player.nickname}
           avatar={player.character}
         >
           {AudioBadge}
         </DefaultShareMediaItem>
-      ) : (
-        <>
-          {camAndAudioVideoSources.map((videoSource) => (
-            <ShareMediaItem
-              key={videoSource.id}
-              nickname={player.nickname}
-              videoSource={videoSource}
-              isCurrentPlayer={isCurrentPlayer}
-            >
-              {videoSource.appData.shareType === "webcam" && AudioBadge}
-            </ShareMediaItem>
-          ))}
-        </>
+      )}
+      {isAudioOn && (
+        <ShareMediaItem
+          nickname={player.nickname}
+          videoSource={audioVideoSource}
+          isCurrentPlayer={isCurrentPlayer}
+        ></ShareMediaItem>
+      )}
+      {isVideoOn && (
+        <ShareMediaItem
+          nickname={player.nickname}
+          videoSource={webCamVideoSource}
+          isCurrentPlayer={isCurrentPlayer}
+        >
+          {AudioBadge}
+        </ShareMediaItem>
       )}
     </>
   );
