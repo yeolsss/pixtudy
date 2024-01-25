@@ -40,10 +40,11 @@ export default function useLayout() {
   }, 0);
 
   const handleInactive = (id: string) => {
-    const newVideos = videos.map((video) =>
-      video.consumer.id === id ? { ...video, isActive: 0 } : video
+    setVideos((prevVideos) =>
+      prevVideos.map((video) =>
+        video.consumer.id === id ? { ...video, isActive: 0 } : video
+      )
     );
-    setVideos(newVideos);
   };
 
   const videosChange = (newVideos: LayoutConsumersType[]) => {

@@ -1,13 +1,13 @@
 import { Chat } from "@/components/metaverse/types/metaverse";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import useMetaversePlayer from "../metaverse/useMetaversePlayer";
 import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
 export default function useChatSocket(playerDisplayName: string | null = "") {
   const [chatList, setChatList] = useState<Chat[]>([]);
   const socket = useRef<Socket | null>(null);
-  const { spaceId } = usePlayerContext();
+  const { spaceId } = useMetaversePlayer();
 
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
 

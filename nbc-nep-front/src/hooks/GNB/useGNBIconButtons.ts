@@ -13,7 +13,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
     useGlobalNavBar();
   const { closeDm } = useDm();
-  const { openChat } = useChatType();
+  const { openChat, closeChat } = useChatType();
 
   return [
     {
@@ -21,9 +21,14 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       description: "채팅",
       type: "chat",
       handleOnClick: () => {
-        setSectionVisibility(
-          changeSectionVisibility("isChatSectionOn", !isChatSectionOn)
-        );
+        if (isChatSectionOn) {
+          setSectionVisibility(
+            changeSectionVisibility("isChatSectionOn", false)
+          );
+          closeChat();
+          return;
+        }
+        setSectionVisibility(changeSectionVisibility("isChatSectionOn", true));
         openChat("GLOBAL");
       },
     },
@@ -44,12 +49,16 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       description: "접속자 정보",
       type: "playerList",
       handleOnClick: () => {
-        closeDm();
-        openChat("GLOBAL");
+        if (isPlayerListOn) {
+          setSectionVisibility(
+            changeSectionVisibility("isPlayerListOn", false)
+          );
+          closeDm();
 
-        setSectionVisibility(
-          changeSectionVisibility("isPlayerListOn", !isPlayerListOn)
-        );
+          return;
+        }
+        closeChat();
+        setSectionVisibility(changeSectionVisibility("isPlayerListOn", true));
       },
     },
   ];

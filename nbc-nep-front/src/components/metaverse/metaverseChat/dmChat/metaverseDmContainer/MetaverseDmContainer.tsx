@@ -1,8 +1,8 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { Tables } from "@/supabase/types/supabase";
 import useAuth from "@/zustand/authStore";
 import useDm from "@/zustand/dmStore";
@@ -13,12 +13,9 @@ export default function MetaverseDmContainer() {
   const { otherUserId, otherUserName } = useDm();
   // 현재 세션의 유저정보
   const { user: sessionUser } = useAuth();
-
-  const { findPlayerById } = usePlayerContext();
-
+  const { findPlayerById } = useMetaversePlayer();
   const currentPlayer = findPlayerById(sessionUser.id);
   let currentUser = { ...sessionUser };
-
   if (sessionUser && currentPlayer) {
     currentUser.display_name =
       currentPlayer.nickname || sessionUser.display_name;

@@ -1,4 +1,3 @@
-import useLayout from "@/hooks/conference/useLayout";
 import { PropsWithChildren } from "react";
 import { useDrag } from "react-dnd";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
@@ -7,15 +6,15 @@ import styled from "styled-components";
 interface Props {
   id: string;
   active: boolean;
+  handleInactive?: (id: string) => void;
 }
 
 export default function ShareScreenDragItem({
   id,
   active,
+  handleInactive,
   children,
 }: PropsWithChildren<Props>) {
-  const { handleInactive } = useLayout();
-
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: "VIDEO",
     item: { id },
@@ -32,7 +31,7 @@ export default function ShareScreenDragItem({
         {active && (
           <button
             onClick={() => {
-              handleInactive(id);
+              handleInactive && handleInactive(id);
             }}
           >
             레이아웃 제거
