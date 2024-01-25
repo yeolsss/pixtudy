@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
   // 로그인 세션에 따른 조건부 처리
   if (
     !session &&
-    (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse/"))
+    (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse"))
   ) {
     console.log("세션이 없는데 dashboard, metaverse에 들어옴");
     return NextResponse.redirect(new URL("/signin", request.url));
@@ -78,7 +78,7 @@ export async function middleware(request: NextRequest) {
 
   // 유효한 메타버스 id가 없을 때
   if (session && pathname.startsWith("/metaverse")) {
-    const spaceId = request.url.split("=").at(-1);
+    const spaceId = request.url.split("?")[0].split("/").at(-1);
     await checkSpace(spaceId!);
     const checkResult = await checkSpace(spaceId!);
     if (!checkResult) {
