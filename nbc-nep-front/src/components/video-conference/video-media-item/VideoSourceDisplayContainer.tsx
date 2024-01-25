@@ -60,4 +60,11 @@ const StContainer = styled.div`
   position: absolute;
   right: ${(props) => props.theme.spacing[16]};
   top: ${(props) => props.theme.spacing[32]};
+
+  max-height: 80vh;
+  overflow-y: scroll;
+  flex-wrap: nowrap;
+  * {
+    flex-shrink: 0;
+  }
 `;
