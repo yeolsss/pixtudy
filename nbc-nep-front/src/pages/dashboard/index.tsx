@@ -10,7 +10,7 @@ import { ReactElement } from "react";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Navigation, Pagination, Scrollbar } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface Props {
@@ -26,8 +26,8 @@ const Dashboard: NextPage<Props> & {
       <StSwiperWrapper>
         <Swiper
           spaceBetween={theme.unit[24]}
-          slidesPerView={3}
-          modules={[Navigation, Pagination, Scrollbar]}
+          slidesPerView={2.8}
+          modules={[Pagination]}
           navigation
           pagination={{ clickable: true }}
         >
@@ -85,8 +85,8 @@ const StSwiperWrapper = styled.div`
   .swiper {
     height: 297px;
     width: 100%;
-    /* padding: ${(props) =>
-      `${props.theme.spacing[24]} ${props.theme.spacing[40]}`}; */
+    padding: ${(props) =>
+      `${props.theme.spacing[24]} ${props.theme.spacing[40]}`};
   }
 `;
 
