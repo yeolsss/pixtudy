@@ -6,6 +6,7 @@ import useDevice from "@/hooks/conference/useDevice";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useSocket from "@/hooks/socket/useSocket";
 import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
@@ -30,7 +31,6 @@ import {
   TransPortParams,
 } from "./types/ScreenShare.types";
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
-import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
@@ -180,6 +180,10 @@ export default function VideoConference() {
         throw new Error("no producer...");
       }
 
+      track.addEventListener("ended", () => {
+        removeProducer(producer);
+      });
+
       addProducer(producer);
     } catch (error) {
       console.log("handle share error", error);
@@ -199,7 +203,6 @@ export default function VideoConference() {
     socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
   }
   const screenCount = filterProducersByShareType("screen").length;
-
   return (
     <>
       <StDockContainer>
