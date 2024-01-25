@@ -70,15 +70,22 @@ export default function ProfileForm({
       </StCurrentProfile>
       <AvatarInput register={register} errors={errors} />
       {errors.avatar && <span>errors.avatar.message</span>}
-      <button type="submit">확인</button>
-      <button type="button" onClick={handleToPrevious}>
-        뒤로 가기
-      </button>
+      <StButtonWrapper>
+        <button type="submit">확인</button>
+        <button type="button" onClick={handleToPrevious}>
+          뒤로 가기
+        </button>
+      </StButtonWrapper>
     </StProfileForm>
   );
 }
 
-const StProfileForm = styled.form``;
+const StProfileForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing[32]};
+  align-items: stretch;
+`;
 
 const StCurrentProfile = styled.div`
   display: flex;
@@ -87,9 +94,6 @@ const StCurrentProfile = styled.div`
   label {
     font-family: var(--sub-font);
   }
-  //prettier-ignore
-  padding: ${(props) => props.theme.spacing[24]} ${(props) =>
-    props.theme.spacing[0]};
 `;
 
 const StAvatarWrapper = styled.div`
@@ -107,4 +111,12 @@ const StInputWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: ${(props) => props.theme.spacing[4]};
+`;
+
+const StButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: ${(props) => props.theme.spacing[8]};
+  justify-content: center;
 `;
