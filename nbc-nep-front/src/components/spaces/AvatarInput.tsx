@@ -53,7 +53,10 @@ const StInputContainer = styled.div`
   padding: ${(props) => props.theme.spacing[24]};
 
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
+
+  overflow: auto;
+  max-height: ${(props) => props.theme.unit["412"]}px;
 
   gap: ${(props) => props.theme.spacing[12]};
 `;
