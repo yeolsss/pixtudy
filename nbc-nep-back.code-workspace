@@ -8,6 +8,7 @@
     }
   ],
   "settings": {
-    "cSpell.words": ["mediasoup", "Metaverse", "supabase"]
+    "cSpell.words": ["mediasoup", "Metaverse", "supabase"],
+    "commentTranslate.hover.enabled": false
   }
 }

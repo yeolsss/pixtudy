@@ -1,16 +1,15 @@
-import { DMListCard } from "@/components/metaverse/types/metaverse";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
+import { DMListCard } from "@/components/metaverse/types/metaverse";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
+import useDm from "@/zustand/dmStore";
 import styled from "styled-components";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { setIsOpenDm } from "@/redux/modules/dmSlice";
 
 interface Props {
   dm: DMListCard;
 }
 export default function MetaverseDMListCard({ dm }: Props) {
-  const dispatch = useAppDispatch();
-  const { id, spaceId } = usePlayerContext();
+  const { id, spaceId } = useMetaversePlayer();
+  const { openDm } = useDm();
   const {
     room_id,
     message,
@@ -29,16 +28,14 @@ export default function MetaverseDMListCard({ dm }: Props) {
     id === sender_id ? receiver_display_name : sender_display_name;
 
   const handleOnClickOpenDMChat = () => {
-    dispatch(
-      setIsOpenDm({
-        isOpen: true,
-        dmRoomId: room_id,
-        otherUserId,
-        spaceId,
-        otherUserName,
-        otherUserAvatar,
-      })
-    );
+    openDm({
+      isOpen: true,
+      dmRoomId: room_id,
+      otherUserId,
+      spaceId,
+      otherUserName,
+      otherUserAvatar,
+    });
   };
 
   return (

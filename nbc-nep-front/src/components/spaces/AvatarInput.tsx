@@ -1,21 +1,21 @@
-import { ChangeEvent, useState } from "react";
-import { FieldValues, UseFormRegister, useForm } from "react-hook-form";
-import styled from "styled-components";
 import { characterOptions } from "@/components/spaces/constants/constants";
+import useSpace from "@/zustand/spaceStore";
+import { ChangeEvent, useState } from "react";
+import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
+import styled from "styled-components";
 
 interface Props {
   register: UseFormRegister<FieldValues>;
+  errors: FormState<FieldValues>["errors"];
 }
 
-function AvatarInput({ register }: Props) {
-  const [selectedAvatar, setSelectedAvatar] = useState("");
+function AvatarInput({ register, errors }: Props) {
   const {
-    formState: { errors },
-  } = useForm();
+    userProfile: { avatar },
+  } = useSpace();
+  const [selectedAvatar, setSelectedAvatar] = useState(avatar);
 
-  const { onChange, ...restParam } = register("avatar", {
-    required: "This field is required",
-  });
+  const { onChange, ...restParam } = register("avatar");
 
   const handleCustomChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedAvatar(e.target.value);
@@ -37,7 +37,7 @@ function AvatarInput({ register }: Props) {
             {...restParam}
           />
           <label htmlFor={option.value} key={option.label}>
-            <StSpan resource={option.src}></StSpan>
+            <StAvatar resource={option.src}></StAvatar>
           </label>
         </StInputWrapper>
       ))}
@@ -49,9 +49,11 @@ function AvatarInput({ register }: Props) {
 export default AvatarInput;
 
 const StInputContainer = styled.div`
+  background-color: ${(props) => props.theme.color.bg.secondary};
+  padding: ${(props) => props.theme.spacing[24]};
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: ${(props) => props.theme.spacing[12]};
 `;
 
 const StInputWrapper = styled.div<{ $isSelected: boolean }>`
@@ -74,15 +76,15 @@ const StInputWrapper = styled.div<{ $isSelected: boolean }>`
   }
 `;
 
-const StSpan = styled.span`
+export const StAvatar = styled.span`
   background-image: url(${(props) => props.resource});
   background-position: center;
   display: inline-block;
-  width: 32px; /* 스프라이트의 너비 */
-  height: 48px; /* 스프라이트의 높이 */
+  width: 32px;
+  height: 48px;
   background-repeat: no-repeat;
-  background-position: 0px -14px; /* 첫 번째 스프라이트의 위치 */
-  margin-right: 10px; /* 라벨 간 간격 조정 */
+  background-position: 0px -14px;
+  margin-right: 10px;
   cursor: pointer;
   margin: 0;
 `;

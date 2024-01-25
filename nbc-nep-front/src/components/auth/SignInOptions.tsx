@@ -1,19 +1,17 @@
-import Link from "next/link";
-import React from "react";
+import useModal from "@/hooks/modal/useModal";
+import useAuth from "@/zustand/authStore";
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { setSaveLoginInfo } from "@/redux/modules/authSlice";
-import { toggleFindPasswordModal } from "@/redux/modules/modalSlice";
 
 export default function SignInOptions() {
-  const isCheck = useAppSelector((state) => state.authSlice.isSaveInfo);
-  const dispatch = useAppDispatch();
+  const { isSaveLoginInfo: isCheck, setSaveLoginInfo } = useAuth();
+  const { openFindPasswordModal } = useModal();
+
   const handleIsCheck = () => {
-    dispatch(setSaveLoginInfo(!isCheck));
+    setSaveLoginInfo(!isCheck);
   };
 
   const handleOpenFindPasswordModal = () => {
-    dispatch(toggleFindPasswordModal());
+    openFindPasswordModal();
   };
 
   return (

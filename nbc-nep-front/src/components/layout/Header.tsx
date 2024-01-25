@@ -1,5 +1,6 @@
 import { useLogoutUser } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import useAuth from "@/zustand/authStore";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { StCTAButton } from "../common/button/button.styles";
@@ -8,7 +9,10 @@ export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
 
-  const authStatus = useAppSelector((state) => state.authSlice);
+  const {
+    isLogin,
+    user: { display_name },
+  } = useAuth();
 
   const handleToLoginPage = () => {
     router.push("/signin");
@@ -20,6 +24,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
+    router.push("/");
   };
 
   const handleToDashboard = () => {
@@ -31,18 +36,17 @@ export default function Header() {
     { text: "LOGIN", handler: handleToLoginPage },
     { text: "SIGNUP", handler: handleToSignUpPage },
   ];
-  const currentButton = authStatus.isLogin ? loginModeButton : logoutModeButton;
-
+  const currentButton = isLogin ? loginModeButton : logoutModeButton;
   return (
     <>
       <StNavContainer>
         <div>
-          <span onClick={() => router.push("/")}>Pixtudy</span>
+          <Link href="/">Pixtudy</Link>
           <StNavButton>서비스 소개</StNavButton>
           <StNavButton>고객지원</StNavButton>
         </div>
         <div>
-          {authStatus?.isLogin && <p>{authStatus.user.display_name}</p>}
+          {isLogin && <p>{display_name}</p>}
           {currentButton.map((btn, index) => (
             <StNavButton key={index} onClick={btn.handler}>
               {btn.text}
@@ -64,7 +68,7 @@ const StNavContainer = styled.header`
   align-items: center;
   font-family: var(--sub-font);
 
-  span {
+  a {
     display: block;
     color: ${(props) => props.theme.color.text.interactive.primary};
     font-family: var(--point-font);
@@ -80,6 +84,10 @@ const StNavContainer = styled.header`
 
   p {
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
+    font-weight: ${(props) => props.theme.body.lg.regular.fontWeight};
+    color: ${(props) => props.theme.color.text.primary};
+    font-family: var(--sub-font);
+    letter-spacing: ${(props) => props.theme.body.lg.regular.letterSpacing};
   }
 `;
 

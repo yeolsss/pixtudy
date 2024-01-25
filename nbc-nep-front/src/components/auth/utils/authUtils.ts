@@ -3,7 +3,7 @@ import {
   handleValidateNickname,
   handleValidatePassword,
   handleValidatePasswordMatch,
-} from "@/utils/authFormValidate";
+} from "@/utils/authValidate";
 
 export type AuthFormType = "signUp" | "signIn";
 

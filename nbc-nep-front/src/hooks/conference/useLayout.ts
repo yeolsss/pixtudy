@@ -1,19 +1,23 @@
-import React from "react";
-import { useAppDispatch, useAppSelector } from "../useReduxTK";
 import { splitVideoSource } from "@/components/video-conference/libs/util";
-import { useEffect, useState } from "react";
 import { LayoutConsumersType } from "@/components/video-conference/types/ScreenShare.types";
-import { layoutClose } from "@/redux/modules/layoutSlice";
+import layoutStore from "@/zustand/layoutStore";
+import { useEffect, useState } from "react";
+import useVideoSource from "./useVideoSource";
 
 export default function useLayout() {
-  const dispatch = useAppDispatch();
-  const consumers = useAppSelector((state) => state.conferenceSlice.consumers);
-  const layoutInfo = useAppSelector((state) => state.layoutSlice);
+  const { consumers } = useVideoSource();
+  const {
+    layoutPlayerId,
+    layoutClose,
+    layoutPlayerNickName,
+    layoutOpen,
+    isOpen,
+  } = layoutStore();
   const [videos, setVideos] = useState<LayoutConsumersType[]>([]);
 
   useEffect(() => {
     const filteredConsumers = consumers.filter(
-      (consumer) => consumer.appData.playerId === layoutInfo.layoutPlayerId
+      (consumer) => consumer.appData.playerId === layoutPlayerId
     );
     const [_, screenConsumers] = splitVideoSource(filteredConsumers);
 
@@ -27,7 +31,7 @@ export default function useLayout() {
       return prevVideo;
     });
     setVideos(newConsumers);
-  }, [consumers, layoutInfo.layoutPlayerId]);
+  }, [consumers, layoutPlayerId]);
 
   // 현재 active 상태인 영상 개수
   const countSelectVideos = videos.reduce((acc, val) => {
@@ -36,10 +40,11 @@ export default function useLayout() {
   }, 0);
 
   const handleInactive = (id: string) => {
-    const newVideos = videos.map((video) =>
-      video.consumer.id === id ? { ...video, isActive: 0 } : video
+    setVideos((prevVideos) =>
+      prevVideos.map((video) =>
+        video.consumer.id === id ? { ...video, isActive: 0 } : video
+      )
     );
-    setVideos(newVideos);
   };
 
   const videosChange = (newVideos: LayoutConsumersType[]) => {
@@ -47,14 +52,27 @@ export default function useLayout() {
   };
 
   const handleCloseLayout = () => {
-    dispatch(layoutClose());
+    layoutClose();
+  };
+
+  const handleOpenLayout = ({
+    playerId,
+    playerNickName,
+  }: {
+    playerId: string;
+    playerNickName: string;
+  }) => {
+    layoutOpen({ playerId, playerNickName });
   };
 
   return {
     videos,
     countSelectVideos,
+    layoutPlayerNickName,
+    isOpen,
     handleInactive,
     videosChange,
     handleCloseLayout,
+    handleOpenLayout,
   };
 }

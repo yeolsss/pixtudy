@@ -1,41 +1,29 @@
 import { MAX_SHARE_SCREEN_SIZE } from "@/components/video-conference/constants/constants";
-import {
-  Consumer,
-  Producer,
-} from "@/components/video-conference/types/ScreenShare.types";
-import {
-  addConsumer as addConsumerRedux,
-  addProducer as addProducerRedux,
-  removeConsumer as removeConsumerRedux,
-  removeProducer as removeProducerRedux,
-} from "../../redux/modules/conferenceSlice";
-import { useAppDispatch, useAppSelector } from "../useReduxTK";
+import { ShareType } from "@/components/video-conference/types/ScreenShare.types";
+import conferenceStore from "@/zustand/conferenceStore";
 
 export default function useVideoSource() {
-  const { producers, consumers } = useAppSelector(
-    (state) => state.conferenceSlice
-  );
-  const dispatch = useAppDispatch();
-
-  function addProducer(producer: Producer) {
-    dispatch(addProducerRedux(producer));
-  }
-
-  function removeProducer(producerId: string) {
-    dispatch(removeProducerRedux(producerId));
-  }
-
-  function addConsumer(consumer: Consumer) {
-    dispatch(addConsumerRedux(consumer));
-  }
-
-  function removeConsumer(streamId: string) {
-    dispatch(removeConsumerRedux(streamId));
-  }
+  const {
+    producers,
+    consumers,
+    addConsumer,
+    addProducer,
+    removeConsumer,
+    removeProducer,
+  } = conferenceStore();
 
   const isCanShare =
     producers.filter((producer) => producer.appData.shareType === "screen")
       .length < MAX_SHARE_SCREEN_SIZE;
+
+  const filterConsumersById = (playerId: string) =>
+    consumers.filter((consumer) => consumer.appData.playerId === playerId);
+
+  const findProducerByShareType = (type: ShareType) =>
+    producers.find((producer) => producer.appData.shareType === type);
+
+  const filterProducersByShareType = (type: ShareType) =>
+    producers.filter((producer) => producer.appData.shareType === type);
 
   return {
     producers,
@@ -45,5 +33,8 @@ export default function useVideoSource() {
     addConsumer,
     removeConsumer,
     isCanShare,
+    filterConsumersById,
+    findProducerByShareType,
+    filterProducersByShareType,
   };
 }

@@ -1,7 +1,8 @@
-import { useGetDmMessages, useReadDMMessage } from "@/hooks/query/useSupabase";
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
+import { useGetDmMessages, useReadDMMessage } from "@/hooks/query/useSupabase";
+import useAuth from "@/zustand/authStore";
+import useDm from "@/zustand/dmStore";
 import React, { useEffect } from "react";
-import { useAppSelector } from "@/hooks/useReduxTK";
 
 interface UseDmMessageParams {
   currentDmChannel: string | null | undefined;
@@ -17,11 +18,10 @@ export default function useDmMessage({
   const prevDmMessages = useGetDmMessages(currentDmChannel!);
 
   const { mutate, isPending, isError } = useReadDMMessage();
-
-  const { dmRoomId } = useAppSelector((state) => state.dm);
+  const { dmRoomId } = useDm();
 
   // 현재 세션의 유저정보
-  const currentUser = useAppSelector((state) => state.authSlice.user);
+  const { user: currentUser } = useAuth();
 
   // 채팅창에 들어오면 읽은것으로 간주.
   useEffect(() => {

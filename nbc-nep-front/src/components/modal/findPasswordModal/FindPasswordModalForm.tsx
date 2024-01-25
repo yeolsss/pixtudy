@@ -1,15 +1,15 @@
+import { info, success } from "@/assets/auth";
 import AuthInput from "@/components/auth/AuthInput";
 import {
   FindPasswordMessageType,
   FormValues,
 } from "@/components/auth/utils/authUtils";
 import { useFindPassword } from "@/hooks/query/useSupabase";
-import { handleValidateEmail } from "@/utils/authFormValidate";
+import { handleValidateEmail } from "@/utils/authValidate";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
-import { info, success } from "@/assets/auth";
 
 export default function FindPasswordModalForm({}) {
   const {

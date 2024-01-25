@@ -1,41 +1,54 @@
-import SocialLogin from "@/components/auth/SocialLogin";
-import Link from "next/link";
-import React from "react";
-import * as St from "@/components/auth/styles/authCommon.styles";
+import CustomHead from "@/SEO/CustomHead";
 import AuthDivider from "@/components/auth/AuthDivider";
-import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
-import AuthFormContainer from "@/components/auth/AuthFormContainer";
-import AuthForm from "@/components/auth/AuthForm";
 import AuthFooter from "@/components/auth/AuthFooter";
-import { ReactElement } from "react";
-import FindPasswordModal from "@/components/modal/findPasswordModal/FindPasswordModal";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import AuthForm from "@/components/auth/AuthForm";
+import AuthFormContainer from "@/components/auth/AuthFormContainer";
+import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
+import SocialLogin from "@/components/auth/SocialLogin";
+import * as St from "@/components/auth/styles/authCommon.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
-
+import FindPasswordModal from "@/components/modal/findPasswordModal/FindPasswordModal";
+import useModal from "@/hooks/modal/useModal";
+import { getCookie } from "@/utils/middlewareUtils";
+import { pathValidation } from "@/utils/middlewareValidate";
+import Link from "next/link";
+import { ReactElement, useEffect } from "react";
 export function SignIn() {
-  const isFindPasswordModalOpen = useAppSelector(
-    (state) => state.modalSlice.isFindPasswordModalOpen
-  );
+  const { isFindPasswordModalOpen } = useModal();
+
+  useEffect(() => {
+    const message = getCookie("message");
+    if (message) {
+      // 메시지로 이벤트 처리
+      pathValidation(message);
+      // 쿠키 삭제
+      document.cookie =
+        "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+  }, []);
   return (
-    <St.AuthOuterContainer>
-      <AuthHeroBanner formType="signIn" />
-      <AuthFormContainer>
-        <St.ChangeAuthPage>
-          아직 계정을 만들기 전인가요?
-          <Link href={"/signup"}>지금 가입하기</Link>
-        </St.ChangeAuthPage>
-        <h1>어서오세요 :)</h1>
-        <SocialLogin subText="SNS 로그인" />
-        <AuthDivider />
-        <AuthForm formType="signIn" />
-        <AuthFooter />
-      </AuthFormContainer>
-      {isFindPasswordModalOpen && (
-        <ModalPortal>
-          <FindPasswordModal />
-        </ModalPortal>
-      )}
-    </St.AuthOuterContainer>
+    <>
+      <CustomHead title={"로그인"} description={"로그인 페이지입니다."} />
+      <St.AuthOuterContainer>
+        <AuthHeroBanner formType="signIn" />
+        <AuthFormContainer>
+          <St.ChangeAuthPage>
+            아직 계정을 만들기 전인가요?
+            <Link href={"/signup"}>지금 가입하기</Link>
+          </St.ChangeAuthPage>
+          <h1>어서오세요 :)</h1>
+          <SocialLogin subText="SNS 로그인" />
+          <AuthDivider />
+          <AuthForm formType="signIn" />
+          <AuthFooter />
+        </AuthFormContainer>
+        {isFindPasswordModalOpen && (
+          <ModalPortal>
+            <FindPasswordModal />
+          </ModalPortal>
+        )}
+      </St.AuthOuterContainer>
+    </>
   );
 }
 

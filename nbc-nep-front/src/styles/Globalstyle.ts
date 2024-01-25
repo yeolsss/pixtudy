@@ -7,9 +7,6 @@ const styled = { createGlobalStyle };
 export const theme: Root = themeData as Root;
 
 const GlobalStyle = styled.createGlobalStyle`
-  @import url("//cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@1.530/neodgm/style.css");
-  @import url("https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css");
-
   html,
   body,
   div,
@@ -138,7 +135,8 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   :root {
-    --user-counter: #15e42a;
+    --user-exists: #15e42a;
+    --user-not-exists: #ff001f;
     --color-blue-50: #eff6ff;
     --color-blue-100: #dbeafe;
     --color-blue-200: #bfdbfe;
@@ -223,6 +221,7 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-base-black: #000000;
     --color-base-white: #ffffff;
     --unit-0: 0px;
+    --unit-1: 1px;
     --unit-2: 2px;
     --unit-4: 4px;
     --unit-6: 6px;
@@ -417,9 +416,13 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-border-interactive-secondary: var(--color-neutral-600);
     --color-border-interactive-secondary-hovered: var(--color-neutral-700);
     --color-border-interactive-secondary-pressed: var(--color-neutral-800);
+
     --main-font: "Galmuri14", sans-serif;
     --point-font: "Galmuri11", sans-serif;
     --sub-font: "NeoDunggeunmo", sans-serif;
+
+    --button-opacity: rgba(0, 0, 0, 0.5);
+    --default-font: sans-serif;
 
     --state-online: #15e42a;
     --state-eating: #ffa047;
@@ -460,9 +463,20 @@ const GlobalStyle = styled.createGlobalStyle`
   input {
     height: ${(props) => props.theme.unit[48]}px;
     border-radius: ${(props) => props.theme.border.radius[8]};
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${(props) => props.theme.color.border.secondary};
     padding: ${(props) => props.theme.spacing[16]};
     padding: ${(props) => props.theme.spacing[16]};
+  }
+
+  textarea {
+    width: 100%;
+    resize: none;
+    height: ${(props) => props.theme.unit[64]}px;
+    padding: ${(props) => props.theme.spacing[12]};
+    border-radius: ${(props) => props.theme.border.radius[8]};
+    border: 1px solid ${(props) => props.theme.color.border.secondary};
+    font-family: var(--main-font);
+    font-size: ${(props) => props.theme.body.md.medium.fontSize};
   }
 
   button {

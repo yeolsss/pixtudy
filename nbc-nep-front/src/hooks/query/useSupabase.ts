@@ -1,7 +1,7 @@
 import {
   getOtherUserHandler,
-  signInHandler,
   logoutHandler,
+  signInHandler,
   signUpHandler,
   forgottenPasswordHandler,
 } from "@/api/supabase/auth";
@@ -11,7 +11,6 @@ import {
   getDmChannelMessages,
   getDmChannelMessagesReturns,
   getLastDmMessageList,
-  getSpaceUsers,
   getUserSpaces,
   readDmMessage,
   sendMessage,
@@ -25,8 +24,9 @@ import {
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
+import { authValidation } from "@/utils/authValidate";
+import useAuth from "@/zustand/authStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAppSelector } from "../useReduxTK";
 
 /* Auth */
 /* user */
@@ -36,7 +36,7 @@ export function useSignUpUser() {
     mutationFn: signUpHandler,
     onError: (error) => {
       // TODO: error메시지 핸들링 필요
-      console.log(error);
+      authValidation(error.message, "signup");
     },
   });
   return signUp;
@@ -46,7 +46,7 @@ export function useSignInUser() {
   const { mutate: signIn } = useMutation({
     mutationFn: signInHandler,
     onError: (error) => {
-      console.log("로그인에러:", error);
+      authValidation(error.message, "signin");
     },
   });
   return signIn;
@@ -83,8 +83,8 @@ export function useCreateSpace(
 
   const {
     mutate: createSpace,
-    isSuccess,
-    isError,
+    isSuccess: createSuccess,
+    isError: createError,
   } = useMutation({
     mutationFn: createSpaceHandler,
     onSuccess: (data) => {
@@ -95,49 +95,44 @@ export function useCreateSpace(
       console.error("createSpaceError: ", error);
     },
   });
-  return { createSpace, isSuccess, isError };
+  return { createSpace, createSuccess, createError };
 }
 
 // insert userData to space_members
 export function useJoinSpace() {
   const {
     mutate: joinSpace,
-    isSuccess,
-    isError,
+    isSuccess: joinSuccess,
+    isError: joinError,
   } = useMutation({
     mutationFn: joinSpaceHandler,
     onError: (error) => {
       console.error("joinSpaceError: ", error);
     },
   });
-  return { joinSpace, isSuccess, isError };
+  return { joinSpace, joinSuccess, joinError };
 }
-// spaceId 로 스페이스를 조회하여 테이블이 존재하는지 확인한다.
-export async function getSpace(spaceId: string) {
-  const space = await getSpaceData(spaceId);
-  return !!space;
+
+export function useGetSpace() {
+  const client = useQueryClient();
+  const { mutate: getSpace } = useMutation({
+    mutationFn: (code: string) => getSpaceData(code),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+    },
+    onError: (error: any) => console.error(error),
+  });
+  return getSpace;
 }
 
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {
   const getUserSpacesOptions = {
-    queryKey: ["userSpaces"],
+    queryKey: ["userSpaces", currentUserId],
     queryFn: () => getUserSpaces(currentUserId),
     enabled: !!currentUserId,
   };
   return useCustomQuery<Space_members[], Error>(getUserSpacesOptions);
-}
-
-// get current space all users
-export function useGetCurrentSpaceUsers(spaceId: string) {
-  const getCurrentSpaceUsersOptions = {
-    queryKey: ["currentSpaceUsers", spaceId],
-    queryFn: () => getSpaceUsers(spaceId),
-    enabled: !!spaceId,
-  };
-  return useCustomQuery<Space_members[] | null, Error>(
-    getCurrentSpaceUsersOptions
-  );
 }
 
 /* dm */
@@ -146,7 +141,9 @@ export function useGetDmChannel({
   receiverId,
   spaceId,
 }: Omit<checkDmChannelArgs, "currentUserId">) {
-  const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+  const {
+    user: { id: currentUserId },
+  } = useAuth();
   const getDmChannelOptions = {
     queryKey: ["dmChannel", receiverId],
     queryFn: () => checkDmChannel({ receiverId, currentUserId, spaceId }),
@@ -169,7 +166,9 @@ export function useGetDmMessages(dmChannel: string | null) {
 
 // 메시지 보내기
 export function useSendMessage() {
-  const currentUserId = useAppSelector((state) => state.authSlice.user.id);
+  const {
+    user: { id: currentUserId },
+  } = useAuth();
   const { mutate: message } = useMutation({
     mutationFn: ({
       currentDmChannel,

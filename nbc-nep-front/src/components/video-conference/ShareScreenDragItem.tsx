@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { useDrag } from "react-dnd";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import styled from "styled-components";
 
 interface Props {
@@ -12,8 +12,8 @@ interface Props {
 export default function ShareScreenDragItem({
   id,
   active,
-  children,
   handleInactive,
+  children,
 }: PropsWithChildren<Props>) {
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: "VIDEO",
@@ -38,9 +38,9 @@ export default function ShareScreenDragItem({
           </button>
         )}
         <TransformWrapper
-          wheel={{ activationKeys: ["Control"] }}
+          wheel={{ activationKeys: ["Control", "Meta"] }}
           panning={{
-            activationKeys: ["Control"],
+            activationKeys: ["Control", "Meta"],
             disabled: active ? false : true,
           }}
         >

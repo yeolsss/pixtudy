@@ -1,6 +1,3 @@
-import { useFindPassword } from "@/hooks/query/useSupabase";
-import { handleValidateEmail } from "@/utils/authFormValidate";
-import React, { useState } from "react";
 import styled from "styled-components";
 import FindPasswordModalForm from "./FindPasswordModalForm";
 

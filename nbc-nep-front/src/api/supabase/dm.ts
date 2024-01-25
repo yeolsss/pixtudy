@@ -1,8 +1,6 @@
 import { supabase } from "@/supabase/supabase";
-import { Tables } from "@/supabase/types/supabase";
+import { Database, Tables } from "@/supabase/types/supabase";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
-
-import { getUserSessionHandler } from "./auth";
 
 /**
  * 유저의 space 정보를 가져오는 함수
@@ -19,25 +17,6 @@ export const getUserSpaces = async (
     .returns<Space_members[]>();
   if (error) throw error;
   return userSpaces;
-};
-
-/**
- * 스페이스 별 전체 유저정보를 가져오는 함수
- * @param string space_id - 스페이스의 전체유저를 가져올 space id 값
- * @returns -> join table <space_members & users>
- */
-export const getSpaceUsers = async (
-  space_id: string
-): Promise<Space_members[] | null> => {
-  const currentUser = await getUserSessionHandler();
-  const { data } = await supabase
-    .from("space_members")
-    .select(`*, users(*)`)
-    .filter("space_id", "eq", space_id)
-    .filter("user_id", "neq", currentUser?.id)
-    .returns<Space_members[]>();
-
-  return data;
 };
 
 /**
@@ -85,26 +64,6 @@ export interface getDmChannelMessagesReturns {
  * @param string|null dmChannel - 기존 메시지를 확인하기 위한 채널 id, 기존에 생성된 channel이 없다면 null
  * @returns getDmChannelMessagesReturns[]|[] 채널이 이미 있었다면 메시지 정보를 담은 배열, 없었다면 빈 배열
  */
-/*export const getDmChannelMessages = async (dmChannel: string | null) => {
-  // 채팅방이 없을 때는 빈배열 반환
-  if (!dmChannel) return [];
-  const channelMessages = await supabase.rpc("get_dm_channel_messages", {
-    p_dm_channel: dmChannel,
-  });
-  return channelMessages.data as getDmChannelMessagesReturns[];
-};*/
-
-interface DmMessage {
-  id: string;
-  created_at: string;
-  dm_id: string;
-  receiver_id: string;
-  receiver_display_name: string;
-  message: string;
-  sender_id: string;
-  sender_display_name: string;
-}
-
 export const getDmChannelMessages = async (
   dmChannel: string | null
 ): Promise<getDmChannelMessagesReturns[]> => {
@@ -209,11 +168,21 @@ export const sendMessage = async ({
   }
 };
 
-export const getLastDmMessageList = async (spaceId: string, userId: string) => {
-  const { data, error } = await supabase.rpc("get_last_dm_message_list", {
-    input_space_id: spaceId,
-    input_user_id: userId,
-  });
+export const getLastDmMessageList = async (
+  spaceId: string,
+  userId: string
+): Promise<
+  | Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
+  | undefined
+> => {
+  const { data, error } = await supabase
+    .rpc("get_last_dm_message_list", {
+      input_space_id: spaceId,
+      input_user_id: userId,
+    })
+    .returns<
+      Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
+    >();
 
   if (error) console.error("Error fetching messages:", error);
   else return data;

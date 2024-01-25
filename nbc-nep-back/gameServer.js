@@ -73,7 +73,7 @@ module.exports = {
       const playersInSpace = Object.values(players).filter((player) => {
         return player.spaceId === spaceId;
       });
-      res.json({ count: playersInSpace.length });
+      res.status(200).json({ count: playersInSpace.length });
     });
     return router;
   },

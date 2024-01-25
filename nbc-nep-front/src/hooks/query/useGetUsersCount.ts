@@ -5,7 +5,7 @@ export default function useGetUsersCount(spaceId: string) {
   const { data, error, isLoading } = useQuery({
     queryKey: ["usersCount", spaceId],
     queryFn: () => getUsersCount(spaceId),
-    staleTime: 20 * 1000,
+    refetchInterval: 20 * 1000,
   });
   if (error) {
     console.error(error);

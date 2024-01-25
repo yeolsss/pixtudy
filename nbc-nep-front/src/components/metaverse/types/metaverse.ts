@@ -51,3 +51,5 @@ export type DMListCard = {
   receiver_display_name: string;
   unread_count: number;
 };
+
+export type Game = Phaser.Game;

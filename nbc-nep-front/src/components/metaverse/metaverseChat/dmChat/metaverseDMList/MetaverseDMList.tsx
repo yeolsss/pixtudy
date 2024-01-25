@@ -1,50 +1,46 @@
-import { useGetLastDMList } from "@/hooks/query/useSupabase";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import MetaverseDMListCard from "@/components/metaverse/metaverseChat/dmChat/metaverseDMListCard/MetaverseDMListCard";
-import React, { useEffect } from "react";
-import { supabase } from "@/supabase/supabase";
-import { useQueryClient } from "@tanstack/react-query";
 import MetaverseDmContainer from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmContainer";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
-import { setIsCloseSomeSection } from "@/redux/modules/globalNavBarSlice";
-import { setCloseDm } from "@/redux/modules/dmSlice";
-import { setCloseChat } from "@/redux/modules/chatTypeSlice";
+import { Database } from "@/supabase/types/supabase";
+import useChatType from "@/zustand/chatTypeStore";
+import useDm from "@/zustand/dmStore";
+import useGlobalNavBar from "@/zustand/globalNavBarStore";
 
-export default function MetaverseDmList() {
-  const { id, spaceId } = usePlayerContext();
-  const queryClient = useQueryClient();
-  const dmList = useGetLastDMList(spaceId, id);
-  const { isOpenChat } = useAppSelector((state) => state.chatType);
-  const { isOpen: isOpenDm } = useAppSelector((state) => state.dm);
-  const dispatch = useAppDispatch();
-  const handleRefetchDMList = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["lastDMList"] });
-  };
-  useEffect(() => {
-    const dmChannel = supabase.channel(`dm_channel_${spaceId}`);
-    dmChannel
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "dm_messages",
-          filter: `receiver_id=eq.${id}`,
-        },
-        handleRefetchDMList
-      )
-      .subscribe();
-  }, []);
+interface Props {
+  dmList:
+    | Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
+    | undefined;
+}
+
+export default function MetaverseDmList({ dmList }: Props) {
+  const { isOpenChat, closeChat } = useChatType();
+  const { isOpen: isOpenDm, otherUserName, closeDm } = useDm();
+
+  const { resetAllSections } = useGlobalNavBar();
 
   const handleOnClickCloseChat = () => {
-    dispatch(setIsCloseSomeSection());
-    dispatch(setCloseDm());
-    dispatch(setCloseChat());
+    resetAllSections();
+    closeDm();
+    closeChat();
   };
+
+  const handleCloseDmContainer = () => {
+    closeDm();
+  };
+
   return (
     <>
-      <MetaverseChatHeader title={"DM List"} handler={handleOnClickCloseChat} />
+      {!isOpenDm ? (
+        <MetaverseChatHeader
+          title={"DM List"}
+          handler={handleOnClickCloseChat}
+        />
+      ) : (
+        <MetaverseChatHeader
+          title={`${otherUserName}`}
+          handler={handleCloseDmContainer}
+        />
+      )}
       {isOpenChat && !isOpenDm ? (
         <div>
           {dmList?.map((dm) => (

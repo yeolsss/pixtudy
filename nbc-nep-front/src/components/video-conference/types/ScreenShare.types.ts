@@ -1,5 +1,6 @@
 import { Player } from "@/components/metaverse/types/metaverse";
 import { types } from "mediasoup-client";
+import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
 
 export type RtpCapabilities = types.RtpCapabilities;
 
@@ -86,3 +87,11 @@ export type UserVideoSourceMap = {
 export type SplitVideoSource = [VideoSource[], VideoSource[]];
 
 export type LayoutConsumersType = { consumer: VideoSource; isActive: number };
+
+export type MediaConsumeParams = {
+  id: string;
+  producerId: string;
+  kind: "audio" | "video";
+  rtpParameters: RtpParameters;
+  appData: AppData;
+};

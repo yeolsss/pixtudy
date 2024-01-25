@@ -21,7 +21,8 @@ const StModalHeaderContainer = styled.div`
   width: 100%;
   padding: ${(props) => props.theme.spacing[24]};
   h2 {
-    font-family: var(--sub-font);
+    font-family: var(--point-font);
+    font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
     font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
   }
   button {

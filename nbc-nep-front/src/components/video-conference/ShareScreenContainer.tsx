@@ -1,16 +1,15 @@
-import { useRef, useState } from "react";
-import { useDrop } from "react-dnd";
-import styled from "styled-components";
 import {
   currentLayoutIndex,
   formatGridTemplateVideos,
   getGridStyle,
 } from "@/components/video-conference/libs/dnd";
-import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
-import ShareScreenDragItem from "./ShareScreenDragItem";
-import { useAppSelector } from "@/hooks/useReduxTK";
-import ShareMediaItem from "./ShareMediaItem";
 import useLayout from "@/hooks/conference/useLayout";
+import { useRef, useState } from "react";
+import { useDrop } from "react-dnd";
+import styled from "styled-components";
+import ShareMediaItem from "./ShareMediaItem";
+import ShareScreenDragItem from "./ShareScreenDragItem";
+import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
 
 const EDGE_AREA_RATE = 220;
 
@@ -18,12 +17,11 @@ export default function ShareScreenContainer() {
   const {
     videos,
     countSelectVideos,
-    handleInactive,
+    layoutPlayerNickName,
     videosChange,
     handleCloseLayout,
+    handleInactive,
   } = useLayout();
-
-  const layoutVideoInfo = useAppSelector((state) => state.layoutSlice);
 
   // 가이드 상태
   const [currentGuide, setCurrentGuide] = useState<GuideStatusType | null>(
@@ -144,7 +142,7 @@ export default function ShareScreenContainer() {
             <ShareScreenDragItem key={video.id} id={video.id} active={false}>
               <ShareMediaItem
                 key={video.id}
-                nickname={layoutVideoInfo.layoutPlayerNickName}
+                nickname={layoutPlayerNickName}
                 videoSource={video}
               />
             </ShareScreenDragItem>
@@ -182,7 +180,7 @@ export default function ShareScreenContainer() {
               {
                 <ShareMediaItem
                   key={video.id}
-                  nickname={layoutVideoInfo.layoutPlayerNickName}
+                  nickname={layoutPlayerNickName}
                   videoSource={video}
                 />
               }

@@ -1,5 +1,4 @@
-import ChangeUserSession from "@/components/layout/ChangeUserSession";
-import StoreProvider from "@/redux/StoreProvier";
+import CheckUserSession from "@/components/layout/CheckUserSession";
 import GlobalStyle, { theme } from "@/styles/Globalstyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
@@ -7,6 +6,8 @@ import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "styled-components";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -23,19 +24,18 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <StoreProvider>
-        <DndProvider backend={HTML5Backend}>
-          <ChangeUserSession />
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            {getLayout(
-              <>
-                <Component {...pageProps} />
-              </>
-            )}
-          </ThemeProvider>
-        </DndProvider>
-      </StoreProvider>
+      <DndProvider backend={HTML5Backend}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <CheckUserSession />
+          {getLayout(
+            <>
+              <Component {...pageProps} />
+            </>
+          )}
+          <ToastContainer position="top-left" autoClose={2000} />
+        </ThemeProvider>
+      </DndProvider>
     </QueryClientProvider>
   );
 }

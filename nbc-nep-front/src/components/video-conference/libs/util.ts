@@ -73,3 +73,18 @@ export function splitVideoSource(videoSources: VideoSource[]) {
     [[], []]
   );
 }
+
+export function getVideoSourcesExcludeAudio(videoSources: VideoSource[]) {
+  return videoSources.filter(
+    (videoSource) => videoSource.appData.shareType !== "audio"
+  );
+}
+
+export function findVideoSourceByType(
+  videoSource: VideoSource[],
+  type: ShareType
+) {
+  return videoSource.find(
+    (videoSource) => videoSource.appData.shareType === type
+  );
+}
