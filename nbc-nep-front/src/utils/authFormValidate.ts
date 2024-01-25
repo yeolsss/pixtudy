@@ -1,4 +1,4 @@
-import { FieldValues, UseFormWatch } from "react-hook-form";
+import { toast } from "react-toastify";
 
 // email validation check function
 export function handleValidateEmail(value: string) {
@@ -26,4 +26,17 @@ export function handleValidatePasswordMatch(
   watchValue?: string
 ) {
   return value === watchValue || "비밀번호가 일치하지 않습니다.";
+}
+
+type authMode = "signin" | "signup";
+export function authValidation(errorMessage: string, mode: authMode) {
+  switch (errorMessage) {
+    case "Invalid login credentials":
+      toast.error("일치하는 로그인 정보가 없습니다.");
+      break;
+    case "User already registered":
+      toast.error("이미 존재하는 유저입니다.");
+    default:
+      break;
+  }
 }

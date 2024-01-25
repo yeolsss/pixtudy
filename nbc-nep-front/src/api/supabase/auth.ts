@@ -19,7 +19,7 @@ export const signUpHandler = async ({
   password,
   nickname,
 }: SignUpHandlerArgs) => {
-  const { error: signUpError } = await supabase.auth.signUp({
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -28,7 +28,8 @@ export const signUpHandler = async ({
       },
     },
   });
-  if (signUpError) return signUpError;
+
+  if (signUpError) throw signUpError;
 };
 
 /**
@@ -97,7 +98,9 @@ export const logoutHandler = async () => {
 // export const getUserSessionHandler = async (
 //   session: Session
 // ): Promise<Tables<"users"> | null> => {
-export const getUserSessionHandler = async (session: Session): Promise<any> => {
+export const getUserSessionHandler = async (
+  session: Session
+): Promise<Tables<"users">> => {
   const { data: currentUserInfo, error } = await supabase
     .from("users")
     .select(`*`)

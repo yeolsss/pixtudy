@@ -94,6 +94,7 @@ export default function AuthForm({ formType }: Props) {
     <StFormContainer
       onSubmit={handleSubmit(handleForm)}
       $isOpen={isSignUpFormOpen}
+      noValidate
     >
       <StInputContainer $isOpen={isSignUpFormOpen}>
         {inputs?.map((input) => (
