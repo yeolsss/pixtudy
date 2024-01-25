@@ -13,6 +13,7 @@ import useAuth from "@/zustand/authStore";
 import useSpace from "@/zustand/spaceStore";
 import styled from "styled-components";
 import AvatarInput, { StAvatar } from "./AvatarInput";
+import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { Procedure, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {
@@ -53,7 +54,7 @@ export default function ProfileForm({
         <StAvatarWrapper>
           <StAvatar resource={`${srcBase + userProfile.avatar}.png`} />
         </StAvatarWrapper>
-        <StInputWrapper>
+        <StCreateInputWrapper $isError={!!errors?.nickname}>
           <label htmlFor="nickname">닉네임</label>
           <input
             id="nickname"
@@ -65,8 +66,8 @@ export default function ProfileForm({
               validate: validateNickname,
             })}
           />
-        </StInputWrapper>
-        {errors.nickname && <span>{errors.nickname.message as string}</span>}
+          {errors.nickname && <span>{errors.nickname.message as string}</span>}
+        </StCreateInputWrapper>
       </StCurrentProfile>
       <AvatarInput register={register} errors={errors} />
       {errors.avatar && <span>errors.avatar.message</span>}

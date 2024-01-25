@@ -14,11 +14,8 @@ import {
 } from "react-hook-form";
 import styled from "styled-components";
 import DefaultSpanText from "../common/text/DefaultSpanText";
-import {
-  StContentsContainer,
-  StFormCTAButton,
-  StInputWrapper,
-} from "./JoinSpaceForm";
+import { StContentsContainer, StFormCTAButton } from "./JoinSpaceForm";
+import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { CreateSpaceInfo } from "./types/space.types";
 
 interface Props {
@@ -144,18 +141,5 @@ const StCreateContentsContainer = styled(StContentsContainer)`
 
   & + div {
     width: 100%;
-  }
-`;
-const StCreateInputWrapper = styled(StInputWrapper)<{ $isError: boolean }>`
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[8]};
-  align-items: flex-start;
-
-  input,
-  textarea {
-    ${(props) =>
-      props.$isError && `border-color: ${props.theme.color.danger[500]}`};
   }
 `;
