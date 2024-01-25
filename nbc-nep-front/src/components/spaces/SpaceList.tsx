@@ -18,9 +18,9 @@ export default function SpaceList({ currentUserId }: Props) {
   }, [getUserSpaces]);
 
   return (
-    <StSpaceListWrapper>
+    <StCardListWrapper>
       <SpaceListHeader />
-      <StSpaceList>
+      <StCardList>
         {userSpaces?.map((space) => {
           return (
             <li key={space.id}>
@@ -28,12 +28,12 @@ export default function SpaceList({ currentUserId }: Props) {
             </li>
           );
         })}
-      </StSpaceList>
-    </StSpaceListWrapper>
+      </StCardList>
+    </StCardListWrapper>
   );
 }
 
-const StSpaceListWrapper = styled.section`
+export const StCardListWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[32]};
@@ -45,7 +45,7 @@ const StSpaceListWrapper = styled.section`
   margin-bottom: ${(props) => props.theme.spacing[64]};
 `;
 
-const StSpaceList = styled.ul`
+export const StCardList = styled.ul`
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;

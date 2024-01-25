@@ -122,6 +122,26 @@ export function useGetSpace() {
   });
   return getSpace;
 }
+// export function useGetDmMessages(dmChannel: string | null) {
+//   const getDmMessagesOptions = {
+//     queryKey: ["dmMessages", dmChannel],
+//     queryFn: () => getDmChannelMessages(dmChannel),
+//     enabled: !!dmChannel,
+//   };
+//   return useCustomQuery<getDmChannelMessagesReturns[], Error>(
+//     getDmMessagesOptions
+//   );
+// }
+
+// TODO 이거 useQuery 사용하는 함수 하나 만들어야함
+// export function useGetSpaceQuery(spaceId:string) {
+//   const getSpaceOptions = {
+//     queryKey: ['userSpaces', spaceId],
+//     queryFn: () => getSpaceData(spaceId),
+//     enabled: !!spaceId,
+//   };
+//   return useCustomQuery<Spaces, Error>(getSpaceOptions);
+// }
 
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {
