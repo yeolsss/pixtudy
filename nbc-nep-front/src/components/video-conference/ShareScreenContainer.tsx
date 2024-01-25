@@ -20,6 +20,7 @@ export default function ShareScreenContainer() {
     layoutPlayerNickName,
     videosChange,
     handleCloseLayout,
+    handleInactive,
   } = useLayout();
 
   // 가이드 상태
@@ -170,7 +171,12 @@ export default function ShareScreenContainer() {
         {activeVideos?.map((video, index) => {
           if (!video) return <div key={index} />;
           return (
-            <ShareScreenDragItem key={video.id} id={video.id} active={true}>
+            <ShareScreenDragItem
+              key={video.id}
+              id={video.id}
+              active={true}
+              handleInactive={handleInactive}
+            >
               {
                 <ShareMediaItem
                   key={video.id}
