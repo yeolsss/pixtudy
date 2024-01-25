@@ -15,6 +15,7 @@ import {
   sendMessage,
   sendMessageArgs,
 } from "@/api/supabase/dm";
+import { getCategories, getCategoryItems } from "@/api/supabase/scrumboard";
 import {
   createSpaceHandler,
   getSpaceData,
@@ -22,7 +23,11 @@ import {
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
-import { Space_members } from "@/supabase/types/supabase.tables.type";
+import {
+  Kanban_categories,
+  Kanban_items,
+  Space_members,
+} from "@/supabase/types/supabase.tables.type";
 import useAuth from "@/zustand/authStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -235,4 +240,25 @@ export function useReadDMMessage() {
   });
 
   return { mutate, isError, isPending };
+}
+
+/* ScrumBoard */
+export function useGetCategories(spaceId: string) {
+  const queryOptions = {
+    queryKey: ["categoryList", spaceId],
+    queryFn: () => getCategories(spaceId),
+    enabled: !!spaceId,
+  };
+
+  return useCustomQuery<Kanban_categories[], Error>(queryOptions);
+}
+
+export function useGetCategoryItems(categoryId: string) {
+  const queryOptions = {
+    queryKey: ["categoryItem", categoryId],
+    queryFn: () => getCategoryItems(categoryId),
+    enabled: !!categoryId,
+  };
+
+  return useCustomQuery<Kanban_items[], Error>(queryOptions);
 }

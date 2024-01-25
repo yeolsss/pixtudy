@@ -9,45 +9,6 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      brainstormings: {
-        Row: {
-          contents: string
-          created_at: string
-          id: string
-          spaceId: string
-          userId: string
-        }
-        Insert: {
-          contents: string
-          created_at?: string
-          id?: string
-          spaceId: string
-          userId: string
-        }
-        Update: {
-          contents?: string
-          created_at?: string
-          id?: string
-          spaceId?: string
-          userId?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "brainstormings_spaceId_fkey"
-            columns: ["spaceId"]
-            isOneToOne: false
-            referencedRelation: "spaces"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "brainstormings_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       dm_channels: {
         Row: {
           id: string
@@ -176,40 +137,72 @@ export interface Database {
           }
         ]
       }
+      kanban_categories: {
+        Row: {
+          color: string
+          id: string
+          name: string
+          order: number
+          spaceId: string
+        }
+        Insert: {
+          color: string
+          id?: string
+          name: string
+          order: number
+          spaceId: string
+        }
+        Update: {
+          color?: string
+          id?: string
+          name?: string
+          order?: number
+          spaceId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kanban_categories_spaceId_fkey"
+            columns: ["spaceId"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       kanban_items: {
         Row: {
-          category: Json
+          categoryId: string
           created_at: string
           deadline: string | null
           description: string
           id: string
-          spaceId: string
           title: string
+          type: string
         }
         Insert: {
-          category: Json
+          categoryId: string
           created_at?: string
           deadline?: string | null
           description: string
           id?: string
-          spaceId: string
           title: string
+          type?: string
         }
         Update: {
-          category?: Json
+          categoryId?: string
           created_at?: string
           deadline?: string | null
           description?: string
           id?: string
-          spaceId?: string
           title?: string
+          type?: string
         }
         Relationships: [
           {
-            foreignKeyName: "kanban_items_spaceId_fkey"
-            columns: ["spaceId"]
+            foreignKeyName: "kanban_items_categoryId_fkey"
+            columns: ["categoryId"]
             isOneToOne: false
-            referencedRelation: "spaces"
+            referencedRelation: "kanban_categories"
             referencedColumns: ["id"]
           }
         ]

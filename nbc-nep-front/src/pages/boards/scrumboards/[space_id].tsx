@@ -1,6 +1,6 @@
 import CustomHead from "@/SEO/CustomHead";
 import Layout from "@/components/layout/Layout";
-import ScrumBoard from "@/components/scrumboard/ScrumBoard";
+import ScrumBoard from "@/components/scrumboard/detail/ScrumBoard";
 import { NextPageWithLayout } from "@/pages/_app";
 import { ReactElement } from "react";
 
