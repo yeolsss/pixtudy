@@ -23,6 +23,7 @@ import {
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
+import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -34,7 +35,7 @@ export function useSignUpUser() {
     mutationFn: signUpHandler,
     onError: (error) => {
       // TODO: error메시지 핸들링 필요
-      console.log(error);
+      authValidation(error.message, "signup");
     },
   });
   return signUp;
@@ -44,7 +45,7 @@ export function useSignInUser() {
   const { mutate: signIn } = useMutation({
     mutationFn: signInHandler,
     onError: (error) => {
-      console.log("로그인에러:", error);
+      authValidation(error.message, "signin");
     },
   });
   return signIn;
