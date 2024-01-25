@@ -79,3 +79,12 @@ export function getVideoSourcesExcludeAudio(videoSources: VideoSource[]) {
     (videoSource) => videoSource.appData.shareType !== "audio"
   );
 }
+
+export function findVideoSourceByType(
+  videoSource: VideoSource[],
+  type: ShareType
+) {
+  return videoSource.find(
+    (videoSource) => videoSource.appData.shareType === type
+  );
+}
