@@ -76,6 +76,8 @@ const StContentsContainer = styled.div`
     -webkit-box-orient: vertical;
 
     padding: ${(props) => props.theme.unit[2]}px;
+    letter-spacing: ${(props) => props.theme.body.md.medium.letterSpacing};
+    line-height: ${(props) => props.theme.body.md.medium.lineHeight};
   }
 `;
 
