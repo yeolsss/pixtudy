@@ -145,8 +145,12 @@ export const forgottenPasswordHandler = async (
   if (checkUserError) throw checkUserError;
 
   if (!!checkUserData.length) {
-    const { error: sendMailError } =
-      await supabase.auth.resetPasswordForEmail(userEmail);
+    const { error: sendMailError } = await supabase.auth.resetPasswordForEmail(
+      userEmail,
+      {
+        redirectTo: "http://localhost:3000/findpassword",
+      }
+    );
     if (sendMailError) throw sendMailError;
     return {
       response: "success",
@@ -156,4 +160,12 @@ export const forgottenPasswordHandler = async (
   } else {
     return { response: "fail", message: "등록되지 않은 유저입니다." };
   }
+};
+
+export const updateUserPasswordHandler = async (newPw: string) => {
+  const { data, error } = await supabase.auth.updateUser({
+    password: newPw,
+  });
+  if (error) throw error;
+  return data;
 };

@@ -1,4 +1,9 @@
-import { useSignInUser, useSignUpUser } from "@/hooks/query/useSupabase";
+import {
+  useLogoutUser,
+  useSignInUser,
+  useSignUpUser,
+  useUpdateUserPw,
+} from "@/hooks/query/useSupabase";
 import useAuth from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,17 +20,18 @@ interface Props {
 export default function AuthForm({ formType }: Props) {
   const signUp = useSignUpUser();
   const signIn = useSignInUser();
+  const updatePw = useUpdateUserPw();
+  const logout = useLogoutUser();
+
   const router = useRouter();
 
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(
-    formType === "signIn" ? true : false
+    formType === "signUp" ? false : true
   );
 
-  const { isSaveLoginInfo, setSaveLoginInfo } = useAuth();
+  const [isUpdatePw, setIsUpdatePw] = useState<boolean>(false);
 
-  const handleOpenSignUpForm = () => {
-    setIsSignUpFormOpen(true);
-  };
+  const { isSaveLoginInfo, setSaveLoginInfo } = useAuth();
 
   const {
     handleSubmit,
@@ -86,6 +92,47 @@ export default function AuthForm({ formType }: Props) {
         }
       );
     }
+    if (formType === "findPassword") {
+      updatePw(values.findPw_pw, {
+        onSuccess: () => {
+          setIsUpdatePw(true);
+        },
+      });
+    }
+  };
+
+  const handleOpenSignUpForm = () => {
+    setIsSignUpFormOpen(true);
+  };
+
+  const handleToSignIn = () => {
+    logout(undefined, {
+      onSuccess: async () => {
+        await router.push("/signin");
+      },
+    });
+  };
+
+  const handleOnClick = () => {
+    if (formType === "signUp" && !isSignUpFormOpen) {
+      return handleOpenSignUpForm;
+    }
+    if (formType === "findPassword" && isUpdatePw) {
+      return handleToSignIn;
+    }
+  };
+
+  const buttonText = () => {
+    switch (formType) {
+      case "findPassword":
+        return isUpdatePw ? "로그인 하러 가기" : "비밀번호 업데이트";
+      case "signIn":
+        return "로그인";
+      case "signUp":
+        return "이메일로 계정 만들기";
+      default:
+        return "";
+    }
   };
 
   const inputs = getInputs(formType);
@@ -113,15 +160,22 @@ export default function AuthForm({ formType }: Props) {
 
       {formType === "signIn" && <SignInOptions />}
 
+      {isUpdatePw && (
+        <StSuccessChangePw>
+          성공적으로 비밀번호를 변경하였습니다.
+        </StSuccessChangePw>
+      )}
+
       <button
-        type={formType === "signUp" && !isSignUpFormOpen ? "button" : "submit"}
-        onClick={
-          formType === "signUp" && !isSignUpFormOpen
-            ? handleOpenSignUpForm
-            : undefined
+        type={
+          (formType === "signUp" && !isSignUpFormOpen) ||
+          (formType === "findPassword" && isUpdatePw)
+            ? "button"
+            : "submit"
         }
+        onClick={handleOnClick()}
       >
-        {formType === "signIn" ? "로그인" : "이메일로 계정 만들기"}
+        {buttonText()}
       </button>
     </StFormContainer>
   );
@@ -178,4 +232,13 @@ const StInputContainer = styled.section<{ $isOpen: boolean }>`
     margin-top: ${(props) => props.theme.spacing["16"]};
     font-family: inherit;
   }
+`;
+
+const StSuccessChangePw = styled.span`
+  display: flex;
+  justify-content: center;
+  margin: ${(props) => props.theme.spacing["16"]} 0;
+  font-size: ${(props) => props.theme.unit["16"]}px;
+  font-weight: bold;
+  color: ${(props) => props.theme.color.text.brand};
 `;

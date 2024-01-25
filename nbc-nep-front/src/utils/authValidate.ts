@@ -1,3 +1,4 @@
+import { AuthFormType } from "@/components/auth/utils/authUtils";
 import { toast } from "react-toastify";
 
 // email validation check function
@@ -28,8 +29,7 @@ export function handleValidatePasswordMatch(
   return value === watchValue || "비밀번호가 일치하지 않습니다.";
 }
 
-type authMode = "signin" | "signup";
-export function authValidation(errorMessage: string, mode: authMode) {
+export function authValidation(errorMessage: string, mode: AuthFormType) {
   switch (errorMessage) {
     case "Invalid login credentials":
       toast.error("일치하는 로그인 정보가 없습니다.");
@@ -37,11 +37,18 @@ export function authValidation(errorMessage: string, mode: authMode) {
     case "User already registered":
       toast.error("이미 존재하는 유저입니다.");
       break;
+    case "New password should be different from the old password.":
+      toast.error("기존 비밀번호와 동일한 비밀번호입니다.");
+      break;
     default:
-      if (mode === "signin") {
+      if (mode === "signIn") {
         toast.error("로그인 오류");
-      } else {
+      }
+      if (mode === "signUp") {
         toast.error("회원가입 오류");
+      }
+      if (mode === "findPassword") {
+        toast.error("비밀번호 변경 오류");
       }
       break;
   }
