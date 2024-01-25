@@ -253,8 +253,9 @@ const StDockContainer = styled.div`
   position: absolute;
 
   left: 50%;
-  bottom: ${(props) => props.theme.spacing[64]};
+  bottom: ${(props) => props.theme.spacing[32]};
   transform: translateX(-50%);
+  z-index: 3;
 
   background-color: ${(props) => props.theme.color.metaverse.primary};
 
