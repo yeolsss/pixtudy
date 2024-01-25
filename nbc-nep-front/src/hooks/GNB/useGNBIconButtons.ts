@@ -53,11 +53,11 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
           setSectionVisibility(
             changeSectionVisibility("isPlayerListOn", false)
           );
+          closeChat();
           closeDm();
 
           return;
         }
-        closeChat();
         setSectionVisibility(changeSectionVisibility("isPlayerListOn", true));
       },
     },
