@@ -23,7 +23,7 @@ import {
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
-import { authValidation } from "@/utils/authFormValidate";
+import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

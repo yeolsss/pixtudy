@@ -1,11 +1,20 @@
+import CustomHead from "@/SEO/CustomHead";
 import { StCTALink } from "@/components/common/button/button.styles";
 import Layout from "@/components/layout/Layout";
-import React, { ReactElement } from "react";
+import { pathValidation } from "@/utils/middlewareValidate";
+import { useRouter } from "next/router";
+import { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import { NextPageWithLayout } from "./_app";
-import CustomHead from "@/SEO/CustomHead";
 
 const Home: NextPageWithLayout = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof router.query.message === "string" && !!router.query.message)
+      pathValidation(router.query.message);
+  }, [router.query]);
+
   return (
     <>
       <CustomHead title={"Main"} description={"메인 페이지입니다."} />

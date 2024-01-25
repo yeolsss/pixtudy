@@ -36,7 +36,13 @@ export function authValidation(errorMessage: string, mode: authMode) {
       break;
     case "User already registered":
       toast.error("이미 존재하는 유저입니다.");
+      break;
     default:
+      if (mode === "signin") {
+        toast.error("로그인 오류");
+      } else {
+        toast.error("회원가입 오류");
+      }
       break;
   }
 }
