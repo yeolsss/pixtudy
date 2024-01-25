@@ -81,7 +81,7 @@ export default function AuthForm({ formType }: Props) {
         {
           onSuccess: () => {
             reset();
-            router.push("/login");
+            router.push("/signin");
           },
         }
       );
