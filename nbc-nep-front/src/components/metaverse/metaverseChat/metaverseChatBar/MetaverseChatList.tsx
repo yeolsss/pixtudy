@@ -36,7 +36,10 @@ export default function MetaverseChatList() {
   return (
     <>
       <StMetaverseChatList>
-        <MetaverseChatHeader title={"Chat"} handler={handleOnClickCloseChat} />
+        <MetaverseChatHeader
+          title={"Space Chat"}
+          handler={handleOnClickCloseChat}
+        />
         {chatList?.map((chat, index) => {
           return <MetaverseChatCard chat={chat} key={chat.userId + index} />;
         })}

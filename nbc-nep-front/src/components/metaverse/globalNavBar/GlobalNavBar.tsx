@@ -1,18 +1,15 @@
-import styled from "styled-components";
-import React from "react";
-import GlobalNavBarIconWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/GlobalNavBarIconWrapper";
-import Image from "next/image";
 import HomeIcon from "@/assets/icons/LogoSection.svg";
 import CloseButton from "@/components/metaverse/globalNavBar/CloseButton";
+import GlobalNavBarIconWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/GlobalNavBarIconWrapper";
+import Image from "next/image";
+import styled from "styled-components";
 
 export default function GlobalNavBar() {
   return (
     <StGlobalNavBar>
-      <StTopIcon>
-        <StHomeLink href="/dashboard">
-          <Image src={HomeIcon} alt={"홈 버튼"} width={24} height={24} />
-        </StHomeLink>
-      </StTopIcon>
+      <StHomeLink href="/dashboard">
+        <Image src={HomeIcon} alt={"홈 버튼"} width={24} height={24} />
+      </StHomeLink>
       <div>
         <GlobalNavBarIconWrapper />
         <CloseButton />
@@ -32,6 +29,7 @@ const StGlobalNavBar = styled.nav`
   background-color: ${({ theme }) => theme.color.metaverse.primary};
   color: ${({ theme }) => theme.color.icon.interactive.primary};
 `;
+
 const StHomeLink = styled.a`
   display: flex;
 
@@ -46,5 +44,3 @@ const StHomeLink = styled.a`
   align-items: center;
   border-radius: ${({ theme }) => theme.border.radius[16]};
 `;
-
-const StTopIcon = styled.div``;

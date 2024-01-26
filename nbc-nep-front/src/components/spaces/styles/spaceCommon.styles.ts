@@ -16,3 +16,8 @@ export const StCreateInputWrapper = styled(StInputWrapper)<{$isError: boolean}>`
       props.$isError && `border-color: ${props.theme.color.danger[500]}`};
   }
 `;
+
+export const StFlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

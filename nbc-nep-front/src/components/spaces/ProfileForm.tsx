@@ -6,9 +6,10 @@ import {
   SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister,
+  UseFormWatch,
 } from "react-hook-form";
 
-import { FORM_SPACE, srcBase } from "@/components/spaces/constants/constants";
+import { FORM_SPACE, SRC_BASE } from "@/components/spaces/constants/constants";
 import useAuth from "@/zustand/authStore";
 import useSpace from "@/zustand/spaceStore";
 import styled from "styled-components";
@@ -24,12 +25,14 @@ interface ProfileFormProps {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
+  watch: UseFormWatch<FieldValues>;
   errors: FormState<FieldValues>["errors"];
   mode: "createSpace" | "joinSpace";
   isValid: boolean;
 }
 
 export default function ProfileForm({
+  watch,
   setProcedure,
   handleSubmit,
   register,
@@ -53,12 +56,14 @@ export default function ProfileForm({
     setUserProfile(newUserProfile);
     setProcedure(FORM_SPACE);
   };
-
   return (
     <StProfileForm onSubmit={handleSubmit(handleProfileSubmit)}>
       <StCurrentProfile>
         <StAvatarWrapper>
-          <StAvatar resource={`${srcBase + userProfile.avatar}.png`} />
+          <StAvatar
+            style={{ cursor: "auto" }}
+            resource={`${SRC_BASE + (watch("avatar") || "NPC1")}.png`}
+          />
         </StAvatarWrapper>
         <StCreateInputWrapper $isError={!!errors?.nickname}>
           <label htmlFor="nickname">닉네임</label>
@@ -75,7 +80,7 @@ export default function ProfileForm({
           {errors.nickname && <span>{errors.nickname.message as string}</span>}
         </StCreateInputWrapper>
       </StCurrentProfile>
-      <AvatarInput register={register} errors={errors} />
+      <AvatarInput watch={watch} register={register} errors={errors} />
       {errors.avatar && <span>errors.avatar.message</span>}
       <StButtonWrapper>
         <StFormCTAButton type="submit" disabled={!isValid}>

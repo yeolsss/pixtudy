@@ -3,6 +3,7 @@ import {
   isEmptyTracks,
 } from "@/components/video-conference/libs/util";
 import useDevice from "@/hooks/conference/useDevice";
+import useLayout from "@/hooks/conference/useLayout";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
@@ -39,6 +40,7 @@ export default function VideoConference() {
   const {
     user: { id: currentPlayerId },
   } = useAuth();
+  const { isOpen } = useLayout();
 
   const {
     consumers,
@@ -205,7 +207,7 @@ export default function VideoConference() {
   const screenCount = filterProducersByShareType("screen").length;
   return (
     <>
-      <StDockContainer>
+      <StDockContainer $isOpen={isOpen}>
         <DockPlayer player={currentPlayer} />
         <ShareButton
           type="screen"
@@ -249,7 +251,7 @@ export default function VideoConference() {
   );
 }
 
-const StDockContainer = styled.div`
+const StDockContainer = styled.div<{ $isOpen: boolean }>`
   position: absolute;
 
   left: 50%;
@@ -269,4 +271,11 @@ const StDockContainer = styled.div`
 
   gap: ${(props) => props.theme.unit[15]};
   width: 465px;
+
+  transition: opacity 0.2s ease-in-out;
+
+  ${(props) => props.$isOpen && "opacity: 0.3"};
+  &:hover {
+    ${(props) => props.$isOpen && "opacity: 1"};
+  }
 `;

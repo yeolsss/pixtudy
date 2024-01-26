@@ -3,6 +3,7 @@ import InvitationCodeForm from "@/components/spaces/JoinSpaceForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
 import ProfilePreview from "@/components/spaces/ProfilePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
+import { StFlexColumn } from "@/components/spaces/styles/spaceCommon.styles";
 import { Procedure } from "@/components/spaces/types/space.types";
 import useModal from "@/hooks/modal/useModal";
 import useSpace from "@/zustand/spaceStore";
@@ -19,6 +20,7 @@ export default function JoinSpaceModalMainContainer() {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
 
@@ -32,7 +34,7 @@ export default function JoinSpaceModalMainContainer() {
       <ModalHeader text={"스페이스 입장하기"} handler={handleCloseModal} />
       <StModalJoinSpaceContents>
         {procedure === FORM_SPACE ? (
-          <div>
+          <StDiv>
             <ProfilePreview setProcedure={setProcedure} />
             <InvitationCodeForm
               handleSubmit={handleSubmit}
@@ -41,9 +43,10 @@ export default function JoinSpaceModalMainContainer() {
               isValid={isValid}
               errors={errors}
             />
-          </div>
+          </StDiv>
         ) : (
           <ProfileForm
+            watch={watch}
             setProcedure={setProcedure}
             handleSubmit={handleSubmit}
             register={register}
@@ -56,6 +59,10 @@ export default function JoinSpaceModalMainContainer() {
     </StModalContainer>
   );
 }
+
+const StDiv = styled(StFlexColumn)`
+  gap: ${(props) => props.theme.spacing[24]};
+`;
 
 export const StModalContainer = styled.div`
   position: fixed;
