@@ -50,14 +50,13 @@ export default function MetaverseChat() {
 
   return (
     <StMetaverseGlobalChatWrapper $isOpenChat={isOpenChat}>
-      {chatType === "GLOBAL" ? (
+      {chatType === "GLOBAL" && (
         <>
           <MetaverseChatList />
           <MetaverseChatForm />
         </>
-      ) : (
-        <MetaverseDmList dmList={dmList} />
       )}
+      {chatType === "DM" && <MetaverseDmList dmList={dmList} />}
     </StMetaverseGlobalChatWrapper>
   );
 }
