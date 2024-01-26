@@ -1,5 +1,7 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import useAuth from "@/zustand/authStore";
 import useSpaceSearch from "@/zustand/spaceListStore";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import styled from "styled-components";
 import SpaceCard from "./SpaceCard";
@@ -12,12 +14,21 @@ interface Props {
 export default function SpaceList({ currentUserId }: Props) {
   const getUserSpaces = useGetUserSpaces(currentUserId);
   const { filteredSpaces, setSpaces } = useSpaceSearch();
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (getUserSpaces) {
+      const query = router.query.query;
+      if (query === "myspace") {
+        setSpaces(
+          getUserSpaces.filter((space) => space.spaces?.owner === user.id)
+        );
+        return;
+      }
       setSpaces(getUserSpaces);
     }
-  }, [getUserSpaces]);
+  }, [getUserSpaces, router.query.query]);
 
   return (
     <StSpaceListWrapper>
