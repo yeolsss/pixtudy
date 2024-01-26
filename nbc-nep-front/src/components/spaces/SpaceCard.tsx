@@ -1,7 +1,9 @@
+import CopyIcon from "@/assets/icons/CopyIcon.svg";
 import useGetUsersCount from "@/hooks/query/useGetUsersCount";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import UserIcon from "../common/UserIcon";
 
@@ -17,11 +19,32 @@ export default function SpaceCard({ space }: Props) {
     await router.push(`/metaverse/${space_id}`);
   };
 
+  const handleCaptureClipboard = () => {
+    navigator.clipboard
+      .writeText(space?.space_id!)
+      .then(() => {
+        toast.success("복사에 성공했습니다!");
+      })
+      .catch(() => {
+        toast.error("복사에 실패했습니다.");
+      });
+  };
+
   return (
     <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
       <StContentsContainer>
         <Image src="/assets/card.png" alt="card" width={300} height={160} />
-        <h1>{space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}</h1>
+
+        <h1>
+          {space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}
+          <Image
+            src={CopyIcon}
+            width={10}
+            height={12}
+            alt={"copy code"}
+            onClick={handleCaptureClipboard}
+          />
+        </h1>
         <p>
           {space
             ? space.spaces?.description
@@ -65,13 +88,33 @@ const StContentsContainer = styled.div`
     margin-bottom: ${(props) => props.theme.spacing[12]};
   }
   h1 {
+    display: flex;
+    flex-direction: row;
+    gap: ${(props) => props.theme.spacing[8]};
     font-family: var(--sub-font);
     font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
     font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
+
+    img {
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+    }
   }
   p {
-    font-family: var(--main-font);
+    font-family: var(--default-font);
     font-size: ${(props) => props.theme.body.sm.regular.fontSize};
+    height: calc(2 * ${(props) => props.theme.body.md.medium.lineHeight});
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    padding: ${(props) => props.theme.unit[2]}px;
+    letter-spacing: ${(props) => props.theme.body.md.medium.letterSpacing};
+    line-height: ${(props) => props.theme.body.md.medium.lineHeight};
   }
 `;
 
