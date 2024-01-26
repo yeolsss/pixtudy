@@ -33,8 +33,11 @@ export default function Spaces() {
         run={run}
         steps={steps}
         callback={handleJoyrideCallback}
-        scrollToFirstStep
         showProgress
+        showSkipButton
+        disableOverlayClose
+        hideCloseButton
+        styles={{ options: { zIndex: 10000 } }}
       />
       <StBanner className="dashboard-banner" />
       <SpaceList currentUserId={currentUserId} setRunState={setRunState} />

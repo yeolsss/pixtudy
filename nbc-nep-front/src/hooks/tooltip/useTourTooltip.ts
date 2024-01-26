@@ -8,7 +8,10 @@ export default function useTourTooltip<T>(stepArray: T[]) {
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { status } = data;
 
-    if (status === STATUS.FINISHED || status === STATUS.SKIPPED) setRun(false);
+    // 종료 시
+    if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
+      setRun(false);
+    }
   };
 
   const setRunState = (isRun: boolean) => {
