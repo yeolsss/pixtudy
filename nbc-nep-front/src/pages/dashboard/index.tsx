@@ -21,7 +21,7 @@ import { ReactElement } from "react";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
+import { Mousewheel, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface Props {
@@ -50,8 +50,10 @@ const Dashboard: NextPage<Props> & {
         <Swiper
           spaceBetween={theme.unit[24]}
           slidesPerView={2.8}
-          modules={[Pagination]}
+          modules={[Pagination, Mousewheel]}
           pagination={{ clickable: true }}
+          grabCursor={true}
+          mousewheel={true}
           className="dashboard-banner"
         >
           {spaces.map((space) => (
