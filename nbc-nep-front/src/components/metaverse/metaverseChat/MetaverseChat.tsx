@@ -68,6 +68,7 @@ const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
   background-color: ${({ theme }) => theme.color.metaverse.secondary};
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   max-height: 100vh;
   //prettier-ignore
   padding: ${({ theme, $isOpenChat }) =>

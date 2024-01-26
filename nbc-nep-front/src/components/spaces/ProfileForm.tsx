@@ -13,6 +13,7 @@ import useAuth from "@/zustand/authStore";
 import useSpace from "@/zustand/spaceStore";
 import styled from "styled-components";
 import AvatarInput, { StAvatar } from "./AvatarInput";
+import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { Procedure, UserProfile } from "./types/space.types";
 
 interface ProfileFormProps {
@@ -53,7 +54,7 @@ export default function ProfileForm({
         <StAvatarWrapper>
           <StAvatar resource={`${srcBase + userProfile.avatar}.png`} />
         </StAvatarWrapper>
-        <StInputWrapper>
+        <StCreateInputWrapper $isError={!!errors?.nickname}>
           <label htmlFor="nickname">닉네임</label>
           <input
             id="nickname"
@@ -65,34 +66,38 @@ export default function ProfileForm({
               validate: validateNickname,
             })}
           />
-        </StInputWrapper>
-        {errors.nickname && <span>{errors.nickname.message as string}</span>}
+          {errors.nickname && <span>{errors.nickname.message as string}</span>}
+        </StCreateInputWrapper>
       </StCurrentProfile>
       <AvatarInput register={register} errors={errors} />
       {errors.avatar && <span>errors.avatar.message</span>}
-      <button type="submit">확인</button>
-      <button type="button" onClick={handleToPrevious}>
-        뒤로 가기
-      </button>
+      <StButtonWrapper>
+        <button type="submit">확인</button>
+        <button type="button" onClick={handleToPrevious}>
+          뒤로 가기
+        </button>
+      </StButtonWrapper>
     </StProfileForm>
   );
 }
 
-const StProfileForm = styled.form``;
+export const StProfileForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing[32]};
+  align-items: stretch;
+`;
 
-const StCurrentProfile = styled.div`
+export const StCurrentProfile = styled.div`
   display: flex;
   align-items: center;
   gap: ${(props) => props.theme.spacing[16]};
   label {
     font-family: var(--sub-font);
   }
-  //prettier-ignore
-  padding: ${(props) => props.theme.spacing[24]} ${(props) =>
-    props.theme.spacing[0]};
 `;
 
-const StAvatarWrapper = styled.div`
+export const StAvatarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -103,8 +108,9 @@ const StAvatarWrapper = styled.div`
   border-radius: ${(props) => props.theme.border.radius[12]};
 `;
 
-const StInputWrapper = styled.div`
-  width: 100%;
+export const StButtonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: ${(props) => props.theme.spacing[8]};
+  justify-content: center;
 `;
