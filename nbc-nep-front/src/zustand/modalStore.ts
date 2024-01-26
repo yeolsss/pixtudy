@@ -5,6 +5,7 @@ interface ModalState {
   isJoinSpaceModalOpen: boolean;
   isCreateSpaceModalOpen: boolean;
   isAvatarModalOpen: boolean;
+  isForgetPasswordModalOpen: boolean;
   space: (Omit<Spaces, "users"> & { users: string[] }) | null;
 }
 
@@ -19,6 +20,7 @@ const initialState = {
   isJoinSpaceModalOpen: false,
   isCreateSpaceModalOpen: false,
   isAvatarModalOpen: false,
+  isForgetPasswordModalOpen: false,
   space: null,
 };
 
