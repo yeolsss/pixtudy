@@ -7,6 +7,9 @@ const PAGES_PATH = [
   { path: "/metaverse", dynamic: true },
   { path: "/signin", dynamic: false },
   { path: "/signup", dynamic: false },
+  { path: "/boards", dynamic: false },
+  { path: "/boards/scrumboards", dynamic: false },
+  { path: "/boards/scrumboards", dynamic: true },
 ];
 
 export async function middleware(request: NextRequest) {
@@ -49,13 +52,13 @@ export async function middleware(request: NextRequest) {
   const isDynamicPath = PAGES_PATH.some(
     (page) => page.dynamic && pathname.startsWith(`${page.path}/`)
   );
+
   const isStaticPath = PAGES_PATH.some(
     (page) => !page.dynamic && pathname === page.path
   );
 
   // 등록된 정보가 아니라면
   if (!isDynamicPath && !isStaticPath) {
-    console.log("허용되지 않은 경로 접근");
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -64,7 +67,6 @@ export async function middleware(request: NextRequest) {
     !session &&
     (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse"))
   ) {
-    console.log("세션이 없는데 dashboard, metaverse에 들어옴");
     return NextResponse.redirect(new URL("/signin", request.url));
   }
 
@@ -72,7 +74,6 @@ export async function middleware(request: NextRequest) {
     session &&
     (pathname.startsWith("/signin") || pathname.startsWith("/signup"))
   ) {
-    console.log("세션은 있는데 signin singup 페이지에 들어옴");
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -86,6 +87,23 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (session && pathname.startsWith("/boards/scrumboards")) {
+    if (isDynamicPath) {
+      const spaceId = request.url.split("?")[0].split("/").at(-1);
+      if (!spaceId) {
+        return NextResponse.redirect(
+          new URL("/boards/scrumboards", request.url)
+        );
+      }
+      await checkSpace(spaceId!);
+      const checkResult = await checkSpace(spaceId!);
+      if (!checkResult) {
+        return NextResponse.redirect(
+          new URL("/boards/scrumboards", request.url)
+        );
+      }
+    }
+  }
   return response;
 }
 
