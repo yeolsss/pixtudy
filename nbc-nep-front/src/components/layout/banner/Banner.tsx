@@ -4,13 +4,14 @@
 import useModal from "@/hooks/modal/useModal";
 import { Spaces } from "@/supabase/types/supabase.tables.type";
 import useAuth from "@/zustand/authStore";
+import { StaticImageData } from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
 interface Props {
   title: string;
   description: string;
-  bgSrc: string;
+  bgSrc: StaticImageData;
   space: Omit<Spaces, "users"> & { users: string[] };
   users: string[];
 }
@@ -35,7 +36,7 @@ export default function Banner({
   return (
     <StBannerItem>
       {isInUser && (
-        <StLink href={`/metaverse/${space.id}`} $bgSrc={bgSrc}>
+        <StLink href={`/metaverse/${space.id}`} $bgSrc={bgSrc.src}>
           <StInfoWrapper>
             <StTitle>{title}</StTitle>
             <StDescription>{description}</StDescription>
@@ -43,7 +44,7 @@ export default function Banner({
         </StLink>
       )}
       {!isInUser && (
-        <StButton $bgSrc={bgSrc} onClick={() => handleOpenModal()}>
+        <StButton $bgSrc={bgSrc.src} onClick={() => handleOpenModal()}>
           <StInfoWrapper>
             <StTitle>{title}</StTitle>
             <StDescription>{description}</StDescription>

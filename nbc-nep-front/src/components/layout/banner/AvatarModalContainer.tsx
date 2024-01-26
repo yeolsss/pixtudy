@@ -21,26 +21,26 @@ import { useJoinSpace } from "@/hooks/query/useSupabase";
 import { validateNickname } from "@/utils/spaceValidate";
 import useAuth from "@/zustand/authStore";
 import { useRouter } from "next/router";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function AvatarModalContainer() {
   const {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { errors },
   } = useForm({ mode: "onSubmit" });
 
-  const { joinSpace, joinSuccess } = useJoinSpace();
+  const { joinSpace, joinSuccess, joinError } = useJoinSpace();
   const { user } = useAuth();
   const { replace } = useRouter();
 
   const { closeModal, space, clearSpace } = useModal();
 
   const { onChange, ...restParam } = register("avatar");
-
-  const [selectedAvatar, setSelectedAvatar] = useState("NPC1");
 
   const handleCloseModal = () => {
     closeModal();
@@ -49,7 +49,6 @@ export default function AvatarModalContainer() {
   };
 
   const handleCustomChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedAvatar(e.target.value);
     onChange(e);
   };
 
@@ -72,13 +71,17 @@ export default function AvatarModalContainer() {
   };
 
   useEffect(() => {
-    console.log({ joinSuccess, space });
-    if (!joinSuccess) return;
     if (!space) return;
-
-    handleToSpace(space.id!);
-    clearSpace();
-  }, [joinSuccess, space]);
+    if (joinSuccess) {
+      handleToSpace(space.id!);
+      clearSpace();
+    }
+    if (joinError) {
+      clearSpace();
+      toast.error("오류가 발생했습니다.");
+      closeModal();
+    }
+  }, [space, joinSuccess, joinError]);
 
   return (
     <>
@@ -108,7 +111,7 @@ export default function AvatarModalContainer() {
               {characterOptions.map((option) => (
                 <StInputWrapper
                   key={option.value}
-                  $isSelected={selectedAvatar === option.value}
+                  $isSelected={watch("avatar") === option.value}
                 >
                   <input
                     type="radio"
