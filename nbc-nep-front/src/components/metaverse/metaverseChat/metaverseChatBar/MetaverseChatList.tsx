@@ -2,10 +2,11 @@ import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseCha
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import useChat from "@/hooks/chat/useChat";
+import useEndOfChat from "@/hooks/metaverse/useEndOfChat";
 import useChatType from "@/zustand/chatTypeStore";
 import useDm from "@/zustand/dmStore";
 import useGlobalNavBar from "@/zustand/globalNavBarStore";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 export default function MetaverseChatList() {
@@ -15,7 +16,7 @@ export default function MetaverseChatList() {
   const { resetAllSections } = useGlobalNavBar();
   const { closeDm } = useDm();
 
-  const endOfChatsRef = useRef<HTMLDivElement>(null);
+  const endOfChatsRef = useEndOfChat([chatList]);
 
   const handleOnClickCloseChat = () => {
     resetAllSections();
@@ -31,10 +32,6 @@ export default function MetaverseChatList() {
         handleSetGlobalChatAlarmState(false);
     };
   }, [isOpenChat, chatList]);
-
-  useEffect(() => {
-    endOfChatsRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatList]);
 
   return (
     <>
