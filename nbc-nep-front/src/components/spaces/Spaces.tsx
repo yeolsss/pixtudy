@@ -1,13 +1,16 @@
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
 import useAuth from "@/zustand/authStore";
-
 import { useEffect } from "react";
 import SpaceList from "./SpaceList";
 
-export default function Spaces() {
-  const { user } = useAuth();
+interface Props {
+  setRunState: (isRun: boolean) => void;
+  showTemporaryComponent: boolean;
+}
 
+export default function Spaces({ setRunState, showTemporaryComponent }: Props) {
+  const { user } = useAuth();
   const currentUserId = user.id;
 
   useEffect(() => {
@@ -21,5 +24,11 @@ export default function Spaces() {
     }
   }, []);
 
-  return <SpaceList currentUserId={currentUserId} />;
+  return (
+    <SpaceList
+      currentUserId={currentUserId}
+      setRunState={setRunState}
+      showTemporaryComponent={showTemporaryComponent}
+    />
+  );
 }
