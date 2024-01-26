@@ -20,6 +20,7 @@ export default function JoinSpaceModalMainContainer() {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { errors },
   } = useForm({ mode: "onSubmit" });
 
@@ -44,6 +45,7 @@ export default function JoinSpaceModalMainContainer() {
           </StDiv>
         ) : (
           <ProfileForm
+            watch={watch}
             setProcedure={setProcedure}
             handleSubmit={handleSubmit}
             register={register}
