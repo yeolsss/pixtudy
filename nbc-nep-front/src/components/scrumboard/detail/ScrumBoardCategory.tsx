@@ -27,12 +27,14 @@ export default function ScrumBoardCategory({ category }: Props) {
 }
 
 const StCategoryWrapper = styled.div`
-  width: 20%;
-  height: 100%;
+  // 임의로 설정한 너비
+  min-width: 320px;
 `;
 
 const StItemsContainer = styled.ul`
   display: flex;
+  // 임의로 설정한 높이
+  height: calc(100vh - 300px);
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[12]};
   background-color: #f5f5f5;

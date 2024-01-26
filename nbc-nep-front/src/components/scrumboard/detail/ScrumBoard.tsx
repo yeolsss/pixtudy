@@ -1,3 +1,4 @@
+import { StCTAButton } from "@/components/common/button/button.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
 import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCategoryModal";
 import useModal from "@/hooks/modal/useModal";
@@ -23,12 +24,16 @@ export default function ScrumBoard() {
   return (
     <>
       <StScrumBoardContainer>
-        {categories?.map((category) => {
-          return <ScrumBoardCategory key={category.id} category={category} />;
-        })}
-        <StAddCategoryBtn onClick={handleAddCategory}>
-          add category
-        </StAddCategoryBtn>
+        <div>
+          {categories?.map((category) => {
+            return <ScrumBoardCategory key={category.id} category={category} />;
+          })}
+          <div>
+            <StAddCategoryBtn onClick={handleAddCategory}>
+              add category
+            </StAddCategoryBtn>
+          </div>
+        </div>
       </StScrumBoardContainer>
       {isCreateCategoryModalOpen && (
         <ModalPortal>
@@ -42,16 +47,25 @@ export default function ScrumBoard() {
 const StScrumBoardContainer = styled.div`
   max-width: 1200px;
   width: 100%;
+  overflow: scroll;
+  > div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: ${(props) => props.theme.spacing[12]};
+    position: relative;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   margin: 0 auto;
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: ${(props) => props.theme.spacing[12]};
 `;
 
-const StAddCategoryBtn = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
+const StAddCategoryBtn = styled(StCTAButton)`
+  display: block;
+  width: 320px;
+  height: ${(props) => props.theme.unit[80]}px;
 `;
