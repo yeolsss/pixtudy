@@ -50,12 +50,14 @@ export default function ProfileForm({
     setUserProfile(newUserProfile);
     setProcedure(FORM_SPACE);
   };
-
   return (
     <StProfileForm onSubmit={handleSubmit(handleProfileSubmit)}>
       <StCurrentProfile>
         <StAvatarWrapper>
-          <StAvatar resource={`${SRC_BASE + watch("avatar")}.png`} />
+          <StAvatar
+            style={{ cursor: "auto" }}
+            resource={`${SRC_BASE + (watch("avatar") || "NPC1")}.png`}
+          />
         </StAvatarWrapper>
         <StCreateInputWrapper $isError={!!errors?.nickname}>
           <label htmlFor="nickname">닉네임</label>
