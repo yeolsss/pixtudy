@@ -73,7 +73,7 @@ const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
   padding: ${({ theme, $isOpenChat }) =>
     $isOpenChat ? theme.spacing["24"] : "0"} ${({ theme, $isOpenChat }) =>
     $isOpenChat ? theme.spacing["20"] : "0"};
-  gap: 30px;
+  gap: ${(props) => props.theme.spacing[24]};
   transition:
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;

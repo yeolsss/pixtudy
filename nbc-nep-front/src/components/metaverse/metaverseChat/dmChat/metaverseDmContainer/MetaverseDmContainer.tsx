@@ -43,19 +43,21 @@ export default function MetaverseDmContainer() {
   useDmMessage({ currentDmChannel, setMessages });
 
   return (
-    <StMetaverseDmChannel>
-      <StMessageWrapper>
-        {messages?.map((message) => (
-          <StMessageCard key={message.id}>
-            <h3>
-              {message.sender_display_name || message.receiver_display_name}
-            </h3>
-            <span>{message.message}</span>
-            {/*<span>{message.created_at}</span>*/}
-          </StMessageCard>
-        ))}
-        <div ref={endOfChatRef}></div>
-      </StMessageWrapper>
+    <>
+      <StMetaverseDmChannel>
+        <StMessageWrapper>
+          {messages?.map((message) => (
+            <StMessageCard key={message.id}>
+              <h3>
+                {message.sender_display_name || message.receiver_display_name}
+              </h3>
+              <span>{message.message}</span>
+              {/*<span>{message.created_at}</span>*/}
+            </StMessageCard>
+          ))}
+          <div ref={endOfChatRef}></div>
+        </StMessageWrapper>
+      </StMetaverseDmChannel>
       <MetaverseDmForm
         currentDmChannel={currentDmChannel}
         setMessages={setMessages}
@@ -63,7 +65,7 @@ export default function MetaverseDmContainer() {
         connectChannel={connectChannel}
         currentUser={currentUser}
       />
-    </StMetaverseDmChannel>
+    </>
   );
 }
 
@@ -73,6 +75,7 @@ const StMetaverseDmChannel = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing["4"]};
+  overflow: hidden;
 `;
 
 const StMessageWrapper = styled.ul`
@@ -80,11 +83,11 @@ const StMessageWrapper = styled.ul`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing["12"]};
   overflow-y: scroll;
-  min-height: 90%;
-  max-height: 90%;
   font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
   font-family: ${({ theme }) => theme.body.sm.regular.fontFamily};
   word-break: break-all;
+  padding-top: ${(props) => props.theme.spacing[16]};
+  padding-bottom: ${(props) => props.theme.spacing[16]};
 
   &::-webkit-scrollbar {
     display: none;
