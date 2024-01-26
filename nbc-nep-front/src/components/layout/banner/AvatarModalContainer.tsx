@@ -18,7 +18,7 @@ import { characterOptions } from "@/components/spaces/constants/constants";
 import { StCreateInputWrapper } from "@/components/spaces/styles/spaceCommon.styles";
 import useModal from "@/hooks/modal/useModal";
 import { useJoinSpace } from "@/hooks/query/useSupabase";
-import { validateNickname } from "@/utils/spaceFormValidate";
+import { validateNickname } from "@/utils/spaceValidate";
 import useAuth from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";

@@ -1,4 +1,4 @@
-import { validateNickname } from "@/utils/spaceFormValidate";
+import { validateNickname } from "@/utils/spaceValidate";
 import { Dispatch, SetStateAction } from "react";
 import {
   FieldValues,
