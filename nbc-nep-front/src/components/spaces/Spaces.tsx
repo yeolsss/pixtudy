@@ -1,14 +1,18 @@
+import useTourTooltip from "@/hooks/tooltip/useTourTooltip";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
+import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltipUtils";
 import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
+import Joyride from "react-joyride";
 import styled from "styled-components";
 import SpaceList from "./SpaceList";
-
 export default function Spaces() {
   const { user } = useAuth();
-
   const currentUserId = user.id;
+  const { run, setRunState, steps, handleJoyrideCallback } = useTourTooltip(
+    DASHBOARD_TOUR_TOOLTIP
+  );
 
   useEffect(() => {
     const message = getCookie("message");
@@ -24,8 +28,16 @@ export default function Spaces() {
 
   return (
     <>
-      <StBanner />
-      <SpaceList currentUserId={currentUserId} />
+      <Joyride
+        continuous
+        run={run}
+        steps={steps}
+        callback={handleJoyrideCallback}
+        scrollToFirstStep
+        showProgress
+      />
+      <StBanner className="dashboard-banner" />
+      <SpaceList currentUserId={currentUserId} setRunState={setRunState} />
     </>
   );
 }

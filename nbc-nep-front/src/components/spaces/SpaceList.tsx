@@ -1,20 +1,32 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import SpaceCard from "./SpaceCard";
 import SpaceListHeader from "./SpaceListHeader";
 
 interface Props {
   currentUserId: string;
+  setRunState: (isRun: boolean) => void;
 }
 
-export default function SpaceList({ currentUserId }: Props) {
+export default function SpaceList({ currentUserId, setRunState }: Props) {
   const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
   const getUserSpaces = useGetUserSpaces(currentUserId);
+  const tooltipRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (getUserSpaces) setUserSpaces(getUserSpaces);
+    if (getUserSpaces) {
+      setUserSpaces(getUserSpaces);
+      if (!getUserSpaces.length) {
+        tooltipRef.current = true;
+      } else {
+        if (!tooltipRef.current) {
+          setRunState(true);
+          tooltipRef.current = true;
+        }
+      }
+    }
   }, [getUserSpaces]);
 
   return (

@@ -29,12 +29,14 @@ export default function SpaceListHeader() {
         </StNavContainer>
         <StButtonContainer>
           <SpaceSearchForm />
-          <button onClick={handleOpenCreateSpaceModal}>
-            새로운 스페이스 만들기
-          </button>
-          <button onClick={handleOpenJoinSpaceModal}>
-            초대 코드로 입장하기
-          </button>
+          <div className="dashboard-join-buttons">
+            <button onClick={handleOpenCreateSpaceModal}>
+              새로운 스페이스 만들기
+            </button>
+            <button onClick={handleOpenJoinSpaceModal}>
+              초대 코드로 입장하기
+            </button>
+          </div>
         </StButtonContainer>
       </StHeaderWrapper>
       {isJoinSpaceModalOpen && (
@@ -97,4 +99,8 @@ const StNavContainer = styled.div`
 const StButtonContainer = styled.div`
   display: flex;
   gap: ${(props) => props.theme.spacing[12]};
+  & > div {
+    display: flex;
+    gap: ${(props) => props.theme.spacing[12]};
+  }
 `;
