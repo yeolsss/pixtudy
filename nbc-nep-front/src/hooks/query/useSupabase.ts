@@ -1,8 +1,10 @@
 import {
+  forgottenPasswordHandler,
   getOtherUserHandler,
   logoutHandler,
   signInHandler,
   signUpHandler,
+  updateUserPasswordHandler,
 } from "@/api/supabase/auth";
 import {
   checkDmChannel,
@@ -25,6 +27,8 @@ import {
   createSpaceHandler,
   getSpaceData,
   joinSpaceHandler,
+  removeSpace as removeSpaceSupabase,
+  updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
@@ -33,6 +37,7 @@ import {
   Kanban_items,
   Space_members,
 } from "@/supabase/types/supabase.tables.type";
+import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -44,7 +49,7 @@ export function useSignUpUser() {
     mutationFn: signUpHandler,
     onError: (error) => {
       // TODO: error메시지 핸들링 필요
-      console.log(error);
+      authValidation(error.message, "signUp");
     },
   });
   return signUp;
@@ -54,7 +59,7 @@ export function useSignInUser() {
   const { mutate: signIn } = useMutation({
     mutationFn: signInHandler,
     onError: (error) => {
-      console.log("로그인에러:", error);
+      authValidation(error.message, "signIn");
     },
   });
   return signIn;
@@ -161,6 +166,43 @@ export function useGetUserSpaces(currentUserId: string) {
     enabled: !!currentUserId,
   };
   return useCustomQuery<Space_members[], Error>(getUserSpacesOptions);
+}
+
+export function useRemoveSpace(onSuccess: () => void) {
+  const client = useQueryClient();
+  const {
+    mutate: removeSpace,
+    isSuccess: isRemovingSuccess,
+    isError: isRemovingError,
+  } = useMutation({
+    mutationFn: removeSpaceSupabase,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+      onSuccess();
+    },
+    onError: (error) => {
+      console.error("remove space error: ", error);
+    },
+  });
+  return { removeSpace, isRemovingSuccess, isRemovingError };
+}
+
+export function useUpdateSpace() {
+  const client = useQueryClient();
+  const {
+    mutate: updateSpace,
+    isSuccess: isUpdatingSuccess,
+    isError: isUpdatingError,
+  } = useMutation({
+    mutationFn: updateSpaceSupabase,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+    },
+    onError: (error) => {
+      console.error("update space error: ", error);
+    },
+  });
+  return { updateSpace, isUpdatingSuccess, isUpdatingError };
 }
 
 /* dm */
@@ -301,4 +343,28 @@ export function useUpdateCategory(spaceId: string) {
   });
 
   return { update, isError, isSuccess };
+}
+
+export function useForgetPassword() {
+  const { mutate: forgetPassword } = useMutation({
+    mutationFn: forgottenPasswordHandler,
+    onSuccess: (data) => {
+      console.log("비밀번호 수정메일 보내기 완료", data);
+    },
+  });
+
+  return { forgetPassword };
+}
+
+export function useUpdateUserPw() {
+  const { mutate: updateUser } = useMutation({
+    mutationFn: updateUserPasswordHandler,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      authValidation(error.message, "changePassword");
+    },
+  });
+  return updateUser;
 }

@@ -10,6 +10,7 @@ const PAGES_PATH = [
   { path: "/boards", dynamic: false },
   { path: "/boards/scrumboards", dynamic: false },
   { path: "/boards/scrumboards", dynamic: true },
+  { path: "/changepassword", dynamic: false },
 ];
 
 export async function middleware(request: NextRequest) {
@@ -59,7 +60,10 @@ export async function middleware(request: NextRequest) {
 
   // 등록된 정보가 아니라면
   if (!isDynamicPath && !isStaticPath) {
-    return NextResponse.redirect(new URL("/", request.url));
+    const url = new URL("/", request.url);
+    const response = NextResponse.redirect(url);
+    response.cookies.set("message", "invalid_path");
+    return response;
   }
 
   // 로그인 세션에 따른 조건부 처리
@@ -67,23 +71,31 @@ export async function middleware(request: NextRequest) {
     !session &&
     (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse"))
   ) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+    const url = new URL("/signin", request.url);
+    const response = NextResponse.redirect(url);
+    response.cookies.set("message", "login_first");
+    return response;
   }
 
   if (
     session &&
     (pathname.startsWith("/signin") || pathname.startsWith("/signup"))
   ) {
-    return NextResponse.redirect(new URL("/", request.url));
+    const url = new URL("/", request.url);
+    const response = NextResponse.redirect(url);
+    response.cookies.set("message", "login_already");
+    return response;
   }
 
   // 유효한 메타버스 id가 없을 때
   if (session && pathname.startsWith("/metaverse")) {
     const spaceId = request.url.split("?")[0].split("/").at(-1);
-    await checkSpace(spaceId!);
     const checkResult = await checkSpace(spaceId!);
     if (!checkResult) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      const url = new URL("/dashboard", request.url);
+      const response = NextResponse.redirect(url);
+      response.cookies.set("message", "invalid_space");
+      return response;
     }
   }
 

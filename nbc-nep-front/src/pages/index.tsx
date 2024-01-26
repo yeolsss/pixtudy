@@ -1,11 +1,24 @@
+import CustomHead from "@/SEO/CustomHead";
 import { StCTALink } from "@/components/common/button/button.styles";
 import Layout from "@/components/layout/Layout";
-import React, { ReactElement } from "react";
+import { getCookie } from "@/utils/middlewareUtils";
+import { pathValidation } from "@/utils/middlewareValidate";
+import { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import { NextPageWithLayout } from "./_app";
-import CustomHead from "@/SEO/CustomHead";
 
 const Home: NextPageWithLayout = () => {
+  useEffect(() => {
+    const message = getCookie("message");
+    if (message) {
+      // 메시지로 이벤트 처리
+      pathValidation(message);
+      // 쿠키 삭제
+      document.cookie =
+        "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+  }, []);
+
   return (
     <>
       <CustomHead title={"Main"} description={"메인 페이지입니다."} />

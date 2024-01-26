@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
-export default function BackDrop() {
-  return <StBackDrop />;
+interface Props {
+  closeModal?: () => void;
+}
+export default function BackDrop({ closeModal }: Props) {
+  return <StBackDrop onClick={closeModal && closeModal} />;
 }
 
 const StBackDrop = styled.div`
@@ -12,4 +15,5 @@ const StBackDrop = styled.div`
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
+  z-index: 4;
 `;

@@ -1,6 +1,8 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import { Space_members } from "@/supabase/types/supabase.tables.type";
-import { useEffect, useState } from "react";
+import useAuth from "@/zustand/authStore";
+import useSpaceSearch from "@/zustand/spaceListStore";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import styled from "styled-components";
 import SpaceCard from "./SpaceCard";
 import SpaceListHeader from "./SpaceListHeader";
@@ -10,25 +12,36 @@ interface Props {
 }
 
 export default function SpaceList({ currentUserId }: Props) {
-  const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
   const getUserSpaces = useGetUserSpaces(currentUserId);
+  const { filteredSpaces, setSpaces } = useSpaceSearch();
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (getUserSpaces) setUserSpaces(getUserSpaces);
-  }, [getUserSpaces]);
+    if (getUserSpaces) {
+      const query = router.query.query;
+      if (query === "myspace") {
+        setSpaces(
+          getUserSpaces.filter((space) => space.spaces?.owner === user.id)
+        );
+        return;
+      }
+      setSpaces(getUserSpaces);
+    }
+  }, [getUserSpaces, router.query.query]);
 
   return (
     <StCardListWrapper>
       <SpaceListHeader />
-      <StCardList>
-        {userSpaces?.map((space) => {
+      <StSpaceList>
+        {filteredSpaces?.map((space) => {
           return (
             <li key={space.id}>
               <SpaceCard space={space} />
             </li>
           );
         })}
-      </StCardList>
+      </StSpaceList>
     </StCardListWrapper>
   );
 }
@@ -45,15 +58,15 @@ export const StCardListWrapper = styled.section`
   margin-bottom: ${(props) => props.theme.spacing[64]};
 `;
 
-export const StCardList = styled.ul`
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+const StSpaceList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
   width: 100%;
   gap: ${(props) => props.theme.spacing[24]};
   margin-right: -${(props) => props.theme.spacing[24]};
   margin-bottom: 64px;
   li {
-    width: calc(25% - ${(props) => props.theme.spacing[24]});
+    width: 100%;
   }
 `;
