@@ -9,11 +9,17 @@ import SpaceListHeader from "./SpaceListHeader";
 
 interface Props {
   currentUserId: string;
+  setRunState: (isRun: boolean) => void;
+  showTemporaryComponent: boolean;
 }
 
-export default function SpaceList({ currentUserId }: Props) {
+export default function SpaceList({
+  currentUserId,
+  setRunState,
+  showTemporaryComponent,
+}: Props) {
   const getUserSpaces = useGetUserSpaces(currentUserId);
-  const { filteredSpaces, setSpaces } = useSpaceSearch();
+  const { spaces, filteredSpaces, setSpaces } = useSpaceSearch();
   const router = useRouter();
   const { user } = useAuth();
 
@@ -27,17 +33,33 @@ export default function SpaceList({ currentUserId }: Props) {
         return;
       }
       setSpaces(getUserSpaces);
+      if (!getUserSpaces.length) {
+        setRunState(true);
+      }
     }
   }, [getUserSpaces, router.query.query]);
+
+  useEffect(() => {
+    if (showTemporaryComponent) {
+      setSpaces([null]);
+    } else {
+      if (!!spaces.length) {
+        if (!spaces[0]) {
+          const [drop, ...newSpaces] = spaces;
+          setSpaces(newSpaces);
+        }
+      }
+    }
+  }, [showTemporaryComponent]);
 
   return (
     <StSpaceListWrapper>
       <SpaceListHeader />
       <StSpaceList>
-        {filteredSpaces?.map((space) => {
+        {filteredSpaces?.map((space, index) => {
           return (
-            <li key={space.id}>
-              <SpaceCard space={space} />
+            <li key={space ? space.id : index}>
+              <SpaceCard space={space ? space : null} />
             </li>
           );
         })}
