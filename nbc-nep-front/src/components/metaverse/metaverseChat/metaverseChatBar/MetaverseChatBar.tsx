@@ -18,7 +18,7 @@ export default function MetaverseChatBar() {
         <StChatWrapperTitle>
           <h1>chat</h1>
         </StChatWrapperTitle>
-        <button onClick={() => handleChatTypeOpen("GLOBAL")}>Room</button>
+        <button onClick={() => handleChatTypeOpen("GLOBAL")}>Space</button>
         <button onClick={() => handleChatTypeOpen("DM")}>DM</button>
       </StMetaverseChatBar>
       <MetaverseChat />
