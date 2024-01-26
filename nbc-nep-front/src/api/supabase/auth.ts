@@ -1,3 +1,4 @@
+import { ForgetPasswordMessageType } from "@/components/auth/utils/authUtils";
 import { supabase } from "@/supabase/supabase";
 import { Tables } from "@/supabase/types/supabase";
 
@@ -116,7 +117,6 @@ export const getUserSessionHandler = async (
  * @param string otherUserId - 정보를 가져올 유저 아이디
  * @returns table <users>
  */
-
 export const getOtherUserHandler = async (
   otherUserId: string
 ): Promise<Tables<"users"> | null> => {
@@ -126,4 +126,46 @@ export const getOtherUserHandler = async (
     .eq("id", otherUserId)
     .single();
   return userInfo;
+};
+
+/**
+ * 비밀번호 찾기 메일을 보내는 함수
+ * @param string email - 대상 email
+ * @returns string,string - 인증메일 송신 여부 메시지
+ */
+export const forgottenPasswordHandler = async (
+  userEmail: string
+): Promise<{ response: ForgetPasswordMessageType; message: string }> => {
+  // (1) 등록된 유저인지 확인
+  const { data: checkUserData, error: checkUserError } = await supabase
+    .from("users")
+    .select(`*`)
+    .eq("email", userEmail);
+
+  if (checkUserError) throw checkUserError;
+
+  if (!!checkUserData.length) {
+    const { error: sendMailError } = await supabase.auth.resetPasswordForEmail(
+      userEmail,
+      {
+        redirectTo: "http://localhost:3000/changepassword",
+      }
+    );
+    if (sendMailError) throw sendMailError;
+    return {
+      response: "success",
+      message: `${userEmail} 계정에 메일을 발송하였습니다. 
+      확인 후 비밀번호를 초기화하세요.`,
+    };
+  } else {
+    return { response: "fail", message: "등록되지 않은 유저입니다." };
+  }
+};
+
+export const updateUserPasswordHandler = async (newPw: string) => {
+  const { data, error } = await supabase.auth.updateUser({
+    password: newPw,
+  });
+  if (error) throw error;
+  return data;
 };

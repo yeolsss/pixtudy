@@ -1,12 +1,17 @@
+import useModal from "@/hooks/modal/useModal";
 import useAuth from "@/zustand/authStore";
-import Link from "next/link";
 import styled from "styled-components";
 
 export default function SignInOptions() {
   const { isSaveLoginInfo: isCheck, setSaveLoginInfo } = useAuth();
+  const { openForgetPasswordModal } = useModal();
 
   const handleIsCheck = () => {
     setSaveLoginInfo(!isCheck);
+  };
+
+  const handleOpenForgetPasswordModal = () => {
+    openForgetPasswordModal();
   };
 
   return (
@@ -28,7 +33,7 @@ export default function SignInOptions() {
           <span>로그인 정보 저장하기</span>
         </StSaveLoginInfoToggleCheckBox>
       </section>
-      <Link href={"#"}>비밀번호 찾기</Link>
+      <span onClick={handleOpenForgetPasswordModal}>비밀번호 찾기</span>
     </StSignInOptions>
   );
 }
@@ -48,9 +53,13 @@ const StSignInOptions = styled.div`
       font-size: ${(props) => props.theme.unit["12"]}px;
     }
   }
-  & a {
+  & > span {
     font-size: ${(props) => props.theme.unit["14"]}px;
+    cursor: pointer;
     color: #d93f21;
+    &:hover {
+      text-decoration: underline;
+    }
   }
   & input {
     display: none;

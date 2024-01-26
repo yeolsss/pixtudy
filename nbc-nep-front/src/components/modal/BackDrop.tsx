@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
-export default function BackDrop() {
-  return <StBackDrop />;
+interface Props {
+  closeModal?: () => void;
+}
+export default function BackDrop({ closeModal }: Props) {
+  return <StBackDrop onClick={closeModal && closeModal} />;
 }
 
 const StBackDrop = styled.div`

@@ -7,6 +7,7 @@ const PAGES_PATH = [
   { path: "/metaverse", dynamic: true },
   { path: "/signin", dynamic: false },
   { path: "/signup", dynamic: false },
+  { path: "/changepassword", dynamic: false },
 ];
 
 export async function middleware(request: NextRequest) {
@@ -56,8 +57,9 @@ export async function middleware(request: NextRequest) {
   // 등록된 정보가 아니라면
   if (!isDynamicPath && !isStaticPath) {
     const url = new URL("/", request.url);
-    url.searchParams.set("message", "invalid path");
-    return NextResponse.redirect(url);
+    const response = NextResponse.redirect(url);
+    response.cookies.set("message", "invalid_path");
+    return response;
   }
 
   // 로그인 세션에 따른 조건부 처리
@@ -66,8 +68,9 @@ export async function middleware(request: NextRequest) {
     (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse"))
   ) {
     const url = new URL("/signin", request.url);
-    url.searchParams.set("message", "login first");
-    return NextResponse.redirect(url);
+    const response = NextResponse.redirect(url);
+    response.cookies.set("message", "login_first");
+    return response;
   }
 
   if (
@@ -75,19 +78,20 @@ export async function middleware(request: NextRequest) {
     (pathname.startsWith("/signin") || pathname.startsWith("/signup"))
   ) {
     const url = new URL("/", request.url);
-    url.searchParams.set("message", "login already");
-    return NextResponse.redirect(url);
+    const response = NextResponse.redirect(url);
+    response.cookies.set("message", "login_already");
+    return response;
   }
 
   // 유효한 메타버스 id가 없을 때
   if (session && pathname.startsWith("/metaverse")) {
     const spaceId = request.url.split("?")[0].split("/").at(-1);
-    await checkSpace(spaceId!);
     const checkResult = await checkSpace(spaceId!);
     if (!checkResult) {
       const url = new URL("/dashboard", request.url);
-      url.searchParams.set("message", "invalid space");
-      return NextResponse.redirect(url);
+      const response = NextResponse.redirect(url);
+      response.cookies.set("message", "invalid_space");
+      return response;
     }
   }
 

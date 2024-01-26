@@ -1,8 +1,10 @@
 import {
+  forgottenPasswordHandler,
   getOtherUserHandler,
   logoutHandler,
   signInHandler,
   signUpHandler,
+  updateUserPasswordHandler,
 } from "@/api/supabase/auth";
 import {
   checkDmChannel,
@@ -35,7 +37,7 @@ export function useSignUpUser() {
     mutationFn: signUpHandler,
     onError: (error) => {
       // TODO: error메시지 핸들링 필요
-      authValidation(error.message, "signup");
+      authValidation(error.message, "signUp");
     },
   });
   return signUp;
@@ -45,7 +47,7 @@ export function useSignInUser() {
   const { mutate: signIn } = useMutation({
     mutationFn: signInHandler,
     onError: (error) => {
-      authValidation(error.message, "signin");
+      authValidation(error.message, "signIn");
     },
   });
   return signIn;
@@ -216,4 +218,28 @@ export function useReadDMMessage() {
   });
 
   return { mutate, isError, isPending };
+}
+
+export function useForgetPassword() {
+  const { mutate: forgetPassword } = useMutation({
+    mutationFn: forgottenPasswordHandler,
+    onSuccess: (data) => {
+      console.log("비밀번호 수정메일 보내기 완료", data);
+    },
+  });
+
+  return { forgetPassword };
+}
+
+export function useUpdateUserPw() {
+  const { mutate: updateUser } = useMutation({
+    mutationFn: updateUserPasswordHandler,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      authValidation(error.message, "changePassword");
+    },
+  });
+  return updateUser;
 }

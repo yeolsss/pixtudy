@@ -1,19 +1,23 @@
 import CustomHead from "@/SEO/CustomHead";
 import { StCTALink } from "@/components/common/button/button.styles";
 import Layout from "@/components/layout/Layout";
+import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
-import { useRouter } from "next/router";
 import { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import { NextPageWithLayout } from "./_app";
 
 const Home: NextPageWithLayout = () => {
-  const router = useRouter();
-
   useEffect(() => {
-    if (typeof router.query.message === "string" && !!router.query.message)
-      pathValidation(router.query.message);
-  }, [router.query]);
+    const message = getCookie("message");
+    if (message) {
+      // 메시지로 이벤트 처리
+      pathValidation(message);
+      // 쿠키 삭제
+      document.cookie =
+        "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+  }, []);
 
   return (
     <>
