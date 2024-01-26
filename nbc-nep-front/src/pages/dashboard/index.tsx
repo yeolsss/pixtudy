@@ -15,9 +15,9 @@ import { Database, Tables } from "@/supabase/types/supabase";
 import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltipUtils";
 import { createClient } from "@supabase/supabase-js";
 import type { NextPage } from "next";
+import dynamic from "next/dynamic";
 import { StaticImageData } from "next/image";
 import { ReactElement } from "react";
-import Joyride from "react-joyride";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -27,6 +27,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 interface Props {
   spaces: (Tables<"spaces"> & { users: string[]; bgSrc: StaticImageData })[];
 }
+
+const NoSSRJoyride = dynamic(() => import("react-joyride"), { ssr: false });
 
 const Dashboard: NextPage<Props> & {
   getLayout?: (page: ReactElement) => ReactElement;
@@ -75,7 +77,7 @@ const Dashboard: NextPage<Props> & {
         setRunState={setRunState}
         showTemporaryComponent={showTemporaryComponent}
       />
-      <Joyride
+      <NoSSRJoyride
         continuous
         run={run}
         steps={steps}
