@@ -9,7 +9,7 @@ export const characterOptions = Array.from({ length: 26 }, (_, i) => ({
   src: `/assets/characters/presets/NPC${i + 1}.png`,
 }));
 
-export const srcBase = "/assets/characters/presets/";
+export const SRC_BASE = "/assets/characters/presets/";
 
 export const fieldValues = [
   {

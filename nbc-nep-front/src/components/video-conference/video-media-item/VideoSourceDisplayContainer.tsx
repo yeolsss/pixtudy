@@ -72,4 +72,8 @@ const StContainer = styled.div`
   * {
     flex-shrink: 0;
   }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
