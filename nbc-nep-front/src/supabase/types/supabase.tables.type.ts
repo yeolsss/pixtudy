@@ -76,3 +76,10 @@ export interface Space_members {
   spaces?: Spaces;
   users?: Users;
 }
+
+export type SpaceMembers = {
+  space_id: string;
+  users: {
+    id: string;
+  };
+};

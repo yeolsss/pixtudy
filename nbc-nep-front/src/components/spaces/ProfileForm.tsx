@@ -81,14 +81,14 @@ export default function ProfileForm({
   );
 }
 
-const StProfileForm = styled.form`
+export const StProfileForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[32]};
   align-items: stretch;
 `;
 
-const StCurrentProfile = styled.div`
+export const StCurrentProfile = styled.div`
   display: flex;
   align-items: center;
   gap: ${(props) => props.theme.spacing[16]};
@@ -97,7 +97,7 @@ const StCurrentProfile = styled.div`
   }
 `;
 
-const StAvatarWrapper = styled.div`
+export const StAvatarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -108,14 +108,7 @@ const StAvatarWrapper = styled.div`
   border-radius: ${(props) => props.theme.border.radius[12]};
 `;
 
-const StInputWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[4]};
-`;
-
-const StButtonWrapper = styled.div`
+export const StButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: ${(props) => props.theme.spacing[8]};

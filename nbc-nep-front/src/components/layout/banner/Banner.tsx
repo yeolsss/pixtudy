@@ -1,6 +1,9 @@
 // 서버 사이드 렌더링을 해야 한다
 // 가장 상위 top을 뽑아야 하는데 일단은 4개를 뽑아놓고...
 
+import useModal from "@/hooks/modal/useModal";
+import { Spaces } from "@/supabase/types/supabase.tables.type";
+import useAuth from "@/zustand/authStore";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -8,18 +11,45 @@ interface Props {
   title: string;
   description: string;
   bgSrc: string;
-  spaceId: string;
+  space: Omit<Spaces, "users"> & { users: string[] };
+  users: string[];
 }
 
-export default function Banner({ title, description, bgSrc, spaceId }: Props) {
+export default function Banner({
+  title,
+  description,
+  bgSrc,
+  space,
+  users,
+}: Props) {
+  const { user } = useAuth();
+
+  const isInUser = users.includes(user.id);
+  const { openAvatarModal, setSpace } = useModal();
+
+  const handleOpenModal = () => {
+    setSpace(space);
+    openAvatarModal();
+  };
+
   return (
     <StBannerItem>
-      <StLink href={`/metaverse/${spaceId}`} $bgSrc={bgSrc}>
-        <StInfoWrapper>
-          <StTitle>{title}</StTitle>
-          <StDescription>{description}</StDescription>
-        </StInfoWrapper>
-      </StLink>
+      {isInUser && (
+        <StLink href={`/metaverse/${space.id}`} $bgSrc={bgSrc}>
+          <StInfoWrapper>
+            <StTitle>{title}</StTitle>
+            <StDescription>{description}</StDescription>
+          </StInfoWrapper>
+        </StLink>
+      )}
+      {!isInUser && (
+        <StButton $bgSrc={bgSrc} onClick={() => handleOpenModal()}>
+          <StInfoWrapper>
+            <StTitle>{title}</StTitle>
+            <StDescription>{description}</StDescription>
+          </StInfoWrapper>
+        </StButton>
+      )}
     </StBannerItem>
   );
 }
@@ -37,7 +67,6 @@ const StLink = styled(Link)<{ $bgSrc: string }>`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   box-shadow: ${(props) => props.theme.elevation.Light.shadow4};
 
   width: 100%;
@@ -47,10 +76,29 @@ const StLink = styled(Link)<{ $bgSrc: string }>`
   justify-content: flex-end;
 `;
 
+const StButton = styled.button<{ $bgSrc: string }>`
+  background-image: url(${(props) => props.$bgSrc});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: ${(props) => props.theme.elevation.Light.shadow4};
+  border: none;
+
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+
+  padding: 0;
+`;
+
 const StInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${(props) => props.theme.unit[8]};
+  align-items: flex-start;
+  gap: ${(props) => props.theme.unit[8]}px;
 
   background-color: ${(props) => props.theme.color.base.white};
   padding: ${(props) =>

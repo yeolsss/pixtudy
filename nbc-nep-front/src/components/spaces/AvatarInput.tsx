@@ -48,7 +48,7 @@ function AvatarInput({ register, errors }: Props) {
 
 export default AvatarInput;
 
-const StInputContainer = styled.div`
+export const StInputContainer = styled.div`
   background-color: ${(props) => props.theme.color.bg.secondary};
   padding: ${(props) => props.theme.spacing[24]};
 
@@ -61,7 +61,7 @@ const StInputContainer = styled.div`
   gap: ${(props) => props.theme.spacing[12]};
 `;
 
-const StInputWrapper = styled.div<{ $isSelected: boolean }>`
+export const StInputWrapper = styled.div<{ $isSelected: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;

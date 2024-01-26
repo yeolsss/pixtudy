@@ -1,7 +1,10 @@
 import CustomHead from "@/SEO/CustomHead";
 import Layout from "@/components/layout/Layout";
+import AvatarModalContainer from "@/components/layout/banner/AvatarModalContainer";
 import Banner from "@/components/layout/banner/Banner";
+import ModalPortal from "@/components/modal/ModalPortal";
 import Spaces from "@/components/spaces/Spaces";
+import useModal from "@/hooks/modal/useModal";
 import { theme } from "@/styles/Globalstyle";
 import { Database, Tables } from "@/supabase/types/supabase";
 import { createClient } from "@supabase/supabase-js";
@@ -14,12 +17,13 @@ import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface Props {
-  spaces: Tables<"spaces">[];
+  spaces: (Tables<"spaces"> & { users: string[] })[];
 }
 
 const Dashboard: NextPage<Props> & {
   getLayout?: (page: ReactElement) => ReactElement;
 } = ({ spaces }) => {
+  const { isAvatarModalOpen } = useModal();
   return (
     <>
       <CustomHead title={"Dashboard"} description={"Dashboard 페이지입니다."} />
@@ -28,7 +32,6 @@ const Dashboard: NextPage<Props> & {
           spaceBetween={theme.unit[24]}
           slidesPerView={2.8}
           modules={[Pagination]}
-          navigation
           pagination={{ clickable: true }}
         >
           {spaces.map((space) => (
@@ -37,8 +40,9 @@ const Dashboard: NextPage<Props> & {
                 bgSrc={
                   "https://images.unsplash.com/photo-1706068720402-ce49bf8661be?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0M3x8fGVufDB8fHx8fA%3D%3D"
                 }
+                users={space.users}
                 description={space.description}
-                spaceId={space.id}
+                space={space}
                 title={space.title}
               />
             </SwiperSlide>
@@ -46,6 +50,11 @@ const Dashboard: NextPage<Props> & {
         </Swiper>
         <StBlurDiv />
       </StSwiperWrapper>
+      {isAvatarModalOpen && (
+        <ModalPortal>
+          <AvatarModalContainer />
+        </ModalPortal>
+      )}
       <Spaces />
     </>
   );
@@ -73,7 +82,27 @@ export const getStaticProps = async () => {
     .select("*")
     .in("id", spaceIds);
 
-  return { props: { spaces: data || [] } };
+  if (!data || error) return { props: {} };
+
+  const { data: spaceMembers, error: spacesMembersError } = await supabase
+    .from("space_members")
+    .select("space_id, users(id)")
+    .in("space_id", spaceIds);
+
+  if (!spaceMembers || spacesMembersError) return { props: {} };
+
+  const spaces = data.map((space) => ({ ...space, users: [] as string[] }));
+
+  spaceMembers?.forEach(({ space_id, users }) => {
+    const space = spaces.find((space) => space.id === space_id);
+    if (!users) return;
+
+    space!.users = [...space!.users, users.id];
+  });
+
+  console.log(spaces);
+
+  return { props: { spaces } };
 };
 
 const StSwiperWrapper = styled.div`
