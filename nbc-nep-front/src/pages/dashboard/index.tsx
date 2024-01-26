@@ -1,4 +1,8 @@
 import CustomHead from "@/SEO/CustomHead";
+import BannerBg1 from "@/assets/banner/banner1.png";
+import BannerBg2 from "@/assets/banner/banner2.png";
+import BannerBg3 from "@/assets/banner/banner3.png";
+import BannerBg4 from "@/assets/banner/banner4.png";
 import Layout from "@/components/layout/Layout";
 import AvatarModalContainer from "@/components/layout/banner/AvatarModalContainer";
 import Banner from "@/components/layout/banner/Banner";
@@ -9,6 +13,7 @@ import { theme } from "@/styles/Globalstyle";
 import { Database, Tables } from "@/supabase/types/supabase";
 import { createClient } from "@supabase/supabase-js";
 import type { NextPage } from "next";
+import { StaticImageData } from "next/image";
 import { ReactElement } from "react";
 import styled from "styled-components";
 import "swiper/css";
@@ -17,7 +22,7 @@ import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface Props {
-  spaces: (Tables<"spaces"> & { users: string[] })[];
+  spaces: (Tables<"spaces"> & { users: string[]; bgSrc: StaticImageData })[];
 }
 
 const Dashboard: NextPage<Props> & {
@@ -37,9 +42,7 @@ const Dashboard: NextPage<Props> & {
           {spaces.map((space) => (
             <SwiperSlide key={space.id}>
               <Banner
-                bgSrc={
-                  "https://images.unsplash.com/photo-1706068720402-ce49bf8661be?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0M3x8fGVufDB8fHx8fA%3D%3D"
-                }
+                bgSrc={space.bgSrc}
                 users={space.users}
                 description={space.description}
                 space={space}
@@ -91,7 +94,13 @@ export const getStaticProps = async () => {
 
   if (!spaceMembers || spacesMembersError) return { props: {} };
 
-  const spaces = data.map((space) => ({ ...space, users: [] as string[] }));
+  const bgs = [BannerBg1, BannerBg2, BannerBg3, BannerBg4];
+
+  const spaces = data.map((space, index) => ({
+    ...space,
+    users: [] as string[],
+    bgSrc: bgs[index],
+  }));
 
   spaceMembers?.forEach(({ space_id, users }) => {
     const space = spaces.find((space) => space.id === space_id);
