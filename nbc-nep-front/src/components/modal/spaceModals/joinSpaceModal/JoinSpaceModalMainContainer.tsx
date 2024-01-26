@@ -19,8 +19,8 @@ export default function JoinSpaceModalMainContainer() {
     handleSubmit,
     register,
     reset,
-    formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+    formState: { errors, isValid },
+  } = useForm({ mode: "onChange" });
 
   const handleCloseModal = () => {
     closeModal();
@@ -38,6 +38,7 @@ export default function JoinSpaceModalMainContainer() {
               handleSubmit={handleSubmit}
               register={register}
               reset={reset}
+              isValid={isValid}
               errors={errors}
             />
           </div>
@@ -46,6 +47,7 @@ export default function JoinSpaceModalMainContainer() {
             setProcedure={setProcedure}
             handleSubmit={handleSubmit}
             register={register}
+            isValid={isValid}
             errors={errors}
             mode="joinSpace"
           />
@@ -78,7 +80,9 @@ export const StModalContents = styled.div`
 
 const StModalJoinSpaceContents = styled(StModalContents)`
   & > div {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    padding: ${(props) => props.theme.spacing[32]};
+    gap: ${(props) => props.theme.spacing[16]};
   }
 `;

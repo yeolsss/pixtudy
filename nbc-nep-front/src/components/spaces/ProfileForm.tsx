@@ -12,6 +12,10 @@ import { FORM_SPACE, srcBase } from "@/components/spaces/constants/constants";
 import useAuth from "@/zustand/authStore";
 import useSpace from "@/zustand/spaceStore";
 import styled from "styled-components";
+import {
+  StFormCTAButton,
+  StToPreviousButton,
+} from "../common/button/button.styles";
 import AvatarInput, { StAvatar } from "./AvatarInput";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { Procedure, UserProfile } from "./types/space.types";
@@ -22,6 +26,7 @@ interface ProfileFormProps {
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
   mode: "createSpace" | "joinSpace";
+  isValid: boolean;
 }
 
 export default function ProfileForm({
@@ -30,6 +35,7 @@ export default function ProfileForm({
   register,
   errors,
   mode,
+  isValid,
 }: ProfileFormProps) {
   const { userProfile, setUserProfile } = useSpace();
   const { user } = useAuth();
@@ -72,10 +78,12 @@ export default function ProfileForm({
       <AvatarInput register={register} errors={errors} />
       {errors.avatar && <span>errors.avatar.message</span>}
       <StButtonWrapper>
-        <button type="submit">확인</button>
-        <button type="button" onClick={handleToPrevious}>
+        <StFormCTAButton type="submit" disabled={!isValid}>
+          확인
+        </StFormCTAButton>
+        <StToPreviousButton type="button" onClick={handleToPrevious}>
           뒤로 가기
-        </button>
+        </StToPreviousButton>
       </StButtonWrapper>
     </StProfileForm>
   );
@@ -94,6 +102,7 @@ export const StCurrentProfile = styled.div`
   gap: ${(props) => props.theme.spacing[16]};
   label {
     font-family: var(--sub-font);
+    font-size: ${(props) => props.theme.body.sm.regular.fontSize};
   }
 `;
 

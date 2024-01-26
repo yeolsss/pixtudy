@@ -49,16 +49,18 @@ function AvatarInput({ register, errors }: Props) {
 export default AvatarInput;
 
 export const StInputContainer = styled.div`
-  background-color: ${(props) => props.theme.color.bg.secondary};
-  padding: ${(props) => props.theme.spacing[24]};
-
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-
-  overflow: auto;
-  max-height: ${(props) => props.theme.unit["412"]}px;
-
   gap: ${(props) => props.theme.spacing[12]};
+  padding: ${(props) => props.theme.spacing[24]};
+  max-height: ${(props) => props.theme.unit[220]}px;
+  overflow: auto;
+  border-radius: ${(props) => props.theme.border.radius[12]};
+  background-color: ${(props) => props.theme.color.bg.secondary};
+  grid-template-columns: repeat(5, 1fr);
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const StInputWrapper = styled.div<{ $isSelected: boolean }>`

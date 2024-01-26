@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { StInputWrapper } from "../JoinSpaceForm";
 
-export const StCreateInputWrapper = styled(StInputWrapper)<{
-  $isError: boolean;
-}>`
-  height: auto;
+//prettier-ignore
+export const StCreateInputWrapper = styled(StInputWrapper)<{$isError: boolean}>`
   display: flex;
+  position: relative;
+  height: auto;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[8]};
   align-items: flex-start;
