@@ -23,6 +23,7 @@ import useAuth from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function AvatarModalContainer() {
   const {
@@ -75,7 +76,12 @@ export default function AvatarModalContainer() {
       handleToSpace(space.id!);
       clearSpace();
     }
-  }, [space, joinSuccess]);
+    if (joinError) {
+      clearSpace();
+      toast.error("오류가 발생했습니다.");
+      closeModal();
+    }
+  }, [space, joinSuccess, joinError]);
 
   return (
     <>
