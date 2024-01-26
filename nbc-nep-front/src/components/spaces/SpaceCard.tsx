@@ -66,8 +66,18 @@ const StContentsContainer = styled.div`
     font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
   }
   p {
-    font-family: var(--main-font);
+    font-family: var(--default-font);
     font-size: ${(props) => props.theme.body.sm.regular.fontSize};
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    padding: ${(props) => props.theme.unit[2]}px;
+    letter-spacing: ${(props) => props.theme.body.md.medium.letterSpacing};
+    line-height: ${(props) => props.theme.body.md.medium.lineHeight};
   }
 `;
 

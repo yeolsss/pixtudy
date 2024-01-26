@@ -1,7 +1,8 @@
+import blind from "@/assets/auth/blind.svg";
 import github from "@/assets/auth/github.svg";
 import google from "@/assets/auth/google.svg";
-import kakao from "@/assets/auth/kakao.svg";
 import info from "@/assets/auth/info.svg";
-import blind from "@/assets/auth/blind.svg";
+import kakao from "@/assets/auth/kakao.svg";
+import unblind from "@/assets/auth/unblind.svg";
 
-export { github, google, kakao, info, blind };
+export { blind, github, google, info, kakao, unblind };

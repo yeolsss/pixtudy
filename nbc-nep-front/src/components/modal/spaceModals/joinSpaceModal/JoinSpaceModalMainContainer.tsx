@@ -77,7 +77,6 @@ export const StModalContents = styled.div`
 `;
 
 const StModalJoinSpaceContents = styled(StModalContents)`
-  padding: 0;
   & > div {
     width: 100%;
     padding: ${(props) => props.theme.spacing[32]};

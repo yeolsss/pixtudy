@@ -1,6 +1,6 @@
 import { getPlayerSpaceData } from "@/api/supabase/space";
 import { Player } from "@/components/metaverse/types/metaverse";
-import usePlayerList from "@/zustand/metaversePlayer";
+import usePlayerList from "@/zustand/metaversePlayerStore";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

@@ -18,10 +18,12 @@ export default function BackDrop() {
       <StCreateBackDropHeader>
         <CreateInputBackDrop />
         <CreateBackDropCtaButton
+          buttonType={"submit"}
           forwardText={"생성"}
           handle={handleOnClickCreate}
         />
         <CreateBackDropCtaButton
+          buttonType={"button"}
           forwardText={"취소"}
           handle={handleOnClickCancel}
         />
@@ -42,9 +44,10 @@ const StCreateBackDrop = styled.div`
   width: 100%;
   min-width: 344px;
   max-width: 460px;
+  background-color: ${(props) => props.theme.color.bg.primary};
   padding: ${(props) => props.theme.spacing[24]};
   border-radius: ${(props) => props.theme.border.radius[12]};
-  box-shadow: 0 4px 8px 3px rgba(42, 39, 65, 0.1);
+  box-shadow: ${(props) => props.theme.elevation.Light.shadow4};
   border: 1px solid ${(props) => props.theme.color.border.secondary};
   gap: ${(props) => props.theme.spacing[24]};
 `;

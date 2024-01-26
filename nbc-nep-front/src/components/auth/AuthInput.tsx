@@ -1,4 +1,6 @@
+import { blind, info, unblind } from "@/assets/auth";
 import Image from "next/image";
+import { useState } from "react";
 import {
   FieldErrors,
   FieldValues,
@@ -6,8 +8,6 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import styled from "styled-components";
-import { info, blind } from "@/assets/auth";
-import { useState } from "react";
 
 interface Props {
   placeholder: string;
@@ -35,7 +35,7 @@ export default function AuthInput({
   };
 
   return (
-    <StAuthInputSection>
+    <StAuthInputSection $isError={!!error[id]?.message}>
       <div>
         <input
           id={id}
@@ -52,8 +52,12 @@ export default function AuthInput({
         />
 
         {type === "password" && (
-          <button type="button" onClick={togglePasswordVisibility}>
-            <Image src={isPasswordVisible ? blind : blind} alt="" />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            tabIndex={-1}
+          >
+            <Image src={isPasswordVisible ? unblind : blind} alt="" />
           </button>
         )}
       </div>
@@ -68,7 +72,7 @@ export default function AuthInput({
   );
 }
 
-const StAuthInputSection = styled.div`
+const StAuthInputSection = styled.div<{ $isError: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -80,6 +84,10 @@ const StAuthInputSection = styled.div`
       height: ${(props) => props.theme.unit["48"]}px;
       font-size: ${(props) => props.theme.unit["14"]}px;
       font-family: inherit;
+      outline-color: ${(props) =>
+        props.$isError
+          ? props.theme.color.danger[400]
+          : props.theme.color.base.black};
     }
 
     & button {

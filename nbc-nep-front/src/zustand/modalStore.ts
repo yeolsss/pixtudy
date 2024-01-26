@@ -1,18 +1,25 @@
+import { Spaces } from "@/supabase/types/supabase.tables.type";
 import { create } from "zustand";
 
 interface ModalState {
   isJoinSpaceModalOpen: boolean;
   isCreateSpaceModalOpen: boolean;
+  isAvatarModalOpen: boolean;
+  space: (Omit<Spaces, "users"> & { users: string[] }) | null;
 }
 
 interface ModalStoreState extends ModalState {
   openModal: (kind: keyof ModalState) => void;
   closeModal: () => void;
+  setSpace: (space: Omit<Spaces, "users"> & { users: string[] }) => void;
+  clearSpace: () => void;
 }
 
 const initialState = {
   isJoinSpaceModalOpen: false,
   isCreateSpaceModalOpen: false,
+  isAvatarModalOpen: false,
+  space: null,
 };
 
 const modalStore = create<ModalStoreState>()((set) => ({
@@ -25,6 +32,9 @@ const modalStore = create<ModalStoreState>()((set) => ({
     set(() => ({
       ...initialState,
     })),
+  setSpace: (space: Omit<Spaces, "users"> & { users: string[] }) =>
+    set(() => ({ space })),
+  clearSpace: () => set(() => ({ space: null })),
 }));
 
 export default modalStore;

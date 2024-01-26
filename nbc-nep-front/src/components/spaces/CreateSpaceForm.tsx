@@ -8,27 +8,28 @@ import {
   FieldValues,
   FormState,
   SubmitHandler,
+  UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
-import {
-  StContentsContainer,
-  StFormCTAButton,
-  StInputWrapper,
-} from "./JoinSpaceForm";
+import DefaultSpanText from "../common/text/DefaultSpanText";
+import { StContentsContainer, StFormCTAButton } from "./JoinSpaceForm";
+import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { CreateSpaceInfo } from "./types/space.types";
 
 interface Props {
   handleSubmit: UseFormHandleSubmit<FieldValues>;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
+  getValues: UseFormGetValues<FieldValues>;
 }
 
 export default function CreateSpaceForm({
   register,
   handleSubmit,
   errors,
+  getValues,
 }: Props) {
   const router = useRouter();
   const { userProfile, setCreateSpaceInfo } = useSpace();
@@ -53,6 +54,7 @@ export default function CreateSpaceForm({
       title: data.spaceName,
       description: data.spaceDescription,
     };
+
     setCreateSpaceInfo({ ...spaceInfo, ...userProfile });
     createSpace({
       description: spaceInfo.description,
@@ -71,29 +73,41 @@ export default function CreateSpaceForm({
           {fieldValues.map((fieldValue) =>
             fieldValue.type === "text" ? (
               <div key={fieldValue.name}>
-                <label htmlFor="">스페이스 이름</label>
-                <StCreateInputWrapper key={fieldValue.name}>
+                <label htmlFor={fieldValue.name}>스페이스 이름</label>
+                <StCreateInputWrapper
+                  key={fieldValue.name}
+                  $isError={!!errors.spaceName?.message}
+                >
                   <input
                     type={fieldValue.type}
                     placeholder={fieldValue.placeholder}
+                    maxLength={20}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceName && (
-                    <span>{errors.spaceName?.message as string}</span>
+                    <DefaultSpanText>
+                      {errors.spaceName?.message as string}
+                    </DefaultSpanText>
                   )}
                 </StCreateInputWrapper>
               </div>
             ) : (
               <div key={fieldValue.name}>
-                <label htmlFor="">스페이스 설명</label>
-                <StCreateInputWrapper key={fieldValue.name}>
+                <label htmlFor="">스페이스 설명 </label>
+                <StCreateInputWrapper
+                  key={fieldValue.name}
+                  $isError={!!errors.spaceDescription?.message}
+                >
                   <textarea
                     key={fieldValue.name}
                     placeholder={fieldValue.placeholder}
+                    maxLength={100}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceDescription && (
-                    <span>{errors.spaceDescription?.message as string}</span>
+                    <DefaultSpanText>
+                      {errors.spaceDescription?.message as string}
+                    </DefaultSpanText>
                   )}
                 </StCreateInputWrapper>
               </div>
@@ -128,8 +142,4 @@ const StCreateContentsContainer = styled(StContentsContainer)`
   & + div {
     width: 100%;
   }
-`;
-
-const StCreateInputWrapper = styled(StInputWrapper)`
-  height: auto;
 `;

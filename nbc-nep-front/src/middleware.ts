@@ -60,6 +60,9 @@ export async function middleware(request: NextRequest) {
   // 등록된 정보가 아니라면
   if (!isDynamicPath && !isStaticPath) {
     return NextResponse.redirect(new URL("/", request.url));
+    const url = new URL("/", request.url);
+    url.searchParams.set("message", "invalid path");
+    return NextResponse.redirect(url);
   }
 
   // 로그인 세션에 따른 조건부 처리
@@ -68,6 +71,9 @@ export async function middleware(request: NextRequest) {
     (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse"))
   ) {
     return NextResponse.redirect(new URL("/signin", request.url));
+    const url = new URL("/signin", request.url);
+    url.searchParams.set("message", "login first");
+    return NextResponse.redirect(url);
   }
 
   if (
@@ -75,6 +81,9 @@ export async function middleware(request: NextRequest) {
     (pathname.startsWith("/signin") || pathname.startsWith("/signup"))
   ) {
     return NextResponse.redirect(new URL("/", request.url));
+    const url = new URL("/", request.url);
+    url.searchParams.set("message", "login already");
+    return NextResponse.redirect(url);
   }
 
   // 유효한 메타버스 id가 없을 때
@@ -83,7 +92,9 @@ export async function middleware(request: NextRequest) {
     await checkSpace(spaceId!);
     const checkResult = await checkSpace(spaceId!);
     if (!checkResult) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      const url = new URL("/dashboard", request.url);
+      url.searchParams.set("message", "invalid space");
+      return NextResponse.redirect(url);
     }
   }
 

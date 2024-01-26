@@ -1,16 +1,18 @@
 import styled from "styled-components";
 
 interface Props {
+  buttonType: "button" | "submit" | "reset";
   forwardText: string;
   handle: () => void;
 }
 
 export default function CreateBackDropCtaButton({
+  buttonType,
   forwardText,
   handle,
 }: Props) {
   return (
-    <StCreateBackDropCtaButton onClick={handle}>
+    <StCreateBackDropCtaButton type={buttonType} onClick={handle}>
       {forwardText}
     </StCreateBackDropCtaButton>
   );

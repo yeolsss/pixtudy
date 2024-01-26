@@ -1,15 +1,22 @@
-import SocialLogin from "@/components/auth/SocialLogin";
-import Link from "next/link";
-import React, { ReactElement } from "react";
-import * as St from "@/components/auth/styles/authCommon.styles";
-import AuthDivider from "@/components/auth/AuthDivider";
-import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
-import AuthFormContainer from "@/components/auth/AuthFormContainer";
-import AuthForm from "@/components/auth/AuthForm";
-import AuthFooter from "@/components/auth/AuthFooter";
 import CustomHead from "@/SEO/CustomHead";
-
+import AuthDivider from "@/components/auth/AuthDivider";
+import AuthFooter from "@/components/auth/AuthFooter";
+import AuthForm from "@/components/auth/AuthForm";
+import AuthFormContainer from "@/components/auth/AuthFormContainer";
+import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
+import SocialLogin from "@/components/auth/SocialLogin";
+import * as St from "@/components/auth/styles/authCommon.styles";
+import { pathValidation } from "@/utils/middlewareValidate";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { ReactElement, useEffect } from "react";
 export function SignIn() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof router.query.message === "string" && !!router.query.message)
+      pathValidation(router.query.message);
+  }, [router.query]);
   return (
     <>
       <CustomHead title={"로그인"} description={"로그인 페이지입니다."} />

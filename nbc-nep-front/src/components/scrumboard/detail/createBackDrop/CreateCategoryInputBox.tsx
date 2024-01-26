@@ -1,4 +1,4 @@
-import down from "@/assets/boards/input-down2.svg";
+import down from "@/assets/boards/input-down.svg";
 import Image from "next/image";
 import styled from "styled-components";
 

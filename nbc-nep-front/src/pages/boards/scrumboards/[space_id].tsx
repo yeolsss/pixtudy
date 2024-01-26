@@ -6,17 +6,17 @@ import { ReactElement, useEffect } from "react";
 import { GetServerSidePropsContext } from "next";
 import { getSpaceUsers } from "@/api/scrumBoard/scrumBoard";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
-import useSpaceMember from "@/zustand/useSpaceMember";
+import useSpaceMemberSearch from "@/zustand/spaceMemberStore";
 
 interface Props {
-  spaceMemberProp: Space_members[];
+  spaceMembers: Space_members[];
 }
 
-const ScrumBoardPage: NextPageWithLayout<Props> = ({ spaceMemberProp }) => {
-  const { spaceMember, setSpaceMember } = useSpaceMember();
+const ScrumBoardPage: NextPageWithLayout<Props> = ({ spaceMembers }) => {
+  const { setSpaceMembers } = useSpaceMemberSearch();
 
   useEffect(() => {
-    setSpaceMember(spaceMemberProp);
+    setSpaceMembers(spaceMembers);
   }, []);
   return (
     <>
@@ -32,9 +32,10 @@ ScrumBoardPage.getLayout = function getLayout(page: ReactElement) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const spaceId = context.query.space_id;
 
-  const spaceMember = await getSpaceUsers(spaceId as string);
+  const spaceMembers = await getSpaceUsers(spaceId as string);
+
   return {
-    props: { spaceMemberProp: spaceMember },
+    props: { spaceMembers },
   };
 }
 export default ScrumBoardPage;
