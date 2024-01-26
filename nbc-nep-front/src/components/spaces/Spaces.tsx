@@ -10,9 +10,13 @@ import SpaceList from "./SpaceList";
 export default function Spaces() {
   const { user } = useAuth();
   const currentUserId = user.id;
-  const { run, setRunState, steps, handleJoyrideCallback } = useTourTooltip(
-    DASHBOARD_TOUR_TOOLTIP
-  );
+  const {
+    run,
+    setRunState,
+    steps,
+    handleJoyrideCallback,
+    showTemporaryComponent,
+  } = useTourTooltip(DASHBOARD_TOUR_TOOLTIP);
 
   useEffect(() => {
     const message = getCookie("message");
@@ -40,7 +44,11 @@ export default function Spaces() {
         styles={{ options: { zIndex: 10000 } }}
       />
       <StBanner className="dashboard-banner" />
-      <SpaceList currentUserId={currentUserId} setRunState={setRunState} />
+      <SpaceList
+        currentUserId={currentUserId}
+        setRunState={setRunState}
+        showTemporaryComponent={showTemporaryComponent}
+      />
     </>
   );
 }

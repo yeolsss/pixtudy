@@ -6,7 +6,7 @@ import styled from "styled-components";
 import UserIcon from "../common/UserIcon";
 
 interface Props {
-  space: Space_members;
+  space: Space_members | null;
 }
 
 export default function SpaceCard({ space }: Props) {
@@ -18,18 +18,22 @@ export default function SpaceCard({ space }: Props) {
   };
 
   return (
-    <StCardWrapper>
+    <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
       <StContentsContainer>
         <Image src="/assets/card.png" alt="card" width={300} height={160} />
-        <h1>{space.spaces?.title}</h1>
-        <p>{space.spaces?.description}</p>
+        <h1>{space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}</h1>
+        <p>
+          {space
+            ? space.spaces?.description
+            : "Pixtudy에 오신 것을 환영합니다."}
+        </p>
         <StUserCounter>
           <StUserIcon fill={count!} />
           <StSpan $userExists={count!}>{isLoading ? 0 : count}</StSpan>
         </StUserCounter>
       </StContentsContainer>
       <StButtonContainer>
-        <button onClick={() => handleToSpace(space?.space_id!)}>
+        <button onClick={() => handleToSpace(space ? space.space_id! : "")}>
           입장하기
         </button>
       </StButtonContainer>

@@ -8,29 +8,49 @@ import SpaceListHeader from "./SpaceListHeader";
 interface Props {
   currentUserId: string;
   setRunState: (isRun: boolean) => void;
+  showTemporaryComponent: boolean;
 }
 
-export default function SpaceList({ currentUserId, setRunState }: Props) {
-  const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
+export default function SpaceList({
+  currentUserId,
+  setRunState,
+  showTemporaryComponent,
+}: Props) {
+  const [userSpaces, setUserSpaces] = useState<(Space_members | null)[]>([]);
   const getUserSpaces = useGetUserSpaces(currentUserId);
 
   useEffect(() => {
     if (getUserSpaces) {
       setUserSpaces(getUserSpaces);
-      if (getUserSpaces.length) {
+      if (!getUserSpaces.length) {
         setRunState(true);
       }
     }
   }, [getUserSpaces]);
 
+  useEffect(() => {
+    if (showTemporaryComponent) setUserSpaces((prev) => [null, ...prev]);
+    else {
+      setUserSpaces((prev) => {
+        const prevArray = [...prev];
+        if (!!prevArray.length && prevArray[0] === null) {
+          prevArray.shift();
+          return prevArray;
+        } else {
+          return prevArray;
+        }
+      });
+    }
+  }, [showTemporaryComponent]);
+
   return (
     <StSpaceListWrapper>
       <SpaceListHeader />
       <StSpaceList>
-        {userSpaces?.map((space) => {
+        {userSpaces?.map((space, index) => {
           return (
-            <li key={space.id}>
-              <SpaceCard space={space} />
+            <li key={space ? space.id : index}>
+              <SpaceCard space={space ? space : null} />
             </li>
           );
         })}
