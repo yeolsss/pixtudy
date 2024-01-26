@@ -149,7 +149,7 @@ export interface Database {
           color: string
           id?: string
           name: string
-          order: number
+          order?: number
           spaceId: string
         }
         Update: {

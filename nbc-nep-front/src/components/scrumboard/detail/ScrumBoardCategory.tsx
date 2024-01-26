@@ -15,7 +15,7 @@ export default function ScrumBoardCategory({ category }: Props) {
   console.log(items);
   return (
     <StCategoryWrapper>
-      <CategoryHeader name={name} color={color} />
+      <CategoryHeader name={name} color={color} id={id} />
       <StItemsContainer>
         {items?.map((item) => {
           return <li key={item.id}>{item.title}</li>;

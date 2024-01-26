@@ -1,4 +1,8 @@
+import ModalPortal from "@/components/modal/ModalPortal";
+import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCategoryModal";
+import useModal from "@/hooks/modal/useModal";
 import { useGetCategories } from "@/hooks/query/useSupabase";
+import useScrumboard from "@/hooks/scrumboard/useScrumboard";
 import { useParams } from "next/navigation";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
@@ -6,12 +10,15 @@ import ScrumBoardCategory from "./ScrumBoardCategory";
 export default function ScrumBoard() {
   const { space_id } = useParams();
   const spaceId = space_id as string;
-
+  const { openCreateCategoryModal, isCreateCategoryModalOpen } = useModal();
+  const { setCategories } = useScrumboard();
   const categories = useGetCategories(spaceId);
-
+  setCategories(categories!);
   console.log(categories);
 
-  const handleAddCategory = () => {};
+  const handleAddCategory = () => {
+    openCreateCategoryModal();
+  };
 
   return (
     <>
@@ -23,6 +30,11 @@ export default function ScrumBoard() {
           add category
         </StAddCategoryBtn>
       </StScrumBoardContainer>
+      {isCreateCategoryModalOpen && (
+        <ModalPortal>
+          <CreateCategoryModal />
+        </ModalPortal>
+      )}
     </>
   );
 }

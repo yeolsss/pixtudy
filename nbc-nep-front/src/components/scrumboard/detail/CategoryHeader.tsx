@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import CategoryForm from "./CategoryForm";
+import EditCategoryForm from "./EditCategoryForm";
 
 interface Props {
   name: string;
   color: string;
+  id: string;
 }
 
-export default function CategoryHeader({ name, color }: Props) {
+export default function CategoryHeader({ name, color, id }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const {} = useForm();
 
   const handleEdit = () => {
     setIsEdit(!isEdit);
@@ -19,7 +18,12 @@ export default function CategoryHeader({ name, color }: Props) {
   return (
     <StCategoryHeader>
       {isEdit ? (
-        <CategoryForm name={name} color={color} />
+        <EditCategoryForm
+          name={name}
+          color={color}
+          id={id}
+          setIsEdit={setIsEdit}
+        />
       ) : (
         <>
           <div>
@@ -39,13 +43,19 @@ const StCategoryHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: ${(props) => props.theme.unit[80]}px;
   padding: ${(props) => props.theme.spacing[8]};
-
   & > div {
     width: 100%;
     display: flex;
     align-items: center;
-    gap: ${(props) => props.theme.spacing[4]};
+    gap: ${(props) => props.theme.spacing[8]};
+  }
+
+  & > div > h1 {
+    font-family: var(--point-font);
+    font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
+    font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
   }
 `;
 
@@ -66,9 +76,9 @@ const StModifyCategoryBtn = styled.button`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: ${(props) => props.theme.unit[24]}px;
-  height: ${(props) => props.theme.unit[24]}px;
-  padding: 0;
+  width: ${(props) => props.theme.unit[20]}px;
+  height: ${(props) => props.theme.unit[20]}px;
+  padding-left: ${(props) => props.theme.spacing[32]};
   border: none;
   font-size: 0;
   &:hover {

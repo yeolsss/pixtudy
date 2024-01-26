@@ -4,6 +4,7 @@ export default function useModal() {
   const {
     isCreateSpaceModalOpen,
     isJoinSpaceModalOpen,
+    isCreateCategoryModalOpen,
     openModal,
     closeModal,
   } = modalStore();
@@ -12,11 +13,15 @@ export default function useModal() {
 
   const openCreateSpaceModal = () => openModal("isCreateSpaceModalOpen");
 
+  const openCreateCategoryModal = () => openModal("isCreateCategoryModalOpen");
+
   return {
     isCreateSpaceModalOpen,
+    isCreateCategoryModalOpen,
     isJoinSpaceModalOpen,
     openJoinSpaceModal,
     openCreateSpaceModal,
+    openCreateCategoryModal,
     closeModal,
   };
 }

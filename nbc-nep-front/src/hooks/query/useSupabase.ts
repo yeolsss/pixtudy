@@ -15,7 +15,12 @@ import {
   sendMessage,
   sendMessageArgs,
 } from "@/api/supabase/dm";
-import { getCategories, getCategoryItems } from "@/api/supabase/scrumboard";
+import {
+  createCategory,
+  getCategories,
+  getCategoryItems,
+  updateCategory,
+} from "@/api/supabase/scrumboard";
 import {
   createSpaceHandler,
   getSpaceData,
@@ -243,6 +248,8 @@ export function useReadDMMessage() {
 }
 
 /* ScrumBoard */
+
+/* Category */
 export function useGetCategories(spaceId: string) {
   const queryOptions = {
     queryKey: ["categoryList", spaceId],
@@ -261,4 +268,37 @@ export function useGetCategoryItems(categoryId: string) {
   };
 
   return useCustomQuery<Kanban_items[], Error>(queryOptions);
+}
+
+export function useCreateCategory(spaceId: string) {
+  const queryClient = useQueryClient();
+  const {
+    mutate: create,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: createCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+    },
+  });
+
+  return { create, isError, isSuccess };
+}
+
+export function useUpdateCategory(spaceId: string) {
+  const queryClient = useQueryClient();
+  const {
+    mutate: update,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: updateCategory,
+    onSuccess: () => {
+      console.log("update success");
+      queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+    },
+  });
+
+  return { update, isError, isSuccess };
 }
