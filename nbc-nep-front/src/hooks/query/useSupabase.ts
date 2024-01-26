@@ -21,6 +21,8 @@ import {
   createSpaceHandler,
   getSpaceData,
   joinSpaceHandler,
+  removeSpace as removeSpaceSupabase,
+  updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
@@ -134,6 +136,43 @@ export function useGetUserSpaces(currentUserId: string) {
     enabled: !!currentUserId,
   };
   return useCustomQuery<Space_members[], Error>(getUserSpacesOptions);
+}
+
+export function useRemoveSpace(onSuccess: () => void) {
+  const client = useQueryClient();
+  const {
+    mutate: removeSpace,
+    isSuccess: isRemovingSuccess,
+    isError: isRemovingError,
+  } = useMutation({
+    mutationFn: removeSpaceSupabase,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+      onSuccess();
+    },
+    onError: (error) => {
+      console.error("remove space error: ", error);
+    },
+  });
+  return { removeSpace, isRemovingSuccess, isRemovingError };
+}
+
+export function useUpdateSpace() {
+  const client = useQueryClient();
+  const {
+    mutate: updateSpace,
+    isSuccess: isUpdatingSuccess,
+    isError: isUpdatingError,
+  } = useMutation({
+    mutationFn: updateSpaceSupabase,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+    },
+    onError: (error) => {
+      console.error("update space error: ", error);
+    },
+  });
+  return { updateSpace, isUpdatingSuccess, isUpdatingError };
 }
 
 /* dm */
