@@ -100,8 +100,6 @@ export const getStaticProps = async () => {
     space!.users = [...space!.users, users.id];
   });
 
-  console.log(spaces);
-
   return { props: { spaces } };
 };
 

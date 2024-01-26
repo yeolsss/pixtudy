@@ -1,6 +1,6 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import { Space_members } from "@/supabase/types/supabase.tables.type";
-import { useEffect, useState } from "react";
+import useSpaceSearch from "@/zustand/spaceListStore";
+import { useEffect } from "react";
 import styled from "styled-components";
 import SpaceCard from "./SpaceCard";
 import SpaceListHeader from "./SpaceListHeader";
@@ -10,18 +10,20 @@ interface Props {
 }
 
 export default function SpaceList({ currentUserId }: Props) {
-  const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
   const getUserSpaces = useGetUserSpaces(currentUserId);
+  const { filteredSpaces, setSpaces } = useSpaceSearch();
 
   useEffect(() => {
-    if (getUserSpaces) setUserSpaces(getUserSpaces);
+    if (getUserSpaces) {
+      setSpaces(getUserSpaces);
+    }
   }, [getUserSpaces]);
 
   return (
     <StSpaceListWrapper>
       <SpaceListHeader />
       <StSpaceList>
-        {userSpaces?.map((space) => {
+        {filteredSpaces?.map((space) => {
           return (
             <li key={space.id}>
               <SpaceCard space={space} />

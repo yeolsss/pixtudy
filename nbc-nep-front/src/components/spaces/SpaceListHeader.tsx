@@ -16,6 +16,7 @@ export default function SpaceListHeader() {
   const handleOpenJoinSpaceModal = () => {
     openJoinSpaceModal();
   };
+
   const handleOpenCreateSpaceModal = () => {
     openCreateSpaceModal();
   };
