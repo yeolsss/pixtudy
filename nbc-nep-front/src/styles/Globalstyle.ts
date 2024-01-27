@@ -504,20 +504,6 @@ const GlobalStyle = styled.createGlobalStyle`
   #__next {
     height: 100vh;
   }
-
-  .myCustomTooltipClass button[aria-label="Next"] {
-    background-color: #2563eb;
-    border-radius: 5px;
-    padding: 8px;
-    color: #ffffff;
-    font-size: 1.3rem;
-    font-family: unset;
-  }
-
-  .myCustomTooltipClass button[aria-label="Next"]:hover {
-    background-color: #1e40af;
-    color: #ffffff;
-  }
 `;
 
 export default GlobalStyle;
