@@ -21,10 +21,12 @@ export const getCategories = async (
 
 export const getCategoryItems = async (
   categoryId: string
-): Promise<GetKanbanItemsByAssignees[]> => {
-  const { data, error } = await supabase.rpc("get_kanban_items_by_assignees", {
-    p_category_id: categoryId,
-  });
+): Promise<GetKanbanItemsByAssignees[] | null> => {
+  const { data, error } = await supabase
+    .rpc("get_kanban_items_by_assignees", {
+      p_category_id: categoryId,
+    })
+    .returns<GetKanbanItemsByAssignees[]>();
   if (error) throw error;
   return data;
 };
