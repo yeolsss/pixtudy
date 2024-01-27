@@ -2,7 +2,6 @@ import { uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
 import { StDangerButton } from "@/components/common/button/button.styles";
 import { StLoadingSpinner } from "@/components/common/loading/LoadingProgress";
-import DefaultSpanText from "@/components/common/text/DefaultSpanText";
 import {
   SPACE_DESCRIPTION_MAX_LENGTH,
   SPACE_NAME_MAX_LENGTH,
@@ -18,6 +17,7 @@ import {
   SPACE_THUMB_FORM,
 } from "../constants/config.contant";
 import { StHiddenInput } from "../styles/config.styles";
+import ConfigSpaceFormItem from "./ConfigSpaceFormItem";
 
 export default function ConfigSpaceOwner() {
   const { spaceInfo } = useMetaversePlayer();
@@ -108,8 +108,12 @@ export default function ConfigSpaceOwner() {
           accept="image/*"
         />
       </div>
-      <div>
-        <span>스페이스 이름</span>
+      <ConfigSpaceFormItem
+        title="스페이스 이름"
+        maxLength={SPACE_NAME_MAX_LENGTH}
+        curLength={watch(SPACE_NAME_FORM)?.length || 0}
+        error={nameError}
+      >
         <input
           type="text"
           {...register(SPACE_NAME_FORM, {
@@ -122,13 +126,13 @@ export default function ConfigSpaceOwner() {
           })}
           maxLength={SPACE_NAME_MAX_LENGTH}
         />
-        <span>
-          {watch(SPACE_NAME_FORM)?.length || 0}/{SPACE_NAME_MAX_LENGTH}
-        </span>
-        {nameError && <DefaultSpanText>{nameError as string}</DefaultSpanText>}
-      </div>
-      <div>
-        <span>스페이스 설명</span>
+      </ConfigSpaceFormItem>
+      <ConfigSpaceFormItem
+        title="스페이스 설명"
+        maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
+        curLength={watch(SPACE_DESCRIPTION_FORM)?.length || 0}
+        error={descriptionError}
+      >
         <textarea
           {...register(SPACE_DESCRIPTION_FORM, {
             value: spaceInfo?.description,
@@ -136,15 +140,7 @@ export default function ConfigSpaceOwner() {
           })}
           maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
         ></textarea>
-        <span>
-          {watch(SPACE_DESCRIPTION_FORM)?.length || 0}/
-          {SPACE_DESCRIPTION_MAX_LENGTH}
-        </span>
-        {descriptionError && (
-          <DefaultSpanText>{descriptionError as string}</DefaultSpanText>
-        )}
-      </div>
-
+      </ConfigSpaceFormItem>
       <div>
         <button type="submit">수정하기</button>
         <StDangerButton type="button" onClick={handleRemoveSpace}>
