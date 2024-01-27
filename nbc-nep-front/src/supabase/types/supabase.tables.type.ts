@@ -1,5 +1,3 @@
-import { Json } from "@/supabase/types/supabase";
-
 export interface Users {
   id: string /* primary key */;
   created_at: string;
@@ -94,5 +92,11 @@ export type GetKanbanItemsByAssignees = {
   categoryId: string;
   item_creator_space_avatar: string;
   create_user_id: string;
-  assignees: Json;
+  assignees: KanbanAssignees[];
+};
+
+export type KanbanAssignees = {
+  assigneesId: string;
+  spaceAvatar: string;
+  userId: string;
 };
