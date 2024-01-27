@@ -21,6 +21,7 @@ import {
   createSpaceHandler,
   getSpaceData,
   joinSpaceHandler,
+  removeSpace,
   removeSpace as removeSpaceSupabase,
   updateSpace,
   updateSpace as updateSpaceSupabase,
@@ -294,4 +295,17 @@ export function useUpdateSpaceInfo() {
   });
 
   return { updateSpace: mutate, ...rest };
+}
+
+export function useDeleteSpace() {
+  const client = useQueryClient();
+  const { mutate, ...rest } = useMutation({
+    mutationFn: removeSpace,
+    onSuccess: (spaceId) => {
+      client.invalidateQueries({ queryKey: ["spaceInfo", spaceId] });
+    },
+    onError: () => {},
+  });
+
+  return { deleteSpace: mutate, ...rest };
 }

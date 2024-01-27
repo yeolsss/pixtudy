@@ -1,6 +1,7 @@
 import { Chat } from "@/components/metaverse/types/metaverse";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import io, { Socket } from "socket.io-client";
 import useMetaversePlayer from "../metaverse/useMetaversePlayer";
 
@@ -24,6 +25,10 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
     });
 
     socket.current.on("removedRoom", () => {
+      toast.error("스페이스가 삭제됐습니다", {
+        position: "top-center",
+        toastId: "remove-room",
+      });
       window.location.href = "/dashboard";
     });
 

@@ -10,9 +10,10 @@ import {
 import useChat from "@/hooks/chat/useChat";
 import useKeyDownPrevent from "@/hooks/metaverse/useKeyDownPrevent";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
-import { useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
+import { useDeleteSpace, useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import {
   SPACE_DESCRIPTION_FORM,
   SPACE_NAME_FORM,
@@ -29,7 +30,12 @@ export default function ConfigSpaceOwner() {
     watch,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-  const { updateSpace, isSuccess, isPending } = useUpdateSpaceInfo();
+  const {
+    updateSpace,
+    isSuccess: isSuccessUpdate,
+    isPending: isPendingUpdate,
+  } = useUpdateSpaceInfo();
+  const { deleteSpace, isSuccess: isSuccessDelete } = useDeleteSpace();
   const formRef = useKeyDownPrevent<HTMLFormElement>();
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
@@ -40,9 +46,10 @@ export default function ConfigSpaceOwner() {
   const descriptionError = errors[SPACE_DESCRIPTION_FORM]?.message;
 
   const handleRemoveSpace = async () => {
+    if (!spaceInfo) return;
     if (confirm("진짜 삭제할라고?")) {
       alert("good bye... bro...");
-      emitRemoveSpace();
+      deleteSpace(spaceInfo?.id);
     }
   };
 
@@ -84,10 +91,15 @@ export default function ConfigSpaceOwner() {
   }, [thumbWatch]);
 
   useEffect(() => {
-    if (isSuccess) {
-      alert("수정이 완료됐습니다!");
+    if (isSuccessUpdate) {
+      toast.success("수정이 완료됐습니다!", { position: "top-right" });
     }
-  }, [isSuccess]);
+  }, [isSuccessUpdate]);
+  useEffect(() => {
+    if (isSuccessDelete) {
+      emitRemoveSpace();
+    }
+  }, [isSuccessDelete]);
 
   return (
     <form onSubmit={handleSubmit(handleUpdateSpace)} ref={formRef}>
@@ -142,7 +154,7 @@ export default function ConfigSpaceOwner() {
           삭제하기
         </StDangerButton>
       </div>
-      {isPending && <StLoadingSpinner />}
+      {isPendingUpdate && <StLoadingSpinner />}
     </form>
   );
 }
