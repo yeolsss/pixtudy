@@ -345,6 +345,7 @@ export function useUpdateCategory(spaceId: string) {
   return { update, isError, isSuccess };
 }
 
+/* Auth again */
 export function useForgetPassword() {
   const { mutate: forgetPassword } = useMutation({
     mutationFn: forgottenPasswordHandler,

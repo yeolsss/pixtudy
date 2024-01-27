@@ -1,14 +1,14 @@
 import { StCTAButton } from "@/components/common/button/button.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
 import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCategoryModal";
+import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
 import useModal from "@/hooks/modal/useModal";
 import { useGetCategories } from "@/hooks/query/useSupabase";
+import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
+import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import { useParams } from "next/navigation";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
-import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
-import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 
 export default function ScrumBoard() {
   const { space_id } = useParams();
