@@ -1,4 +1,4 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
+import { User, createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 const PAGES_PATH = [
@@ -29,6 +29,12 @@ export async function middleware(request: NextRequest) {
       .single();
     return spaceInfo ? true : false;
   };
+
+  console.log(
+    request.nextUrl.pathname,
+    " is PreFetching?? : ",
+    request.headers.get("Purpose") === "prefetch"
+  );
 
   // 정적 파일, 이미지(public 포함), 프리패칭에 대한 요청을 허용하는 로직
   const isPublicResource =
@@ -74,7 +80,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith("/signin") || pathname.startsWith("/signup")) {
-    if (session) {
+    if (session && request.headers.get("Purpose") !== "prefetch") {
       const url = new URL("/", request.url);
       const response = NextResponse.redirect(url);
       response.cookies.set("message", "login_already");
@@ -91,6 +97,22 @@ export async function middleware(request: NextRequest) {
       const response = NextResponse.redirect(url);
       response.cookies.set("message", "invalid_space");
       return response;
+    }
+  }
+
+  if (pathname.startsWith("/changepassword")) {
+    const user = session?.user as User & { amr?: [{ method: string }] };
+    if (
+      user?.amr &&
+      typeof user.amr[0] === "object" &&
+      "method" in user.amr[0]
+    ) {
+      if (user.amr[0].method !== "recovery") {
+        const url = new URL("/", request.url);
+        const response = NextResponse.redirect(url);
+        response.cookies.set("message", "invalid_path");
+        return response;
+      }
     }
   }
 

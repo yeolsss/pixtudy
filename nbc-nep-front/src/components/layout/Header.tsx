@@ -25,11 +25,15 @@ export default function Header() {
   };
 
   const handleLogout = () => {
-    logout();
-    router.push("/");
+    logout(undefined, {
+      onSuccess: () => {
+        window.location.href = "/";
+      },
+    });
   };
 
   const handleToDashboard = () => {
+    console.log(user.id);
     if (user.id) {
       router.push("/dashboard");
     } else {

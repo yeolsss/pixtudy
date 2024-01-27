@@ -1,6 +1,7 @@
 import {
   forgottenPasswordHandler,
   getOtherUserHandler,
+  getSession,
   logoutHandler,
   signInHandler,
   signUpHandler,
@@ -29,6 +30,7 @@ import { Database, Tables } from "@/supabase/types/supabase";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
+import { Session } from "@supabase/supabase-js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 /* Auth */
@@ -75,6 +77,18 @@ export function useGetOtherUserInfo(otherUserId: string) {
   };
 
   return useCustomQuery<Tables<"users"> | null, Error>(getOtherUserOptions);
+}
+
+export function useGetSessionInfo() {
+  const getSessionOptions = {
+    queryKey: ["session"],
+    queryFn: async () => {
+      const result = await getSession();
+      return result.session; // 여기서 session 속성을 직접 반환
+    },
+    queryOption: { staleTime: Infinity },
+  };
+  return useCustomQuery<Session | null, Error>(getSessionOptions);
 }
 
 /* space */
