@@ -27,7 +27,7 @@ const StAvatar = styled.span<{ space_avatar?: string }>`
     `url("/assets/characters/presets/${props.space_avatar}.png")`};
   background-size: 512px 64px;
   background-position: -1px 40px;
-  border: 1px solid black;
+  border: 1px solid ${(props) => props.theme.color.border.secondary};
   border-radius: ${(props) => props.theme.border.radius.circle};
   display: block;
   background-color: white;
