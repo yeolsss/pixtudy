@@ -107,3 +107,29 @@ export const postScrumBoardItem = async ({
     throw new Error(assigneesError?.message);
   }
 };
+
+interface UpdateScrumBoardItemPrams {
+  id: string;
+  updateCategoryId: string;
+}
+export const updateCategoryItem = async ({
+  id,
+  updateCategoryId,
+}: UpdateScrumBoardItemPrams) => {
+  const { error } = await supabase
+    .from("kanban_items")
+    .update({ categoryId: updateCategoryId })
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const deleteCategoryItem = async (id: string) => {
+  const { error } = await supabase.from("kanban_items").delete().eq("id", id);
+  if (error) {
+    throw new Error(error.message);
+  }
+};

@@ -99,4 +99,5 @@ export type KanbanAssignees = {
   assigneesId: string;
   spaceAvatar: string;
   userId: string;
+  space_display_name: string;
 };

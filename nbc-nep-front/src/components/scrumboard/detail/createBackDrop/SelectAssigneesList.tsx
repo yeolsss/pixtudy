@@ -3,33 +3,39 @@ import styled from "styled-components";
 import closeIcon from "@/assets/boards/assingee-delete.svg";
 import Image from "next/image";
 
-export default function SelectAssigneesList() {
+interface Props {
+  tagType: "assignees" | "labels";
+}
+export default function SelectAssigneesList({ tagType }: Props) {
   const { assignees, deleteAssignees } = useScrumBoardMemberSearch();
 
   const handleDeleteAssignees = (id: string) => {
     deleteAssignees(id);
   };
   return (
-    <StSelectAssigneesListWrapper>
+    <StSelectAssigneesListWrapper $tagType={tagType === "assignees"}>
       {assignees.map((assignee) => (
         <StSelectAssigneesCard key={assignee.id}>
           <span>{assignee.space_display_name}</span>
-          <StDeleteButton
-            onClick={() => handleDeleteAssignees(assignee.users?.id!)}
-          >
-            <Image src={closeIcon} alt={"삭제"} width={12} height={12} />
-          </StDeleteButton>
+          {tagType === "assignees" && (
+            <StDeleteButton
+              onClick={() => handleDeleteAssignees(assignee.users?.id!)}
+            >
+              <Image src={closeIcon} alt={"삭제"} width={12} height={12} />
+            </StDeleteButton>
+          )}
         </StSelectAssigneesCard>
       ))}
     </StSelectAssigneesListWrapper>
   );
 }
 
-const StSelectAssigneesListWrapper = styled.div`
+const StSelectAssigneesListWrapper = styled.div<{ $tagType: boolean }>`
   width: 100%;
   border: 1px solid;
   border-radius: ${(props) => props.theme.border.radius[8]};
-  border: 1px solid ${(props) => props.theme.color.border.secondary};
+  border: ${({ $tagType }) => ($tagType ? "1px" : "0")} solid
+    ${(props) => props.theme.color.border.secondary};
   padding: ${(props) => props.theme.spacing[8]};
   display: flex;
   gap: ${(props) => props.theme.spacing[8]};

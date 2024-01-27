@@ -40,7 +40,7 @@ export default function CreateAssignees() {
         />
         <AssigneesBackDrop />
       </StCreateAssigneesInputWrapper>
-      {assignees.length > 0 && <SelectAssigneesList />}
+      {assignees.length > 0 && <SelectAssigneesList tagType={"assignees"} />}
     </StCreateAssigneesWrapper>
   );
 }

@@ -13,7 +13,7 @@ export default function ScrumBoardCategory({ category }: Props) {
   const { id, name, color } = category;
   const { setIsOpen } = useScrumBoardItemBackDrop();
   const handleAddItem = () => {
-    setIsOpen(category);
+    setIsOpen(category, null);
   };
   const items = useGetCategoryItems(id);
   return (
@@ -21,7 +21,9 @@ export default function ScrumBoardCategory({ category }: Props) {
       <CategoryHeader name={name} color={color} id={id} />
       <StItemsContainer>
         {items?.map((item) => {
-          return <ScrumBoardItem key={item.id} item={item} />;
+          return (
+            <ScrumBoardItem key={item.id} category={category} item={item} />
+          );
         })}
       </StItemsContainer>
       <button onClick={handleAddItem}>Add Item</button>
