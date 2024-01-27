@@ -40,6 +40,7 @@ import {
 import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 /* Auth */
 /* user */
@@ -337,7 +338,7 @@ export function useUpdateCategory(spaceId: string) {
   } = useMutation({
     mutationFn: updateCategory,
     onSuccess: () => {
-      console.log("update success");
+      toast.success("카테고리가 수정되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
     },
   });

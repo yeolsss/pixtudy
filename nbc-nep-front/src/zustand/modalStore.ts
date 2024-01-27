@@ -7,6 +7,7 @@ interface ModalState {
   isCreateCategoryModalOpen: boolean;
   isAvatarModalOpen: boolean;
   isForgetPasswordModalOpen: boolean;
+  isConfirmModalOpen: boolean;
   space: (Omit<Spaces, "users"> & { users: string[] }) | null;
 }
 
@@ -23,6 +24,7 @@ const initialState = {
   isCreateCategoryModalOpen: false,
   isAvatarModalOpen: false,
   isForgetPasswordModalOpen: false,
+  isConfirmModalOpen: false,
   space: null,
 };
 

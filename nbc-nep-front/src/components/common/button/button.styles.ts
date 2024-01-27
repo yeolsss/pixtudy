@@ -13,9 +13,14 @@ export const StCTAButton = styled.button`
   letter-spacing: var(--unit-2);
   font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
   color: ${(props) => props.theme.color.text.interactive.inverse};
+  border: 0;
   &:hover {
     background-color: ${(props) =>
       props.theme.color.bg.interactive["primary-hovered"]};
+  }
+  &:active {
+    background-color: ${(props) =>
+      props.theme.color.bg.interactive["primary-pressed"]};
   }
 `;
 

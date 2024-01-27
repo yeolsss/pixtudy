@@ -19,14 +19,17 @@ export const getCategories = async (
   return data;
 };
 
+// Promise 제네릭 인자 타입을 맞춰야할듯. 임시방편
 export const getCategoryItems = async (
   categoryId: string
 ): Promise<GetKanbanItemsByAssignees[]> => {
-  const { data, error } = await supabase.rpc("get_kanban_items_by_assignees", {
-    p_category_id: categoryId,
-  });
+  const { data, error } = await supabase
+    .rpc("get_kanban_items_by_assignees", {
+      p_category_id: categoryId,
+    })
+    .returns<GetKanbanItemsByAssignees[]>();
   if (error) throw error;
-  return data;
+  return data ? data : [];
 };
 
 export const createCategory = async ({
