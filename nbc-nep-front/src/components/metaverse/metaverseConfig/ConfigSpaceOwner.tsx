@@ -1,5 +1,7 @@
+import { uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
+import { useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
 import { useEffect, useRef, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -12,6 +14,7 @@ import { StHiddenInput } from "../styles/config.styles";
 export default function ConfigSpaceOwner() {
   const { spaceInfo } = useMetaversePlayer();
   const { handleSubmit, register, watch } = useForm();
+  const { updateSpace } = useUpdateSpaceInfo();
   const formRef = useRef<HTMLFormElement>(null);
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
@@ -24,12 +27,25 @@ export default function ConfigSpaceOwner() {
   };
 
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
-    // validation을 진행했다고 가정
-    const thumb = data[SPACE_THUMB_FORM];
+    if (!spaceInfo) return;
+    // TODO: validation을 진행했다고 가정... validation 적용 해야 함
+    const thumb: FileList = data[SPACE_THUMB_FORM];
+    const title: string = data[SPACE_NAME_FORM];
+    const description: string = data[SPACE_DESCRIPTION_FORM];
 
-    if (thumb) {
-      // thumb잉 ㅣㅆ다면 firebase에 thumb을 따로 추가해야한다.
+    let thumbnailURL: string | undefined | null = null;
+    if (thumb && thumb.length > 0) {
+      // TODO: error 핸들링 추가해야 한다
+      const { data, error } = await uploadThumbnail(thumb[0], spaceInfo.id);
+      if (data) thumbnailURL = data;
     }
+
+    updateSpace({
+      id: spaceInfo.id,
+      title,
+      description,
+      space_thumb: thumbnailURL,
+    });
   };
 
   useEffect(() => {

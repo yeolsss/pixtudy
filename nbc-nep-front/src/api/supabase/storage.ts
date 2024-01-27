@@ -12,6 +12,6 @@ export const uploadThumbnail = async (
 
   const { data, error } = await supabase.storage
     .from(BUCKET_NAME)
-    .upload(fileName, thumbnailFile);
+    .upload(fileName, thumbnailFile, { upsert: true });
   return { data: BASE_URL + data?.path, error };
 };
