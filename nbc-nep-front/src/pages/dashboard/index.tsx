@@ -101,7 +101,18 @@ const Dashboard: NextPage<Props> & {
         showSkipButton
         disableOverlayClose
         hideCloseButton
-        styles={{ options: { zIndex: 10000 } }}
+        styles={{
+          options: { zIndex: 10000 },
+          tooltipContent: { fontSize: "1.5rem", fontWeight: "bold" },
+          buttonNext: {
+            backgroundColor: "#2563eb",
+            fontSize: "1.3rem",
+            borderRadius: "5px",
+          },
+          buttonBack: {
+            color: "#2563eb",
+          },
+        }}
       />
     </>
   );
