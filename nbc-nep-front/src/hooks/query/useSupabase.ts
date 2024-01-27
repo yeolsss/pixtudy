@@ -309,7 +309,9 @@ export function useGetCategoryItems(categoryId: string) {
     enabled: !!categoryId,
   };
 
-  return useCustomQuery<GetKanbanItemsByAssignees[], Error>(queryOptions);
+  return useCustomQuery<GetKanbanItemsByAssignees[] | null, Error>(
+    queryOptions
+  );
 }
 
 export function useCreateCategory(spaceId: string) {
