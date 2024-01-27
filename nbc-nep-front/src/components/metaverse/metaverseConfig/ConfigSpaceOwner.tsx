@@ -27,7 +27,7 @@ export default function ConfigSpaceOwner() {
     watch,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-  const { updateSpace, isSuccess, isIdle, isPending } = useUpdateSpaceInfo();
+  const { updateSpace, isSuccess, isPending } = useUpdateSpaceInfo();
   const formRef = useRef<HTMLFormElement>(null);
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
@@ -48,7 +48,7 @@ export default function ConfigSpaceOwner() {
     const title: string = data[SPACE_NAME_FORM];
     const description: string = data[SPACE_DESCRIPTION_FORM];
 
-    let thumbnailURL: string | undefined | null = null;
+    let thumbnailURL: string | null = spaceInfo.space_thumb;
     if (thumb && thumb.length > 0) {
       const { data, error } = await uploadThumbnail(thumb[0], spaceInfo.id);
       if (data) thumbnailURL = data;
@@ -87,6 +87,12 @@ export default function ConfigSpaceOwner() {
       setThumbPreviewSrc(URL.createObjectURL(file));
     }
   }, [thumbWatch]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      alert("수정이 완료됐습니다!");
+    }
+  }, [isSuccess]);
 
   return (
     <form onSubmit={handleSubmit(handleUpdateSpace)} ref={formRef}>
@@ -149,6 +155,3 @@ export default function ConfigSpaceOwner() {
     </form>
   );
 }
-
-// TODO: owner만 -> 스페이스 삭제, 스페이스 이름 변경, 스페이스 설명 수정이 가능해야 한다
-// 썸네일 수정 및 삭제도 가능해야 한다

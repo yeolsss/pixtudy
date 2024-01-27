@@ -288,6 +288,7 @@ export function useUpdateSpaceInfo() {
     onSuccess: (spaceInfo) => {
       const spaceId = spaceInfo.id;
       client.invalidateQueries({ queryKey: ["spaceInfo", spaceId] });
+      client.invalidateQueries({ queryKey: ["userSpaces", spaceInfo.owner] });
     },
     onError: () => {},
   });
