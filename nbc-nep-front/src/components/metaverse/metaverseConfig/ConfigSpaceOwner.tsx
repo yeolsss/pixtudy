@@ -2,6 +2,11 @@ import { uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
 import { StDangerButton } from "@/components/common/button/button.styles";
 import DefaultSpanText from "@/components/common/text/DefaultSpanText";
+import {
+  SPACE_DESCRIPTION_MAX_LENGTH,
+  SPACE_NAME_MAX_LENGTH,
+  SPACE_NAME_MIN_LENGTH,
+} from "@/components/spaces/constants/constants";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
 import { useEffect, useRef, useState } from "react";
@@ -26,6 +31,9 @@ export default function ConfigSpaceOwner() {
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
   );
+  const thumbWatch = watch(SPACE_THUMB_FORM);
+  const nameError = errors[SPACE_NAME_FORM]?.message;
+  const descriptionError = errors[SPACE_DESCRIPTION_FORM]?.message;
 
   const handleRemoveSpace = () => {
     if (confirm("진짜 삭제할라고?")) {
@@ -66,8 +74,6 @@ export default function ConfigSpaceOwner() {
     };
   }, []);
 
-  const thumbWatch = watch(SPACE_THUMB_FORM);
-
   useEffect(() => {
     if (thumbWatch && thumbWatch.length > 0) {
       const file = thumbWatch[0];
@@ -97,26 +103,33 @@ export default function ConfigSpaceOwner() {
             value: spaceInfo?.title,
             required: "스페이스의 이름이 필요합니다.",
             minLength: {
-              value: 2,
+              value: SPACE_NAME_MIN_LENGTH,
               message: "스페이스의 이름은 2글자 이상이어야 합니다.",
             },
           })}
-          maxLength={20}
+          maxLength={SPACE_NAME_MAX_LENGTH}
         />
-        <span>{watch(SPACE_NAME_FORM)?.length || 0}/20</span>
-        {errors[SPACE_NAME_FORM] && (
-          <DefaultSpanText>
-            {errors[SPACE_NAME_FORM]?.message as string}
-          </DefaultSpanText>
-        )}
+        <span>
+          {watch(SPACE_NAME_FORM)?.length || 0}/{SPACE_NAME_MAX_LENGTH}
+        </span>
+        {nameError && <DefaultSpanText>{nameError as string}</DefaultSpanText>}
       </div>
       <div>
-        <span>스페이스 설명</span> {/* TODO: 스페이스 설명 validation */}
+        <span>스페이스 설명</span>
         <textarea
           {...register(SPACE_DESCRIPTION_FORM, {
             value: spaceInfo?.description,
+            required: "스페이스의 설명이 필요합니다. ",
           })}
+          maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
         ></textarea>
+        <span>
+          {watch(SPACE_DESCRIPTION_FORM)?.length || 0}/
+          {SPACE_DESCRIPTION_MAX_LENGTH}
+        </span>
+        {descriptionError && (
+          <DefaultSpanText>{descriptionError as string}</DefaultSpanText>
+        )}
       </div>
 
       <div>
