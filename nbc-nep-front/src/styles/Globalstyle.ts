@@ -477,6 +477,11 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 1px solid ${(props) => props.theme.color.border.secondary};
     font-family: var(--main-font);
     font-size: ${(props) => props.theme.body.md.medium.fontSize};
+    &:focus {
+      outline: none;
+      border: 1px solid
+        ${(props) => props.theme.color.border.interactive.primary};
+    }
   }
 
   button {

@@ -1,4 +1,4 @@
-import { StFormCTAButton } from "@/components/spaces/JoinSpaceForm";
+import { StFormCTAButton } from "@/components/common/button/button.styles";
 import useModal from "@/hooks/modal/useModal";
 import { useCreateCategory, useGetCategories } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";

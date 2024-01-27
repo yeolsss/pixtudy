@@ -1,6 +1,6 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
 import useAuth from "@/zustand/authStore";
-import { StCardList, StCardListWrapper } from "../spaces/SpaceList";
+import { StCardListWrapper } from "../spaces/SpaceList";
 import ScrumBoardCard from "./ScrumBoardCard";
 
 export default function ScrumBoardList() {
@@ -8,13 +8,13 @@ export default function ScrumBoardList() {
   const userSpaces = useGetUserSpaces(user.id);
   return (
     <StCardListWrapper>
-      <StCardList>
+      <ul>
         <li>
           {userSpaces?.map((space) => (
             <ScrumBoardCard key={space.id} space={space} />
           ))}
         </li>
-      </StCardList>
+      </ul>
     </StCardListWrapper>
   );
 }

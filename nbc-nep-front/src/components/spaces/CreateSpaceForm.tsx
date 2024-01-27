@@ -13,8 +13,9 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
+import { StFormCTAButton } from "../common/button/button.styles";
 import DefaultSpanText from "../common/text/DefaultSpanText";
-import { StContentsContainer, StFormCTAButton } from "./JoinSpaceForm";
+import { StContentsContainer } from "./JoinSpaceForm";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { CreateSpaceInfo } from "./types/space.types";
 
@@ -23,6 +24,7 @@ interface Props {
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
   getValues: UseFormGetValues<FieldValues>;
+  isValid: boolean;
 }
 
 export default function CreateSpaceForm({
@@ -30,6 +32,7 @@ export default function CreateSpaceForm({
   handleSubmit,
   errors,
   getValues,
+  isValid,
 }: Props) {
   const router = useRouter();
   const { userProfile, setCreateSpaceInfo } = useSpace();
@@ -73,15 +76,14 @@ export default function CreateSpaceForm({
           {fieldValues.map((fieldValue) =>
             fieldValue.type === "text" ? (
               <div key={fieldValue.name}>
-                <label htmlFor={fieldValue.name}>스페이스 이름</label>
                 <StCreateInputWrapper
                   key={fieldValue.name}
                   $isError={!!errors.spaceName?.message}
                 >
+                  <label htmlFor={fieldValue.name}>스페이스 이름</label>
                   <input
                     type={fieldValue.type}
                     placeholder={fieldValue.placeholder}
-                    maxLength={20}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceName && (
@@ -93,15 +95,14 @@ export default function CreateSpaceForm({
               </div>
             ) : (
               <div key={fieldValue.name}>
-                <label htmlFor="">스페이스 설명 </label>
                 <StCreateInputWrapper
                   key={fieldValue.name}
                   $isError={!!errors.spaceDescription?.message}
                 >
+                  <label htmlFor="">스페이스 설명 </label>
                   <textarea
                     key={fieldValue.name}
                     placeholder={fieldValue.placeholder}
-                    maxLength={100}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceDescription && (
@@ -116,7 +117,9 @@ export default function CreateSpaceForm({
         </div>
       </StCreateContentsContainer>
       <div>
-        <StFormCTAButton type="submit">스페이스 생성하기</StFormCTAButton>
+        <StFormCTAButton type="submit" disabled={!isValid}>
+          스페이스 생성하기
+        </StFormCTAButton>
       </div>
     </StCreateSpaceForm>
   );
