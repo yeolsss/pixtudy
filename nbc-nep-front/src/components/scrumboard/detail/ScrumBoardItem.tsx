@@ -17,7 +17,7 @@ function ScrumBoardItem({ item }: Props) {
         <StAssigneesWrapper>
           {item.assignees.map((assignee, index) => {
             return (
-              <StMetaAvatarWrapper $index={index}>
+              <StMetaAvatarWrapper key={assignee.assigneesId} $index={index}>
                 <MetaAvatar
                   spaceAvatar={assignee.spaceAvatar}
                   width={24}

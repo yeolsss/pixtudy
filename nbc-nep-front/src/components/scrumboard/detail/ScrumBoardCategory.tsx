@@ -21,7 +21,7 @@ export default function ScrumBoardCategory({ category }: Props) {
       <CategoryHeader name={name} color={color} id={id} />
       <StItemsContainer>
         {items?.map((item) => {
-          return <ScrumBoardItem item={item} />;
+          return <ScrumBoardItem key={item.id} item={item} />;
         })}
       </StItemsContainer>
       <button onClick={handleAddItem}>Add Item</button>
