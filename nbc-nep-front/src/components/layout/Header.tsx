@@ -1,4 +1,5 @@
 import { useLogoutUser } from "@/hooks/query/useSupabase";
+import { pathValidation } from "@/utils/middlewareValidate";
 import useAuth from "@/zustand/authStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,6 +9,7 @@ import { StCTAButton } from "../common/button/button.styles";
 export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
+  const { user } = useAuth();
 
   const {
     isLogin,
@@ -28,7 +30,12 @@ export default function Header() {
   };
 
   const handleToDashboard = () => {
-    router.push("/dashboard");
+    if (user.id) {
+      router.push("/dashboard");
+    } else {
+      router.push("/signin");
+      pathValidation("login_first");
+    }
   };
 
   const loginModeButton = [{ text: "로그아웃", handler: handleLogout }];
