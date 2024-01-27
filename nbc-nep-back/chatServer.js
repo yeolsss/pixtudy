@@ -4,6 +4,7 @@ module.exports = function (io) {
     console.log("chat [" + socket.id + "] connected");
 
     socket.on("joinRoom", (spaceId) => {
+      console.log("joinRoom", spaceId, socket.id);
       chat[socket.id] = {
         userId: socket.id,
         playerDisplayName: socket.playerDisplayName || socket.id,
@@ -41,10 +42,15 @@ module.exports = function (io) {
     );
 
     socket.on("removeRoom", () => {
-      const player = chat[socket.id];
-      const spaceId = player.spaceId;
+      try {
+        console.log(socket.rooms);
+        const player = chat[socket.id];
+        const spaceId = player.spaceId;
 
-      io.to(spaceId).emit("removedRoom");
+        io.to(spaceId).emit("removedRoom");
+      } catch (error) {
+        console.log("an error occurred while remove room :", error);
+      }
 
       // TODO : io room 제거...
     });

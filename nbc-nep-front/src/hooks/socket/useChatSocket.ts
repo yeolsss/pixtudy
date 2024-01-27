@@ -23,6 +23,10 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
       handleSetGlobalChatAlarmState(true);
     });
 
+    socket.current.on("removedRoom", () => {
+      window.location.href = "/dashboard";
+    });
+
     return () => {
       socket.current?.disconnect();
     };
@@ -33,5 +37,9 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
     socket.current?.emit("sendMessage", newChat);
   };
 
-  return { chatList, sendChatMessage };
+  const emitRemoveSpace = () => {
+    socket.current?.emit("removeRoom");
+  };
+
+  return { chatList, sendChatMessage, emitRemoveSpace };
 }

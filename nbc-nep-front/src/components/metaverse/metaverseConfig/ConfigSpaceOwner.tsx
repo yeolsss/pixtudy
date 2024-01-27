@@ -7,6 +7,7 @@ import {
   SPACE_NAME_MAX_LENGTH,
   SPACE_NAME_MIN_LENGTH,
 } from "@/components/spaces/constants/constants";
+import useChat from "@/hooks/chat/useChat";
 import useKeyDownPrevent from "@/hooks/metaverse/useKeyDownPrevent";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
@@ -33,13 +34,15 @@ export default function ConfigSpaceOwner() {
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
   );
+  const { emitRemoveSpace } = useChat();
   const thumbWatch = watch(SPACE_THUMB_FORM);
   const nameError = errors[SPACE_NAME_FORM]?.message;
   const descriptionError = errors[SPACE_DESCRIPTION_FORM]?.message;
 
-  const handleRemoveSpace = () => {
+  const handleRemoveSpace = async () => {
     if (confirm("진짜 삭제할라고?")) {
       alert("good bye... bro...");
+      emitRemoveSpace();
     }
   };
 

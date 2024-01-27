@@ -16,7 +16,9 @@ export default function useChat() {
     (player) => player.playerId === currentPlayerId
   );
 
-  const { chatList, sendChatMessage } = useChatSocket(currentPlayer?.nickname);
+  const { chatList, sendChatMessage, emitRemoveSpace } = useChatSocket(
+    currentPlayer?.nickname
+  );
 
   const handleOnSubmitChat = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,5 +34,6 @@ export default function useChat() {
     chatList,
     handleFocus,
     handleBlur,
+    emitRemoveSpace,
   };
 }
