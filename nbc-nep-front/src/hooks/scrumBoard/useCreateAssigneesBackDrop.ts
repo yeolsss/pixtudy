@@ -1,4 +1,4 @@
-import useSpaceMemberSearch from "@/zustand/spaceMemberStore";
+import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
 import { useEffect } from "react";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 
@@ -18,7 +18,7 @@ export default function useCreateAssigneesBackDrop(): ReturnType {
     setBackDropIsOpen,
     setAssignees,
     changeSearchValue,
-  } = useSpaceMemberSearch();
+  } = useScrumBoardMemberSearch();
 
   useEffect(() => {
     if (searchValue !== "") {

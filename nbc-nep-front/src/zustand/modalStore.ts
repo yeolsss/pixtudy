@@ -4,7 +4,9 @@ import { create } from "zustand";
 interface ModalState {
   isJoinSpaceModalOpen: boolean;
   isCreateSpaceModalOpen: boolean;
+  isCreateCategoryModalOpen: boolean;
   isAvatarModalOpen: boolean;
+  isForgetPasswordModalOpen: boolean;
   space: (Omit<Spaces, "users"> & { users: string[] }) | null;
 }
 
@@ -18,7 +20,9 @@ interface ModalStoreState extends ModalState {
 const initialState = {
   isJoinSpaceModalOpen: false,
   isCreateSpaceModalOpen: false,
+  isCreateCategoryModalOpen: false,
   isAvatarModalOpen: false,
+  isForgetPasswordModalOpen: false,
   space: null,
 };
 

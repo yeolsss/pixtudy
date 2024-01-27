@@ -1,10 +1,10 @@
-import useSpaceMemberSearch from "@/zustand/spaceMemberStore";
+import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
 import styled from "styled-components";
 import closeIcon from "@/assets/boards/assingee-delete.svg";
 import Image from "next/image";
 
 export default function SelectAssigneesList() {
-  const { assignees, deleteAssignees } = useSpaceMemberSearch();
+  const { assignees, deleteAssignees } = useScrumBoardMemberSearch();
 
   const handleDeleteAssignees = (id: string) => {
     deleteAssignees(id);

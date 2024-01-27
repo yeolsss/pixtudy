@@ -41,7 +41,7 @@ const StAssigneesBackDropWrapper = styled.ul<{ $isOpen: boolean }>`
   box-shadow: ${(props) => props.theme.elevation.Light.shadow8};
   border-radius: ${(props) => props.theme.border.radius[8]};
 `;
-const StAssigneesBackDropItemNoSearch = styled.li`
+export const StAssigneesBackDropItemNoSearch = styled.li`
   width: 100%;
   height: ${(props) => props.theme.spacing[32]};
   padding: ${(props) => props.theme.spacing[8]};
@@ -57,7 +57,7 @@ const StAssigneesBackDropItemNoSearch = styled.li`
     letter-spacing: -0.11px;
   }
 `;
-const StAssigneesBackDropItem = styled(StAssigneesBackDropItemNoSearch)`
+export const StAssigneesBackDropItem = styled(StAssigneesBackDropItemNoSearch)`
   cursor: pointer;
   padding: ${(props) => props.theme.spacing[24]}
     ${(props) => props.theme.spacing[8]};

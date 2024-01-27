@@ -1,7 +1,7 @@
 import CreateCategoryInputBox from "@/components/scrumboard/detail/createBackDrop/CreateCategoryInputBox";
 import styled from "styled-components";
 
-export default function CreateInputBackDrop() {
+export default function CreateInput() {
   return (
     <StCreateInputBackDropWrapper>
       <CreateCategoryInputBox />

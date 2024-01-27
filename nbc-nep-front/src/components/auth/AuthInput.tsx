@@ -34,6 +34,17 @@ export default function AuthInput({
     setIsPasswordVisible(!isPasswordVisible);
   };
 
+  const pwCheckValidation = () => {
+    switch (id) {
+      case "signUp_check_pw":
+        return watch("signUp_pw");
+      case "findPw_check_pw":
+        return watch("findPw_pw");
+      default:
+        return null;
+    }
+  };
+
   return (
     <StAuthInputSection $isError={!!error[id]?.message}>
       <div>
@@ -43,11 +54,7 @@ export default function AuthInput({
           placeholder={placeholder}
           {...register(id, {
             required: true,
-            validate: (value) =>
-              validate(
-                value,
-                id === "signUp_check_pw" ? watch("signUp_pw") : null
-              ),
+            validate: (value) => validate(value, pwCheckValidation()),
           })}
         />
 

@@ -1,22 +1,23 @@
 import styled from "styled-components";
-import CreateInputBackDrop from "@/components/scrumboard/detail/createBackDrop/CreateInputBackDrop";
+import CreateInput from "@/components/scrumboard/detail/createBackDrop/CreateInput";
 import useCreateScrumButtons from "@/hooks/scrumBoard/useCreateScrumButtons";
 import CreateBackDropCtaButton from "@/components/scrumboard/detail/createBackDrop/CreateBackDropCTAButton";
-import CreateBackDropDescription from "@/components/scrumboard/detail/createBackDrop/CreateBackDropDescription";
+import CreateDescription from "@/components/scrumboard/detail/createBackDrop/CreateDescription";
 import CreateAssignees from "@/components/scrumboard/detail/createBackDrop/CreateAssignees";
 
-export default function BackDrop() {
+export default function CreateBackDrop() {
   const {
     handleOnClickCreate,
     handleOnClickUpdate,
     handleOnClickCancel,
     handleOnClickDelete,
   } = useCreateScrumButtons();
+
   return (
     <StCreateBackDrop>
       {/*생성*/}
       <StCreateBackDropHeader>
-        <CreateInputBackDrop />
+        <CreateInput />
         <CreateBackDropCtaButton
           buttonType={"submit"}
           forwardText={"생성"}
@@ -28,7 +29,7 @@ export default function BackDrop() {
           handle={handleOnClickCancel}
         />
       </StCreateBackDropHeader>
-      <CreateBackDropDescription />
+      <CreateDescription />
       <CreateAssignees />
       {/* 생성 끝 */}
     </StCreateBackDrop>

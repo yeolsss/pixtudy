@@ -1,8 +1,10 @@
 import {
+  forgottenPasswordHandler,
   getOtherUserHandler,
   logoutHandler,
   signInHandler,
   signUpHandler,
+  updateUserPasswordHandler,
 } from "@/api/supabase/auth";
 import {
   checkDmChannel,
@@ -16,13 +18,25 @@ import {
   sendMessageArgs,
 } from "@/api/supabase/dm";
 import {
+  createCategory,
+  getCategories,
+  getCategoryItems,
+  updateCategory,
+} from "@/api/supabase/scrumboard";
+import {
   createSpaceHandler,
   getSpaceData,
   joinSpaceHandler,
+  removeSpace as removeSpaceSupabase,
+  updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
-import { Space_members } from "@/supabase/types/supabase.tables.type";
+import {
+  Kanban_categories,
+  Kanban_items,
+  Space_members,
+} from "@/supabase/types/supabase.tables.type";
 import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -35,7 +49,7 @@ export function useSignUpUser() {
     mutationFn: signUpHandler,
     onError: (error) => {
       // TODO: error메시지 핸들링 필요
-      authValidation(error.message, "signup");
+      authValidation(error.message, "signUp");
     },
   });
   return signUp;
@@ -45,7 +59,7 @@ export function useSignInUser() {
   const { mutate: signIn } = useMutation({
     mutationFn: signInHandler,
     onError: (error) => {
-      authValidation(error.message, "signin");
+      authValidation(error.message, "signIn");
     },
   });
   return signIn;
@@ -154,6 +168,43 @@ export function useGetUserSpaces(currentUserId: string) {
   return useCustomQuery<Space_members[], Error>(getUserSpacesOptions);
 }
 
+export function useRemoveSpace(onSuccess: () => void) {
+  const client = useQueryClient();
+  const {
+    mutate: removeSpace,
+    isSuccess: isRemovingSuccess,
+    isError: isRemovingError,
+  } = useMutation({
+    mutationFn: removeSpaceSupabase,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+      onSuccess();
+    },
+    onError: (error) => {
+      console.error("remove space error: ", error);
+    },
+  });
+  return { removeSpace, isRemovingSuccess, isRemovingError };
+}
+
+export function useUpdateSpace() {
+  const client = useQueryClient();
+  const {
+    mutate: updateSpace,
+    isSuccess: isUpdatingSuccess,
+    isError: isUpdatingError,
+  } = useMutation({
+    mutationFn: updateSpaceSupabase,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+    },
+    onError: (error) => {
+      console.error("update space error: ", error);
+    },
+  });
+  return { updateSpace, isUpdatingSuccess, isUpdatingError };
+}
+
 /* dm */
 // check dmChannel with otherUser
 export function useGetDmChannel({
@@ -236,4 +287,81 @@ export function useReadDMMessage() {
   });
 
   return { mutate, isError, isPending };
+}
+
+/* ScrumBoard */
+
+/* Category */
+export function useGetCategories(spaceId: string) {
+  const queryOptions = {
+    queryKey: ["categoryList", spaceId],
+    queryFn: () => getCategories(spaceId),
+    enabled: !!spaceId,
+  };
+
+  return useCustomQuery<Kanban_categories[], Error>(queryOptions);
+}
+
+export function useGetCategoryItems(categoryId: string) {
+  const queryOptions = {
+    queryKey: ["categoryItem", categoryId],
+    queryFn: () => getCategoryItems(categoryId),
+    enabled: !!categoryId,
+  };
+
+  return useCustomQuery<Kanban_items[], Error>(queryOptions);
+}
+
+export function useCreateCategory(spaceId: string) {
+  const queryClient = useQueryClient();
+  const {
+    mutate: create,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: createCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+    },
+  });
+
+  return { create, isError, isSuccess };
+}
+
+export function useUpdateCategory(spaceId: string) {
+  const queryClient = useQueryClient();
+  const {
+    mutate: update,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: updateCategory,
+    onSuccess: () => {
+      console.log("update success");
+      queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+    },
+  });
+
+  return { update, isError, isSuccess };
+}
+
+export function useForgetPassword() {
+  const { mutate: forgetPassword } = useMutation({
+    mutationFn: forgottenPasswordHandler,
+  });
+
+  return { forgetPassword };
+}
+
+export function useUpdateUserPw() {
+  const { mutate: updateUser } = useMutation({
+    mutationFn: updateUserPasswordHandler,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      authValidation(error.message, "changePassword");
+    },
+  });
+  return updateUser;
 }

@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from "react";
-import useSpaceMemberSearch from "@/zustand/spaceMemberStore";
+import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
 
 export default function useDebounceSpaceMemberSearch(timeout: number = 1000) {
   let timerId: NodeJS.Timeout | null = null;
-  const { filterSpaceMembers } = useSpaceMemberSearch();
+  const { filterSpaceMembers } = useScrumBoardMemberSearch();
 
   useEffect(() => {
     return () => {

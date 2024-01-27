@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import CreateBackDropDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateBackDropDescriptionHeader";
+import CreateDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader";
 import BackDropTextArea from "@/components/scrumboard/detail/BackDropTextArea";
 import useCreateScrumFormTextArea from "@/hooks/scrumBoard/useCreateScrumFormTextArea";
 import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
@@ -8,8 +8,10 @@ import {
   SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH,
 } from "@/components/scrumboard/constants/constants";
 
-export default function CreateBackDropDescription() {
-  const { scrumBoardText, setScrumBoardText } = useScrumBoardItem();
+export default function CreateDescription() {
+  // update 할때 고려해볼려고
+  const { scrumBoardText, setScrumBoardText, validBoardText } =
+    useScrumBoardItem();
   const [text, textAreaRef, handleOnChange] = useCreateScrumFormTextArea({
     text: scrumBoardText,
     setText: setScrumBoardText,
@@ -18,12 +20,13 @@ export default function CreateBackDropDescription() {
 
   return (
     <StCreateBackDropDescriptionWrapper>
-      <CreateBackDropDescriptionHeader text={text} />
+      <CreateDescriptionHeader text={text} />
       <BackDropTextArea
         fontSize={SCRUM_BOARD_TEXT_AREA_FONT_SIZE}
         forwardRef={textAreaRef}
         value={text}
         handler={handleOnChange}
+        validState={validBoardText}
       />
     </StCreateBackDropDescriptionWrapper>
   );

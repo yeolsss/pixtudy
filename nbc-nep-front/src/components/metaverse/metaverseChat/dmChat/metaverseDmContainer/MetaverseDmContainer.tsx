@@ -2,11 +2,12 @@ import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
 import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
+import useEndOfChat from "@/hooks/metaverse/useEndOfChat";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { Tables } from "@/supabase/types/supabase";
 import useAuth from "@/zustand/authStore";
 import useDm from "@/zustand/dmStore";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 export default function MetaverseDmContainer() {
@@ -36,21 +37,14 @@ export default function MetaverseDmContainer() {
     currentUser,
   });
 
+  const endOfChatRef = useEndOfChat([messages]);
+
   // dm message 정보 custom hook
   useDmMessage({ currentDmChannel, setMessages });
 
-  // message ul ref (스크롤)
-  const messageListRef = useRef<HTMLUListElement>(null);
-
-  // 스크롤이 자동으로 맨 아래로 가도록
-  useEffect(() => {
-    if (messageListRef.current)
-      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-  }, [messages]);
-
   return (
     <StMetaverseDmChannel>
-      <StMessageWrapper ref={messageListRef}>
+      <StMessageWrapper>
         {messages?.map((message) => (
           <StMessageCard key={message.id}>
             <h3>
@@ -60,6 +54,7 @@ export default function MetaverseDmContainer() {
             {/*<span>{message.created_at}</span>*/}
           </StMessageCard>
         ))}
+        <div ref={endOfChatRef}></div>
       </StMessageWrapper>
       <MetaverseDmForm
         currentDmChannel={currentDmChannel}

@@ -1,30 +1,29 @@
 import { create } from "zustand";
-import { Assign } from "@/components/scrumboard/types/scrumTypes";
 
 interface ScrumBoardItemState {
   scrumBoardText: string;
-  assignees: Assign[];
+  validBoardText: boolean;
 }
 interface ScrumBoardItemStoreState extends ScrumBoardItemState {
   setScrumBoardText: (scrumBoardText: string) => void;
-  setAssignees: (assignees: Assign[]) => void;
+  setValidBoardText: (validBoardText: boolean) => void;
   resetScrumBoardItem: () => void;
 }
 
 const initialState: ScrumBoardItemState = {
   scrumBoardText: "",
-  assignees: [],
+  validBoardText: false,
 };
 
 const useScrumBoardItem = create<ScrumBoardItemStoreState>()((set) => ({
   ...initialState,
   setScrumBoardText: (scrumBoardText: string) => set({ scrumBoardText }),
-  setAssignees: (assignees: Assign[]) => set({ assignees }),
+  setValidBoardText: (validBoardText: boolean) => set({ validBoardText }),
   resetScrumBoardItem: () =>
     set(() => {
       return {
         scrumBoardText: "",
-        assignees: [],
+        validBoardText: false,
       };
     }),
 }));

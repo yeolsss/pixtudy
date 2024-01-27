@@ -5,7 +5,7 @@ import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/C
 interface Props {
   text: string;
 }
-export default function CreateBackDropDescriptionHeader({ text }: Props) {
+export default function CreateDescriptionHeader({ text }: Props) {
   return (
     <StCreateBackDropDescriptionHeader>
       <CreateBackDropTitle title={"보드 설명"} />

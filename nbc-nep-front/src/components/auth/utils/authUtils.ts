@@ -5,7 +5,7 @@ import {
   handleValidatePasswordMatch,
 } from "@/utils/authValidate";
 
-export type AuthFormType = "signUp" | "signIn";
+export type AuthFormType = "signUp" | "signIn" | "changePassword";
 
 export interface FormValues {
   signIn_id?: string;
@@ -14,7 +14,10 @@ export interface FormValues {
   signUp_pw?: string;
   signUp_nickname?: string;
   signUp_check_pw?: string;
+  forget_password_email?: string;
 }
+
+export type ForgetPasswordMessageType = "success" | "fail";
 
 export const getInputs = (formType: AuthFormType) => {
   if (formType === "signIn") {
@@ -37,31 +40,43 @@ export const getInputs = (formType: AuthFormType) => {
     return [
       {
         id: "signUp_id",
-        labelTitle: "이메일",
         placeholder: "이메일을 입력해주세요",
         type: "email",
         validate: handleValidateEmail,
       },
       {
         id: "signUp_pw",
-        labelTitle: "비밀번호",
         placeholder: "비밀번호를 입력해주세요",
         type: "password",
         validate: handleValidatePassword,
       },
       {
         id: "signUp_check_pw",
-        labelTitle: "비밀번호 확인",
         placeholder: "비밀번호를 다시 입력해주세요",
         type: "password",
         validate: handleValidatePasswordMatch,
       },
       {
         id: "signUp_nickname",
-        labelTitle: "닉네임",
         placeholder: "닉네임을 입력해주세요",
         type: "text",
         validate: handleValidateNickname,
+      },
+    ];
+  }
+  if (formType === "changePassword") {
+    return [
+      {
+        id: "findPw_pw",
+        placeholder: "새로운 비밀번호를 입력하세요.",
+        type: "password",
+        validate: handleValidatePassword,
+      },
+      {
+        id: "findPw_check_pw",
+        placeholder: "비밀번호를 다시 입력해주세요.",
+        type: "password",
+        validate: handleValidatePasswordMatch,
       },
     ];
   }

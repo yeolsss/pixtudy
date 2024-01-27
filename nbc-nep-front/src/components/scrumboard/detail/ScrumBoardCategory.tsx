@@ -1,27 +1,43 @@
+import { useGetCategoryItems } from "@/hooks/query/useSupabase";
+import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import styled from "styled-components";
-import ScrumBoardItem from "./ScrumBoardItem";
+import CategoryHeader from "./CategoryHeader";
+import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 
-export default function ScrumBoardCategory() {
-  const handleAddItem = () => {};
+interface Props {
+  category: Kanban_categories;
+}
+
+export default function ScrumBoardCategory({ category }: Props) {
+  const { id, name, color } = category;
+  const { setIsOpen } = useScrumBoardItemBackDrop();
+  const handleAddItem = () => {
+    setIsOpen(category);
+  };
+  const items = useGetCategoryItems(id);
 
   return (
     <StCategoryWrapper>
-      <h1>No status</h1>
+      <CategoryHeader name={name} color={color} id={id} />
       <StItemsContainer>
-        <ScrumBoardItem />
+        {items?.map((item) => {
+          return <li key={item.id}>{item.title}</li>;
+        })}
       </StItemsContainer>
-      <button onClick={handleAddItem} />
+      <button onClick={handleAddItem}>Add Item</button>
     </StCategoryWrapper>
   );
 }
 
 const StCategoryWrapper = styled.div`
-  width: 20%;
-  height: 100%;
+  // 임의로 설정한 너비
+  min-width: 320px;
 `;
 
 const StItemsContainer = styled.ul`
   display: flex;
+  // 임의로 설정한 높이
+  height: calc(100vh - 300px);
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[12]};
   background-color: #f5f5f5;

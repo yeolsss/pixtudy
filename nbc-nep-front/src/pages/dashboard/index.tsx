@@ -5,11 +5,14 @@ import Banner from "@/components/layout/banner/Banner";
 import ModalPortal from "@/components/modal/ModalPortal";
 import Spaces from "@/components/spaces/Spaces";
 import useModal from "@/hooks/modal/useModal";
+import useTourTooltip from "@/hooks/tooltip/useTourTooltip";
 import { theme } from "@/styles/Globalstyle";
 import { Database, Tables } from "@/supabase/types/supabase";
+import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltipUtils";
 import { createClient } from "@supabase/supabase-js";
 import type { NextPage } from "next";
 import { ReactElement } from "react";
+import Joyride from "react-joyride";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -24,6 +27,15 @@ const Dashboard: NextPage<Props> & {
   getLayout?: (page: ReactElement) => ReactElement;
 } = ({ spaces }) => {
   const { isAvatarModalOpen } = useModal();
+
+  const {
+    run,
+    setRunState,
+    steps,
+    handleJoyrideCallback,
+    showTemporaryComponent,
+  } = useTourTooltip(DASHBOARD_TOUR_TOOLTIP);
+
   return (
     <>
       <CustomHead title={"Dashboard"} description={"Dashboard 페이지입니다."} />
@@ -33,6 +45,7 @@ const Dashboard: NextPage<Props> & {
           slidesPerView={2.8}
           modules={[Pagination]}
           pagination={{ clickable: true }}
+          className="dashboard-banner"
         >
           {spaces.map((space) => (
             <SwiperSlide key={space.id}>
@@ -55,7 +68,21 @@ const Dashboard: NextPage<Props> & {
           <AvatarModalContainer />
         </ModalPortal>
       )}
-      <Spaces />
+      <Spaces
+        setRunState={setRunState}
+        showTemporaryComponent={showTemporaryComponent}
+      />
+      <Joyride
+        continuous
+        run={run}
+        steps={steps}
+        callback={handleJoyrideCallback}
+        showProgress
+        showSkipButton
+        disableOverlayClose
+        hideCloseButton
+        styles={{ options: { zIndex: 10000 } }}
+      />
     </>
   );
 };

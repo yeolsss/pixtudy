@@ -16,7 +16,7 @@ interface SpaceListStoreState {
   resetBackDrop: () => void;
 }
 
-const useSpaceMemberSearch = create<SpaceListStoreState>()((set) => ({
+const useScrumBoardMemberSearch = create<SpaceListStoreState>()((set) => ({
   spaceMembers: [],
   filteredSpaceMembers: [],
   searchValue: "",
@@ -54,6 +54,7 @@ const useSpaceMemberSearch = create<SpaceListStoreState>()((set) => ({
     set((state) => ({
       assignees: [],
       filteredSpaceMembers: [...state.spaceMembers],
+      backDropIsOpen: false,
     })),
 }));
 
@@ -66,4 +67,4 @@ interface props {
   setUsers: (spaces: Space_members[]) => void;
 }
 
-export default useSpaceMemberSearch;
+export default useScrumBoardMemberSearch;

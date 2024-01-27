@@ -1,38 +1,79 @@
-import { useGetSpace } from "@/hooks/query/useSupabase";
+import { StCTAButton } from "@/components/common/button/button.styles";
+import ModalPortal from "@/components/modal/ModalPortal";
+import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCategoryModal";
+import useModal from "@/hooks/modal/useModal";
+import { useGetCategories } from "@/hooks/query/useSupabase";
+import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
-import BackDrop from "@/components/scrumboard/detail/BackDrop";
-import useCreateScrum from "@/hooks/scrumBoard/useCreateScrum";
+import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
+import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 
 export default function ScrumBoard() {
-  const { space_id: spaceId } = useParams();
-  const getSpace = useGetSpace();
-  const { isCreateBackDropOpen, handleToggleCreate } = useCreateScrum();
+  const { space_id } = useParams();
+  const spaceId = space_id as string;
+  const { openCreateCategoryModal, isCreateCategoryModalOpen } = useModal();
+  const { setCategories } = useScrumBoard();
+  const categories = useGetCategories(spaceId);
+  setCategories(categories!);
+  const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
 
-  useEffect(() => {
-    const space = getSpace(spaceId as string);
-    console.log(space);
-  }, []);
+  const handleAddCategory = () => {
+    openCreateCategoryModal();
+  };
 
   return (
-    <>
-      <button onClick={() => handleToggleCreate(true)}>
-        item 생성 임시 버튼
-      </button>
+    <StScrumBoardWrapper>
       <StScrumBoardContainer>
-        <ScrumBoardCategory />
-        {isCreateBackDropOpen && <BackDrop />}
+        <div>
+          {categories?.map((category) => {
+            return <ScrumBoardCategory key={category.id} category={category} />;
+          })}
+          <div>
+            <StAddCategoryBtn onClick={handleAddCategory}>
+              add category
+            </StAddCategoryBtn>
+          </div>
+        </div>
       </StScrumBoardContainer>
-    </>
+      {isCreateCategoryModalOpen && (
+        <ModalPortal>
+          <CreateCategoryModal />
+        </ModalPortal>
+      )}
+      {isCreateBackDropOpen && <CreateBackDrop />}
+    </StScrumBoardWrapper>
   );
 }
 
-const StScrumBoardContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: ${(props) => props.theme.spacing[12]};
+const StScrumBoardWrapper = styled.div`
   position: relative;
+`;
+
+const StScrumBoardContainer = styled.div`
+  max-width: 1200px;
+  width: 100%;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  margin: 0 auto;
+  position: relative;
+
+  > div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: ${(props) => props.theme.spacing[12]};
+    position: relative;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const StAddCategoryBtn = styled(StCTAButton)`
+  display: block;
+  width: 320px;
+  height: ${(props) => props.theme.unit[80]}px;
 `;

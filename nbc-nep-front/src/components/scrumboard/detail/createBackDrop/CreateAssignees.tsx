@@ -1,6 +1,6 @@
 import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
 import styled from "styled-components";
-import useSpaceMemberSearch from "@/zustand/spaceMemberStore";
+import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
 import AssigneesBackDrop from "@/components/scrumboard/detail/createBackDrop/AssigneesBackDrop";
 import useDebounceSpaceMemberSearch from "@/hooks/scrumBoard/useDebounceSpaceMemberSearch";
 import { useRef } from "react";
@@ -8,7 +8,7 @@ import SelectAssigneesList from "@/components/scrumboard/detail/createBackDrop/S
 
 export default function CreateAssignees() {
   const { searchValue, changeSearchValue, setBackDropIsOpen, assignees } =
-    useSpaceMemberSearch();
+    useScrumBoardMemberSearch();
   const debounce = useDebounceSpaceMemberSearch(500);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -51,7 +51,7 @@ const StCreateAssigneesWrapper = styled.div`
   gap: ${(props) => props.theme.spacing[8]};
 `;
 
-const StCreateAssigneesInputWrapper = styled.form`
+const StCreateAssigneesInputWrapper = styled.div`
   position: relative;
 `;
 const StCreateAssigneesInput = styled.input`
