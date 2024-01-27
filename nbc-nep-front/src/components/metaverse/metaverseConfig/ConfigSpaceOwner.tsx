@@ -43,16 +43,22 @@ export default function ConfigSpaceOwner() {
 
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
     if (!spaceInfo) return;
-    // TODO: validation을 진행했다고 가정... validation 적용 해야 함
     const thumb: FileList = data[SPACE_THUMB_FORM];
     const title: string = data[SPACE_NAME_FORM];
     const description: string = data[SPACE_DESCRIPTION_FORM];
 
     let thumbnailURL: string | undefined | null = null;
     if (thumb && thumb.length > 0) {
-      // TODO: error 핸들링 추가해야 한다
       const { data, error } = await uploadThumbnail(thumb[0], spaceInfo.id);
       if (data) thumbnailURL = data;
+
+      if (error) {
+        alert(
+          "space를 업데이트하는데 실패하였습니다! 개발자에게 문의바랍니다..ㅜ"
+        );
+        console.error(error);
+        return;
+      }
     }
 
     updateSpace({
