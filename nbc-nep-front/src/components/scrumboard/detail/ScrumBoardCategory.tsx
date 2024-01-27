@@ -3,6 +3,7 @@ import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import styled from "styled-components";
 import CategoryHeader from "./CategoryHeader";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import ScrumBoardItem from "@/components/scrumboard/detail/ScrumBoardItem";
 
 interface Props {
   category: Kanban_categories;
@@ -15,13 +16,12 @@ export default function ScrumBoardCategory({ category }: Props) {
     setIsOpen(category);
   };
   const items = useGetCategoryItems(id);
-
   return (
     <StCategoryWrapper>
       <CategoryHeader name={name} color={color} id={id} />
       <StItemsContainer>
         {items?.map((item) => {
-          return <li key={item.id}>{item.title}</li>;
+          return <ScrumBoardItem item={item} />;
         })}
       </StItemsContainer>
       <button onClick={handleAddItem}>Add Item</button>

@@ -1,7 +1,11 @@
 import styled from "styled-components";
+import { Kanban_items } from "@/supabase/types/supabase.tables.type";
 
-export default function ScrumBoardItem() {
-  return <StListItem>lorem ipsum dolor sit amet</StListItem>;
+interface Props {
+  item: Kanban_items;
+}
+export default function ScrumBoardItem({ item }: Props) {
+  return <StListItem>{item.description}</StListItem>;
 }
 
 const StListItem = styled.li`
