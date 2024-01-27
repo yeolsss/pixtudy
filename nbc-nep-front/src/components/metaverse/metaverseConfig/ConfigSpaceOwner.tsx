@@ -1,6 +1,7 @@
 import { uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
 import { StDangerButton } from "@/components/common/button/button.styles";
+import { StLoadingSpinner } from "@/components/common/loading/LoadingProgress";
 import DefaultSpanText from "@/components/common/text/DefaultSpanText";
 import {
   SPACE_DESCRIPTION_MAX_LENGTH,
@@ -26,7 +27,7 @@ export default function ConfigSpaceOwner() {
     watch,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-  const { updateSpace } = useUpdateSpaceInfo();
+  const { updateSpace, isSuccess, isIdle, isPending } = useUpdateSpaceInfo();
   const formRef = useRef<HTMLFormElement>(null);
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
@@ -144,6 +145,7 @@ export default function ConfigSpaceOwner() {
           삭제하기
         </StDangerButton>
       </div>
+      {isPending && <StLoadingSpinner />}
     </form>
   );
 }

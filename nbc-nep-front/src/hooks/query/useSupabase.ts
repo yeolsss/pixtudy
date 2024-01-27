@@ -283,7 +283,7 @@ export function useUpdateUserPw() {
 
 export function useUpdateSpaceInfo() {
   const client = useQueryClient();
-  const { mutate } = useMutation({
+  const { mutate, ...rest } = useMutation({
     mutationFn: updateSpace,
     onSuccess: (spaceInfo) => {
       const spaceId = spaceInfo.id;
@@ -292,5 +292,5 @@ export function useUpdateSpaceInfo() {
     onError: () => {},
   });
 
-  return { updateSpace: mutate };
+  return { updateSpace: mutate, ...rest };
 }
