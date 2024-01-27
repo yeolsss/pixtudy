@@ -7,9 +7,10 @@ import {
   SPACE_NAME_MAX_LENGTH,
   SPACE_NAME_MIN_LENGTH,
 } from "@/components/spaces/constants/constants";
+import useKeyDownPrevent from "@/hooks/metaverse/useKeyDownPrevent";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import {
   SPACE_DESCRIPTION_FORM,
@@ -28,7 +29,7 @@ export default function ConfigSpaceOwner() {
     formState: { errors },
   } = useForm({ mode: "onChange" });
   const { updateSpace, isSuccess, isPending } = useUpdateSpaceInfo();
-  const formRef = useRef<HTMLFormElement>(null);
+  const formRef = useKeyDownPrevent<HTMLFormElement>();
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
   );
@@ -69,17 +70,6 @@ export default function ConfigSpaceOwner() {
       space_thumb: thumbnailURL,
     });
   };
-
-  useEffect(() => {
-    const handleKeyDownPrevent = (e: globalThis.KeyboardEvent) => {
-      e.stopPropagation();
-    };
-    formRef.current?.addEventListener("keydown", handleKeyDownPrevent);
-
-    return () => {
-      formRef.current?.removeEventListener("keydown", handleKeyDownPrevent);
-    };
-  }, []);
 
   useEffect(() => {
     if (thumbWatch && thumbWatch.length > 0) {
