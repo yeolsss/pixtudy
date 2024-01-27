@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import SpaceThumb from "../common/SpaceThumb";
 import UserIcon from "../common/UserIcon";
 
 interface Props {
@@ -33,7 +34,7 @@ export default function SpaceCard({ space }: Props) {
   return (
     <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
       <StContentsContainer>
-        <Image src="/assets/card.png" alt="card" width={300} height={160} />
+        <SpaceThumb src={space?.spaces?.space_thumb || undefined} />
         <h1>
           {space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}
           <Image
