@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { options } from "../constants/constants";
-import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 
 interface Props {
   name: string;
@@ -23,7 +22,6 @@ export default function EditCategoryForm({
   const spaceId = space_id as string;
   const [isOpen, setIsOpen] = useState(false);
   const { update, isSuccess, isError } = useUpdateCategory(spaceId);
-  const { categories } = useScrumBoard();
   const {
     control,
     handleSubmit,
