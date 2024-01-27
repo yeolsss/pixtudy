@@ -30,12 +30,6 @@ export async function middleware(request: NextRequest) {
     return spaceInfo ? true : false;
   };
 
-  console.log(
-    request.nextUrl.pathname,
-    " is PreFetching?? : ",
-    request.headers.get("Purpose") === "prefetch"
-  );
-
   // 정적 파일, 이미지(public 포함), 프리패칭에 대한 요청을 허용하는 로직
   const isPublicResource =
     pathname.startsWith("/assets/") || pathname.startsWith("/styles/");
@@ -46,12 +40,6 @@ export async function middleware(request: NextRequest) {
   if (isStaticFile || isPublicResource) {
     return NextResponse.next();
   }
-
-  console.log(
-    request.nextUrl.pathname,
-    " is PreFetching?? : ",
-    request.headers.get("Purpose") === "prefetch"
-  );
 
   // request 정보가 지정한 path에 등록된 정보인지 확인
   const isDynamicPath = PAGES_PATH.some(

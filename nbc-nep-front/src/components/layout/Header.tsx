@@ -33,7 +33,6 @@ export default function Header() {
   };
 
   const handleToDashboard = () => {
-    console.log(user.id);
     if (user.id) {
       router.push("/dashboard");
     } else {

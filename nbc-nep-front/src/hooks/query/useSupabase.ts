@@ -284,9 +284,6 @@ export function useForgetPassword() {
 export function useUpdateUserPw() {
   const { mutate: updateUser } = useMutation({
     mutationFn: updateUserPasswordHandler,
-    onSuccess: (data) => {
-      console.log(data);
-    },
     onError: (error) => {
       authValidation(error.message, "changePassword");
     },
