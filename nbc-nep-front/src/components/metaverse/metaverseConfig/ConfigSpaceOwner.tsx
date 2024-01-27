@@ -45,11 +45,13 @@ export default function ConfigSpaceOwner() {
 
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
     if (!spaceInfo) return;
-    const thumb: FileList = data[SPACE_THUMB_FORM];
-    const title: string = data[SPACE_NAME_FORM];
-    const description: string = data[SPACE_DESCRIPTION_FORM];
-
+    const {
+      SPACE_THUMB_FORM: thumb,
+      SPACE_NAME_FORM: title,
+      SPACE_DESCRIPTION_FORM: description,
+    } = data;
     let thumbnailURL: string | null = spaceInfo.space_thumb;
+
     if (thumb && thumb.length > 0) {
       const { data, error } = await uploadThumbnail(thumb[0], spaceInfo.id);
       if (data) thumbnailURL = data;
