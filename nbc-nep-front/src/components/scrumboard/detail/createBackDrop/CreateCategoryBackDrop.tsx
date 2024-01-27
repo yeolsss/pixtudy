@@ -5,6 +5,7 @@ import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCategoryItem } from "@/api/supabase/scrumBoard";
 import { toast } from "react-toastify";
+import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 
 interface Props {
   isOpen: boolean;
@@ -17,6 +18,7 @@ export default function CreateCategoryBackDrop({ isOpen }: Props) {
     setCategory,
     setIsOpenCategoryBackDrop,
     kanbanItem,
+    backDropType,
   } = useScrumBoardItemBackDrop();
 
   const updateCategoryMutate = useMutation({
@@ -24,10 +26,10 @@ export default function CreateCategoryBackDrop({ isOpen }: Props) {
   });
 
   const handleOnClickSelectCategory = (category: Kanban_categories) => {
-    if (kanbanItem) {
+    if (backDropType !== BACK_DROP_TYPE_CREATE) {
       updateCategoryMutate.mutate(
         {
-          id: kanbanItem.id,
+          id: kanbanItem?.id!,
           updateCategoryId: category.id,
         },
         {
@@ -37,7 +39,7 @@ export default function CreateCategoryBackDrop({ isOpen }: Props) {
               queryKey: ["categoryItem", category.id],
             });
             await queryClient.invalidateQueries({
-              queryKey: ["categoryItem", kanbanItem.categoryId],
+              queryKey: ["categoryItem", kanbanItem?.categoryId],
             });
           },
         }

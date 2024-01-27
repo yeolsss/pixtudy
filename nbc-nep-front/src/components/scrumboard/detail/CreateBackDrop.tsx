@@ -1,59 +1,27 @@
 import styled from "styled-components";
 import CreateInput from "@/components/scrumboard/detail/createBackDrop/CreateInput";
-import useCreateScrumButtons from "@/hooks/scrumBoard/useCreateScrumButtons";
-import CreateBackDropCtaButton from "@/components/scrumboard/detail/createBackDrop/CreateBackDropCTAButton";
 import CreateDescription from "@/components/scrumboard/detail/createBackDrop/CreateDescription";
 import CreateAssignees from "@/components/scrumboard/detail/createBackDrop/CreateAssignees";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import ScrumItemDetail from "@/components/scrumboard/detail/ScrumItemDetail";
+import {
+  BACK_DROP_TYPE_CREATE,
+  BACK_DROP_TYPE_UPDATE,
+} from "@/components/scrumboard/constants/constants";
+import BackDropTypeButtonGroup from "@/components/scrumboard/libs/BackDropType";
 
 export default function CreateBackDrop() {
-  const { kanbanItem } = useScrumBoardItemBackDrop();
-  const {
-    handleOnClickCreate,
-    handleOnClickUpdate,
-    handleOnClickCancel,
-    handleOnClickDelete,
-  } = useCreateScrumButtons();
+  const { backDropType } = useScrumBoardItemBackDrop();
 
   return (
     <StCreateBackDrop>
       <StCreateBackDropHeader>
         <CreateInput />
-        {!kanbanItem ? (
-          <>
-            <CreateBackDropCtaButton
-              buttonType={"submit"}
-              forwardText={"생성"}
-              handle={handleOnClickCreate}
-            />
-            <CreateBackDropCtaButton
-              buttonType={"button"}
-              forwardText={"닫기"}
-              handle={handleOnClickCancel}
-            />
-          </>
-        ) : (
-          <>
-            <CreateBackDropCtaButton
-              buttonType={"submit"}
-              forwardText={"수정"}
-              handle={handleOnClickUpdate}
-            />
-            <CreateBackDropCtaButton
-              buttonType={"button"}
-              forwardText={"삭제"}
-              handle={handleOnClickDelete}
-            />
-            <CreateBackDropCtaButton
-              buttonType={"button"}
-              forwardText={"닫기"}
-              handle={handleOnClickCancel}
-            />
-          </>
-        )}
+
+        {BackDropTypeButtonGroup(backDropType)}
       </StCreateBackDropHeader>
-      {!kanbanItem ? (
+      {backDropType === BACK_DROP_TYPE_CREATE ||
+      backDropType === BACK_DROP_TYPE_UPDATE ? (
         <>
           <CreateDescription />
           <CreateAssignees />

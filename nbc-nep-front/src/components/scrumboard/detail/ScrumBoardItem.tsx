@@ -6,6 +6,7 @@ import {
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import React from "react";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import { BACK_DROP_TYPE_DETAIL } from "@/components/scrumboard/constants/constants";
 
 interface Props {
   item: GetKanbanItemsByAssignees;
@@ -14,7 +15,7 @@ interface Props {
 function ScrumBoardItem({ category, item }: Props) {
   const { setIsOpen } = useScrumBoardItemBackDrop();
   const handleOpenItemDetail = (item: GetKanbanItemsByAssignees) => {
-    setIsOpen(category, item);
+    setIsOpen(category, item, BACK_DROP_TYPE_DETAIL);
   };
   return (
     <StListItem onClick={() => handleOpenItemDetail(item)}>
@@ -26,7 +27,7 @@ function ScrumBoardItem({ category, item }: Props) {
         <StAssigneesWrapper>
           {item.assignees.map((assignee, index) => {
             return (
-              <StMetaAvatarWrapper key={assignee.assigneesId} $index={index}>
+              <StMetaAvatarWrapper key={index} $index={index}>
                 <MetaAvatar
                   spaceAvatar={assignee.spaceAvatar}
                   width={24}

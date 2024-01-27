@@ -3,3 +3,5 @@ export type Assign = {
   displayName: string;
   avatar: string;
 };
+
+export type BackDropType = "create" | "detail" | "update";

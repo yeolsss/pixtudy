@@ -103,7 +103,7 @@ export const postScrumBoardItem = async ({
         space_id,
       }))
     );
-  if (error) {
+  if (assigneesError) {
     throw new Error(assigneesError?.message);
   }
 };
@@ -131,5 +131,50 @@ export const deleteCategoryItem = async (id: string) => {
   const { error } = await supabase.from("kanban_items").delete().eq("id", id);
   if (error) {
     throw new Error(error.message);
+  }
+};
+
+interface PatchScrumBoardItemPrams {
+  id: string;
+  description: string;
+  space_id: string;
+  assignees: Space_members[];
+}
+export const patchScrumBoardItem = async ({
+  id,
+  description,
+  space_id,
+  assignees,
+}: PatchScrumBoardItemPrams) => {
+  const { error } = await supabase
+    .from("kanban_items")
+    .update({ description })
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const { error: assigneesDeleteError } = await supabase
+    .from("kanban_assignees")
+    .delete()
+    .eq("kanbanItemId", id);
+  if (assigneesDeleteError) {
+    throw new Error(assigneesDeleteError.message);
+  }
+
+  //TODO: 함수로 뺄것.
+  const { error: assigneesError } = await supabase
+    .from("kanban_assignees")
+    .insert(
+      assignees.map((assignee) => ({
+        kanbanItemId: id,
+        userId: assignee.user_id,
+        space_id,
+      }))
+    );
+  if (assigneesError) {
+    throw new Error(assigneesError?.message);
   }
 };

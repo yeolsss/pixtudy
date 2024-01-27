@@ -43,9 +43,7 @@ const useScrumBoardMemberSearch = create<SpaceListStoreState>()((set) => ({
     set((state) => ({ assignees: [...state.assignees, assign] })),
   deleteAssignees: (userId: string) =>
     set((state) => ({
-      assignees: state.assignees.filter(
-        (assign) => assign.users?.id !== userId
-      ),
+      assignees: state.assignees.filter((assign) => assign.user_id !== userId),
     })),
   setBackDropIsOpen: (isOpen: boolean) =>
     set(() => ({ backDropIsOpen: isOpen })),

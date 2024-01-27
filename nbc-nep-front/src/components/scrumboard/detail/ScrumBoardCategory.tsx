@@ -4,6 +4,7 @@ import styled from "styled-components";
 import CategoryHeader from "./CategoryHeader";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import ScrumBoardItem from "@/components/scrumboard/detail/ScrumBoardItem";
+import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 
 interface Props {
   category: Kanban_categories;
@@ -13,7 +14,7 @@ export default function ScrumBoardCategory({ category }: Props) {
   const { id, name, color } = category;
   const { setIsOpen } = useScrumBoardItemBackDrop();
   const handleAddItem = () => {
-    setIsOpen(category, null);
+    setIsOpen(category, null, BACK_DROP_TYPE_CREATE);
   };
   const items = useGetCategoryItems(id);
   return (

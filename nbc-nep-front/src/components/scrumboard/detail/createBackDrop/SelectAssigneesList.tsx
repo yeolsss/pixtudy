@@ -19,7 +19,7 @@ export default function SelectAssigneesList({ tagType }: Props) {
           <span>{assignee.space_display_name}</span>
           {tagType === "assignees" && (
             <StDeleteButton
-              onClick={() => handleDeleteAssignees(assignee.users?.id!)}
+              onClick={() => handleDeleteAssignees(assignee.user_id!)}
             >
               <Image src={closeIcon} alt={"삭제"} width={12} height={12} />
             </StDeleteButton>

@@ -6,25 +6,37 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import {
   deleteCategoryItem,
+  patchScrumBoardItem,
   postScrumBoardItem,
 } from "@/api/supabase/scrumBoard";
 import { useParams } from "next/navigation";
 import useAuth from "@/zustand/authStore";
+import {
+  BACK_DROP_TYPE_DETAIL,
+  BACK_DROP_TYPE_UPDATE,
+} from "@/components/scrumboard/constants/constants";
 
 interface ReturnType {
   handleOnClickCreate: () => void;
-  handleOnClickCancel: () => void;
+  handleOnClickBackDropClose: () => void;
   handleOnClickUpdate: () => void;
+  handleOnClickUpdateConfirm: () => void;
+  handleOnClickUpdateCancel: () => void;
   handleOnClickDelete: () => void;
 }
 export default function useCreateScrumButtons(): ReturnType {
   const { space_id } = useParams();
   const { user } = useAuth();
-  const { scrumBoardText, resetScrumBoardItem, setValidBoardText } =
-    useScrumBoardItem();
+  const {
+    scrumBoardText,
+    resetScrumBoardItem,
+    setValidBoardText,
+    setScrumBoardText,
+  } = useScrumBoardItem();
   const { assignees, resetBackDrop, setAssignees, resetAssignees } =
     useScrumBoardMemberSearch();
-  const { category, kanbanItem, closeBackDrop } = useScrumBoardItemBackDrop();
+  const { category, kanbanItem, closeBackDrop, setBackDropType } =
+    useScrumBoardItemBackDrop();
   const queryClient = useQueryClient();
 
   const createMutate = useMutation({
@@ -32,6 +44,9 @@ export default function useCreateScrumButtons(): ReturnType {
   });
   const deleteMutate = useMutation({
     mutationFn: deleteCategoryItem,
+  });
+  const updateMutate = useMutation({
+    mutationFn: patchScrumBoardItem,
   });
 
   const handleOnClickCreate = () => {
@@ -62,10 +77,42 @@ export default function useCreateScrumButtons(): ReturnType {
       }
     );
   };
-  const handleOnClickCancel = () => {
+  const handleOnClickBackDropClose = () => {
     closeBackDrop();
   };
-  const handleOnClickUpdate = () => {};
+
+  const handleOnClickUpdate = () => {
+    setBackDropType(BACK_DROP_TYPE_UPDATE);
+  };
+  const handleOnClickUpdateConfirm = () => {
+    if (scrumBoardText === "") {
+      setValidBoardText(true);
+      return;
+    }
+
+    if (confirm("스크럼 보드 아이템을 수정하시겠습니까?")) {
+      updateMutate.mutate(
+        {
+          id: kanbanItem?.id!,
+          description: scrumBoardText,
+          space_id: space_id as string,
+          assignees: assignees,
+        },
+        {
+          onSuccess: async () => {
+            toast.success("스크럼 보드 아이템이 수정되었습니다.");
+            await queryClient.invalidateQueries({
+              queryKey: ["categoryItem", category.id],
+            });
+          },
+        }
+      );
+    }
+  };
+  const handleOnClickUpdateCancel = () => {
+    setBackDropType(BACK_DROP_TYPE_DETAIL);
+  };
+
   const handleOnClickDelete = () => {
     deleteMutate.mutate(kanbanItem?.id!, {
       onSuccess: async () => {
@@ -86,13 +133,14 @@ export default function useCreateScrumButtons(): ReturnType {
     kanbanItem?.assignees &&
       kanbanItem.assignees.forEach((assignee) => {
         const updatedAssignee = {
-          id: "",
+          id: assignee.assigneesId,
           created_at: "",
           space_id: "",
           user_id: assignee.userId,
           space_display_name: assignee.space_display_name,
           space_avatar: assignee.spaceAvatar,
         };
+        setScrumBoardText(kanbanItem.description);
         setAssignees(updatedAssignee);
       });
   }, [kanbanItem?.assignees]);
@@ -106,8 +154,10 @@ export default function useCreateScrumButtons(): ReturnType {
 
   return {
     handleOnClickCreate,
-    handleOnClickCancel,
+    handleOnClickBackDropClose,
     handleOnClickUpdate,
+    handleOnClickUpdateConfirm,
+    handleOnClickUpdateCancel,
     handleOnClickDelete,
   };
 }

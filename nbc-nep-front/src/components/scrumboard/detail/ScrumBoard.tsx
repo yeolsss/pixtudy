@@ -9,6 +9,7 @@ import ScrumBoardCategory from "./ScrumBoardCategory";
 import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
+import { useEffect } from "react";
 
 export default function ScrumBoard() {
   const { space_id } = useParams();
@@ -16,8 +17,11 @@ export default function ScrumBoard() {
   const { openCreateCategoryModal, isCreateCategoryModalOpen } = useModal();
   const { setCategories } = useScrumBoard();
   const categories = useGetCategories(spaceId);
-  setCategories(categories!);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
+
+  useEffect(() => {
+    setCategories(categories!);
+  }, [categories]);
 
   const handleAddCategory = () => {
     openCreateCategoryModal();
