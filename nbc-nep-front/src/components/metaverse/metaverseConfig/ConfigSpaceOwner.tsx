@@ -1,5 +1,7 @@
 import { uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
+import { StDangerButton } from "@/components/common/button/button.styles";
+import DefaultSpanText from "@/components/common/text/DefaultSpanText";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
 import { useEffect, useRef, useState } from "react";
@@ -13,7 +15,12 @@ import { StHiddenInput } from "../styles/config.styles";
 
 export default function ConfigSpaceOwner() {
   const { spaceInfo } = useMetaversePlayer();
-  const { handleSubmit, register, watch } = useForm();
+  const {
+    handleSubmit,
+    register,
+    watch,
+    formState: { errors },
+  } = useForm({ mode: "onChange" });
   const { updateSpace } = useUpdateSpaceInfo();
   const formRef = useRef<HTMLFormElement>(null);
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
@@ -83,11 +90,25 @@ export default function ConfigSpaceOwner() {
         />
       </div>
       <div>
-        <span>스페이스 이름</span> {/* TODO: 스페이스 이름 validation */}
+        <span>스페이스 이름</span>
         <input
           type="text"
-          {...register(SPACE_NAME_FORM, { value: spaceInfo?.title })}
+          {...register(SPACE_NAME_FORM, {
+            value: spaceInfo?.title,
+            required: "스페이스의 이름이 필요합니다.",
+            minLength: {
+              value: 2,
+              message: "스페이스의 이름은 2글자 이상이어야 합니다.",
+            },
+          })}
+          maxLength={20}
         />
+        <span>{watch(SPACE_NAME_FORM)?.length || 0}/20</span>
+        {errors[SPACE_NAME_FORM] && (
+          <DefaultSpanText>
+            {errors[SPACE_NAME_FORM]?.message as string}
+          </DefaultSpanText>
+        )}
       </div>
       <div>
         <span>스페이스 설명</span> {/* TODO: 스페이스 설명 validation */}
@@ -100,9 +121,9 @@ export default function ConfigSpaceOwner() {
 
       <div>
         <button type="submit">수정하기</button>
-        <button type="button" onClick={handleRemoveSpace}>
+        <StDangerButton type="button" onClick={handleRemoveSpace}>
           삭제하기
-        </button>
+        </StDangerButton>
       </div>
     </form>
   );
