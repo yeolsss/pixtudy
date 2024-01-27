@@ -16,6 +16,7 @@ import {
   GAME_WIDTH,
   VERTICAL_BORDER_OFFSET,
 } from "./constants/constant";
+import MetaverseConfigModal from "./metaverseConfig/MetaverseConfig";
 import { Game } from "./types/metaverse";
 
 const MetaverseComponent = () => {
@@ -82,6 +83,7 @@ const MetaverseComponent = () => {
       <MetaversePlayerList />
       <StMetaverseMain id="phaser-metaverse" />
       <VideoConference />
+      <MetaverseConfigModal />
     </StMetaverseWrapper>
   );
 };
