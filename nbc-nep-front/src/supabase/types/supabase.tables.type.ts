@@ -1,3 +1,5 @@
+import { Json } from "@/supabase/types/supabase";
+
 export interface Users {
   id: string /* primary key */;
   created_at: string;
@@ -80,4 +82,17 @@ export type SpaceMembers = {
   users: {
     id: string;
   };
+};
+
+export type GetKanbanItemsByAssignees = {
+  id: string;
+  created_at: string;
+  title: string;
+  description: string;
+  deadline: string;
+  type: string;
+  categoryId: string;
+  item_creator_space_avatar: string;
+  create_user_id: string;
+  assignees: Json;
 };

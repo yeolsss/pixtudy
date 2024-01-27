@@ -1,8 +1,8 @@
 import { supabase } from "@/supabase/supabase";
 import { TablesInsert, TablesUpdate } from "@/supabase/types/supabase";
 import {
+  GetKanbanItemsByAssignees,
   Kanban_categories,
-  Kanban_items,
   Space_members,
 } from "@/supabase/types/supabase.tables.type";
 
@@ -21,13 +21,10 @@ export const getCategories = async (
 
 export const getCategoryItems = async (
   categoryId: string
-): Promise<Kanban_items[]> => {
-  const { data, error } = await supabase
-    .from("kanban_items")
-    .select("*,kanban_assignees(*)")
-    .eq("categoryId", categoryId)
-    .order("created_at", { ascending: true })
-    .returns<Kanban_items[]>();
+): Promise<GetKanbanItemsByAssignees[]> => {
+  const { data, error } = await supabase.rpc("get_kanban_items_by_assignees", {
+    p_category_id: categoryId,
+  });
   if (error) throw error;
   return data;
 };
@@ -48,7 +45,6 @@ export const createCategory = async ({
 export const updateCategory = async (
   updateData: Partial<TablesUpdate<"kanban_categories">>
 ) => {
-  console.log("from supabase", updateData);
   const { data: newCategory, error } = await supabase
     .from("kanban_categories")
     .update(updateData)

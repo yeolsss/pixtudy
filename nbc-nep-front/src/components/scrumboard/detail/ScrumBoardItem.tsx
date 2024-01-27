@@ -1,19 +1,33 @@
 import styled from "styled-components";
-import { Kanban_items } from "@/supabase/types/supabase.tables.type";
+import { GetKanbanItemsByAssignees } from "@/supabase/types/supabase.tables.type";
+import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 
 interface Props {
-  item: Kanban_items;
+  item: GetKanbanItemsByAssignees;
 }
 export default function ScrumBoardItem({ item }: Props) {
-  console.log(item);
-  return <StListItem>{item.description}</StListItem>;
+  return (
+    <StListItem>
+      <StAvatar>
+        <MetaAvatar spaceAvatar={item.item_creator_space_avatar} />
+      </StAvatar>
+      <p>{item.description}</p>
+    </StListItem>
+  );
 }
 
 const StListItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${(props) => props.theme.spacing[4]};
+  align-self: stretch;
   padding: ${(props) => props.theme.spacing[12]};
   width: 100%;
   height: ${(props) => props.theme.unit[64]}px;
-  background: ${(props) => props.theme.color.bg.primary};
-  border: 1px solid ${(props) => props.theme.color.border.primary};
   border-radius: ${(props) => props.theme.border.radius[12]};
+  border: 1px solid ${(props) => props.theme.color.border.secondary};
+  background-color: ${(props) => props.theme.color.bg.primary};
 `;
+
+const StAvatar = styled.div``;

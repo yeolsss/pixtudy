@@ -33,8 +33,8 @@ import {
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
 import {
+  GetKanbanItemsByAssignees,
   Kanban_categories,
-  Kanban_items,
   Space_members,
 } from "@/supabase/types/supabase.tables.type";
 import { authValidation } from "@/utils/authValidate";
@@ -309,7 +309,7 @@ export function useGetCategoryItems(categoryId: string) {
     enabled: !!categoryId,
   };
 
-  return useCustomQuery<Kanban_items[], Error>(queryOptions);
+  return useCustomQuery<GetKanbanItemsByAssignees[], Error>(queryOptions);
 }
 
 export function useCreateCategory(spaceId: string) {
