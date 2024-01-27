@@ -16,11 +16,15 @@ module.exports = function (io) {
 
     socket.on("disconnect", function () {
       console.log("chat [" + socket.id + "] disconnected");
-      const spaceId = chat[socket.id].spaceId;
+      try {
+        const spaceId = chat[socket.id].spaceId;
 
-      delete chat[socket.id];
-
-      io.to(spaceId).emit("chatDisconnected", socket.id);
+        io.to(spaceId).emit("chatDisconnected", socket.id);
+      } catch (error) {
+        console.error("error disconnect chat", error);
+      } finally {
+        delete chat[socket.id];
+      }
     });
 
     socket.on(
