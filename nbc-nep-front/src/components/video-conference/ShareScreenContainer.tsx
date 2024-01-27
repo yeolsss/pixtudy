@@ -23,6 +23,9 @@ export default function ShareScreenContainer() {
     handleInactive,
   } = useLayout();
 
+  // 현재 유저의 OS를 체크
+  const isMac = /Mac/.test(navigator.userAgent);
+
   // 가이드 상태
   const [currentGuide, setCurrentGuide] = useState<GuideStatusType | null>(
     null
@@ -160,10 +163,14 @@ export default function ShareScreenContainer() {
       >
         {!countSelectVideos && (
           <StNoActiveLayoutDiv>
-            <span>원하는 레이아웃으로 비디오를 드래그하세요</span>
+            <h4>원하는 레이아웃으로 비디오를 드래그하여 조작해보세요</h4>
             <span>
-              레이아웃 내에서 [ctrl] + 휠 / 드래그 를 통해 줌/화면 이동을
-              사용해보세요
+              {isMac ? "레이아웃 줌: [Cmd] + 휠" : "레이아웃 줌: [ctrl] + 휠"}
+            </span>
+            <span>
+              {isMac
+                ? "레이아웃 이동: [Cmd] + 드래그"
+                : "레이아웃 이동: [ctrl] + 드래그"}
             </span>
           </StNoActiveLayoutDiv>
         )}
@@ -218,13 +225,19 @@ const StNoActiveLayoutDiv = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2rem;
   font-weight: bold;
   display: flex;
   flex-direction: column;
   align-items: center;
-  & span + span {
-    margin-top: 3rem;
+  & h4 {
+    font-size: ${(props) => props.theme.unit["24"]}px;
+    margin-bottom: ${(props) => props.theme.spacing["40"]};
+  }
+  & > span {
+    font-size: ${(props) => props.theme.unit["16"]}px;
+  }
+  & > span + span {
+    margin-top: ${(props) => props.theme.spacing["20"]};
   }
 `;
 const StPreviewContainer = styled.div<{ $isPreviewVideo: boolean }>`
