@@ -40,6 +40,8 @@ export function authValidation(errorMessage: string, mode: AuthFormType) {
     case "New password should be different from the old password.":
       toast.error("기존 비밀번호와 동일한 비밀번호입니다.");
       break;
+    case "For security purposes, you can only request this once every 60 seconds":
+      return "60초에 한 번만 요청할 수 있습니다.";
     default:
       if (mode === "signIn") {
         toast.error("로그인 오류");

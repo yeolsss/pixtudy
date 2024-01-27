@@ -274,11 +274,11 @@ export function useReadDMMessage() {
 }
 
 export function useForgetPassword() {
-  const { mutate: forgetPassword } = useMutation({
+  const { mutate: forgetPassword, isPending } = useMutation({
     mutationFn: forgottenPasswordHandler,
   });
 
-  return { forgetPassword };
+  return { forgetPassword, isPending };
 }
 
 export function useUpdateUserPw() {
