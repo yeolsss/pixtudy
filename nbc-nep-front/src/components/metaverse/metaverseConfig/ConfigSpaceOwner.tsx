@@ -1,19 +1,36 @@
+import SpaceThumb from "@/components/common/SpaceThumb";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
-import { useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import {
   SPACE_DESCRIPTION_FORM,
   SPACE_NAME_FORM,
+  SPACE_THUMB_FORM,
 } from "../constants/config.contant";
+import { StHiddenInput } from "../styles/config.styles";
 
 export default function ConfigSpaceOwner() {
   const { spaceInfo } = useMetaversePlayer();
-  const { register } = useForm();
+  const { handleSubmit, register, watch } = useForm();
   const formRef = useRef<HTMLFormElement>(null);
+  const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
+    spaceInfo?.space_thumb || undefined
+  );
 
-  const handleRemoveSpace = () => {};
+  const handleRemoveSpace = () => {
+    if (confirm("진짜 삭제할라고?")) {
+      alert("good bye... bro...");
+    }
+  };
 
-  const handleUpdateSpace = () => {};
+  const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
+    // validation을 진행했다고 가정
+    const thumb = data[SPACE_THUMB_FORM];
+
+    if (thumb) {
+      // thumb잉 ㅣㅆ다면 firebase에 thumb을 따로 추가해야한다.
+    }
+  };
 
   useEffect(() => {
     const handleKeyDownPrevent = (e: globalThis.KeyboardEvent) => {
@@ -26,17 +43,38 @@ export default function ConfigSpaceOwner() {
     };
   }, []);
 
+  const thumbWatch = watch(SPACE_THUMB_FORM);
+
+  useEffect(() => {
+    if (thumbWatch && thumbWatch.length > 0) {
+      const file = thumbWatch[0];
+      setThumbPreviewSrc(URL.createObjectURL(file));
+    }
+  }, [thumbWatch]);
+
   return (
-    <form onSubmit={handleUpdateSpace} ref={formRef}>
+    <form onSubmit={handleSubmit(handleUpdateSpace)} ref={formRef}>
       <div>
-        <span>스페이스 이름</span>
+        <span>스페이스 썸네일</span>
+        <label htmlFor={SPACE_THUMB_FORM}>
+          <SpaceThumb src={thumbPreviewSrc} />
+        </label>
+        <StHiddenInput
+          id={SPACE_THUMB_FORM}
+          type="file"
+          {...register(SPACE_THUMB_FORM)}
+          accept="image/*"
+        />
+      </div>
+      <div>
+        <span>스페이스 이름</span> {/* TODO: 스페이스 이름 validation */}
         <input
           type="text"
           {...register(SPACE_NAME_FORM, { value: spaceInfo?.title })}
         />
       </div>
       <div>
-        <span>스페이스 설명</span>
+        <span>스페이스 설명</span> {/* TODO: 스페이스 설명 validation */}
         <textarea
           {...register(SPACE_DESCRIPTION_FORM, {
             value: spaceInfo?.description,
@@ -44,7 +82,6 @@ export default function ConfigSpaceOwner() {
         ></textarea>
       </div>
 
-      {/* TODO : 썸네일 넣어야 함 <input type="file" {...register(SPACE_THUMB_FORM)} /> */}
       <div>
         <button type="submit">수정하기</button>
         <button type="button" onClick={handleRemoveSpace}>

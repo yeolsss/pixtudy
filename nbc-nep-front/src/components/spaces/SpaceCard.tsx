@@ -34,7 +34,6 @@ export default function SpaceCard({ space }: Props) {
     <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
       <StContentsContainer>
         <Image src="/assets/card.png" alt="card" width={300} height={160} />
-
         <h1>
           {space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}
           <Image
