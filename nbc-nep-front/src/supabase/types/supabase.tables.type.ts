@@ -41,6 +41,7 @@ export interface Kanban_items {
   type: string;
   categoryId: string /* foreign key to kanban_categories.id */;
   kanban_categories?: Kanban_categories;
+  kanban_assignees?: Kanban_assignees[];
 }
 
 export interface Kanban_assignees {

@@ -24,7 +24,7 @@ export const getCategoryItems = async (
 ): Promise<Kanban_items[]> => {
   const { data, error } = await supabase
     .from("kanban_items")
-    .select("*")
+    .select("*,kanban_assignees(*)")
     .eq("categoryId", categoryId)
     .order("created_at", { ascending: true })
     .returns<Kanban_items[]>();
@@ -74,16 +74,22 @@ export const getSpaceUsers = async (spaceId: string) => {
 interface PostSpaceMemberPrams {
   description: string;
   categoryId: string;
+  space_id: string;
+  user_id: string;
   assignees: Space_members[];
 }
 export const postScrumBoardItem = async ({
   description,
   categoryId,
   assignees,
+  space_id,
+  user_id,
 }: PostSpaceMemberPrams) => {
   const { data, error } = await supabase
     .from("kanban_items")
-    .insert([{ description, categoryId, title: "" }])
+    .insert([
+      { description, categoryId, title: "", create_user_id: user_id, space_id },
+    ])
     .select("*");
 
   if (error) {
@@ -96,6 +102,7 @@ export const postScrumBoardItem = async ({
       assignees.map((assignee) => ({
         kanbanItemId: data?.[0].id,
         userId: assignee.users?.id!,
+        space_id,
       }))
     );
   if (error) {

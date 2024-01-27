@@ -5,6 +5,7 @@ interface Props {
   item: Kanban_items;
 }
 export default function ScrumBoardItem({ item }: Props) {
+  console.log(item);
   return <StListItem>{item.description}</StListItem>;
 }
 

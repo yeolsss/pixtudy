@@ -5,6 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { postScrumBoardItem } from "@/api/supabase/scrumBoard";
+import { useParams } from "next/navigation";
+import useAuth from "@/zustand/authStore";
 
 interface ReturnType {
   handleOnClickCreate: () => void;
@@ -13,6 +15,8 @@ interface ReturnType {
   handleOnClickDelete: () => void;
 }
 export default function useCreateScrumButtons(): ReturnType {
+  const { space_id } = useParams();
+  const { user } = useAuth();
   const { scrumBoardText, resetScrumBoardItem, setValidBoardText } =
     useScrumBoardItem();
   const { assignees, resetBackDrop } = useScrumBoardMemberSearch();
@@ -32,6 +36,8 @@ export default function useCreateScrumButtons(): ReturnType {
       {
         description: scrumBoardText,
         categoryId: category.id,
+        space_id: space_id as string,
+        user_id: user?.id,
         assignees: assignees,
       },
       {
