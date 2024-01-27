@@ -207,6 +207,7 @@ const StVideosLayoutContainer = styled.div`
   align-items: center;
   justify-content: flex-end;
   position: fixed;
+  padding-top: ${(props) => props.theme.spacing["16"]};
   top: 0;
   left: 68px;
   right: 230px;
@@ -215,6 +216,10 @@ const StVideosLayoutContainer = styled.div`
   color: white;
   & > button {
     position: absolute;
+    background: ${(props) => props.theme.color.bg.interactive.danger};
+    color: ${(props) => props.theme.color.base.white};
+    font-size: ${(props) => props.theme.unit["16"]}px;
+    border: none;
     right: 1rem;
     top: 1rem;
   }
@@ -242,8 +247,9 @@ const StNoActiveLayoutDiv = styled.div`
 `;
 const StPreviewContainer = styled.div<{ $isPreviewVideo: boolean }>`
   display: flex;
-  margin: ${(props) => (props.$isPreviewVideo ? "1rem" : "0")};
+  margin-bottom: ${(props) => (props.$isPreviewVideo ? "1rem" : "0")};
   height: ${(props) => (props.$isPreviewVideo ? "15%" : "7%")};
+  flex-shrink: unset;
 `;
 
 const StLayoutContainer = styled.div<{
@@ -279,6 +285,8 @@ const StLayoutContainer = styled.div<{
 const StLayoutGuide = styled.div<{ $guide: GuideStatusType | null }>`
   z-index: 10;
   background: rgba(122, 108, 108, 0.5);
+  margin: ${(props) => props.theme.spacing[6]};
+  border-radius: ${(props) => props.theme.border.radius[12]};
   position: absolute;
   ${(props) => {
     switch (props.$guide) {
