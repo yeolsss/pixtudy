@@ -4,9 +4,9 @@ import ScrumBoard from "@/components/scrumboard/detail/ScrumBoard";
 import { NextPageWithLayout } from "@/pages/_app";
 import { ReactElement, useEffect } from "react";
 import { GetServerSidePropsContext } from "next";
-import { getSpaceUsers } from "@/api/scrumBoard/scrumBoard";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
+import { getSpaceUsers } from "@/api/supabase/scrumBoard";
 
 interface Props {
   spaceMembers: Space_members[];

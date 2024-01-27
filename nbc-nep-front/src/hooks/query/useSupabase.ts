@@ -22,7 +22,7 @@ import {
   getCategories,
   getCategoryItems,
   updateCategory,
-} from "@/api/supabase/scrumboard";
+} from "@/api/supabase/scrumBoard";
 import {
   createSpaceHandler,
   getSpaceData,

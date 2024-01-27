@@ -2,9 +2,9 @@ import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
 import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
 import { useMutation } from "@tanstack/react-query";
-import { postScrumBoardItem } from "@/api/scrumBoard/scrumBoard";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { postScrumBoardItem } from "@/api/supabase/scrumBoard";
 
 interface ReturnType {
   handleOnClickCreate: () => void;
