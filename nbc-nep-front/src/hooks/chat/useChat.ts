@@ -1,8 +1,8 @@
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
-import useAuth from "@/zustand/authStore";
 import useChatSocket from "@/hooks/socket/useChatSocket";
-import React from "react";
 import useInput from "@/hooks/useInput";
+import useAuth from "@/zustand/authStore";
+import React from "react";
 
 export default function useChat() {
   const { playerList } = useMetaversePlayer();

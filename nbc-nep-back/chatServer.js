@@ -39,5 +39,14 @@ module.exports = function (io) {
         io.to(spaceId).emit("receiveMessage", chat[socket.id]);
       }
     );
+
+    socket.on("removeRoom", () => {
+      const player = chat[socket.id];
+      const spaceId = player.spaceId;
+
+      io.to(spaceId).emit("removedRoom");
+
+      // TODO : io room 제거...
+    });
   });
 };

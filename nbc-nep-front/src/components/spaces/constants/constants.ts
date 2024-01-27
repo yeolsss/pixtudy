@@ -5,7 +5,7 @@ export const FORM_CHARACTER: FormCharacter = "formCharacter";
 
 export const SPACE_NAME_MAX_LENGTH = 20;
 export const SPACE_NAME_MIN_LENGTH = 2;
-export const SPACE_DESCRIPTION_MAX_LENGTH = 100;
+export const SPACE_DESCRIPTION_MAX_LENGTH = 70;
 
 export const characterOptions = Array.from({ length: 26 }, (_, i) => ({
   value: `NPC${i + 1}`,

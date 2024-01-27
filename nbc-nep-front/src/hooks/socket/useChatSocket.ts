@@ -1,8 +1,8 @@
 import { Chat } from "@/components/metaverse/types/metaverse";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
-import useMetaversePlayer from "../metaverse/useMetaversePlayer";
 import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
+import useMetaversePlayer from "../metaverse/useMetaversePlayer";
 
 export default function useChatSocket(playerDisplayName: string | null = "") {
   const [chatList, setChatList] = useState<Chat[]>([]);
