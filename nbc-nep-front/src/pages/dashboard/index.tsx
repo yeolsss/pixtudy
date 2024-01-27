@@ -12,12 +12,14 @@ import useModal from "@/hooks/modal/useModal";
 import useTourTooltip from "@/hooks/tooltip/useTourTooltip";
 import { theme } from "@/styles/Globalstyle";
 import { Database, Tables } from "@/supabase/types/supabase";
+import { getCookie } from "@/utils/middlewareUtils";
+import { pathValidation } from "@/utils/middlewareValidate";
 import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltipUtils";
 import { createClient } from "@supabase/supabase-js";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { StaticImageData } from "next/image";
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -33,6 +35,17 @@ const NoSSRJoyride = dynamic(() => import("react-joyride"), { ssr: false });
 const Dashboard: NextPage<Props> & {
   getLayout?: (page: ReactElement) => ReactElement;
 } = ({ spaces }) => {
+  useEffect(() => {
+    const message = getCookie("message");
+    if (message) {
+      // 메시지로 이벤트 처리
+      pathValidation(message);
+      // 쿠키 삭제
+      document.cookie =
+        "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+  }, []);
+
   const { isAvatarModalOpen } = useModal();
 
   const {
