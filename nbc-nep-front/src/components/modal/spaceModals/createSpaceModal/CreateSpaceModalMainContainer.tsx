@@ -22,6 +22,7 @@ export default function CreateSpaceModalMainContainer() {
     handleSubmit,
     register,
     getValues,
+    watch,
     formState: { errors },
   } = useForm({ mode: "onSubmit" });
 
@@ -46,6 +47,7 @@ export default function CreateSpaceModalMainContainer() {
           </>
         ) : (
           <ProfileForm
+            watch={watch}
             setProcedure={setProcedure}
             handleSubmit={handleSubmit}
             register={register}

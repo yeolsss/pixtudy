@@ -1,24 +1,28 @@
 import { characterOptions } from "@/components/spaces/constants/constants";
 import useSpace from "@/zustand/spaceStore";
-import { ChangeEvent, useState } from "react";
-import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
+import { ChangeEvent } from "react";
+import {
+  FieldValues,
+  FormState,
+  UseFormRegister,
+  UseFormWatch,
+} from "react-hook-form";
 import styled from "styled-components";
 
 interface Props {
+  watch: UseFormWatch<FieldValues>;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
 }
 
-function AvatarInput({ register, errors }: Props) {
+function AvatarInput({ register, errors, watch }: Props) {
   const {
     userProfile: { avatar },
   } = useSpace();
-  const [selectedAvatar, setSelectedAvatar] = useState(avatar);
 
   const { onChange, ...restParam } = register("avatar");
 
   const handleCustomChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedAvatar(e.target.value);
     onChange(e);
   };
 
@@ -27,7 +31,7 @@ function AvatarInput({ register, errors }: Props) {
       {characterOptions.map((option, index) => (
         <StInputWrapper
           key={option.value}
-          $isSelected={selectedAvatar === option.value}
+          $isSelected={watch("avatar") === option.value}
         >
           <input
             type="radio"
