@@ -34,7 +34,7 @@ export default function ProfileForm({
   errors,
   mode,
 }: ProfileFormProps) {
-  const { userProfile, setUserProfile } = useSpace();
+  const { setUserProfile } = useSpace();
   const { user } = useAuth();
 
   const handleToPrevious = () => {

@@ -1,4 +1,8 @@
-import { fieldValues } from "@/components/spaces/constants/constants";
+import {
+  SPACE_DESCRIPTION_MAX_LENGTH,
+  SPACE_NAME_MAX_LENGTH,
+  fieldValues,
+} from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
 import { Tables } from "@/supabase/types/supabase";
 import useSpace from "@/zustand/spaceStore";
@@ -81,7 +85,7 @@ export default function CreateSpaceForm({
                   <input
                     type={fieldValue.type}
                     placeholder={fieldValue.placeholder}
-                    maxLength={20}
+                    maxLength={SPACE_NAME_MAX_LENGTH}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceName && (
@@ -101,7 +105,7 @@ export default function CreateSpaceForm({
                   <textarea
                     key={fieldValue.name}
                     placeholder={fieldValue.placeholder}
-                    maxLength={100}
+                    maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceDescription && (
