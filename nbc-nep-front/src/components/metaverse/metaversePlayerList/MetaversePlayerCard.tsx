@@ -60,6 +60,7 @@ const StMetaversePlayerCard = styled.div`
   }
   > div > span {
     font-size: 14px;
+    white-space: nowrap;
   }
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);

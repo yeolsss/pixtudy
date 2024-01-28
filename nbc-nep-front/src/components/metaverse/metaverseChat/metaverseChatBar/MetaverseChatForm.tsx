@@ -1,7 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
 import useChat from "@/hooks/chat/useChat";
+import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
+import styled from "styled-components";
 
 export default function MetaverseChatForm() {
   const {
@@ -23,6 +22,7 @@ export default function MetaverseChatForm() {
           onChange={handleOnChangeChat}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          placeholder="메시지를 입력하세요"
         />
       </form>
     </>

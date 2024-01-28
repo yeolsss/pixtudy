@@ -13,6 +13,7 @@ import {
   getDmChannelMessages,
   getDmChannelMessagesReturns,
   getLastDmMessageList,
+  getSpaceMemberInfo,
   getUserSpaces,
   readDmMessage,
   sendMessage,
@@ -429,4 +430,20 @@ export function useDeleteSpace() {
   });
 
   return { deleteSpace: mutate, ...rest };
+}
+
+export function useGetSpaceMember({
+  spaceId,
+  userId,
+}: {
+  spaceId: string;
+  userId: string;
+}) {
+  const queryOptions = {
+    queryKey: ["spaceMember", spaceId, userId],
+    queryFn: () => getSpaceMemberInfo({ spaceId, userId }),
+    enabled: !!spaceId,
+    options: { staleTime: Infinity },
+  };
+  return useCustomQuery<Tables<"space_members">, Error>(queryOptions);
 }
