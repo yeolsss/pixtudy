@@ -20,7 +20,7 @@ export default function CreateDescription() {
 
   return (
     <StCreateBackDropDescriptionWrapper>
-      <CreateDescriptionHeader text={text} />
+      <CreateDescriptionHeader text={text} countType={"C"} />
       <BackDropTextArea
         fontSize={SCRUM_BOARD_TEXT_AREA_FONT_SIZE}
         forwardRef={textAreaRef}

@@ -8,6 +8,7 @@ export default function CreateCategoryInputBox() {
   const { category, isOpenCategoryBackDrop, setIsOpenCategoryBackDrop } =
     useScrumBoardItemBackDrop();
   const { name } = category;
+
   const handleOnClickBackDropToggle = () => {
     setIsOpenCategoryBackDrop(!isOpenCategoryBackDrop);
   };

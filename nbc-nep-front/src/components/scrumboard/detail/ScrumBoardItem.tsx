@@ -1,19 +1,29 @@
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
-import { GetKanbanItemsByAssignees } from "@/supabase/types/supabase.tables.type";
+import { BACK_DROP_TYPE_DETAIL } from "@/components/scrumboard/constants/constants";
+import {
+  GetKanbanItemsByAssignees,
+  Kanban_categories,
+} from "@/supabase/types/supabase.tables.type";
+import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import React from "react";
 import styled from "styled-components";
 
 interface Props {
   item: GetKanbanItemsByAssignees;
+  category: Kanban_categories;
 }
-function ScrumBoardItem({ item }: Props) {
+function ScrumBoardItem({ category, item }: Props) {
+  const { setIsOpen } = useScrumBoardItemBackDrop();
+  const handleOpenItemDetail = (item: GetKanbanItemsByAssignees) => {
+    setIsOpen(category, item, BACK_DROP_TYPE_DETAIL);
+  };
   return (
-    <StListItem>
+    <StListItem onClick={() => handleOpenItemDetail(item)}>
       <StAvatar>
         <MetaAvatar spaceAvatar={item.item_creator_space_avatar} />
       </StAvatar>
       <p>{item.description}</p>
-      {item.assignees.length > 0 && (
+      {item.assignees[0].userId !== null && (
         <StAssigneesWrapper>
           {item.assignees.map((assignee, index) => {
             return (
@@ -48,6 +58,7 @@ const StListItem = styled.li`
   border: 1px solid ${(props) => props.theme.color.border.secondary};
   background-color: ${(props) => props.theme.color.bg.primary};
   cursor: grab;
+
   > p {
     color: ${(props) => props.theme.color.text.secondary};
     text-overflow: ellipsis;

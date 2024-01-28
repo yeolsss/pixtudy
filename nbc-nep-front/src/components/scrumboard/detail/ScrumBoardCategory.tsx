@@ -1,10 +1,11 @@
 import NoContents from "@/components/common/NoContents";
-import ScrumBoardItem from "@/components/scrumboard/detail/ScrumBoardItem";
+import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 import { useGetCategoryItems } from "@/hooks/query/useSupabase";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import styled from "styled-components";
 import CategoryHeader from "./CategoryHeader";
+import ScrumBoardItem from "./ScrumBoardItem";
 
 interface Props {
   category: Kanban_categories;
@@ -14,7 +15,7 @@ export default function ScrumBoardCategory({ category }: Props) {
   const { id, name, color } = category;
   const { setIsOpen } = useScrumBoardItemBackDrop();
   const handleAddItem = () => {
-    setIsOpen(category);
+    setIsOpen(category, null, BACK_DROP_TYPE_CREATE);
   };
   const items = useGetCategoryItems(id);
   return (
@@ -28,7 +29,9 @@ export default function ScrumBoardCategory({ category }: Props) {
       {items?.length ? (
         <StItemsContainer>
           {items?.map((item, index) => {
-            return <ScrumBoardItem key={index} item={item} />;
+            return (
+              <ScrumBoardItem key={index} item={item} category={category} />
+            );
           })}
         </StItemsContainer>
       ) : (

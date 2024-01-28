@@ -13,6 +13,7 @@ interface SpaceListStoreState {
   setBackDropIsOpen: (isOpen: boolean) => void;
   setAssignees: (assign: Space_members) => void;
   deleteAssignees: (userId: string) => void;
+  resetAssignees: () => void;
   resetBackDrop: () => void;
 }
 
@@ -42,14 +43,13 @@ const useScrumBoardMemberSearch = create<SpaceListStoreState>()((set) => ({
     set((state) => ({ assignees: [...state.assignees, assign] })),
   deleteAssignees: (userId: string) =>
     set((state) => ({
-      assignees: state.assignees.filter(
-        (assign) => assign.users?.id !== userId
-      ),
+      assignees: state.assignees.filter((assign) => assign.user_id !== userId),
     })),
   setBackDropIsOpen: (isOpen: boolean) =>
     set(() => ({ backDropIsOpen: isOpen })),
   setSpaceMembers: (spaceMembers: Space_members[]) =>
     set(() => ({ spaceMembers, filteredSpaceMembers: spaceMembers })),
+  resetAssignees: () => set(() => ({ assignees: [] })),
   resetBackDrop: () =>
     set((state) => ({
       assignees: [],
@@ -57,14 +57,5 @@ const useScrumBoardMemberSearch = create<SpaceListStoreState>()((set) => ({
       backDropIsOpen: false,
     })),
 }));
-
-interface props {
-  users: Space_members[];
-  filteredUsers: Space_members[];
-  searchValue: string;
-  changeSearchValue: (searchValue: string) => void;
-  filterUsers: () => void;
-  setUsers: (spaces: Space_members[]) => void;
-}
 
 export default useScrumBoardMemberSearch;

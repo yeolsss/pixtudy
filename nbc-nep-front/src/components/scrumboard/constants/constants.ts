@@ -10,3 +10,7 @@ export const options = [
   "#2563EB",
   "#9B51E0",
 ];
+
+export const BACK_DROP_TYPE_CREATE = "create";
+export const BACK_DROP_TYPE_DETAIL = "detail";
+export const BACK_DROP_TYPE_UPDATE = "update";

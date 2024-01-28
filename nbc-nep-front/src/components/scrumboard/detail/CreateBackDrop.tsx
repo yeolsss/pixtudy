@@ -1,37 +1,34 @@
 import styled from "styled-components";
 import CreateInput from "@/components/scrumboard/detail/createBackDrop/CreateInput";
-import useCreateScrumButtons from "@/hooks/scrumBoard/useCreateScrumButtons";
-import CreateBackDropCtaButton from "@/components/scrumboard/detail/createBackDrop/CreateBackDropCTAButton";
 import CreateDescription from "@/components/scrumboard/detail/createBackDrop/CreateDescription";
 import CreateAssignees from "@/components/scrumboard/detail/createBackDrop/CreateAssignees";
+import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import ScrumItemDetail from "@/components/scrumboard/detail/ScrumItemDetail";
+import {
+  BACK_DROP_TYPE_CREATE,
+  BACK_DROP_TYPE_UPDATE,
+} from "@/components/scrumboard/constants/constants";
+import BackDropTypeButtonGroup from "@/components/scrumboard/libs/BackDropType";
 
 export default function CreateBackDrop() {
-  const {
-    handleOnClickCreate,
-    handleOnClickUpdate,
-    handleOnClickCancel,
-    handleOnClickDelete,
-  } = useCreateScrumButtons();
+  const { backDropType } = useScrumBoardItemBackDrop();
 
   return (
     <StCreateBackDrop>
-      {/*생성*/}
       <StCreateBackDropHeader>
         <CreateInput />
-        <CreateBackDropCtaButton
-          buttonType={"submit"}
-          forwardText={"생성"}
-          handle={handleOnClickCreate}
-        />
-        <CreateBackDropCtaButton
-          buttonType={"button"}
-          forwardText={"취소"}
-          handle={handleOnClickCancel}
-        />
+
+        {BackDropTypeButtonGroup(backDropType)}
       </StCreateBackDropHeader>
-      <CreateDescription />
-      <CreateAssignees />
-      {/* 생성 끝 */}
+      {backDropType === BACK_DROP_TYPE_CREATE ||
+      backDropType === BACK_DROP_TYPE_UPDATE ? (
+        <>
+          <CreateDescription />
+          <CreateAssignees />
+        </>
+      ) : (
+        <ScrumItemDetail />
+      )}
     </StCreateBackDrop>
   );
 }
@@ -60,4 +57,3 @@ const StCreateBackDropHeader = styled.div`
   flex: 1 0 0;
   gap: ${(props) => props.theme.spacing[4]};
 `;
-const StCreateBackDropHeaderButtonWrapper = styled.div``;
