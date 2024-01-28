@@ -22,7 +22,9 @@ import {
   createSpaceHandler,
   getSpaceData,
   joinSpaceHandler,
+  removeSpace,
   removeSpace as removeSpaceSupabase,
+  updateSpace,
   updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
@@ -289,4 +291,32 @@ export function useUpdateUserPw() {
     },
   });
   return updateUser;
+}
+
+export function useUpdateSpaceInfo() {
+  const client = useQueryClient();
+  const { mutate, ...rest } = useMutation({
+    mutationFn: updateSpace,
+    onSuccess: (spaceInfo) => {
+      const spaceId = spaceInfo.id;
+      client.invalidateQueries({ queryKey: ["spaceInfo", spaceId] });
+      client.invalidateQueries({ queryKey: ["userSpaces", spaceInfo.owner] });
+    },
+    onError: () => {},
+  });
+
+  return { updateSpace: mutate, ...rest };
+}
+
+export function useDeleteSpace() {
+  const client = useQueryClient();
+  const { mutate, ...rest } = useMutation({
+    mutationFn: removeSpace,
+    onSuccess: (spaceId) => {
+      client.invalidateQueries({ queryKey: ["spaceInfo", spaceId] });
+    },
+    onError: () => {},
+  });
+
+  return { deleteSpace: mutate, ...rest };
 }

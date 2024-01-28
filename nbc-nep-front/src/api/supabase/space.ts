@@ -79,10 +79,12 @@ export const getPlayerSpaceData = async (
   return data;
 };
 
-export const removeSpace = async (spaceId: string): Promise<void> => {
+export const removeSpace = async (spaceId: string): Promise<string> => {
   const { error } = await supabase.from("spaces").delete().eq("id", spaceId);
 
   if (error) return Promise.reject(error);
+
+  return spaceId;
 };
 
 export const updateSpace = async (

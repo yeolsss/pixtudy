@@ -39,6 +39,7 @@ export class SetupScene extends Phaser.Scene {
       "NPC26",
       "pinkybonz",
     ];
+
     characters.forEach((character) => {
       this.load.spritesheet(
         character,
