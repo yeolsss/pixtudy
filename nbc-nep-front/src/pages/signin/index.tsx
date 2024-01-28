@@ -1,15 +1,31 @@
-import SocialLogin from "@/components/auth/SocialLogin";
-import Link from "next/link";
-import React, { ReactElement } from "react";
-import * as St from "@/components/auth/styles/authCommon.styles";
-import AuthDivider from "@/components/auth/AuthDivider";
-import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
-import AuthFormContainer from "@/components/auth/AuthFormContainer";
-import AuthForm from "@/components/auth/AuthForm";
-import AuthFooter from "@/components/auth/AuthFooter";
 import CustomHead from "@/SEO/CustomHead";
-
+import AuthDivider from "@/components/auth/AuthDivider";
+import AuthFooter from "@/components/auth/AuthFooter";
+import AuthForm from "@/components/auth/AuthForm";
+import AuthFormContainer from "@/components/auth/AuthFormContainer";
+import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
+import SocialLogin from "@/components/auth/SocialLogin";
+import * as St from "@/components/auth/styles/authCommon.styles";
+import ModalPortal from "@/components/modal/ModalPortal";
+import ForgetPasswordModal from "@/components/modal/forgetPasswordModal/ForgetPasswordModal";
+import useModal from "@/hooks/modal/useModal";
+import { getCookie } from "@/utils/middlewareUtils";
+import { pathValidation } from "@/utils/middlewareValidate";
+import Link from "next/link";
+import { ReactElement, useEffect } from "react";
 export function SignIn() {
+  const { isForgetPasswordModalOpen } = useModal();
+
+  useEffect(() => {
+    const message = getCookie("message");
+    if (message) {
+      // 메시지로 이벤트 처리
+      pathValidation(message);
+      // 쿠키 삭제
+      document.cookie =
+        "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+  }, []);
   return (
     <>
       <CustomHead title={"로그인"} description={"로그인 페이지입니다."} />
@@ -26,6 +42,11 @@ export function SignIn() {
           <AuthForm formType="signIn" />
           <AuthFooter />
         </AuthFormContainer>
+        {isForgetPasswordModalOpen && (
+          <ModalPortal>
+            <ForgetPasswordModal />
+          </ModalPortal>
+        )}
       </St.AuthOuterContainer>
     </>
   );

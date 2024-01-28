@@ -3,10 +3,8 @@ import {
   isArrayEmpty,
   splitVideoSource,
 } from "@/components/video-conference/libs/util";
+import useLayout from "@/hooks/conference/useLayout";
 import useVideoSource from "@/hooks/conference/useVideoSource";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { layoutOpen } from "@/redux/modules/layoutSlice";
-import { useRef } from "react";
 import ShareMediaItem from "../ShareMediaItem";
 import {
   SPACING,
@@ -24,27 +22,24 @@ export default function OtherPlayerShareMediaItem({
   player,
   currentPlayerId,
 }: Props) {
-  const dispatch = useAppDispatch();
-  const videosContainerRef = useRef<HTMLDivElement | null>(null);
-  const { consumers } = useVideoSource();
+  const { filterConsumersById } = useVideoSource();
+
+  const { handleOpenLayout } = useLayout();
 
   if (currentPlayerId === player.playerId) return null;
 
-  const filteredConsumers = consumers.filter(
-    (consumer) => consumer.appData.playerId === player.playerId
-  );
+  const filteredConsumers = filterConsumersById(player.playerId);
 
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
+
   const isEmptyScreenConsumers = isArrayEmpty(screenConsumers);
 
   const handleToggleVideosLayout = () => {
-    dispatch(
-      layoutOpen({
-        playerId: player.playerId,
-        playerNickName: player.nickname,
-      })
-    );
+    handleOpenLayout({
+      playerId: player.playerId,
+      playerNickName: player.nickname,
+    });
   };
 
   return (
@@ -55,10 +50,7 @@ export default function OtherPlayerShareMediaItem({
         isCurrentPlayer={false}
       />
       {!isEmptyScreenConsumers && (
-        <StVideoWrapper
-          ref={videosContainerRef}
-          onClick={handleToggleVideosLayout}
-        >
+        <StVideoWrapper onClick={handleToggleVideosLayout}>
           {screenConsumers.map((consumer, index) => (
             <StStackItem
               key={consumer.id}

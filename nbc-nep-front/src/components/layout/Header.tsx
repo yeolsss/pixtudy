@@ -1,5 +1,7 @@
+import useConfirm from "@/hooks/confirm/useConfirm";
 import { useLogoutUser } from "@/hooks/query/useSupabase";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import { pathValidation } from "@/utils/middlewareValidate";
+import useAuth from "@/zustand/authStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -8,8 +10,13 @@ import { StCTAButton } from "../common/button/button.styles";
 export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
+  const { user } = useAuth();
+  const { openConfirmHandler } = useConfirm();
 
-  const authStatus = useAppSelector((state) => state.authSlice);
+  const {
+    isLogin,
+    user: { display_name },
+  } = useAuth();
 
   const handleToLoginPage = () => {
     router.push("/signin");
@@ -19,13 +26,27 @@ export default function Header() {
     router.push("/signup");
   };
 
-  const handleLogout = () => {
-    logout();
-    router.push("/");
+  const handleLogout = async () => {
+    const result = await openConfirmHandler({
+      title: "로그아웃",
+      message: " 정말 로그아웃 하시겠습니까?",
+      confirmButtonText: "네, 로그아웃할게요",
+      denyButtonText: "아니요, 더 둘러볼게요",
+    });
+    if (result) logout();
   };
 
   const handleToDashboard = () => {
-    router.push("/dashboard");
+    if (user.id) {
+      router.push("/dashboard");
+    } else {
+      router.push("/signin");
+      pathValidation("login_first");
+    }
+  };
+
+  const handleToBoards = () => {
+    router.push("/boards");
   };
 
   const loginModeButton = [{ text: "로그아웃", handler: handleLogout }];
@@ -33,7 +54,7 @@ export default function Header() {
     { text: "LOGIN", handler: handleToLoginPage },
     { text: "SIGNUP", handler: handleToSignUpPage },
   ];
-  const currentButton = authStatus.isLogin ? loginModeButton : logoutModeButton;
+  const currentButton = isLogin ? loginModeButton : logoutModeButton;
   return (
     <>
       <StNavContainer>
@@ -41,9 +62,10 @@ export default function Header() {
           <Link href="/">Pixtudy</Link>
           <StNavButton>서비스 소개</StNavButton>
           <StNavButton>고객지원</StNavButton>
+          <StNavButton onClick={handleToBoards}>boards</StNavButton>
         </div>
         <div>
-          {authStatus?.isLogin && <p>{authStatus.user.display_name}</p>}
+          {isLogin && <p>{display_name}</p>}
           {currentButton.map((btn, index) => (
             <StNavButton key={index} onClick={btn.handler}>
               {btn.text}

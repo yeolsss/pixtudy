@@ -1,16 +1,15 @@
 import {
-  getProducersByShareType,
   isAlreadyConsume,
   isEmptyTracks,
 } from "@/components/video-conference/libs/util";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 import useDevice from "@/hooks/conference/useDevice";
+import useLayout from "@/hooks/conference/useLayout";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useSocket from "@/hooks/socket/useSocket";
-import { useAppSelector } from "@/hooks/useReduxTK";
-import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
+import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
 import styled from "styled-components";
 import CameraOff from "../../assets/dock-icons/camera-off.svg";
@@ -26,6 +25,7 @@ import ShareButton from "./ShareButton";
 import { videoParams } from "./constants/constants";
 import {
   AppData,
+  MediaConsumeParams,
   ProducerForConsume,
   RtpCapabilities,
   ShareType,
@@ -36,19 +36,21 @@ import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayCo
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
 
-  const { playerList, spaceId, findPlayerById } = usePlayerContext();
-  const { id: currentPlayerId } = useAppSelector(
-    (state) => state.authSlice.user
-  );
+  const { playerList, spaceId, findPlayerById } = useMetaversePlayer();
+  const {
+    user: { id: currentPlayerId },
+  } = useAuth();
+  const { isOpen } = useLayout();
 
   const {
     consumers,
-    producers,
     addConsumer,
     addProducer,
     removeConsumer,
     removeProducer,
     isCanShare,
+    findProducerByShareType,
+    filterProducersByShareType,
   } = useVideoSource();
 
   const {
@@ -64,7 +66,7 @@ export default function VideoConference() {
     playerId: currentPlayerId,
   });
 
-  const { recvTransport, createRecvTransport } = useRecvTransport({
+  const { consume, createRecvTransport } = useRecvTransport({
     socket,
     createRecvTransportWithDevice,
     playerId: currentPlayerId,
@@ -123,32 +125,11 @@ export default function VideoConference() {
       socket.emit(
         "transport-recv-consume",
         { rtpCapabilities, producerId, appData, playerId: currentPlayerId },
-        async (data: {
-          id: string;
-          producerId: string;
-          kind: "audio" | "video";
-          rtpParameters: RtpParameters;
-        }) => {
-          const { id, producerId, kind, rtpParameters } = data;
-
-          const consumer = await recvTransport.current?.consume({
-            id,
-            producerId,
-            kind,
-            rtpParameters,
-            appData,
-          });
-
-          consumer?.on("@close", () => {
-            console.log("basic close consumer");
-          });
-
-          consumer?.observer.on("close", () => {
-            console.log("close consumer");
-          });
+        async (params: MediaConsumeParams) => {
+          const consumer = await consume({ ...params, appData });
 
           if (!consumer) {
-            throw new Error("consumer가 없다...있어야 하는데...");
+            throw new Error("no consumer");
           }
 
           addConsumer(consumer);
@@ -201,6 +182,10 @@ export default function VideoConference() {
         throw new Error("no producer...");
       }
 
+      track.addEventListener("ended", () => {
+        removeProducer(producer);
+      });
+
       addProducer(producer);
     } catch (error) {
       console.log("handle share error", error);
@@ -208,9 +193,7 @@ export default function VideoConference() {
   }
 
   async function handleStopShare(type: ShareType) {
-    const producer = producers.find(
-      (producer) => producer.appData.shareType === type
-    );
+    const producer = findProducerByShareType(type);
 
     if (!producer) {
       console.error("no producer...");
@@ -221,11 +204,10 @@ export default function VideoConference() {
 
     socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
   }
-  const screenCount = getProducersByShareType(producers, "screen").length;
-
+  const screenCount = filterProducersByShareType("screen").length;
   return (
     <>
-      <StDockContainer>
+      <StDockContainer $isOpen={isOpen}>
         <DockPlayer player={currentPlayer} />
         <ShareButton
           type="screen"
@@ -269,12 +251,13 @@ export default function VideoConference() {
   );
 }
 
-const StDockContainer = styled.div`
+const StDockContainer = styled.div<{ $isOpen: boolean }>`
   position: absolute;
 
   left: 50%;
-  bottom: ${(props) => props.theme.spacing[64]};
+  bottom: ${(props) => props.theme.spacing[32]};
   transform: translateX(-50%);
+  z-index: 3;
 
   background-color: ${(props) => props.theme.color.metaverse.primary};
 
@@ -286,6 +269,13 @@ const StDockContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
 
-  gap: 15px;
+  gap: ${(props) => props.theme.unit[15]};
   width: 465px;
+
+  transition: opacity 0.2s ease-in-out;
+
+  ${(props) => props.$isOpen && "opacity: 0.3"};
+  &:hover {
+    ${(props) => props.$isOpen && "opacity: 1"};
+  }
 `;

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { useDrag } from "react-dnd";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import styled from "styled-components";
 
 interface Props {
@@ -12,8 +12,8 @@ interface Props {
 export default function ShareScreenDragItem({
   id,
   active,
-  children,
   handleInactive,
+  children,
 }: PropsWithChildren<Props>) {
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: "VIDEO",
@@ -87,5 +87,10 @@ const StDragContainer = styled.div<{ $active: boolean; $isDragging: boolean }>`
     top: 1rem;
     background: rgba(0, 0, 0, 0.5);
     color: white;
+    border: none;
+    &:hover {
+      background: ${(props) =>
+        props.theme.color.bg.interactive["danger-hovered"]};
+    }
   }
 `;

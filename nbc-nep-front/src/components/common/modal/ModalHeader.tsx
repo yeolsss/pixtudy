@@ -31,5 +31,8 @@ const StModalHeaderContainer = styled.div`
     border: none;
     padding: 0;
     background: url("/assets/close.svg") no-repeat center;
+    &:hover {
+      background-color: transparent;
+    }
   }
 `;

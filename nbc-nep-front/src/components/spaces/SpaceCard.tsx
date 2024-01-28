@@ -1,37 +1,62 @@
+import CopyIcon from "@/assets/icons/CopyIcon.svg";
 import useGetUsersCount from "@/hooks/query/useGetUsersCount";
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+import SpaceThumb from "../common/SpaceThumb";
 import UserIcon from "../common/UserIcon";
 
 interface Props {
-  space: Space_members;
+  space: Space_members | null;
 }
 
 export default function SpaceCard({ space }: Props) {
   const { data: count, isLoading } = useGetUsersCount(space?.space_id!);
-  const [usersCount, setUsersCount] = useState<number>(0);
   const router = useRouter();
 
   const handleToSpace = async (space_id: string) => {
     await router.push(`/metaverse/${space_id}`);
   };
 
+  const handleCaptureClipboard = () => {
+    navigator.clipboard
+      .writeText(space?.space_id!)
+      .then(() => {
+        toast.success("복사에 성공했습니다!");
+      })
+      .catch(() => {
+        toast.error("복사에 실패했습니다.");
+      });
+  };
+
   return (
-    <StCardWrapper>
+    <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
       <StContentsContainer>
-        <Image src="/assets/card.png" alt="card" width={300} height={160} />
-        <h1>{space.spaces?.title}</h1>
-        <p>{space.spaces?.description}</p>
+        <SpaceThumb src={space?.spaces?.space_thumb || undefined} />
+        <h1>
+          {space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}
+          <Image
+            src={CopyIcon}
+            width={10}
+            height={12}
+            alt={"copy code"}
+            onClick={handleCaptureClipboard}
+          />
+        </h1>
+        <p>
+          {space
+            ? space.spaces?.description
+            : "Pixtudy에 오신 것을 환영합니다."}
+        </p>
         <StUserCounter>
           <StUserIcon fill={count!} />
           <StSpan $userExists={count!}>{isLoading ? 0 : count}</StSpan>
         </StUserCounter>
       </StContentsContainer>
       <StButtonContainer>
-        <button onClick={() => handleToSpace(space?.space_id!)}>
+        <button onClick={() => handleToSpace(space ? space.space_id! : "")}>
           입장하기
         </button>
       </StButtonContainer>
@@ -63,13 +88,33 @@ const StContentsContainer = styled.div`
     margin-bottom: ${(props) => props.theme.spacing[12]};
   }
   h1 {
+    display: flex;
+    flex-direction: row;
+    gap: ${(props) => props.theme.spacing[8]};
     font-family: var(--sub-font);
     font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
     font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
+
+    img {
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+    }
   }
   p {
-    font-family: var(--main-font);
+    font-family: var(--default-font);
     font-size: ${(props) => props.theme.body.sm.regular.fontSize};
+    height: calc(2 * ${(props) => props.theme.body.md.medium.lineHeight});
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    padding: ${(props) => props.theme.unit[2]}px;
+    letter-spacing: ${(props) => props.theme.body.md.medium.letterSpacing};
+    line-height: ${(props) => props.theme.body.md.medium.lineHeight};
   }
 `;
 

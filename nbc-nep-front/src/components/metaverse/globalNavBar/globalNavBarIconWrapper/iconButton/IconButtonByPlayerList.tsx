@@ -1,14 +1,16 @@
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
-import styled from "styled-components";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import Image from "next/image";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import styled from "styled-components";
+// import { usePlayerContext } from "@/context/MetaversePlayerProvider";
 
 interface Props {
   button: IconButtonProperty;
 }
 export default function IconButtonByPlayerList({ button }: Props) {
   const { buttonImage, description, type, handleOnClick } = button;
-  const { playerList } = usePlayerContext();
+  // const { playerList } = usePlayerContext();
+  const { playerList } = useMetaversePlayer();
   return (
     <StIconButtonByPlayerListWrapper onClick={handleOnClick}>
       <Image src={buttonImage} alt={description} width={"16"} height={"16"} />

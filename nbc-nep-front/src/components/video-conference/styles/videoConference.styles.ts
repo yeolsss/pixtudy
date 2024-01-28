@@ -11,6 +11,10 @@ export const StShareMediaItem = styled(StPositionRelative)<{
 
   border-radius: ${(props) => props.theme.border.radius[8]};
 
+  *:not(span) {
+    border-radius: ${(props) => props.theme.border.radius[8]};
+  }
+
   ${(props) => props.$isAudio && "position: absolute"};
 `;
 

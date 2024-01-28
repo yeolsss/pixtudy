@@ -1,9 +1,9 @@
-import Image from "next/image";
-import styled from "styled-components";
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import StBadge from "@/components/common/badge/Badge";
-import { useAppSelector } from "@/hooks/useReduxTK";
+import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
+import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 export default function IconButton({
   buttonImage,
@@ -11,9 +11,7 @@ export default function IconButton({
   type,
   handleOnClick,
 }: IconButtonProperty) {
-  const { dmChatStates, globalChatState } = useAppSelector(
-    (state) => state.chatAlarm
-  );
+  const { dmChatStates, globalChatState } = useChatAlarm();
   const [alarmState, setAlarmState] = useState<boolean>(
     globalChatState ||
       (!!dmChatStates ? dmChatStates.some((dm) => dm.state) : false)
@@ -25,6 +23,7 @@ export default function IconButton({
         (!!dmChatStates ? dmChatStates.some((dm) => dm.state) : false)
     );
   }, [dmChatStates, globalChatState]);
+
   return (
     <StButton onClick={handleOnClick}>
       <Image src={buttonImage} alt={description} width={"32"} height={"32"} />

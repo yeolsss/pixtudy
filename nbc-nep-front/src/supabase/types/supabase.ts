@@ -104,6 +104,154 @@ export interface Database {
           },
         ];
       };
+      item_details: {
+        Row: {
+          jsonb_build_object: Json | null;
+        };
+        Insert: {
+          jsonb_build_object?: Json | null;
+        };
+        Update: {
+          jsonb_build_object?: Json | null;
+        };
+        Relationships: [];
+      };
+      kanban_assignees: {
+        Row: {
+          created_at: string;
+          id: string;
+          kanbanItemId: string;
+          space_id: string | null;
+          userId: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          kanbanItemId: string;
+          space_id?: string | null;
+          userId: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          kanbanItemId?: string;
+          space_id?: string | null;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "kanban_assignees_kanbanItemId_fkey";
+            columns: ["kanbanItemId"];
+            isOneToOne: false;
+            referencedRelation: "kanban_items";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "kanban_assignees_space_id_fkey";
+            columns: ["space_id"];
+            isOneToOne: false;
+            referencedRelation: "spaces";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "kanban_assignees_userId_fkey";
+            columns: ["userId"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      kanban_categories: {
+        Row: {
+          color: string;
+          id: string;
+          name: string;
+          order: number;
+          spaceId: string;
+        };
+        Insert: {
+          color: string;
+          id?: string;
+          name: string;
+          order?: number;
+          spaceId: string;
+        };
+        Update: {
+          color?: string;
+          id?: string;
+          name?: string;
+          order?: number;
+          spaceId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "kanban_categories_spaceId_fkey";
+            columns: ["spaceId"];
+            isOneToOne: false;
+            referencedRelation: "spaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      kanban_items: {
+        Row: {
+          categoryId: string;
+          create_user_id: string | null;
+          created_at: string;
+          deadline: string | null;
+          description: string;
+          id: string;
+          space_id: string | null;
+          title: string;
+          type: string;
+        };
+        Insert: {
+          categoryId: string;
+          create_user_id?: string | null;
+          created_at?: string;
+          deadline?: string | null;
+          description: string;
+          id?: string;
+          space_id?: string | null;
+          title: string;
+          type?: string;
+        };
+        Update: {
+          categoryId?: string;
+          create_user_id?: string | null;
+          created_at?: string;
+          deadline?: string | null;
+          description?: string;
+          id?: string;
+          space_id?: string | null;
+          title?: string;
+          type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "kanban_items_categoryId_fkey";
+            columns: ["categoryId"];
+            isOneToOne: false;
+            referencedRelation: "kanban_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "kanban_items_create_user_id_fkey";
+            columns: ["create_user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "kanban_items_space_id_fkey";
+            columns: ["space_id"];
+            isOneToOne: false;
+            referencedRelation: "spaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       space_members: {
         Row: {
           created_at: string;
@@ -152,6 +300,7 @@ export interface Database {
           description: string;
           id: string;
           owner: string;
+          space_thumb: string | null;
           title: string;
         };
         Insert: {
@@ -159,6 +308,7 @@ export interface Database {
           description: string;
           id?: string;
           owner: string;
+          space_thumb?: string | null;
           title: string;
         };
         Update: {
@@ -166,6 +316,7 @@ export interface Database {
           description?: string;
           id?: string;
           owner?: string;
+          space_thumb?: string | null;
           title?: string;
         };
         Relationships: [
@@ -225,19 +376,6 @@ export interface Database {
           receiver: Json;
         }[];
       };
-      get_dm_channels: {
-        Args: {
-          p_space_id: string;
-          p_user_id: string;
-          p_receiver_id: string;
-        };
-        Returns: {
-          id: string;
-          other_user: string | null;
-          space_id: string;
-          user: string;
-        }[];
-      };
       get_dm_channel_messages_test: {
         Args: {
           p_dm_channel: string;
@@ -251,6 +389,36 @@ export interface Database {
           message: string;
           sender_id: string;
           sender_display_name: string;
+        }[];
+      };
+      get_dm_channels: {
+        Args: {
+          p_space_id: string;
+          p_user_id: string;
+          p_receiver_id: string;
+        };
+        Returns: {
+          id: string;
+          other_user: string | null;
+          space_id: string;
+          user: string;
+        }[];
+      };
+      get_kanban_items_by_assignees: {
+        Args: {
+          p_category_id: string;
+        };
+        Returns: {
+          id: string;
+          created_at: string;
+          title: string;
+          description: string;
+          deadline: string;
+          type: string;
+          categoryId: string;
+          item_creator_space_avatar: string;
+          create_user_id: string;
+          assignees: Json;
         }[];
       };
       get_last_dm_message_list: {

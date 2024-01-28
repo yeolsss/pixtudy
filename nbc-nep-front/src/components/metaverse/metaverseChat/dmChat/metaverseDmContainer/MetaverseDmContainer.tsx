@@ -1,24 +1,21 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
 import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
-import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
+import useEndOfChat from "@/hooks/metaverse/useEndOfChat";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { Tables } from "@/supabase/types/supabase";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import useAuth from "@/zustand/authStore";
+import useDm from "@/zustand/dmStore";
+import { useState } from "react";
+import styled from "styled-components";
 
 export default function MetaverseDmContainer() {
-  const { otherUserId, spaceId, otherUserName, otherUserAvatar } =
-    useAppSelector((state) => state.dm);
-  const dispatch = useAppDispatch();
-
+  const { otherUserId, otherUserName } = useDm();
   // 현재 세션의 유저정보
-  const sessionUser = useAppSelector((state) => state.authSlice.user);
-  const { playerList } = usePlayerContext();
-  const currentPlayer = playerList.find(
-    (player) => player.playerId === sessionUser.id
-  );
+  const { user: sessionUser } = useAuth();
+  const { findPlayerById } = useMetaversePlayer();
+  const currentPlayer = findPlayerById(sessionUser.id);
   let currentUser = { ...sessionUser };
   if (sessionUser && currentPlayer) {
     currentUser.display_name =
@@ -40,31 +37,27 @@ export default function MetaverseDmContainer() {
     currentUser,
   });
 
+  const endOfChatRef = useEndOfChat([messages]);
+
   // dm message 정보 custom hook
   useDmMessage({ currentDmChannel, setMessages });
 
-  // message ul ref (스크롤)
-  const messageListRef = useRef<HTMLUListElement>(null);
-
-  // 스크롤이 자동으로 맨 아래로 가도록
-  useEffect(() => {
-    if (messageListRef.current)
-      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-  }, [messages]);
-
   return (
-    <StMetaverseDmChannel>
-      <StMessageWrapper ref={messageListRef}>
-        {messages?.map((message) => (
-          <StMessageCard key={message.id}>
-            <h3>
-              {message.sender_display_name || message.receiver_display_name}
-            </h3>
-            <span>{message.message}</span>
-            {/*<span>{message.created_at}</span>*/}
-          </StMessageCard>
-        ))}
-      </StMessageWrapper>
+    <>
+      <StMetaverseDmChannel>
+        <StMessageWrapper>
+          {messages?.map((message) => (
+            <StMessageCard key={message.id}>
+              <h3>
+                {message.sender_display_name || message.receiver_display_name}
+              </h3>
+              <span>{message.message}</span>
+              {/*<span>{message.created_at}</span>*/}
+            </StMessageCard>
+          ))}
+          <div ref={endOfChatRef}></div>
+        </StMessageWrapper>
+      </StMetaverseDmChannel>
       <MetaverseDmForm
         currentDmChannel={currentDmChannel}
         setMessages={setMessages}
@@ -72,7 +65,7 @@ export default function MetaverseDmContainer() {
         connectChannel={connectChannel}
         currentUser={currentUser}
       />
-    </StMetaverseDmChannel>
+    </>
   );
 }
 
@@ -82,6 +75,7 @@ const StMetaverseDmChannel = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing["4"]};
+  overflow: hidden;
 `;
 
 const StMessageWrapper = styled.ul`
@@ -89,11 +83,11 @@ const StMessageWrapper = styled.ul`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing["12"]};
   overflow-y: scroll;
-  min-height: 90%;
-  max-height: 90%;
   font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
   font-family: ${({ theme }) => theme.body.sm.regular.fontFamily};
   word-break: break-all;
+  padding-top: ${(props) => props.theme.spacing[16]};
+  padding-bottom: ${(props) => props.theme.spacing[16]};
 
   &::-webkit-scrollbar {
     display: none;

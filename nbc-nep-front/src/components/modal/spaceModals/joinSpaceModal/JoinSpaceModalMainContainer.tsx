@@ -3,28 +3,30 @@ import InvitationCodeForm from "@/components/spaces/JoinSpaceForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
 import ProfilePreview from "@/components/spaces/ProfilePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
+import { StFlexColumn } from "@/components/spaces/styles/spaceCommon.styles";
 import { Procedure } from "@/components/spaces/types/space.types";
-import { useAppDispatch } from "@/hooks/useReduxTK";
-import { toggleJoinSpaceModal } from "@/redux/modules/modalSlice";
-import { resetJoinSpaceInfo } from "@/redux/modules/spaceSlice";
+import useModal from "@/hooks/modal/useModal";
+import useSpace from "@/zustand/spaceStore";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 export default function JoinSpaceModalMainContainer() {
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
-  const dispatch = useAppDispatch();
+  const { resetJoinSpaceInfo } = useSpace();
+  const { closeModal } = useModal();
 
   const {
     handleSubmit,
     register,
     reset,
-    formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+    watch,
+    formState: { errors, isValid },
+  } = useForm({ mode: "onChange" });
 
   const handleCloseModal = () => {
-    dispatch(toggleJoinSpaceModal());
-    dispatch(resetJoinSpaceInfo());
+    closeModal();
+    resetJoinSpaceInfo();
   };
 
   return (
@@ -32,21 +34,23 @@ export default function JoinSpaceModalMainContainer() {
       <ModalHeader text={"스페이스 입장하기"} handler={handleCloseModal} />
       <StModalJoinSpaceContents>
         {procedure === FORM_SPACE ? (
-          <div>
+          <StDiv>
             <ProfilePreview setProcedure={setProcedure} />
             <InvitationCodeForm
-              setProcedure={setProcedure}
               handleSubmit={handleSubmit}
               register={register}
               reset={reset}
+              isValid={isValid}
               errors={errors}
             />
-          </div>
+          </StDiv>
         ) : (
           <ProfileForm
+            watch={watch}
             setProcedure={setProcedure}
             handleSubmit={handleSubmit}
             register={register}
+            isValid={isValid}
             errors={errors}
             mode="joinSpace"
           />
@@ -55,6 +59,10 @@ export default function JoinSpaceModalMainContainer() {
     </StModalContainer>
   );
 }
+
+const StDiv = styled(StFlexColumn)`
+  gap: ${(props) => props.theme.spacing[24]};
+`;
 
 export const StModalContainer = styled.div`
   position: fixed;
@@ -73,15 +81,15 @@ export const StModalContents = styled.div`
   gap: ${(props) => props.theme.spacing[16]};
   width: ${(props) => props.theme.unit[460]}px;
   padding: ${(props) => props.theme.spacing[32]};
-  /* justify-content: center; */
   padding-top: 0;
   height: 100%;
 `;
 
 const StModalJoinSpaceContents = styled(StModalContents)`
-  padding: 0;
   & > div {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    padding: ${(props) => props.theme.spacing[32]};
+    gap: ${(props) => props.theme.spacing[16]};
   }
 `;

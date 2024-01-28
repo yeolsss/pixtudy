@@ -1,6 +1,5 @@
-import React from "react";
-import styled from "styled-components";
 import { PropsWithChildren } from "react";
+import styled from "styled-components";
 
 export default function AuthFormContainer({ children }: PropsWithChildren) {
   return (
@@ -29,6 +28,16 @@ export const StFormContainer = styled.div`
       line-height: ${(props) => props.theme.spacing[44]};
       font-family: var(--point-font);
       margin-bottom: ${(props) => props.theme.spacing[32]};
+    }
+    & > h2 {
+      font-size: ${(props) => props.theme.unit["16"]}px;
+      margin-bottom: ${(props) => props.theme.spacing[32]};
+
+      & > span {
+        font-weight: bold;
+        font-family: var(--point-font);
+        color: ${(props) => props.theme.color.text.interactive.primary};
+      }
     }
   }
 `;

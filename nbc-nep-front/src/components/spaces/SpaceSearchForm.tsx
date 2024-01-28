@@ -1,19 +1,20 @@
-import { useForm } from "react-hook-form";
+import useDebounceSpaceSearch from "@/hooks/useDebounceSpaceSearch";
+import useSpaceSearch from "@/zustand/spaceListStore";
 import styled from "styled-components";
 
 export default function SpaceSearchForm() {
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+  const { searchValue, changeSearchValue } = useSpaceSearch();
+  const debounce = useDebounceSpaceSearch(500);
 
   return (
     <StSearchInput
       type="text"
       placeholder="스페이스를 검색해보세요"
-      {...register("searchInput")}
+      value={searchValue}
+      onChange={(e) => {
+        changeSearchValue(e.target.value);
+        debounce();
+      }}
     />
   );
 }

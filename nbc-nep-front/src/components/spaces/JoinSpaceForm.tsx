@@ -1,14 +1,12 @@
 //@ts-nocheck
+import useModal from "@/hooks/modal/useModal";
 import {
   useGetSpace,
   useGetUserSpaces,
   useJoinSpace,
 } from "@/hooks/query/useSupabase";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import {
-  resetJoinSpaceInfo,
-  setJoinSpaceInfo,
-} from "@/redux/modules/spaceSlice";
+import useAuth from "@/zustand/authStore";
+import useSpace from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import {
@@ -20,37 +18,41 @@ import {
   UseFormReset,
 } from "react-hook-form";
 import styled from "styled-components";
-import { StCTAButton } from "../common/button/button.styles";
+import { StFormCTAButton } from "../common/button/button.styles";
 import SpacePreview from "./SpacePreview";
 
 interface Props {
-  setProcedure: Dispatch<SetStateAction<Procedure>>;
   handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
   register: UseFormRegister<FieldValues>;
   reset: UseFormReset<FieldValues>;
+  isValid: boolean;
   errors: FormState<FieldValues>["errors"];
 }
 
 export default function InvitationCodeForm({
-  setProcedure,
   handleSubmit,
   register,
   reset,
+  isValid,
   errors,
 }: Props) {
-  const dispatch = useAppDispatch();
-  const { id: userId } = useAppSelector((state) => state.authSlice.user);
-  const userProfile = useAppSelector((state) => state.spaceSlice.userProfile);
-  const { joinSpaceInfo } = useAppSelector((state) => state.spaceSlice);
-  const { joinSpace, joinError, joinSuccess } = useJoinSpace();
+  const { user } = useAuth();
+  const userId = user.id;
+
+  const { userProfile, joinSpaceInfo, resetJoinSpaceInfo, setJoinSpaceInfo } =
+    useSpace();
+  const { joinSpace, joinSuccess } = useJoinSpace();
   const userJoinedSpaces = useGetUserSpaces(userId);
+  const { closeModal } = useModal();
+
   const router = useRouter();
   const getSpace = useGetSpace();
 
   useEffect(() => {
     if (joinSuccess) {
       handleToSpace(joinSpaceInfo?.id!);
-      dispatch(resetJoinSpaceInfo());
+      resetJoinSpaceInfo();
+      closeModal();
       return;
     }
   }, [joinSuccess]);
@@ -62,7 +64,7 @@ export default function InvitationCodeForm({
   const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
     getSpace(data.invitationCode, {
       onSuccess: (targetSpace) => {
-        dispatch(setJoinSpaceInfo(targetSpace));
+        setJoinSpaceInfo(targetSpace);
         reset({ invitationCode: "" });
       },
       onError: (error) => {
@@ -93,7 +95,7 @@ export default function InvitationCodeForm({
       <StContentsContainer>
         <div>
           <label htmlFor="invitationCode">초대코드</label>
-          <StInputWrapper>
+          <StInputWrapper $isError={!!errors.invitationCode?.message}>
             <input
               id="invitationCode"
               autoComplete="off"
@@ -113,8 +115,12 @@ export default function InvitationCodeForm({
           </StErrorMessage>
         )}
       </StContentsContainer>
-      <SpacePreview setProcedure={setProcedure} />
-      <StFormCTAButton type="button" onClick={handleJoinSpace}>
+      <SpacePreview />
+      <StFormCTAButton
+        type="button"
+        onClick={handleJoinSpace}
+        disabled={!isValid}
+      >
         입장하기
       </StFormCTAButton>
     </StForm>
@@ -145,7 +151,7 @@ export const StContentsContainer = styled.div`
   }
 `;
 
-export const StInputWrapper = styled.div`
+export const StInputWrapper = styled.div<{ $isError: string }>`
   display: flex;
   align-items: center;
   margin-top: ${(props) => props.theme.spacing[6]};
@@ -159,6 +165,13 @@ export const StInputWrapper = styled.div`
     padding: ${(props) => props.theme.spacing[12]};
     font-family: var(--main-font);
     font-size: ${(props) => props.theme.body.md.medium.fontSize};
+    ${(props) =>
+      props.$isError && `border-color: ${props.theme.color.danger[500]}`};
+    &:focus {
+      outline: none;
+      border: 1px solid
+        ${(props) => props.theme.color.border.interactive.primary};
+    }
   }
   & > button {
     height: ${(props) => props.theme.unit[48]}px;
@@ -173,11 +186,4 @@ const StErrorMessage = styled.p`
   top: 0;
   right: 0;
   color: ${(props) => props.theme.color.danger[500]};
-`;
-
-export const StFormCTAButton = styled(StCTAButton)`
-  font-size: ${(props) => props.theme.body.md.medium.fontSize};
-  font-family: var(--point-font);
-  font-weight: ${(props) => props.theme.heading.desktop["4xl"].fontWeight};
-  width: 100%;
 `;

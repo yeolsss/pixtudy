@@ -3,31 +3,56 @@ module.exports = function (io) {
   io.on("connection", function (socket) {
     console.log("chat [" + socket.id + "] connected");
 
-    const spaceId = socket.handshake.query.spaceId || "defaultSpace";
+    socket.on("joinRoom", (spaceId) => {
+      console.log("joinRoom", spaceId, socket.id);
+      chat[socket.id] = {
+        userId: socket.id,
+        playerDisplayName: socket.playerDisplayName || socket.id,
+        message: "",
+        spaceId,
+      };
 
-    chat[socket.id] = {
-      userId: socket.id,
-      playerDisplayName: socket.playerDisplayName || socket.id,
-      message: socket.message,
-      spaceId,
-    };
-    socket.join(spaceId);
-    io.to(spaceId).emit("chat", chat);
+      socket.join(spaceId);
+    });
 
     socket.on("disconnect", function () {
       console.log("chat [" + socket.id + "] disconnected");
-      delete chat[socket.id];
-      io.to(spaceId).emit("chatDisconnected", socket.id);
+      try {
+        const spaceId = chat[socket.id].spaceId;
+
+        io.to(spaceId).emit("chatDisconnected", socket.id);
+      } catch (error) {
+        console.error("error disconnect chat", error);
+      } finally {
+        delete chat[socket.id];
+      }
     });
 
-    socket.on("sendMessage", function ({ playerDisplayName, message }) {
-      chat[socket.id] = {
-        userId: socket.id,
-        playerDisplayName: playerDisplayName || socket.id,
-        message,
-        spaceId,
-      };
-      io.to(spaceId).emit("receiveMessage", chat[socket.id]);
+    socket.on(
+      "sendMessage",
+      function ({ playerDisplayName, message, spaceId }) {
+        chat[socket.id] = {
+          userId: socket.id,
+          playerDisplayName: playerDisplayName || socket.id,
+          message: message,
+          spaceId,
+        };
+        io.to(spaceId).emit("receiveMessage", chat[socket.id]);
+      }
+    );
+
+    socket.on("removeRoom", () => {
+      try {
+        console.log(socket.rooms);
+        const player = chat[socket.id];
+        const spaceId = player.spaceId;
+
+        io.to(spaceId).emit("removedRoom");
+      } catch (error) {
+        console.log("an error occurred while remove room :", error);
+      }
+
+      // TODO : io room 제거...
     });
   });
 };

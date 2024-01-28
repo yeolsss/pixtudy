@@ -1,65 +1,137 @@
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
+import { createMiddlewareClient, User } from "@supabase/auth-helpers-nextjs";
+import { NextRequest, NextResponse } from "next/server";
+
+const PAGES_PATH = [
+  { path: "/", dynamic: false },
+  { path: "/dashboard", dynamic: false },
+  { path: "/metaverse", dynamic: true },
+  { path: "/signin", dynamic: false },
+  { path: "/signup", dynamic: false },
+  { path: "/boards", dynamic: false },
+  { path: "/boards/scrumboards", dynamic: false },
+  { path: "/boards/scrumboards", dynamic: true },
+  { path: "/changepassword", dynamic: false },
+];
 
 export async function middleware(request: NextRequest) {
-  // const res = NextResponse.next();
-  // const supabase = createMiddlewareClient({ req: request, res });
-
-  // await supabase.auth.getSession();
-
-  // 로그인 세션에 따른 접근제한
-
   const response = NextResponse.next();
 
-  const sessionToken = request.cookies.get("access_token");
+  const supabase = createMiddlewareClient({ req: request, res: response });
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   const { pathname } = request.nextUrl;
 
-  if (request.headers.get("Purpose") === "prefetch")
-    console.log("----------나는 프리 패 칭 -------------");
+  // supabase에 접근하여 유효한 spaceid인지 확인
+  const checkSpace = async (id: string) => {
+    const { data: spaceInfo } = await supabase
+      .from("spaces")
+      .select("*")
+      .eq("id", id)
+      .single();
+    return !!spaceInfo;
+  };
 
-  console.log("middleware path name is : ", pathname);
-  console.log("session token is : ", sessionToken);
-  console.log("request url : ", request.url);
+  // 정적 파일, 이미지(public 포함), 프리패칭에 대한 요청을 허용하는 로직
+  const isPublicResource =
+    pathname.startsWith("/assets/") || pathname.startsWith("/styles/");
+  const isStaticFile =
+    pathname.startsWith("/_next/static/") ||
+    pathname.match(/\.(png|jpg|jpeg|gif|svg|ico)$/);
 
-  if (
-    !sessionToken &&
-    (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse"))
-  ) {
-    console.log("여기서 걸린거아냐?");
-    return NextResponse.redirect(new URL("/signin", request.url));
+  if (isStaticFile || isPublicResource) {
+    return NextResponse.next();
   }
 
-  if (
-    sessionToken &&
-    (pathname.startsWith("/signin") || pathname.startsWith("/signup"))
-  ) {
-    console.log("여기서는 singin singup 로직 걸림");
-    return NextResponse.redirect(new URL("/", request.url));
+  // request 정보가 지정한 path에 등록된 정보인지 확인
+  const isDynamicPath = PAGES_PATH.some(
+    (page) => page.dynamic && pathname.startsWith(`${page.path}/`)
+  );
+
+  const isStaticPath = PAGES_PATH.some(
+    (page) => !page.dynamic && pathname === page.path
+  );
+
+  // 등록된 정보가 아니라면
+  if (!isDynamicPath && !isStaticPath) {
+    const url = new URL("/", request.url);
+    const response = NextResponse.redirect(url);
+    response.cookies.set("message", "invalid_path");
+    return response;
   }
 
-  //   비정상적인 path에 접근 시 홈으로
-  if (
-    pathname !== "/" &&
-    pathname !== "/dashboard" &&
-    pathname !== "/signin" &&
-    pathname !== "/signup" &&
-    !pathname.startsWith("/metaverse") &&
-    pathname !== "/redirect"
-  ) {
-    return NextResponse.redirect(new URL("/", request.url));
+  // 로그인 세션에 따른 조건부 처리
+  if (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse")) {
+    if (!session && request.headers.get("Purpose") !== "prefetch") {
+      const url = new URL("/signin", request.url);
+      const response = NextResponse.redirect(url);
+      response.cookies.set("message", "login_first");
+      return response;
+    }
   }
 
+  if (pathname.startsWith("/signin") || pathname.startsWith("/signup")) {
+    if (session && request.headers.get("Purpose") !== "prefetch") {
+      const url = new URL("/", request.url);
+      const response = NextResponse.redirect(url);
+      response.cookies.set("message", "login_already");
+      return response;
+    }
+  }
+
+  // 유효한 메타버스 id가 없을 때
+  if (session && pathname.startsWith("/metaverse")) {
+    const spaceId = request.url.split("?")[0].split("/").at(-1);
+    const checkResult = await checkSpace(spaceId!);
+    if (!checkResult) {
+      const url = new URL("/dashboard", request.url);
+      const response = NextResponse.redirect(url);
+      response.cookies.set("message", "invalid_space");
+      return response;
+    }
+  }
+
+  if (pathname.startsWith("/changepassword")) {
+    const user = session?.user as User & { amr?: [{ method: string }] };
+    if (
+      user?.amr &&
+      typeof user.amr[0] === "object" &&
+      "method" in user.amr[0]
+    ) {
+      if (user.amr[0].method !== "recovery") {
+        const url = new URL("/", request.url);
+        const response = NextResponse.redirect(url);
+        response.cookies.set("message", "invalid_path");
+        return response;
+      }
+    }
+  }
+
+  if (session && pathname.startsWith("/boards/scrumboards")) {
+    if (isDynamicPath) {
+      const spaceId = request.url.split("?")[0].split("/").at(-1);
+      if (!spaceId) {
+        return NextResponse.redirect(
+          new URL("/boards/scrumboards", request.url)
+        );
+      }
+      await checkSpace(spaceId!);
+      const checkResult = await checkSpace(spaceId!);
+      if (!checkResult) {
+        return NextResponse.redirect(
+          new URL("/boards/scrumboards", request.url)
+        );
+      }
+    }
+  }
   return response;
 }
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/metaverse/:path*",
-    "/signin/:path*",
-    "/signup/:path*",
-    "/redirect/:path*",
+    // 모든 경로에 대해 미들웨어를 적용
+    "/(.*)",
   ],
-  // runtime: "experimental-edge",
 };

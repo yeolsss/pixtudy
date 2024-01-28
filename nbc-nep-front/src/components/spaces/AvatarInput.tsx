@@ -1,23 +1,28 @@
 import { characterOptions } from "@/components/spaces/constants/constants";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTK";
-import { ChangeEvent, useState } from "react";
-import { FieldValues, FormState, UseFormRegister } from "react-hook-form";
+import useSpace from "@/zustand/spaceStore";
+import { ChangeEvent } from "react";
+import {
+  FieldValues,
+  FormState,
+  UseFormRegister,
+  UseFormWatch,
+} from "react-hook-form";
 import styled from "styled-components";
 
 interface Props {
+  watch: UseFormWatch<FieldValues>;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
 }
 
-function AvatarInput({ register, errors }: Props) {
-  const { avatar } = useAppSelector((state) => state.spaceSlice.userProfile);
-  const dispatch = useAppDispatch();
-  const [selectedAvatar, setSelectedAvatar] = useState(avatar);
+function AvatarInput({ register, errors, watch }: Props) {
+  const {
+    userProfile: { avatar },
+  } = useSpace();
 
   const { onChange, ...restParam } = register("avatar");
 
   const handleCustomChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedAvatar(e.target.value);
     onChange(e);
   };
 
@@ -26,7 +31,7 @@ function AvatarInput({ register, errors }: Props) {
       {characterOptions.map((option, index) => (
         <StInputWrapper
           key={option.value}
-          $isSelected={selectedAvatar === option.value}
+          $isSelected={watch("avatar") === option.value}
         >
           <input
             type="radio"
@@ -47,15 +52,22 @@ function AvatarInput({ register, errors }: Props) {
 
 export default AvatarInput;
 
-const StInputContainer = styled.div`
-  background-color: ${(props) => props.theme.color.bg.secondary};
-  padding: ${(props) => props.theme.spacing[24]};
-  display: flex;
-  flex-wrap: wrap;
+export const StInputContainer = styled.div`
+  position: relative;
+  display: grid;
   gap: ${(props) => props.theme.spacing[12]};
+  padding: ${(props) => props.theme.spacing[24]};
+  max-height: ${(props) => props.theme.unit[220]}px;
+  overflow: auto;
+  border-radius: ${(props) => props.theme.border.radius[12]};
+  background-color: ${(props) => props.theme.color.bg.secondary};
+  grid-template-columns: repeat(5, 1fr);
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-const StInputWrapper = styled.div<{ $isSelected: boolean }>`
+export const StInputWrapper = styled.div<{ $isSelected: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;

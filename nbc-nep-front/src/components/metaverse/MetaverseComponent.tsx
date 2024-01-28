@@ -1,77 +1,91 @@
 import GlobalNavBar from "@/components/metaverse/globalNavBar/GlobalNavBar";
+import PhaserSceneManager from "@/components/metaverse/libs/phaserSceneManager";
+import { SceneClass } from "@/components/metaverse/libs/sceneClass";
+import { SetupScene } from "@/components/metaverse/libs/setupScene";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
-import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import Phaser from "phaser";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import VideoConference from "../video-conference/VideoConference";
-import { SetupScene } from "@/components/metaverse/libs/setupScene";
-import { SceneClass } from "@/components/metaverse/libs/sceneClass";
-import PhaserSceneManager from "@/components/metaverse/libs/phaserSceneManager";
-import { MetaverseChatProvider } from "@/context/MetaverseChatProvider";
+import {
+  GAME_FPS,
+  GAME_GRAVITY,
+  GAME_HEIGHT,
+  GAME_WIDTH,
+  VERTICAL_BORDER_OFFSET,
+} from "./constants/constant";
+import MetaverseConfigModal from "./metaverseConfig/MetaverseConfig";
+import { Game } from "./types/metaverse";
 
 const MetaverseComponent = () => {
-  const { spaceId, playerSpaceInfoData, id, display_name } = usePlayerContext();
+  const { spaceId, playerSpaceInfoData, id, display_name } =
+    useMetaversePlayer();
+
+  const gameRef = useRef<Game | null>();
 
   useEffect(() => {
-    let game: Phaser.Game | undefined;
-    const resize = () => {
-      if (game) {
-        game.scale.resize(window.innerWidth, window.innerHeight - 2);
-      }
-    };
-
     if (playerSpaceInfoData?.space_avatar) {
       const config = {
         type: Phaser.AUTO,
         width: window.innerWidth,
-        height: window.innerHeight - 2,
+        height: window.innerHeight - VERTICAL_BORDER_OFFSET,
         parent: "phaser-metaverse",
         physics: {
           default: "arcade",
           arcade: {
-            gravity: { y: 0 },
+            gravity: GAME_GRAVITY,
             debug: false,
-            width: 1280,
-            height: 800,
-            fps: 60,
+            width: GAME_WIDTH,
+            height: GAME_HEIGHT,
+            fps: GAME_FPS,
           },
         },
         scene: [SetupScene, SceneClass],
       };
 
-      game = new Phaser.Game(config);
+      gameRef.current = new Phaser.Game(config);
 
-      // 플레이어 정보를 저장하는 registry
-      // 임의로 설정해 둔 정보로, 실제 유저 정보를 가져와야 한다
-      game.registry.set("player", {
+      gameRef.current.registry.set("player", {
         playerId: id,
         nickname: playerSpaceInfoData?.space_display_name || display_name,
         character: playerSpaceInfoData?.space_avatar || "pinkybonz",
         spaceId,
       });
 
-      PhaserSceneManager.setGameInstance(game);
-
-      window.addEventListener("resize", resize);
+      PhaserSceneManager.setGameInstance(gameRef.current);
     }
 
     return () => {
-      game?.destroy(true);
-      window.removeEventListener("resize", resize);
+      // gameRef.current?.destroy(true);
     };
   }, [playerSpaceInfoData]);
+
+  useEffect(() => {
+    const resize = () => {
+      if (gameRef.current) {
+        gameRef.current.scale.resize(
+          window.innerWidth,
+          window.innerHeight - VERTICAL_BORDER_OFFSET
+        );
+      }
+    };
+    window.addEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
 
   return (
     <StMetaverseWrapper>
       <GlobalNavBar />
-      <MetaverseChatProvider>
-        <MetaverseChatBar />
-      </MetaverseChatProvider>
+      <MetaverseChatBar />
       <MetaversePlayerList />
       <StMetaverseMain id="phaser-metaverse" />
       <VideoConference />
+      <MetaverseConfigModal />
     </StMetaverseWrapper>
   );
 };
