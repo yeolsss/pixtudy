@@ -38,7 +38,8 @@ export default function MetaverseDmList({ dmList }: Props) {
         />
       ) : (
         <MetaverseChatHeader
-          title={`${otherUserName}`}
+          title="Dm"
+          subtitle={otherUserName}
           handler={handleCloseDmContainer}
         />
       )}
