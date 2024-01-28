@@ -95,6 +95,7 @@ export default function ConfigSpaceOwner() {
       toast.success("수정이 완료됐습니다!", { position: "top-right" });
     }
   }, [isSuccessUpdate]);
+
   useEffect(() => {
     if (isSuccessDelete) {
       emitRemoveSpace();

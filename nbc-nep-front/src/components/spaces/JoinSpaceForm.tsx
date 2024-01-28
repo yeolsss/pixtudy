@@ -1,4 +1,5 @@
 //@ts-nocheck
+import useModal from "@/hooks/modal/useModal";
 import {
   useGetSpace,
   useGetUserSpaces,
@@ -40,6 +41,7 @@ export default function InvitationCodeForm({
     useSpace();
   const { joinSpace, joinSuccess } = useJoinSpace();
   const userJoinedSpaces = useGetUserSpaces(userId);
+  const { closeModal } = useModal();
 
   const router = useRouter();
   const getSpace = useGetSpace();
@@ -48,6 +50,7 @@ export default function InvitationCodeForm({
     if (joinSuccess) {
       handleToSpace(joinSpaceInfo?.id!);
       resetJoinSpaceInfo();
+      closeModal();
       return;
     }
   }, [joinSuccess]);

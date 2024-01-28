@@ -87,6 +87,7 @@ const StPreviewContents = styled.div`
   p {
     font-family: var(--main-font);
     font-size: ${(props) => props.theme.body.sm.regular.fontSize};
+    word-break: break-word;
   }
 `;
 
