@@ -1,3 +1,4 @@
+import useConfirm from "@/hooks/confirm/useConfirm";
 import { useLogoutUser } from "@/hooks/query/useSupabase";
 import { pathValidation } from "@/utils/middlewareValidate";
 import useAuth from "@/zustand/authStore";
@@ -10,6 +11,7 @@ export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
   const { user } = useAuth();
+  const { openConfirmHandler } = useConfirm();
 
   const {
     isLogin,
@@ -24,12 +26,14 @@ export default function Header() {
     router.push("/signup");
   };
 
-  const handleLogout = () => {
-    logout(undefined, {
-      onSuccess: () => {
-        window.location.href = "/";
-      },
+  const handleLogout = async () => {
+    const result = await openConfirmHandler({
+      title: "로그아웃",
+      message: " 정말 로그아웃 하시겠습니까?",
+      confirmButtonText: "네, 로그아웃할게요",
+      denyButtonText: "아니요, 더 둘러볼게요",
     });
+    if (result) logout();
   };
 
   const handleToDashboard = () => {
