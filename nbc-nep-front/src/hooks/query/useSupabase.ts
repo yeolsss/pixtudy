@@ -19,6 +19,7 @@ import {
 } from "@/api/supabase/dm";
 import {
   createCategory,
+  deleteCategory,
   getCategories,
   getCategoryItems,
   updateCategory,
@@ -348,6 +349,23 @@ export function useUpdateCategory(spaceId: string) {
   });
 
   return { update, isError, isSuccess };
+}
+
+export function useDeleteCategory(spaceId: string) {
+  const queryClient = useQueryClient();
+  const {
+    mutate: remove,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: deleteCategory,
+    onSuccess: () => {
+      toast.success("카테고리가 삭제되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+    },
+  });
+
+  return { remove, isError, isSuccess };
 }
 
 /* Auth again */

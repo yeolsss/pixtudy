@@ -1,3 +1,5 @@
+import { useDeleteCategory } from "@/hooks/query/useSupabase";
+import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import CategoryDropdownMenu from "./CategoryDropdownMenu";
@@ -12,8 +14,11 @@ interface Props {
 
 export default function CategoryHeader({ name, color, id, itemCount }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const { space_id } = useParams();
+  const spaceId = space_id as string;
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { remove } = useDeleteCategory(spaceId);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -35,7 +40,9 @@ export default function CategoryHeader({ name, color, id, itemCount }: Props) {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleDeleteCategory = () => {};
+  const handleDeleteCategory = () => {
+    remove(id);
+  };
 
   return (
     <StCategoryHeader>

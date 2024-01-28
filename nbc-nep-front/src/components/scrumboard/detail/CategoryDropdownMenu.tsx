@@ -17,7 +17,7 @@ export default function CategoryDropdownMenu({
     setIsDropdownOpen(false);
   };
 
-  const handlejDeleteCategoryButton = () => {
+  const handleDeleteCategoryButton = () => {
     handleDeleteCategory();
     setIsDropdownOpen(false);
   };
@@ -28,7 +28,7 @@ export default function CategoryDropdownMenu({
         <span />
         수정
       </StDropdownMenuItem>
-      <StDropdownMenuItem onClick={handlejDeleteCategoryButton} $type="delete">
+      <StDropdownMenuItem onClick={handleDeleteCategoryButton} $type="delete">
         <span />
         삭제
       </StDropdownMenuItem>

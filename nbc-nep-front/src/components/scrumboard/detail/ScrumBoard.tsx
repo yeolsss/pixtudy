@@ -6,7 +6,10 @@ import useModal from "@/hooks/modal/useModal";
 import { useGetCategories } from "@/hooks/query/useSupabase";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { supabase } from "@/supabase/supabase";
-import { GetKanbanItemsByAssignees } from "@/supabase/types/supabase.tables.type";
+import {
+  GetKanbanItemsByAssignees,
+  Kanban_categories,
+} from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import {
   RealtimePostgresChangesPayload,
@@ -38,10 +41,21 @@ export default function ScrumBoard() {
   });
 
   const queryClient = useQueryClient();
+  /**
+   * TODO: 카테고리 추가 삭제시
+   */
+  useEffect(() => {
+    const handleChangeObserver = (
+      payload:
+        | RealtimePostgresChangesPayload<Kanban_categories>
+        | RealtimePostgresInsertPayload<Kanban_categories>
+        | RealtimePostgresDeletePayload<Kanban_categories>
+    ) => {};
+  });
+
   /*
    * 카테고리 아이템 추가 삭제시
    * */
-
   useEffect(() => {
     const handleChangeObserver = (
       payload:

@@ -57,6 +57,14 @@ export const updateCategory = async (
   return newCategory;
 };
 
+export const deleteCategory = async (categoryId: string) => {
+  const { error } = await supabase
+    .from("kanban_categories")
+    .delete()
+    .eq("id", categoryId);
+  if (error) throw error;
+};
+
 export const getSpaceUsers = async (spaceId: string) => {
   const { data, error } = await supabase
     .from("space_members")
