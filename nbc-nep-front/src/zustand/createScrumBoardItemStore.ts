@@ -20,6 +20,7 @@ interface ScrumBoardItemBackDropState {
   closeBackDrop: () => void;
   setBackDropType: (backDropType: BackDropType) => void;
   setIsOpenCategoryBackDrop: (isOpenCategoryBackDrop: boolean) => void;
+  setKanbanDescription: (description: string) => void;
 }
 const initialState: ScrumBoardItemBackDropState = {
   isOpen: false,
@@ -32,6 +33,7 @@ const initialState: ScrumBoardItemBackDropState = {
   closeBackDrop: () => {},
   setBackDropType: () => {},
   setIsOpenCategoryBackDrop: () => {},
+  setKanbanDescription: () => {},
 };
 const useScrumBoardItemBackDrop = create<ScrumBoardItemBackDropState>()(
   (set) => ({
@@ -42,6 +44,10 @@ const useScrumBoardItemBackDrop = create<ScrumBoardItemBackDropState>()(
       set({ isOpenCategoryBackDrop }),
     setCategory: (category) => set({ category }),
     setBackDropType: (backDropType) => set({ backDropType }),
+    setKanbanDescription: (description: string) =>
+      set((state) => ({
+        kanbanItem: state.kanbanItem && { ...state.kanbanItem, description },
+      })),
     closeBackDrop: () =>
       set({
         isOpen: false,

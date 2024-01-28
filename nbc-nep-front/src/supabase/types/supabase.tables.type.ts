@@ -92,6 +92,7 @@ export type GetKanbanItemsByAssignees = {
   categoryId: string;
   item_creator_space_avatar: string;
   create_user_id: string;
+  space_id?: string;
   assignees: KanbanAssignees[];
 };
 

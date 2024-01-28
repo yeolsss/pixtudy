@@ -1,7 +1,7 @@
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
 import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import {
@@ -12,6 +12,7 @@ import {
 import { useParams } from "next/navigation";
 import useAuth from "@/zustand/authStore";
 import {
+  BACK_DROP_TYPE_CREATE,
   BACK_DROP_TYPE_DETAIL,
   BACK_DROP_TYPE_UPDATE,
 } from "@/components/scrumboard/constants/constants";
@@ -35,9 +36,14 @@ export default function useCreateScrumButtons(): ReturnType {
   } = useScrumBoardItem();
   const { assignees, resetBackDrop, setAssignees, resetAssignees } =
     useScrumBoardMemberSearch();
-  const { category, kanbanItem, closeBackDrop, setBackDropType } =
-    useScrumBoardItemBackDrop();
-  const queryClient = useQueryClient();
+  const {
+    category,
+    kanbanItem,
+    backDropType,
+    closeBackDrop,
+    setBackDropType,
+    setKanbanDescription,
+  } = useScrumBoardItemBackDrop();
 
   const createMutate = useMutation({
     mutationFn: postScrumBoardItem,
@@ -64,11 +70,8 @@ export default function useCreateScrumButtons(): ReturnType {
         assignees: assignees,
       },
       {
-        onSuccess: async () => {
+        onSuccess: () => {
           toast.success("스크럼 보드 아이템이 등록되었습니다.");
-          await queryClient.invalidateQueries({
-            queryKey: ["categoryItem", category.id],
-          });
           closeBackDrop();
         },
         onError: (error) => {
@@ -101,9 +104,8 @@ export default function useCreateScrumButtons(): ReturnType {
         {
           onSuccess: async () => {
             toast.success("스크럼 보드 아이템이 수정되었습니다.");
-            await queryClient.invalidateQueries({
-              queryKey: ["categoryItem", category.id],
-            });
+            setKanbanDescription(scrumBoardText);
+            setBackDropType(BACK_DROP_TYPE_DETAIL);
           },
         }
       );
@@ -115,11 +117,8 @@ export default function useCreateScrumButtons(): ReturnType {
 
   const handleOnClickDelete = () => {
     deleteMutate.mutate(kanbanItem?.id!, {
-      onSuccess: async () => {
+      onSuccess: () => {
         toast.dark("스크럼 보드 아이템이 삭제되었습니다.");
-        await queryClient.invalidateQueries({
-          queryKey: ["categoryItem", category.id],
-        });
         closeBackDrop();
       },
       onError: (error) => {
@@ -144,6 +143,10 @@ export default function useCreateScrumButtons(): ReturnType {
         setAssignees(updatedAssignee);
       });
   }, [kanbanItem?.assignees]);
+
+  useEffect(() => {
+    if (backDropType === BACK_DROP_TYPE_CREATE) setScrumBoardText("");
+  }, [backDropType]);
 
   useEffect(() => {
     return () => {

@@ -297,6 +297,7 @@ export function useGetCategories(spaceId: string) {
     queryKey: ["categoryList", spaceId],
     queryFn: () => getCategories(spaceId),
     enabled: !!spaceId,
+    options: { staleTime: Infinity },
   };
 
   return useCustomQuery<Kanban_categories[], Error>(queryOptions);
@@ -307,6 +308,7 @@ export function useGetCategoryItems(categoryId: string) {
     queryKey: ["categoryItem", categoryId],
     queryFn: () => getCategoryItems(categoryId),
     enabled: !!categoryId,
+    options: { staleTime: Infinity },
   };
 
   return useCustomQuery<GetKanbanItemsByAssignees[] | null, Error>(
