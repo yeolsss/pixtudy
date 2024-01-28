@@ -25,6 +25,8 @@ export type Chat = {
   userId: string;
   message: string;
   playerDisplayName: string;
+  playerId: string;
+  chatTime: Date;
 };
 
 export enum PlayerState {
