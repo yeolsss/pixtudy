@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import useCreateAssigneesBackDrop from "@/hooks/scrumBoard/useCreateAssigneesBackDrop";
+import styled from "styled-components";
 
 export default function AssigneesBackDrop() {
   const { filteredSpaceMembers, backDropIsOpen, handleBackDropClickItem } =
@@ -59,8 +59,9 @@ export const StAssigneesBackDropItemNoSearch = styled.li`
 `;
 export const StAssigneesBackDropItem = styled(StAssigneesBackDropItemNoSearch)`
   cursor: pointer;
-  padding: ${(props) => props.theme.spacing[24]}
-    ${(props) => props.theme.spacing[8]};
+  //prettier-ignore
+  padding: ${(props) => props.theme.spacing[24]} ${(props) =>
+    props.theme.spacing[8]};
   border-radius: ${(props) => props.theme.border.radius[8]};
   &:hover {
     box-shadow: ${(props) => props.theme.elevation.Light.shadow16};

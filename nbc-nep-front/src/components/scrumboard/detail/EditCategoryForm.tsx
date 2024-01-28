@@ -69,7 +69,6 @@ export default function EditCategoryForm({
       name: data.name,
       color: data.color,
     };
-    console.log(updateData);
     update(updateData);
     setIsEdit(false);
   };

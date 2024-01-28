@@ -4,10 +4,12 @@ import { SceneClass } from "@/components/metaverse/libs/sceneClass";
 import { SetupScene } from "@/components/metaverse/libs/setupScene";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
+import useConfirm from "@/hooks/confirm/useConfirm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import Phaser from "phaser";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import ConfirmModal from "../modal/confirmModal/ConfirmModal";
 import VideoConference from "../video-conference/VideoConference";
 import {
   GAME_FPS,
@@ -20,6 +22,7 @@ import MetaverseConfigModal from "./metaverseConfig/MetaverseConfig";
 import { Game } from "./types/metaverse";
 
 const MetaverseComponent = () => {
+  const { isOpen } = useConfirm();
   const { spaceId, playerSpaceInfoData, id, display_name } =
     useMetaversePlayer();
 
@@ -86,6 +89,7 @@ const MetaverseComponent = () => {
       <StMetaverseMain id="phaser-metaverse" />
       <VideoConference />
       <MetaverseConfigModal />
+      {isOpen && <ConfirmModal />}
     </StMetaverseWrapper>
   );
 };

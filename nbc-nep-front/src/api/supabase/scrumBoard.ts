@@ -57,6 +57,7 @@ export const updateCategory = async (
   return newCategory;
 };
 
+// 여기서 삭제한 후에 모든 카테고리를 가져와야하나?
 export const deleteCategory = async (categoryId: string) => {
   const { error } = await supabase
     .from("kanban_categories")

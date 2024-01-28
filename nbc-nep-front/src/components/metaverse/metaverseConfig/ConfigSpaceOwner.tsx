@@ -8,6 +8,7 @@ import {
   SPACE_NAME_MIN_LENGTH,
 } from "@/components/spaces/constants/constants";
 import useChat from "@/hooks/chat/useChat";
+import useConfirm from "@/hooks/confirm/useConfirm";
 import useKeyDownPrevent from "@/hooks/metaverse/useKeyDownPrevent";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useDeleteSpace, useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
@@ -44,11 +45,18 @@ export default function ConfigSpaceOwner() {
   const thumbWatch = watch(SPACE_THUMB_FORM);
   const nameError = errors[SPACE_NAME_FORM]?.message;
   const descriptionError = errors[SPACE_DESCRIPTION_FORM]?.message;
+  const { openConfirmHandler } = useConfirm();
 
   const handleRemoveSpace = async () => {
     if (!spaceInfo) return;
-    if (confirm("진짜 삭제할라고?")) {
-      alert("good bye... bro...");
+    const result = await openConfirmHandler({
+      title: "스페이스 삭제",
+      message: "스페이스를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      confirmButtonText: "네, 삭제할게요",
+      denyButtonText: "아니요, 취소할게요",
+    });
+
+    if (result) {
       deleteSpace(spaceInfo?.id);
     }
   };
