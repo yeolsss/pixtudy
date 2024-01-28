@@ -3,11 +3,13 @@ import { StCTALink } from "@/components/common/button/button.styles";
 import Layout from "@/components/layout/Layout";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
+import useAuth from "@/zustand/authStore";
 import { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import { NextPageWithLayout } from "./_app";
 
 const Home: NextPageWithLayout = () => {
+  const { user } = useAuth();
   useEffect(() => {
     const message = getCookie("message");
     if (message) {
@@ -32,7 +34,9 @@ const Home: NextPageWithLayout = () => {
               원하는 대로 여러 화면을 쉽게 선택하여 배치하고, 보고 싶은 대로
               레이아웃을 변경해보세요.
             </StHeroBannerDescription>
-            <StLink href="/dashboard">인기 랜선스터디 모아보기 {">"}</StLink>
+            <StLink href={user.email ? "/dashboard" : "/signin"}>
+              인기 랜선스터디 모아보기 {">"}
+            </StLink>
           </StHeroBannerWrapper>
         </StHeroBanner>
       </StWrapper>

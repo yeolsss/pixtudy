@@ -37,8 +37,10 @@ export default function CheckUserSession() {
           sessionRef.current = null;
           if (router.pathname !== "/changepassword") {
             toast.error("로그아웃 되었습니다");
+            window.location.href = "/";
+          } else {
+            logout();
           }
-          logout();
           break;
 
         default:

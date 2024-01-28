@@ -302,6 +302,7 @@ export interface Database {
           description: string;
           id: string;
           owner: string;
+          space_thumb: string | null;
           title: string;
         };
         Insert: {
@@ -309,6 +310,7 @@ export interface Database {
           description: string;
           id?: string;
           owner: string;
+          space_thumb?: string | null;
           title: string;
         };
         Update: {
@@ -316,6 +318,7 @@ export interface Database {
           description?: string;
           id?: string;
           owner?: string;
+          space_thumb?: string | null;
           title?: string;
         };
         Relationships: [

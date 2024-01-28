@@ -8,7 +8,7 @@ export default function useModal() {
     isCreateCategoryModalOpen,
     isAvatarModalOpen,
     isForgetPasswordModalOpen,
-    isConfirmModalOpen,
+    isConfigModalOpen,
     openModal,
     closeModal,
     setSpace,
@@ -25,23 +25,24 @@ export default function useModal() {
 
   const openForgetPasswordModal = () => openModal("isForgetPasswordModalOpen");
 
-  const openConfirmModal = () => openModal("isConfirmModalOpen");
+  const openConfigModal = () => openModal("isConfigModalOpen");
+
   return {
     space,
     isCreateSpaceModalOpen,
     isCreateCategoryModalOpen,
     isJoinSpaceModalOpen,
     isAvatarModalOpen,
-    isConfirmModalOpen,
+    isConfigModalOpen,
     openJoinSpaceModal,
     openCreateSpaceModal,
     openAvatarModal,
-    openConfirmModal,
     isForgetPasswordModalOpen,
     openCreateCategoryModal,
     closeModal,
     setSpace,
     clearSpace,
     openForgetPasswordModal,
+    openConfigModal,
   };
 }

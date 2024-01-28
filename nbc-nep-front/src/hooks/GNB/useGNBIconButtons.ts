@@ -8,12 +8,14 @@ import useDm from "@/zustand/dmStore";
 import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
+import useModal from "../modal/useModal";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
     useGlobalNavBar();
   const { closeDm } = useDm();
   const { openChat, closeChat } = useChatType();
+  const { openConfigModal } = useModal();
 
   return [
     {
@@ -36,7 +38,9 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       buttonImage: SettingsIcon,
       description: "설정",
       type: "settings",
-      handleOnClick: () => {},
+      handleOnClick: () => {
+        openConfigModal();
+      },
     },
     {
       buttonImage: reportIcon,

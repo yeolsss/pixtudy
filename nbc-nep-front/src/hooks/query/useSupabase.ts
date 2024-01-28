@@ -1,6 +1,7 @@
 import {
   forgottenPasswordHandler,
   getOtherUserHandler,
+  getSession,
   logoutHandler,
   signInHandler,
   signUpHandler,
@@ -28,7 +29,9 @@ import {
   createSpaceHandler,
   getSpaceData,
   joinSpaceHandler,
+  removeSpace,
   removeSpace as removeSpaceSupabase,
+  updateSpace,
   updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
@@ -40,6 +43,7 @@ import {
 } from "@/supabase/types/supabase.tables.type";
 import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
+import { Session } from "@supabase/supabase-js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
@@ -87,6 +91,18 @@ export function useGetOtherUserInfo(otherUserId: string) {
   };
 
   return useCustomQuery<Tables<"users"> | null, Error>(getOtherUserOptions);
+}
+
+export function useGetSessionInfo() {
+  const getSessionOptions = {
+    queryKey: ["session"],
+    queryFn: async () => {
+      const result = await getSession();
+      return result.session; // 여기서 session 속성을 직접 반환
+    },
+    queryOption: { staleTime: Infinity },
+  };
+  return useCustomQuery<Session | null, Error>(getSessionOptions);
 }
 
 /* space */
@@ -370,22 +386,47 @@ export function useDeleteCategory(spaceId: string) {
 
 /* Auth again */
 export function useForgetPassword() {
-  const { mutate: forgetPassword } = useMutation({
+  const { mutate: forgetPassword, isPending } = useMutation({
     mutationFn: forgottenPasswordHandler,
   });
 
-  return { forgetPassword };
+  return { forgetPassword, isPending };
 }
 
 export function useUpdateUserPw() {
   const { mutate: updateUser } = useMutation({
     mutationFn: updateUserPasswordHandler,
-    onSuccess: (data) => {
-      console.log(data);
-    },
     onError: (error) => {
       authValidation(error.message, "changePassword");
     },
   });
   return updateUser;
+}
+
+export function useUpdateSpaceInfo() {
+  const client = useQueryClient();
+  const { mutate, ...rest } = useMutation({
+    mutationFn: updateSpace,
+    onSuccess: (spaceInfo) => {
+      const spaceId = spaceInfo.id;
+      client.invalidateQueries({ queryKey: ["spaceInfo", spaceId] });
+      client.invalidateQueries({ queryKey: ["userSpaces", spaceInfo.owner] });
+    },
+    onError: () => {},
+  });
+
+  return { updateSpace: mutate, ...rest };
+}
+
+export function useDeleteSpace() {
+  const client = useQueryClient();
+  const { mutate, ...rest } = useMutation({
+    mutationFn: removeSpace,
+    onSuccess: (spaceId) => {
+      client.invalidateQueries({ queryKey: ["spaceInfo", spaceId] });
+    },
+    onError: () => {},
+  });
+
+  return { deleteSpace: mutate, ...rest };
 }

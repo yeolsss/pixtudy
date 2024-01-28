@@ -7,12 +7,12 @@ interface ModalState {
   isCreateCategoryModalOpen: boolean;
   isAvatarModalOpen: boolean;
   isForgetPasswordModalOpen: boolean;
-  isConfirmModalOpen: boolean;
+  isConfigModalOpen: boolean;
   space: (Omit<Spaces, "users"> & { users: string[] }) | null;
 }
 
 interface ModalStoreState extends ModalState {
-  openModal: (kind: keyof ModalState) => void;
+  openModal: (kind: keyof Omit<ModalState, "space">) => void;
   closeModal: () => void;
   setSpace: (space: Omit<Spaces, "users"> & { users: string[] }) => void;
   clearSpace: () => void;
@@ -24,13 +24,13 @@ const initialState = {
   isCreateCategoryModalOpen: false,
   isAvatarModalOpen: false,
   isForgetPasswordModalOpen: false,
-  isConfirmModalOpen: false,
+  isConfigModalOpen: false,
   space: null,
 };
 
 const modalStore = create<ModalStoreState>()((set) => ({
   ...initialState,
-  openModal: (kind: keyof ModalState) =>
+  openModal: (kind: keyof Omit<ModalState, "space">) =>
     set(() => ({
       [kind]: true,
     })),

@@ -87,7 +87,7 @@ export default function AuthForm({ formType }: Props) {
         {
           onSuccess: () => {
             reset();
-            router.push("/signin");
+            router.push("/");
           },
         }
       );
@@ -108,7 +108,7 @@ export default function AuthForm({ formType }: Props) {
   const handleToSignIn = () => {
     logout(undefined, {
       onSuccess: async () => {
-        await router.push("/signin");
+        router.push("/signin");
       },
     });
   };

@@ -5,7 +5,7 @@ import {
   FormValues,
 } from "@/components/auth/utils/authUtils";
 import { useForgetPassword } from "@/hooks/query/useSupabase";
-import { handleValidateEmail } from "@/utils/authValidate";
+import { authValidation, handleValidateEmail } from "@/utils/authValidate";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ export default function ForgetPasswordModalForm({}) {
     mode: "onChange",
   });
 
-  const { forgetPassword } = useForgetPassword();
+  const { forgetPassword, isPending } = useForgetPassword();
 
   const [alertMessage, setAlertMessage] = useState<{
     response: ForgetPasswordMessageType;
@@ -34,6 +34,10 @@ export default function ForgetPasswordModalForm({}) {
         onSuccess: (message) => {
           setAlertMessage(message);
         },
+        onError: (error) => {
+          const errorMessage = authValidation(error.message, "changePassword");
+          setAlertMessage({ response: "fail", message: errorMessage! });
+        },
       });
     }
   };
@@ -43,7 +47,10 @@ export default function ForgetPasswordModalForm({}) {
   }, [errors["forget_password_email"]]);
 
   return (
-    <StForgetPasswordModalForm onSubmit={handleSubmit(handleSendFindMail)}>
+    <StForgetPasswordModalForm
+      onSubmit={handleSubmit(handleSendFindMail)}
+      $isPending={isPending}
+    >
       <AuthInput
         error={errors}
         id="forget_password_email"
@@ -63,12 +70,14 @@ export default function ForgetPasswordModalForm({}) {
           {alertMessage.message}
         </span>
       )}
-      <button>메일 보내기</button>
+      <button disabled={isPending}>
+        {isPending ? "메일을 보내는 중" : "메일 보내기"}
+      </button>
     </StForgetPasswordModalForm>
   );
 }
 
-const StForgetPasswordModalForm = styled.form`
+const StForgetPasswordModalForm = styled.form<{ $isPending: boolean }>`
   display: flex;
   flex-direction: column;
   width: ${(props) => props.theme.unit["412"]}px;
@@ -81,9 +90,13 @@ const StForgetPasswordModalForm = styled.form`
     margin-top: ${(props) => props.theme.spacing["20"]};
     font-size: ${(props) => props.theme.unit["16"]}px;
     height: ${(props) => props.theme.unit["40"]}px;
-    background: ${(props) => props.theme.color.bg.brand};
+    background: ${(props) =>
+      props.$isPending
+        ? props.theme.color.bg.disabled
+        : props.theme.color.bg.brand};
     color: ${(props) => props.theme.color.text.interactive.inverse};
     border-color: ${(props) => props.theme.color.text.interactive.inverse};
+    cursor: ${(props) => (props.$isPending ? "default" : "pointer")};
   }
 
   & > span {
