@@ -129,19 +129,22 @@ export default function useCreateScrumButtons(): ReturnType {
 
   useEffect(() => {
     resetAssignees();
-    kanbanItem?.assignees &&
-      kanbanItem.assignees.forEach((assignee) => {
-        const updatedAssignee = {
-          id: assignee.assigneesId,
-          created_at: "",
-          space_id: "",
-          user_id: assignee.userId,
-          space_display_name: assignee.space_display_name,
-          space_avatar: assignee.spaceAvatar,
-        };
-        setScrumBoardText(kanbanItem.description);
-        setAssignees(updatedAssignee);
-      });
+    if (kanbanItem?.assignees) {
+      if (kanbanItem.assignees[0].userId !== null) {
+        kanbanItem.assignees.forEach((assignee) => {
+          const updatedAssignee = {
+            id: assignee.assigneesId,
+            created_at: "",
+            space_id: "",
+            user_id: assignee.userId,
+            space_display_name: assignee.space_display_name,
+            space_avatar: assignee.spaceAvatar,
+          };
+          setAssignees(updatedAssignee);
+        });
+      }
+      setScrumBoardText(kanbanItem.description);
+    }
   }, [kanbanItem?.assignees]);
 
   useEffect(() => {
