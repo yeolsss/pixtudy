@@ -53,7 +53,7 @@ export default function SpaceList({
   }, [showTemporaryComponent]);
 
   return (
-    <StSpaceListWrapper>
+    <StCardListWrapper>
       <SpaceListHeader />
       <StSpaceList>
         {filteredSpaces?.map((space, index) => {
@@ -64,11 +64,11 @@ export default function SpaceList({
           );
         })}
       </StSpaceList>
-    </StSpaceListWrapper>
+    </StCardListWrapper>
   );
 }
 
-const StSpaceListWrapper = styled.section`
+export const StCardListWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[32]};

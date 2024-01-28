@@ -197,34 +197,34 @@ export interface Database {
       kanban_items: {
         Row: {
           categoryId: string;
-          create_user_id: string;
+          create_user_id: string | null;
           created_at: string;
           deadline: string | null;
           description: string;
           id: string;
-          space_id: string;
+          space_id: string | null;
           title: string;
           type: string;
         };
         Insert: {
           categoryId: string;
-          create_user_id: string;
+          create_user_id?: string | null;
           created_at?: string;
           deadline?: string | null;
           description: string;
           id?: string;
-          space_id: string;
+          space_id?: string | null;
           title: string;
           type?: string;
         };
         Update: {
           categoryId?: string;
-          create_user_id?: string;
+          create_user_id?: string | null;
           created_at?: string;
           deadline?: string | null;
           description?: string;
           id?: string;
-          space_id?: string;
+          space_id?: string | null;
           title?: string;
           type?: string;
         };

@@ -26,6 +26,10 @@ export const fieldValues = [
         value: SPACE_NAME_MIN_LENGTH,
         message: "스페이스의 이름은 2글자 이상이어야 합니다.",
       },
+      maxLength: {
+        value: 20,
+        message: "스페이스의 이름은 20글자 이내여야 합니다.",
+      },
     },
     maxLength: SPACE_NAME_MAX_LENGTH,
   },

@@ -19,6 +19,12 @@ import {
   sendMessageArgs,
 } from "@/api/supabase/dm";
 import {
+  createCategory,
+  getCategories,
+  getCategoryItems,
+  updateCategory,
+} from "@/api/supabase/scrumBoard";
+import {
   createSpaceHandler,
   getSpaceData,
   joinSpaceHandler,
@@ -29,7 +35,11 @@ import {
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import { Database, Tables } from "@/supabase/types/supabase";
-import { Space_members } from "@/supabase/types/supabase.tables.type";
+import {
+  GetKanbanItemsByAssignees,
+  Kanban_categories,
+  Space_members,
+} from "@/supabase/types/supabase.tables.type";
 import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
 import { Session } from "@supabase/supabase-js";
@@ -143,6 +153,26 @@ export function useGetSpace() {
   });
   return getSpace;
 }
+// export function useGetDmMessages(dmChannel: string | null) {
+//   const getDmMessagesOptions = {
+//     queryKey: ["dmMessages", dmChannel],
+//     queryFn: () => getDmChannelMessages(dmChannel),
+//     enabled: !!dmChannel,
+//   };
+//   return useCustomQuery<getDmChannelMessagesReturns[], Error>(
+//     getDmMessagesOptions
+//   );
+// }
+
+// TODO 이거 useQuery 사용하는 함수 하나 만들어야함
+// export function useGetSpaceQuery(spaceId:string) {
+//   const getSpaceOptions = {
+//     queryKey: ['userSpaces', spaceId],
+//     queryFn: () => getSpaceData(spaceId),
+//     enabled: !!spaceId,
+//   };
+//   return useCustomQuery<Spaces, Error>(getSpaceOptions);
+// }
 
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {
@@ -273,6 +303,66 @@ export function useReadDMMessage() {
   });
 
   return { mutate, isError, isPending };
+}
+
+/* ScrumBoard */
+
+/* Category */
+export function useGetCategories(spaceId: string) {
+  const queryOptions = {
+    queryKey: ["categoryList", spaceId],
+    queryFn: () => getCategories(spaceId),
+    enabled: !!spaceId,
+    options: { staleTime: Infinity },
+  };
+
+  return useCustomQuery<Kanban_categories[], Error>(queryOptions);
+}
+
+export function useGetCategoryItems(categoryId: string) {
+  const queryOptions = {
+    queryKey: ["categoryItem", categoryId],
+    queryFn: () => getCategoryItems(categoryId),
+    enabled: !!categoryId,
+    options: { staleTime: Infinity },
+  };
+
+  return useCustomQuery<GetKanbanItemsByAssignees[] | null, Error>(
+    queryOptions
+  );
+}
+
+export function useCreateCategory(spaceId: string) {
+  const queryClient = useQueryClient();
+  const {
+    mutate: create,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: createCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+    },
+  });
+
+  return { create, isError, isSuccess };
+}
+
+export function useUpdateCategory(spaceId: string) {
+  const queryClient = useQueryClient();
+  const {
+    mutate: update,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: updateCategory,
+    onSuccess: () => {
+      console.log("update success");
+      queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+    },
+  });
+
+  return { update, isError, isSuccess };
 }
 
 export function useForgetPassword() {

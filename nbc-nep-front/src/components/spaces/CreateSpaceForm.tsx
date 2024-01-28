@@ -1,7 +1,7 @@
 import {
+  fieldValues,
   SPACE_DESCRIPTION_MAX_LENGTH,
   SPACE_NAME_MAX_LENGTH,
-  fieldValues,
 } from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
 import { Tables } from "@/supabase/types/supabase";
@@ -17,8 +17,9 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
+import { StFormCTAButton } from "../common/button/button.styles";
 import DefaultSpanText from "../common/text/DefaultSpanText";
-import { StContentsContainer, StFormCTAButton } from "./JoinSpaceForm";
+import { StContentsContainer } from "./JoinSpaceForm";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { CreateSpaceInfo } from "./types/space.types";
 
@@ -27,6 +28,7 @@ interface Props {
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
   getValues: UseFormGetValues<FieldValues>;
+  isValid: boolean;
 }
 
 export default function CreateSpaceForm({
@@ -34,6 +36,7 @@ export default function CreateSpaceForm({
   handleSubmit,
   errors,
   getValues,
+  isValid,
 }: Props) {
   const router = useRouter();
   const { userProfile, setCreateSpaceInfo } = useSpace();
@@ -120,7 +123,9 @@ export default function CreateSpaceForm({
         </div>
       </StCreateContentsContainer>
       <div>
-        <StFormCTAButton type="submit">스페이스 생성하기</StFormCTAButton>
+        <StFormCTAButton type="submit" disabled={!isValid}>
+          스페이스 생성하기
+        </StFormCTAButton>
       </div>
     </StCreateSpaceForm>
   );
