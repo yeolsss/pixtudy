@@ -13,10 +13,12 @@ export default function ScrumItemDetail() {
         <CreateDescriptionHeader countType={"R"} />
         <StDescription>{kanbanItem?.description}</StDescription>
       </div>
-      <div>
-        <CreateBackDropTitle title={"담당자"} />
-        <SelectAssigneesList tagType={"labels"} />
-      </div>
+      {kanbanItem?.assignees[0].userId !== null && (
+        <div>
+          <CreateBackDropTitle title={"담당자"} />
+          <SelectAssigneesList tagType={"labels"} />
+        </div>
+      )}
     </StScrumItemDetailWrapper>
   );
 }

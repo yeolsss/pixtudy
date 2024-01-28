@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function ScrumBoardCategory({ category }: Props) {
-  const { id, name, color } = category;
+  const { id: categoryId, name, color } = category;
   const { setIsOpen } = useScrumBoardItemBackDrop();
   const handleAddItem = () => {
     setIsOpen(category, null, BACK_DROP_TYPE_CREATE);
@@ -31,13 +31,13 @@ export default function ScrumBoardCategory({ category }: Props) {
     console.log(getItem);
   }, [isDragging]);
 
-  const items = useGetCategoryItems(id);
+  const items = useGetCategoryItems(categoryId);
   return (
     <StCategoryWrapper ref={drag}>
       <CategoryHeader
         name={name}
         color={color}
-        id={id}
+        id={categoryId}
         itemCount={items ? items?.length : 0}
       />
       {items?.length ? (

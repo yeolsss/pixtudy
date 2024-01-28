@@ -135,7 +135,7 @@ export const deleteCategoryItem = async (id: string) => {
   }
 };
 
-interface PatchScrumBoardItemPrams {
+export interface PatchScrumBoardItemPrams {
   id: string;
   description: string;
   space_id: string;

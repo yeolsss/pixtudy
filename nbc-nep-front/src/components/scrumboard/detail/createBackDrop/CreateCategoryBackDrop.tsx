@@ -2,7 +2,7 @@ import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import styled from "styled-components";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { updateCategoryItem } from "@/api/supabase/scrumBoard";
 import { toast } from "react-toastify";
 import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
@@ -12,7 +12,6 @@ interface Props {
 }
 export default function CreateCategoryBackDrop({ isOpen }: Props) {
   const { categories } = useScrumBoard();
-  const queryClient = useQueryClient();
   const {
     category: selectedCategory,
     setCategory,
@@ -35,12 +34,6 @@ export default function CreateCategoryBackDrop({ isOpen }: Props) {
         {
           onSuccess: async () => {
             toast.success("카테고리가 변경되었습니다.");
-            await queryClient.invalidateQueries({
-              queryKey: ["categoryItem", category.id],
-            });
-            await queryClient.invalidateQueries({
-              queryKey: ["categoryItem", kanbanItem?.categoryId],
-            });
           },
         }
       );

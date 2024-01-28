@@ -38,6 +38,7 @@ const StCreateBackDrop = styled.div`
   flex-direction: column;
   position: absolute;
   top: 0;
+  z-index: 1100;
   right: 50px;
   width: 100%;
   min-width: 344px;

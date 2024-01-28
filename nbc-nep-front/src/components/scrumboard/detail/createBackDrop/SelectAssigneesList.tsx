@@ -14,8 +14,8 @@ export default function SelectAssigneesList({ tagType }: Props) {
   };
   return (
     <StSelectAssigneesListWrapper $tagType={tagType === "assignees"}>
-      {assignees.map((assignee) => (
-        <StSelectAssigneesCard key={assignee.id}>
+      {assignees.map((assignee, index) => (
+        <StSelectAssigneesCard key={index}>
           <span>{assignee.space_display_name}</span>
           {tagType === "assignees" && (
             <StDeleteButton
