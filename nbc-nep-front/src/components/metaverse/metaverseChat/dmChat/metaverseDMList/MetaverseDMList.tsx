@@ -56,5 +56,9 @@ export default function MetaverseDmList({ dmList }: Props) {
 }
 
 const StDmListCardWrapper = styled.div`
-  flex: 1;
+  padding: ${(props) => props.theme.spacing["2"]};
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 `;

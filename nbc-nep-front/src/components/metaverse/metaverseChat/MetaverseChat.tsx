@@ -62,16 +62,14 @@ export default function MetaverseChat() {
 }
 
 const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
-  width: ${({ $isOpenChat }) => ($isOpenChat ? "240px" : "0")};
+  width: ${({ $isOpenChat }) => ($isOpenChat ? "260px" : "0")};
   overflow: hidden; // width가 0일 때 내부 내용이 보이지 않도록 설정
   background-color: ${({ theme }) => theme.color.metaverse.secondary};
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   max-height: 100vh;
   padding: ${({ theme, $isOpenChat }) =>
-    `${$isOpenChat ? theme.spacing["16"] : "0"} ${$isOpenChat ? theme.spacing["20"] : "0"}`};
-  gap: ${(props) => props.theme.spacing[24]};
+    `${$isOpenChat ? theme.spacing["16"] : "0"} ${$isOpenChat ? theme.spacing["12"] : "0"}`};
   transition:
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;

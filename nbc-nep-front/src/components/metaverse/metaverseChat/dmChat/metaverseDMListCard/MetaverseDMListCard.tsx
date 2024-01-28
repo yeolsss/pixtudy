@@ -44,12 +44,8 @@ export default function MetaverseDMListCard({ dm }: Props) {
         <MetaAvatar spaceAvatar={otherUserAvatar} />
       </StMetaverseAvatarWrapper>
       <StMetaverseDMCard>
-        <div>
-          <span>{otherUserName}</span>
-        </div>
-        <div>
-          <span>{message}</span>
-        </div>
+        <span>{otherUserName}</span>
+        <span>{message}</span>
       </StMetaverseDMCard>
       {unread_count > 0 && (
         <StUnreadCount>
@@ -64,8 +60,7 @@ const StMetaverseDMCardWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing["12"]};
-  gap: ${({ theme }) => theme.spacing["12"]};
+  padding: ${({ theme }) => theme.spacing["6"]};
   height: ${({ theme }) => theme.spacing["80"]};
   span {
     color: ${({ theme }) => theme.color.text.interactive.inverse};
@@ -88,27 +83,24 @@ const StMetaverseAvatarWrapper = styled.div`
 const StMetaverseDMCard = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: ${({ theme }) => theme.spacing["8"]};
+  padding-left: ${({ theme }) => theme.spacing["6"]};
   font-family: ${({ theme }) => theme.body.lg.regular.fontFamily};
-  width: 158px;
+  width: ${(props) => props.theme.unit["112"]}px;
 
-  > div:first-child {
-    margin-bottom: ${({ theme }) => theme.spacing["8"]};
-    > span {
-      font-size: 12px;
-    }
+  > span {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  > span:first-child {
+    font-size: ${(props) => props.theme.unit["14"]}px;
+    font-weight: bold;
+    margin-bottom: ${(props) => props.theme.spacing["6"]};
   }
 
-  > div:last-child {
-    > span {
-      padding: 5px;
-      display: block;
-      max-width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  > span:last-child {
+    font-size: ${(props) => props.theme.unit["12"]}px;
   }
 `;
 
@@ -119,13 +111,12 @@ const StUnreadCount = styled.div`
   align-items: center;
   top: ${({ theme }) => theme.spacing["8"]};
   right: ${({ theme }) => theme.spacing["12"]};
-  background-color: ${({ theme }) => theme.color.bg.primary};
-  width: 20px;
-  height: 20px;
+  width: ${(props) => props.theme.unit["20"]}px;
+  height: ${(props) => props.theme.unit["20"]}px;
   border-radius: ${({ theme }) => theme.border.radius["circle"]};
+  background-color: ${({ theme }) => theme.color.bg.primary};
 
   > span {
-    margin-top: 4px;
     font-size: ${({ theme }) => theme.body.sm.regular.fontSize};
     color: ${({ theme }) => theme.color.text.primary};
     font-weight: ${({ theme }) => theme.body.sm.medium.fontWeight};
