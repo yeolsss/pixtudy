@@ -1,4 +1,5 @@
 import { StFormCTAButton } from "@/components/common/button/button.styles";
+import DefaultSpanText from "@/components/common/text/DefaultSpanText";
 import useModal from "@/hooks/modal/useModal";
 import { useCreateCategory, useGetCategories } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
@@ -56,7 +57,9 @@ export default function CreateCategoryForm() {
             validate: validateCategoryName,
           })}
         />
-        {errors.name && <span>{errors.name.message as string}</span>}
+        {errors.name && (
+          <DefaultSpanText>{errors.name.message as string}</DefaultSpanText>
+        )}
       </div>
       <div>
         <h3>카테고리 색상</h3>
@@ -86,14 +89,15 @@ export default function CreateCategoryForm() {
           })}
         </div>
       </div>
-      <StSubmitBtn type="submit" disabled={!isValid}>
+      <StFormCTAButton type="submit" disabled={!isValid}>
         확인
-      </StSubmitBtn>
+      </StFormCTAButton>
     </StCreateCategoryForm>
   );
 }
 
 const StCreateCategoryForm = styled.form`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[16]};
