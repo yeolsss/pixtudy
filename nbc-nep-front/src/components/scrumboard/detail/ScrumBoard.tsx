@@ -8,6 +8,7 @@ import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import { useDrop } from "react-dnd";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
 
@@ -18,6 +19,15 @@ export default function ScrumBoard() {
   const { setCategories } = useScrumBoard();
   const categories = useGetCategories(spaceId);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
+  const [{ isOver }, drop] = useDrop({
+    accept: ["category"],
+    drop: (item, monitor) => {
+      console.log(item);
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  });
 
   useEffect(() => {
     setCategories(categories!);
@@ -30,7 +40,7 @@ export default function ScrumBoard() {
   return (
     <StScrumBoardWrapper>
       <StScrumBoardContainer>
-        <div>
+        <div ref={drop}>
           {categories?.map((category) => {
             return <ScrumBoardCategory key={category.id} category={category} />;
           })}
@@ -70,6 +80,7 @@ const StScrumBoardContainer = styled.div`
     align-items: flex-start;
     gap: ${(props) => props.theme.spacing[12]};
     position: relative;
+    border: 3px solid blue;
   }
   &::-webkit-scrollbar {
     display: none;

@@ -8,7 +8,7 @@ import { options } from "../constants/constants";
 
 /**
  * TODO:
- *
+ * Delete
  */
 interface Props {
   name: string;
