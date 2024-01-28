@@ -9,6 +9,7 @@ module.exports = function (io) {
         userId: socket.id,
         playerDisplayName: socket.playerDisplayName || socket.id,
         message: "",
+        playerId: "",
         spaceId,
       };
 
@@ -30,11 +31,13 @@ module.exports = function (io) {
 
     socket.on(
       "sendMessage",
-      function ({ playerDisplayName, message, spaceId }) {
+      function ({ playerDisplayName, message, spaceId, playerId, chatTime }) {
         chat[socket.id] = {
           userId: socket.id,
           playerDisplayName: playerDisplayName || socket.id,
           message: message,
+          playerId: playerId,
+          chatTime: chatTime,
           spaceId,
         };
         io.to(spaceId).emit("receiveMessage", chat[socket.id]);
