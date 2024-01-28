@@ -1,6 +1,7 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { Chat } from "@/components/metaverse/types/metaverse";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
+import { useGetSpaceMember } from "@/hooks/query/useSupabase";
 import { formatDate } from "@/utils/commonUtils";
 import styled from "styled-components";
 import MetaAvatar from "../../avatar/MetaAvatar";
@@ -13,16 +14,11 @@ interface Props {
 }
 
 export default function MetaverseChatCard({ chat, message, type }: Props) {
-  const { currentUserInfo, findPlayerById } = useMetaversePlayer();
-
-  const getUserInfo = () => {
-    switch (type) {
-      case "DM":
-        return findPlayerById(message?.sender_id!);
-      case "GLOBAL":
-        return findPlayerById(chat?.playerId!);
-    }
-  };
+  const { currentUserInfo, spaceId } = useMetaversePlayer();
+  const dmUserInfo = useGetSpaceMember({
+    spaceId,
+    userId: type === "DM" ? message?.sender_id! : chat?.playerId!,
+  });
 
   const getFormatTime = () => {
     switch (type) {
@@ -58,17 +54,18 @@ export default function MetaverseChatCard({ chat, message, type }: Props) {
   };
 
   const isCurrentUser = getIsCurrentUser()!;
-  const userInfo = getUserInfo();
   const formatTime = getFormatTime();
   const messageContent = getMessage();
 
   return (
     <StMetaverseChatCard $isCurrentUser={isCurrentUser}>
       <section>
-        <MetaAvatar spaceAvatar={userInfo?.character} />
+        <MetaAvatar spaceAvatar={dmUserInfo?.space_avatar} />
         <div>
           <span>
-            {isCurrentUser ? `${userInfo?.nickname} (나)` : userInfo?.nickname}
+            {isCurrentUser
+              ? `${dmUserInfo?.space_display_name} (나)`
+              : dmUserInfo?.space_display_name}
           </span>
           <span>{formatTime}</span>
         </div>
