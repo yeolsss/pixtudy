@@ -10,7 +10,6 @@ export default function useCreateScrum(): ReturnType {
     useState<boolean>(false);
 
   const handleToggleCreate = (createBackDropStatus: boolean) => {
-    // setIsCreateBackDropOpen(createBackDropStatus);
     setIsCreateBackDropOpen((prev) => !prev);
   };
 

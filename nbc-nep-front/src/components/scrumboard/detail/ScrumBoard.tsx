@@ -10,14 +10,8 @@ import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  RealtimePostgresChangesPayload,
-  RealtimePostgresDeletePayload,
-} from "@supabase/realtime-js";
-import { GetKanbanItemsByAssignees } from "@/supabase/types/supabase.tables.type";
-import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import { supabase } from "@/supabase/supabase";
+import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
+import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 
 export default function ScrumBoard() {
   const { space_id } = useParams();
@@ -27,58 +21,8 @@ export default function ScrumBoard() {
   const categories = useGetCategories(spaceId);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
 
-  const queryClient = useQueryClient();
-  /*
-   * 카테고리 아이템 추가 삭제시
-   * */
-
-  useEffect(() => {
-    const handleChangeObserver = (
-      payload:
-        | RealtimePostgresChangesPayload<GetKanbanItemsByAssignees>
-        | RealtimePostgresInsertPayload<GetKanbanItemsByAssignees>
-        | RealtimePostgresDeletePayload<GetKanbanItemsByAssignees>
-    ) => {
-      if ("space_id" in payload.new) {
-        if (payload.new?.space_id === spaceId) {
-          categories?.forEach(async (category) => {
-            await queryClient.invalidateQueries({
-              queryKey: ["categoryItem", category.id],
-            });
-          });
-        }
-      } else {
-        categories?.forEach(async (category) => {
-          await queryClient.invalidateQueries({
-            queryKey: ["categoryItem", category.id],
-          });
-        });
-      }
-    };
-
-    const subscription = supabase
-      .channel("kanban_items")
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "kanban_items" },
-        handleChangeObserver
-      )
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "kanban_items" },
-        handleChangeObserver
-      )
-      .on(
-        "postgres_changes",
-        { event: "DELETE", schema: "public", table: "kanban_items" },
-        handleChangeObserver
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [spaceId, categories]);
+  // items에 대한 구독 커스텀훅
+  useScrumBardItemsSubscribe(spaceId, categories as Kanban_categories[]);
 
   useEffect(() => {
     setCategories(categories!);
