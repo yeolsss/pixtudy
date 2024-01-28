@@ -1,4 +1,4 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
+import { User, createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 const PAGES_PATH = [
@@ -14,7 +14,6 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   const supabase = createMiddlewareClient({ req: request, res: response });
-
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -38,11 +37,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/_next/static/") ||
     pathname.match(/\.(png|jpg|jpeg|gif|svg|ico)$/);
 
-  if (
-    isStaticFile ||
-    isPublicResource ||
-    request.headers.get("Purpose") === "prefetch"
-  ) {
+  if (isStaticFile || isPublicResource) {
     return NextResponse.next();
   }
 
@@ -63,24 +58,22 @@ export async function middleware(request: NextRequest) {
   }
 
   // 로그인 세션에 따른 조건부 처리
-  if (
-    !session &&
-    (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse"))
-  ) {
-    const url = new URL("/signin", request.url);
-    const response = NextResponse.redirect(url);
-    response.cookies.set("message", "login_first");
-    return response;
+  if (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse")) {
+    if (!session && request.headers.get("Purpose") !== "prefetch") {
+      const url = new URL("/signin", request.url);
+      const response = NextResponse.redirect(url);
+      response.cookies.set("message", "login_first");
+      return response;
+    }
   }
 
-  if (
-    session &&
-    (pathname.startsWith("/signin") || pathname.startsWith("/signup"))
-  ) {
-    const url = new URL("/", request.url);
-    const response = NextResponse.redirect(url);
-    response.cookies.set("message", "login_already");
-    return response;
+  if (pathname.startsWith("/signin") || pathname.startsWith("/signup")) {
+    if (session && request.headers.get("Purpose") !== "prefetch") {
+      const url = new URL("/", request.url);
+      const response = NextResponse.redirect(url);
+      response.cookies.set("message", "login_already");
+      return response;
+    }
   }
 
   // 유효한 메타버스 id가 없을 때
@@ -92,6 +85,22 @@ export async function middleware(request: NextRequest) {
       const response = NextResponse.redirect(url);
       response.cookies.set("message", "invalid_space");
       return response;
+    }
+  }
+
+  if (pathname.startsWith("/changepassword")) {
+    const user = session?.user as User & { amr?: [{ method: string }] };
+    if (
+      user?.amr &&
+      typeof user.amr[0] === "object" &&
+      "method" in user.amr[0]
+    ) {
+      if (user.amr[0].method !== "recovery") {
+        const url = new URL("/", request.url);
+        const response = NextResponse.redirect(url);
+        response.cookies.set("message", "invalid_path");
+        return response;
+      }
     }
   }
 

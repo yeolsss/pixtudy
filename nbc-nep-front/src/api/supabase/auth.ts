@@ -162,10 +162,18 @@ export const forgottenPasswordHandler = async (
   }
 };
 
+// 비밀번호를 변경시키는 함수
 export const updateUserPasswordHandler = async (newPw: string) => {
   const { data, error } = await supabase.auth.updateUser({
     password: newPw,
   });
+  if (error) throw error;
+  return data;
+};
+
+// 현재유저의 세션을 가져오는 함수
+export const getSession = async () => {
+  const { data, error } = await supabase.auth.getSession();
   if (error) throw error;
   return data;
 };

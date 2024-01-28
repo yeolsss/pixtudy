@@ -23,7 +23,7 @@ export const DASHBOARD_TOUR_TOOLTIP: TooltipType[] = [
   },
   {
     target: ".tour-tooltip-item button",
-    content: "입장하기 버튼으로 기존 스페이스에 입장하세요",
+    content: "입장하기 버튼으로 기존 스페이스에 입장하세요.",
     placement: "right",
     disableBeacon: true,
   },
