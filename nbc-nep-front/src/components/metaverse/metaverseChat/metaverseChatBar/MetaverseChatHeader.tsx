@@ -1,7 +1,6 @@
-import React from "react";
-import styled from "styled-components";
 import CloseIcon from "@/assets/icons/Times.svg";
 import Image from "next/image";
+import styled from "styled-components";
 
 interface Props {
   title: string;
@@ -28,6 +27,8 @@ const StMetaverseDmHeader = styled.div`
     font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
     font-family: ${({ theme }) => theme.body.lg.regular.fontFamily};
     color: ${({ theme }) => theme.color.text.interactive.inverse};
+
+    white-space: nowrap;
   }
   > button {
     width: 12px !important;
