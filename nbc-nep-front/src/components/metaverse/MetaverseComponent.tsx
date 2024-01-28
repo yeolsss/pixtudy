@@ -26,15 +26,6 @@ const MetaverseComponent = () => {
   const gameRef = useRef<Game | null>();
 
   useEffect(() => {
-    const resize = () => {
-      if (gameRef.current) {
-        gameRef.current.scale.resize(
-          window.innerWidth,
-          window.innerHeight - VERTICAL_BORDER_OFFSET
-        );
-      }
-    };
-
     if (playerSpaceInfoData?.space_avatar) {
       const config = {
         type: Phaser.AUTO,
@@ -56,8 +47,6 @@ const MetaverseComponent = () => {
 
       gameRef.current = new Phaser.Game(config);
 
-      // 플레이어 정보를 저장하는 registry
-      // 임의로 설정해 둔 정보로, 실제 유저 정보를 가져와야 한다
       gameRef.current.registry.set("player", {
         playerId: id,
         nickname: playerSpaceInfoData?.space_display_name || display_name,
@@ -66,15 +55,28 @@ const MetaverseComponent = () => {
       });
 
       PhaserSceneManager.setGameInstance(gameRef.current);
-
-      window.addEventListener("resize", resize);
     }
 
     return () => {
-      gameRef.current?.destroy(true);
-      window.removeEventListener("resize", resize);
+      // gameRef.current?.destroy(true);
     };
   }, [playerSpaceInfoData]);
+
+  useEffect(() => {
+    const resize = () => {
+      if (gameRef.current) {
+        gameRef.current.scale.resize(
+          window.innerWidth,
+          window.innerHeight - VERTICAL_BORDER_OFFSET
+        );
+      }
+    };
+    window.addEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
 
   return (
     <StMetaverseWrapper>
