@@ -1,3 +1,9 @@
+import { StSectionMain } from "../styles/config.styles";
+
 export default function ConfigVideo() {
-  return <div>Config video Component</div>;
+  return (
+    <StSectionMain>
+      <h1>Config video Component</h1>
+    </StSectionMain>
+  );
 }

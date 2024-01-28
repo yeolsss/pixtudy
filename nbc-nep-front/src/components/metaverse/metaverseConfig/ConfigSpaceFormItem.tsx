@@ -1,6 +1,6 @@
-import DefaultSpanText from "@/components/common/text/DefaultSpanText";
 import { PropsWithChildren } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
+import styled from "styled-components";
 
 interface Props {
   title: string;
@@ -18,12 +18,33 @@ export default function ConfigSpaceFormItem({
 }: PropsWithChildren<Props>) {
   return (
     <div>
-      <span>{title}</span>
+      <StHeader>
+        <span>{title}</span>
+        <span>
+          {curLength}/{maxLength}
+        </span>
+      </StHeader>
       {children}
-      <span>
-        {curLength}/{maxLength}
-      </span>
-      {error && <DefaultSpanText>{error as string}</DefaultSpanText>}
+      {error && <StErrorText>{error as string}</StErrorText>}
     </div>
   );
 }
+
+const StHeader = styled.header`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+
+  span:last-child {
+    font-size: 1.125rem;
+    font-weight: normal;
+  }
+`;
+
+const StErrorText = styled.span`
+  font-size: 1.125rem !important;
+  font-weight: normal !important;
+  color: ${(props) => props.theme.color.danger[500]};
+  font-family: var(--default-font);
+`;

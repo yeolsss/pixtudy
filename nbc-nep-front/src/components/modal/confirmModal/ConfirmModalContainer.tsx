@@ -75,6 +75,10 @@ const StConfirmMessageContainer = styled.div`
   font-weight: bold;
   justify-content: center;
   font-size: ${(props) => props.theme.unit["16"]}px;
+  p {
+    font-family: var(--default-font);
+    font-weight: normal;
+  }
   & > div {
     margin-top: ${(props) => props.theme.spacing["24"]};
     display: flex;
