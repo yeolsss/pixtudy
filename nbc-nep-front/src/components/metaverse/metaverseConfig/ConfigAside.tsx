@@ -1,4 +1,3 @@
-import useModal from "@/hooks/modal/useModal";
 import styled from "styled-components";
 import { configModes } from "../constants/config.contant";
 import { Config } from "../types/config.types";
@@ -12,15 +11,8 @@ export default function ConfigAside({
   currentConfigMode,
   handleSelectConfigMode,
 }: Props) {
-  const { closeModal } = useModal();
-
-  const handleCloseModal = () => {
-    closeModal();
-  };
-
   return (
     <aside>
-      <button onClick={() => handleCloseModal()}>close config modal</button>
       <nav>
         <ul>
           {configModes.map(({ mode, name }) => (

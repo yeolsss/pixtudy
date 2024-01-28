@@ -21,25 +21,32 @@ export default function MetaverseConfigModal() {
     <>
       {isConfigModalOpen && (
         <ModalPortal>
-          <StTestDiv>
+          <StConfigModalWrapper>
+            <StConfigHeader>
+              <h2>설정</h2>
+              <button onClick={() => closeModal()}>close config modal </button>
+            </StConfigHeader>
+
             <ConfigAside
               currentConfigMode={currentConfigMode}
               handleSelectConfigMode={handleSelectConfigMode}
             />
             {currentConfigMode === SPACE_CONFIG && <ConfigSpace />}
             {currentConfigMode === VIDEO_CONFIG && <ConfigVideo />}
-          </StTestDiv>
+          </StConfigModalWrapper>
         </ModalPortal>
       )}
     </>
   );
 }
 
-const StTestDiv = styled.div`
+const StConfigModalWrapper = styled.div`
   width: 250px;
   position: absolute;
   top: 0;
   left: 150px;
-  height: 300px;
+  height: 500px;
   background-color: white;
 `;
+
+const StConfigHeader = styled.header``;
