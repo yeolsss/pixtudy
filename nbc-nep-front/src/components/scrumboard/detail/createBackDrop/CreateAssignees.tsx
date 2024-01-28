@@ -40,9 +40,7 @@ export default function CreateAssignees() {
         />
         <AssigneesBackDrop />
       </StCreateAssigneesInputWrapper>
-      {assignees.length > 0 && assignees[0].user_id !== null && (
-        <SelectAssigneesList tagType={"assignees"} />
-      )}
+      {assignees.length > 0 && <SelectAssigneesList tagType={"assignees"} />}
     </StCreateAssigneesWrapper>
   );
 }
