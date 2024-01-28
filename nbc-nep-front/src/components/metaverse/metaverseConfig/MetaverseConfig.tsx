@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { SPACE_CONFIG, VIDEO_CONFIG } from "../constants/config.contant";
 import { Config } from "../types/config.types";
 import ConfigAside from "./ConfigAside";
+import ConfigSpace from "./ConfigSpace";
 import ConfigVideo from "./ConfigVideo";
-import ConfigSpace from "./ConfingSpace";
 
 export default function MetaverseConfigModal() {
   const [currentConfigMode, setConfigMode] = useState<Config>(SPACE_CONFIG);
