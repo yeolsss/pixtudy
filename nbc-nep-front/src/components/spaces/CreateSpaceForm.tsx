@@ -1,4 +1,8 @@
-import { fieldValues } from "@/components/spaces/constants/constants";
+import {
+  fieldValues,
+  SPACE_DESCRIPTION_MAX_LENGTH,
+  SPACE_NAME_MAX_LENGTH,
+} from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
 import { Tables } from "@/supabase/types/supabase";
 import useSpace from "@/zustand/spaceStore";
@@ -76,14 +80,15 @@ export default function CreateSpaceForm({
           {fieldValues.map((fieldValue) =>
             fieldValue.type === "text" ? (
               <div key={fieldValue.name}>
+                <label htmlFor={fieldValue.name}>스페이스 이름</label>
                 <StCreateInputWrapper
                   key={fieldValue.name}
                   $isError={!!errors.spaceName?.message}
                 >
-                  <label htmlFor={fieldValue.name}>스페이스 이름</label>
                   <input
                     type={fieldValue.type}
                     placeholder={fieldValue.placeholder}
+                    maxLength={SPACE_NAME_MAX_LENGTH}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceName && (
@@ -95,14 +100,15 @@ export default function CreateSpaceForm({
               </div>
             ) : (
               <div key={fieldValue.name}>
+                <label htmlFor="">스페이스 설명 </label>
                 <StCreateInputWrapper
                   key={fieldValue.name}
                   $isError={!!errors.spaceDescription?.message}
                 >
-                  <label htmlFor="">스페이스 설명 </label>
                   <textarea
                     key={fieldValue.name}
                     placeholder={fieldValue.placeholder}
+                    maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceDescription && (

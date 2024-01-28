@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import SpaceThumb from "../common/SpaceThumb";
 import UserIcon from "../common/UserIcon";
 
 interface Props {
@@ -33,9 +34,9 @@ export default function SpaceCard({ space }: Props) {
   return (
     <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
       <StContentsContainer>
-        <Image src="/assets/card.png" alt="card" width={300} height={160} />
-        <StContentsHeader>
-          <h1>{space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}</h1>
+        <SpaceThumb src={space?.spaces?.space_thumb || undefined} />
+        <h1>
+          {space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}
           <Image
             src={CopyIcon}
             width={10}
@@ -43,7 +44,7 @@ export default function SpaceCard({ space }: Props) {
             alt={"copy code"}
             onClick={handleCaptureClipboard}
           />
-        </StContentsHeader>
+        </h1>
         <p>
           {space
             ? space.spaces?.description
@@ -84,10 +85,25 @@ const StContentsContainer = styled.div`
   padding: 0 ${(props) => props.theme.spacing[12]};
   img {
     width: 100%;
+    margin-bottom: ${(props) => props.theme.spacing[12]};
+  }
+  h1 {
+    display: flex;
+    flex-direction: row;
+    gap: ${(props) => props.theme.spacing[8]};
+    font-family: var(--sub-font);
+    font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
+    font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
+
+    img {
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+    }
   }
   p {
     font-family: var(--default-font);
-    font-size: ${(props) => props.theme.body.md.regular.fontSize};
+    font-size: ${(props) => props.theme.body.sm.regular.fontSize};
     height: calc(2 * ${(props) => props.theme.body.md.medium.lineHeight});
     word-break: break-all;
     overflow: hidden;
@@ -97,26 +113,8 @@ const StContentsContainer = styled.div`
     -webkit-box-orient: vertical;
 
     padding: ${(props) => props.theme.unit[2]}px;
-    padding-left: ${(props) => props.theme.spacing[8]};
     letter-spacing: ${(props) => props.theme.body.md.medium.letterSpacing};
     line-height: ${(props) => props.theme.body.md.medium.lineHeight};
-  }
-`;
-
-const StContentsHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding-left: ${(props) => props.theme.spacing[8]};
-  h1 {
-    gap: ${(props) => props.theme.spacing[8]};
-    font-family: var(--sub-font);
-    font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
-    font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
-  }
-  img {
-    cursor: pointer;
-    width: 15px;
-    height: 15px;
   }
 `;
 

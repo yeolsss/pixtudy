@@ -12,6 +12,7 @@ export interface Spaces {
   description: string;
   owner: string /* foreign key to users.id */;
   users?: Users;
+  space_thumb: string | null;
 }
 
 export interface Kanban_categories {

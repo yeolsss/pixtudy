@@ -47,6 +47,7 @@ export class SceneClass extends Phaser.Scene {
     this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
     const playerInfo = this.game.registry.get("player");
+    
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
 
@@ -152,9 +153,11 @@ export class SceneClass extends Phaser.Scene {
       }) // 플레이어 이름 표시할 오브젝트 생성
       .setOrigin(0.5, 0.5)
       .setDepth(PLAYER_NAME_DEPTH);
+
     this.character = this.physics.add
       .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
       .setDepth(PLAYER_DEPTH);
+
     // 몸체 크기
     this.character.body?.setSize(PLAYER_BODY_SIZE_X, PLAYER_BODY_SIZE_Y);
 

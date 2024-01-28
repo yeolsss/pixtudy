@@ -40,7 +40,7 @@ export default function ProfileForm({
   mode,
   isValid,
 }: ProfileFormProps) {
-  const { userProfile, setUserProfile } = useSpace();
+  const { setUserProfile } = useSpace();
   const { user } = useAuth();
 
   const handleToPrevious = () => {
