@@ -1,4 +1,6 @@
+import useConfirm from "@/hooks/confirm/useConfirm";
 import { useLogoutUser } from "@/hooks/query/useSupabase";
+import { pathValidation } from "@/utils/middlewareValidate";
 import useAuth from "@/zustand/authStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,6 +10,8 @@ import { StCTAButton } from "../common/button/button.styles";
 export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
+  const { user } = useAuth();
+  const { openConfirmHandler } = useConfirm();
 
   const {
     isLogin,
@@ -22,13 +26,23 @@ export default function Header() {
     router.push("/signup");
   };
 
-  const handleLogout = () => {
-    logout();
-    router.push("/");
+  const handleLogout = async () => {
+    const result = await openConfirmHandler({
+      title: "로그아웃",
+      message: " 정말 로그아웃 하시겠습니까?",
+      confirmButtonText: "네, 로그아웃할게요",
+      denyButtonText: "아니요, 더 둘러볼게요",
+    });
+    if (result) logout();
   };
 
   const handleToDashboard = () => {
-    router.push("/dashboard");
+    if (user.id) {
+      router.push("/dashboard");
+    } else {
+      router.push("/signin");
+      pathValidation("login_first");
+    }
   };
 
   const handleToBoards = () => {

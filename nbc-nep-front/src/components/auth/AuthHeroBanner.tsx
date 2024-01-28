@@ -1,16 +1,22 @@
-import { useRouter } from "next/router";
+import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
-import { AuthFormType } from "./utils/authUtils";
-
+import AuthHeroNotice from "./AuthHeroNotice";
+import {
+  AuthFormType,
+  generateRandomIndex,
+  imageArray,
+} from "./utils/authUtils";
 interface Props {
   formType: AuthFormType;
 }
 export default function AuthHeroBanner({ formType }: Props) {
-  const router = useRouter();
-  const handleToHome = () => router.push("/");
+  const randomIndex = generateRandomIndex(imageArray.length);
   return (
     <StHeroBannerTemp $formType={formType}>
-      <span onClick={handleToHome}>pixtudy</span>
+      <Link href={"/"}>pixtudy</Link>
+      <Image alt="auth-hero" src={imageArray[randomIndex]} />
+      <AuthHeroNotice formType={formType} />
     </StHeroBannerTemp>
   );
 }
@@ -21,8 +27,12 @@ const StHeroBannerTemp = styled.div<{ $formType: AuthFormType }>`
       : "transparent"};
   width: 50%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
 
-  & > span {
+  & > a {
     cursor: pointer;
     display: inline-block;
     position: absolute;
@@ -38,5 +48,10 @@ const StHeroBannerTemp = styled.div<{ $formType: AuthFormType }>`
     font-family: var(--point-font);
     font-size: ${(props) => props.theme.heading.desktop.lg.fontSize};
     font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
+  }
+
+  & > img {
+    width: 70%;
+    height: auto;
   }
 `;

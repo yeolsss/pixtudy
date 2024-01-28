@@ -12,11 +12,13 @@ import { useEffect } from "react";
 export default function ChangePassword() {
   const { user } = useAuth();
   const logout = useLogoutUser();
+
   useEffect(() => {
     return () => {
       logout();
     };
   }, []);
+
   return (
     <>
       <CustomHead

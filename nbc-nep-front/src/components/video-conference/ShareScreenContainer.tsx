@@ -23,6 +23,9 @@ export default function ShareScreenContainer() {
     handleInactive,
   } = useLayout();
 
+  // 현재 유저의 OS를 체크
+  const isMac = /Mac/.test(navigator.userAgent);
+
   // 가이드 상태
   const [currentGuide, setCurrentGuide] = useState<GuideStatusType | null>(
     null
@@ -160,10 +163,14 @@ export default function ShareScreenContainer() {
       >
         {!countSelectVideos && (
           <StNoActiveLayoutDiv>
-            <span>원하는 레이아웃으로 비디오를 드래그하세요</span>
+            <h4>원하는 레이아웃으로 비디오를 드래그하여 조작해보세요</h4>
             <span>
-              레이아웃 내에서 [ctrl] + 휠 / 드래그 를 통해 줌/화면 이동을
-              사용해보세요
+              {isMac ? "레이아웃 줌: [Cmd] + 휠" : "레이아웃 줌: [ctrl] + 휠"}
+            </span>
+            <span>
+              {isMac
+                ? "레이아웃 이동: [Cmd] + 드래그"
+                : "레이아웃 이동: [ctrl] + 드래그"}
             </span>
           </StNoActiveLayoutDiv>
         )}
@@ -200,6 +207,7 @@ const StVideosLayoutContainer = styled.div`
   align-items: center;
   justify-content: flex-end;
   position: fixed;
+  padding-top: ${(props) => props.theme.spacing["16"]};
   top: 0;
   left: 68px;
   right: 230px;
@@ -208,6 +216,10 @@ const StVideosLayoutContainer = styled.div`
   color: white;
   & > button {
     position: absolute;
+    background: ${(props) => props.theme.color.bg.interactive.danger};
+    color: ${(props) => props.theme.color.base.white};
+    font-size: ${(props) => props.theme.unit["16"]}px;
+    border: none;
     right: 1rem;
     top: 1rem;
   }
@@ -218,19 +230,26 @@ const StNoActiveLayoutDiv = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2rem;
   font-weight: bold;
   display: flex;
   flex-direction: column;
   align-items: center;
-  & span + span {
-    margin-top: 3rem;
+  & h4 {
+    font-size: ${(props) => props.theme.unit["24"]}px;
+    margin-bottom: ${(props) => props.theme.spacing["40"]};
+  }
+  & > span {
+    font-size: ${(props) => props.theme.unit["16"]}px;
+  }
+  & > span + span {
+    margin-top: ${(props) => props.theme.spacing["20"]};
   }
 `;
 const StPreviewContainer = styled.div<{ $isPreviewVideo: boolean }>`
   display: flex;
-  margin: ${(props) => (props.$isPreviewVideo ? "1rem" : "0")};
+  margin-bottom: ${(props) => (props.$isPreviewVideo ? "1rem" : "0")};
   height: ${(props) => (props.$isPreviewVideo ? "15%" : "7%")};
+  flex-shrink: unset;
 `;
 
 const StLayoutContainer = styled.div<{
@@ -266,6 +285,8 @@ const StLayoutContainer = styled.div<{
 const StLayoutGuide = styled.div<{ $guide: GuideStatusType | null }>`
   z-index: 10;
   background: rgba(122, 108, 108, 0.5);
+  margin: ${(props) => props.theme.spacing[6]};
+  border-radius: ${(props) => props.theme.border.radius[12]};
   position: absolute;
   ${(props) => {
     switch (props.$guide) {
