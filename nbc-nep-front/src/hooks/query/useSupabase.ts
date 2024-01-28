@@ -20,6 +20,7 @@ import {
 } from "@/api/supabase/dm";
 import {
   createCategory,
+  deleteCategory,
   getCategories,
   getCategoryItems,
   updateCategory,
@@ -44,6 +45,7 @@ import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
 import { Session } from "@supabase/supabase-js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 /* Auth */
 /* user */
@@ -357,7 +359,7 @@ export function useUpdateCategory(spaceId: string) {
   } = useMutation({
     mutationFn: updateCategory,
     onSuccess: () => {
-      console.log("update success");
+      toast.success("카테고리가 수정되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
     },
   });
@@ -365,6 +367,24 @@ export function useUpdateCategory(spaceId: string) {
   return { update, isError, isSuccess };
 }
 
+export function useDeleteCategory(spaceId: string) {
+  const queryClient = useQueryClient();
+  const {
+    mutate: remove,
+    isError,
+    isSuccess,
+  } = useMutation({
+    mutationFn: deleteCategory,
+    onSuccess: () => {
+      toast.success("카테고리가 삭제되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+    },
+  });
+
+  return { remove, isError, isSuccess };
+}
+
+/* Auth again */
 export function useForgetPassword() {
   const { mutate: forgetPassword, isPending } = useMutation({
     mutationFn: forgottenPasswordHandler,
