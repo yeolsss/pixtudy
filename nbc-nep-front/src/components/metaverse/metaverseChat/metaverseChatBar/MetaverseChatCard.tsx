@@ -1,18 +1,66 @@
+import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { Chat } from "@/components/metaverse/types/metaverse";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { formatDate } from "@/utils/commonUtils";
 import styled from "styled-components";
 import MetaAvatar from "../../avatar/MetaAvatar";
+import { ChatType } from "../../types/ChatType";
 
 interface Props {
-  chat: Chat;
+  type: ChatType;
+  chat?: Chat;
+  message?: getDmChannelMessagesReturns;
 }
 
-export default function MetaverseChatCard({ chat }: Props) {
+export default function MetaverseChatCard({ chat, message, type }: Props) {
   const { currentUserInfo, findPlayerById } = useMetaversePlayer();
-  const formatTime = formatDate(chat.chatTime, "GLOBAL");
-  const userInfo = findPlayerById(chat.playerId);
-  const isCurrentUser = chat.playerId === currentUserInfo?.playerId;
+
+  const getUserInfo = () => {
+    switch (type) {
+      case "DM":
+        return findPlayerById(message?.sender_id!);
+      case "GLOBAL":
+        return findPlayerById(chat?.playerId!);
+    }
+  };
+
+  const getFormatTime = () => {
+    switch (type) {
+      case "DM":
+        return formatDate(message?.created_at!, "DM");
+      case "GLOBAL":
+        return formatDate(chat?.chatTime!, "GLOBAL");
+      default:
+        return "";
+    }
+  };
+
+  const getIsCurrentUser = () => {
+    switch (type) {
+      case "DM":
+        return message?.sender_id === currentUserInfo?.playerId;
+      case "GLOBAL":
+        return chat?.playerId === currentUserInfo?.playerId;
+      default:
+        return false;
+    }
+  };
+
+  const getMessage = () => {
+    switch (type) {
+      case "DM":
+        return message?.message;
+      case "GLOBAL":
+        return chat?.message;
+      default:
+        return "";
+    }
+  };
+
+  const isCurrentUser = getIsCurrentUser()!;
+  const userInfo = getUserInfo();
+  const formatTime = getFormatTime();
+  const messageContent = getMessage();
 
   return (
     <StMetaverseChatCard $isCurrentUser={isCurrentUser}>
@@ -20,14 +68,12 @@ export default function MetaverseChatCard({ chat }: Props) {
         <MetaAvatar spaceAvatar={userInfo?.character} />
         <div>
           <span>
-            {isCurrentUser
-              ? `${chat.playerDisplayName} (나)`
-              : chat.playerDisplayName}{" "}
+            {isCurrentUser ? `${userInfo?.nickname} (나)` : userInfo?.nickname}
           </span>
           <span>{formatTime}</span>
         </div>
       </section>
-      <span>{chat.message}</span>
+      <span>{messageContent}</span>
     </StMetaverseChatCard>
   );
 }

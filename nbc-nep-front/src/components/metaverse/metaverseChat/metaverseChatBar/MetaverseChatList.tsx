@@ -42,7 +42,13 @@ export default function MetaverseChatList() {
         />
         <div>
           {chatList?.map((chat, index) => {
-            return <MetaverseChatCard chat={chat} key={chat.userId + index} />;
+            return (
+              <MetaverseChatCard
+                chat={chat}
+                key={chat.userId + index}
+                type="GLOBAL"
+              />
+            );
           })}
           <div ref={endOfChatsRef}></div>
         </div>
