@@ -17,11 +17,11 @@ export default function MetaverseChat() {
   const { id, spaceId } = useMetaversePlayer();
   const { handleSetDmChatAlarmState } = useChatAlarm();
   const dmList = useGetLastDMList(spaceId, id);
-
   const queryClient = useQueryClient();
   const handleRefetchDMList = async () => {
     await queryClient.invalidateQueries({ queryKey: ["lastDMList"] });
   };
+
   useEffect(() => {
     const dmChannel = supabase.channel(`dm_channel_${spaceId}`);
     dmChannel
@@ -69,10 +69,8 @@ const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
   flex-direction: column;
   justify-content: space-around;
   max-height: 100vh;
-  //prettier-ignore
   padding: ${({ theme, $isOpenChat }) =>
-    $isOpenChat ? theme.spacing["24"] : "0"} ${({ theme, $isOpenChat }) =>
-    $isOpenChat ? theme.spacing["20"] : "0"};
+    `${$isOpenChat ? theme.spacing["16"] : "0"} ${$isOpenChat ? theme.spacing["20"] : "0"}`};
   gap: ${(props) => props.theme.spacing[24]};
   transition:
     width 0.3s ease-in-out,

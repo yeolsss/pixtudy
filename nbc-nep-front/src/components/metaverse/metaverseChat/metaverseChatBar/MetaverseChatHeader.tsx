@@ -21,14 +21,14 @@ const StMetaverseDmHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 10px 0;
 
   > h1 {
-    font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
-    font-family: ${({ theme }) => theme.body.lg.regular.fontFamily};
+    font-size: ${(props) => props.theme.unit["20"]}px;
+    font-family: var(--point-font);
+    font-weight: bold;
     color: ${({ theme }) => theme.color.text.interactive.inverse};
-
     white-space: nowrap;
+    margin-bottom: ${(props) => props.theme.spacing["20"]};
   }
   > button {
     width: 12px !important;
