@@ -7,6 +7,10 @@ interface Props {
   y?: number;
   x?: number;
 }
+
+/**
+ * Avatar z-index 확인 필요
+ */
 export default function MetaAvatar({
   spaceAvatar,
   width = 32,

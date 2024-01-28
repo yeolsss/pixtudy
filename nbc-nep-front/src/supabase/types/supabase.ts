@@ -1,3 +1,5 @@
+import { KanbanAssignees } from "./supabase.tables.type";
+
 export type Json =
   | string
   | number
@@ -418,7 +420,7 @@ export interface Database {
           categoryId: string;
           item_creator_space_avatar: string;
           create_user_id: string;
-          assignees: Json;
+          assignees: KanbanAssignees[];
         }[];
       };
       get_last_dm_message_list: {

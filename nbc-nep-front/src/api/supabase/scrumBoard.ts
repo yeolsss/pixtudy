@@ -19,6 +19,7 @@ export const getCategories = async (
   return data;
 };
 
+// Promise 제네릭 인자 타입을 맞춰야할듯. 임시방편
 export const getCategoryItems = async (
   categoryId: string
 ): Promise<GetKanbanItemsByAssignees[] | null> => {
@@ -28,7 +29,7 @@ export const getCategoryItems = async (
     })
     .returns<GetKanbanItemsByAssignees[]>();
   if (error) throw error;
-  return data;
+  return data ? data : [];
 };
 
 export const createCategory = async ({
@@ -54,6 +55,14 @@ export const updateCategory = async (
     .select();
   if (error) throw error;
   return newCategory;
+};
+
+export const deleteCategory = async (categoryId: string) => {
+  const { error } = await supabase
+    .from("kanban_categories")
+    .delete()
+    .eq("id", categoryId);
+  if (error) throw error;
 };
 
 export const getSpaceUsers = async (spaceId: string) => {

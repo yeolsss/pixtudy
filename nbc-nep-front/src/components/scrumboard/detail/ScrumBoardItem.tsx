@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
+import { BACK_DROP_TYPE_DETAIL } from "@/components/scrumboard/constants/constants";
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
 } from "@/supabase/types/supabase.tables.type";
-import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
-import React from "react";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
-import { BACK_DROP_TYPE_DETAIL } from "@/components/scrumboard/constants/constants";
+import React from "react";
+import styled from "styled-components";
 
 interface Props {
   item: GetKanbanItemsByAssignees;
@@ -27,7 +27,7 @@ function ScrumBoardItem({ category, item }: Props) {
         <StAssigneesWrapper>
           {item.assignees.map((assignee, index) => {
             return (
-              <StMetaAvatarWrapper key={index} $index={index}>
+              <StMetaAvatarWrapper $index={index} key={index}>
                 <MetaAvatar
                   spaceAvatar={assignee.spaceAvatar}
                   width={24}
@@ -51,6 +51,7 @@ const StListItem = styled.li`
   gap: ${(props) => props.theme.spacing[4]};
   align-self: stretch;
   padding: ${(props) => props.theme.spacing[12]};
+  margin: 0;
   width: 100%;
   height: auto;
   border-radius: ${(props) => props.theme.border.radius[12]};
