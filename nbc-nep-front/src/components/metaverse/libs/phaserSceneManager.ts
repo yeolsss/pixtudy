@@ -11,6 +11,10 @@ export default class PhaserSceneManager {
       PhaserSceneManager.gameInstance.input.keyboard
     ) {
       PhaserSceneManager.gameInstance.input.keyboard.enabled = false;
+      console.log(
+        "disabled",
+        PhaserSceneManager.gameInstance.input.keyboard.enabled
+      );
     }
   }
 
@@ -20,6 +24,10 @@ export default class PhaserSceneManager {
       PhaserSceneManager.gameInstance.input.keyboard
     ) {
       PhaserSceneManager.gameInstance.input.keyboard.enabled = true;
+      console.log(
+        "enable",
+        PhaserSceneManager.gameInstance.input.keyboard.enabled
+      );
     }
   }
 }

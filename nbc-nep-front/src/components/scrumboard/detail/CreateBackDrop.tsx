@@ -1,20 +1,23 @@
-import styled from "styled-components";
-import CreateInput from "@/components/scrumboard/detail/createBackDrop/CreateInput";
-import CreateDescription from "@/components/scrumboard/detail/createBackDrop/CreateDescription";
-import CreateAssignees from "@/components/scrumboard/detail/createBackDrop/CreateAssignees";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
-import ScrumItemDetail from "@/components/scrumboard/detail/ScrumItemDetail";
 import {
   BACK_DROP_TYPE_CREATE,
   BACK_DROP_TYPE_UPDATE,
 } from "@/components/scrumboard/constants/constants";
+import ScrumItemDetail from "@/components/scrumboard/detail/ScrumItemDetail";
+import CreateAssignees from "@/components/scrumboard/detail/createBackDrop/CreateAssignees";
+import CreateDescription from "@/components/scrumboard/detail/createBackDrop/CreateDescription";
+import CreateInput from "@/components/scrumboard/detail/createBackDrop/CreateInput";
 import BackDropTypeButtonGroup from "@/components/scrumboard/libs/BackDropType";
+import useFocusInput from "@/hooks/metaverse/useFocusInput";
+import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import styled from "styled-components";
 
 export default function CreateBackDrop() {
   const { backDropType } = useScrumBoardItemBackDrop();
 
+  const [handleFocus, handleBlur] = useFocusInput();
+
   return (
-    <StCreateBackDrop>
+    <StCreateBackDrop onFocus={handleFocus} onBlur={handleBlur}>
       <StCreateBackDropHeader>
         <CreateInput />
 

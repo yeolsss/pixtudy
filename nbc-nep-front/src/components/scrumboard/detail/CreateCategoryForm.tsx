@@ -35,7 +35,6 @@ export default function CreateCategoryForm() {
   };
 
   const handleCreateCategory = (data: FieldValues) => {
-    console.log(data);
     const newCategory = {
       spaceId,
       name: data.name,
