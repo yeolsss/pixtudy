@@ -28,6 +28,8 @@ const MetaverseComponent = () => {
 
   const gameRef = useRef<Game | null>();
 
+  // const [isScrumBoardOpen, setIsScrumBoardOpen] = useState(false);
+
   useEffect(() => {
     if (playerSpaceInfoData?.space_avatar) {
       const config = {
@@ -81,8 +83,14 @@ const MetaverseComponent = () => {
     };
   }, []);
 
+  // const toggleScrumBoard = () => {
+  //   setIsScrumBoardOpen(!isScrumBoardOpen);
+  // };
+
   return (
     <StMetaverseWrapper>
+      {/* <button onClick={toggleScrumBoard}>Toggle ScrumBoard</button>
+      {isScrumBoardOpen && <ScrumBoard />} */}
       <GlobalNavBar />
       <MetaverseChatBar />
       <MetaversePlayerList />
@@ -102,4 +110,5 @@ const StMetaverseWrapper = styled.div`
 const StMetaverseMain = styled.div`
   overflow: hidden;
 `;
+
 export default MetaverseComponent;
