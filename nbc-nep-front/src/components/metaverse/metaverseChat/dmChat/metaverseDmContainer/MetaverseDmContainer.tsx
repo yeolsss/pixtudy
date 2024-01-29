@@ -65,7 +65,7 @@ export default function MetaverseDmContainer() {
 }
 
 const StMetaverseDmChannel = styled.div`
-  height: 100%;
+  height: 85%;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -87,10 +87,4 @@ const StMessageWrapper = styled.ul`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const StMessageCard = styled.li`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing["4"]};
 `;

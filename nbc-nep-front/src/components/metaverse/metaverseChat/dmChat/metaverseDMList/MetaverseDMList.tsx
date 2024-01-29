@@ -11,9 +11,10 @@ interface Props {
   dmList:
     | Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
     | undefined;
+  isOpen: boolean;
 }
 
-export default function MetaverseDmList({ dmList }: Props) {
+export default function MetaverseDmList({ dmList, isOpen }: Props) {
   const { isOpenChat, closeChat } = useChatType();
   const { isOpen: isOpenDm, otherUserName, closeDm } = useDm();
 
@@ -30,7 +31,7 @@ export default function MetaverseDmList({ dmList }: Props) {
   };
 
   return (
-    <>
+    <StDmContainer $isOpen={isOpen}>
       {!isOpenDm ? (
         <MetaverseChatHeader
           title={"DM List"}
@@ -52,10 +53,14 @@ export default function MetaverseDmList({ dmList }: Props) {
       ) : (
         isOpenChat && <MetaverseDmContainer />
       )}
-    </>
+    </StDmContainer>
   );
 }
-
+const StDmContainer = styled.section<{ $isOpen: boolean }>`
+  width: ${(props) => (props.$isOpen ? "100%" : "0px")};
+  height: ${(props) => (props.$isOpen ? "100%" : "0px")};
+  overflow: hidden;
+`;
 const StDmListCardWrapper = styled.div`
   padding: ${(props) => props.theme.spacing["2"]};
   overflow-y: scroll;

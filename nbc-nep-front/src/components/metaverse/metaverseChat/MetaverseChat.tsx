@@ -59,13 +59,12 @@ export default function MetaverseChat() {
 
   return (
     <StMetaverseGlobalChatWrapper $isOpenChat={isOpenChat}>
-      {chatType === "GLOBAL" && (
-        <>
-          <MetaverseChatList />
-          <MetaverseChatForm />
-        </>
-      )}
-      {chatType === "DM" && <MetaverseDmList dmList={dmList} />}
+      <StChatContainer $isOpen={chatType === "GLOBAL"}>
+        <MetaverseChatList />
+        <MetaverseChatForm />
+      </StChatContainer>
+
+      <MetaverseDmList dmList={dmList} isOpen={chatType === "DM"} />
     </StMetaverseGlobalChatWrapper>
   );
 }
@@ -83,4 +82,10 @@ const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
   z-index: ${({ $isOpenChat }) => ($isOpenChat ? "100" : "-1")};
+`;
+
+const StChatContainer = styled.section<{ $isOpen: boolean }>`
+  width: ${(props) => (props.$isOpen ? "100%" : "0px")};
+  height: ${(props) => (props.$isOpen ? "100%" : "0px")};
+  overflow: hidden;
 `;

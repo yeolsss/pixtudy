@@ -95,7 +95,6 @@ const StMetaverseChatCard = styled.div<{ $isCurrentUser: boolean }>`
       > span:first-child {
         color: ${(props) =>
           props.$isCurrentUser ? props.theme.color.text.brand : "inherit"};
-        text-decoration: underline;
         font-weight: bold;
         margin-bottom: ${(props) => props.theme.spacing["2"]};
       }
