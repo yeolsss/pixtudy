@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <StFooter>
       <StWrapper>
-        <Heading>픽터디</Heading>
+        <Heading>픽스터디</Heading>
         <ContentWrapper>
           <CopyRight>
             spartacodingclub © 2024. All rights reserved. <br />

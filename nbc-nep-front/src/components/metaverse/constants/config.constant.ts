@@ -5,7 +5,7 @@ export const configModes: {
   name: string;
 }[] = [
   { mode: "SPACE_CONFIG", name: "스페이스 설정" },
-  { mode: "VIDEO_CONFIG", name: "비디오 설정" },
+  { mode: "VIDEO_CONFIG", name: "비디오/오디오 설정" },
 ];
 
 export const SPACE_CONFIG = "SPACE_CONFIG";

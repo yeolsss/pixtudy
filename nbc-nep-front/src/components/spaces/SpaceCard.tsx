@@ -31,6 +31,10 @@ export default function SpaceCard({ space }: Props) {
       });
   };
 
+  const handleScrumBoardClick = async (space_id: string) => {
+    await router.push(`/boards/scrumboards/${space_id}`);
+  };
+
   return (
     <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
       <StContentsContainer>
@@ -56,7 +60,7 @@ export default function SpaceCard({ space }: Props) {
         </StUserCounter>
       </StContentsContainer>
       <StButtonContainer>
-        <button onClick={() => handleToSpace(space ? space.space_id! : "")}>
+        <button onClick={() => handleScrumBoardClick(space ? space.space_id! : "")}>
           <span />
           스크럼보드
         </button>

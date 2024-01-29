@@ -106,7 +106,7 @@ const StNavContainer = styled.div`
   }
 `;
 
-const StButtonContainer = styled.div`
+export const StButtonContainer = styled.div`
   display: flex;
   gap: ${(props) => props.theme.spacing[12]};
   & > div {
@@ -121,7 +121,7 @@ const StLinkWrapper = styled.div`
   align-items: center;
 `;
 
-const StLine = styled.div`
+export const StLine = styled.div`
   width: 0px;
   height: ${(props) => props.theme.body.md.medium.fontSize};
   border: 1px solid

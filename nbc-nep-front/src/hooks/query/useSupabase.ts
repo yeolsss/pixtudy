@@ -24,6 +24,7 @@ import {
   deleteCategory,
   getCategories,
   getCategoryItems,
+  getSpaceUsers,
   updateCategory,
 } from "@/api/supabase/scrumBoard";
 import {
@@ -446,4 +447,14 @@ export function useGetSpaceMember({
     options: { staleTime: Infinity },
   };
   return useCustomQuery<Tables<"space_members">, Error>(queryOptions);
+}
+
+export function useGetSpaceMembers(spaceId: string) {
+  const queryOptions = {
+    queryKey: ["spaceMembers", spaceId],
+    queryFn: () => getSpaceUsers(spaceId),
+    enabled: !!spaceId,
+    options: { staleTime: Infinity },
+  };
+  return useCustomQuery<Tables<"space_members">[], Error>(queryOptions);
 }

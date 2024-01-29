@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { configModes } from "../constants/config.contant";
+import { configModes } from "../constants/config.constant";
 import { Config } from "../types/config.types";
 
 interface Props {
@@ -12,9 +12,9 @@ export default function ConfigAside({
   handleSelectConfigMode,
 }: Props) {
   return (
-    <aside>
+    <StAside>
       <nav>
-        <ul>
+        <StUl>
           {configModes.map(({ mode, name }) => (
             <StLi
               key={mode}
@@ -24,14 +24,37 @@ export default function ConfigAside({
               {name}
             </StLi>
           ))}
-        </ul>
+        </StUl>
       </nav>
-    </aside>
+    </StAside>
   );
 }
 
+const StAside = styled.aside`
+  grid-area: "aside";
+  nav {
+    height: 100%;
+  }
+  background-color: ${(props) => props.theme.color.bg.secondary};
+
+  padding: ${(props) => props.theme.spacing[16]} !important;
+`;
+
+const StUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing[6]};
+`;
+
 const StLi = styled.li<{ $isSelected: boolean }>`
+  padding: ${(props) => props.theme.spacing[6]};
+
   ${(props) =>
     props.$isSelected &&
-    `border: 1px solid ${props.theme.color.border.interactive["secondary-pressed"]}`};
+    `background-color: ${props.theme.color.bg["info-subtle"]}`};
+  ${(props) => props.$isSelected && `color: ${props.theme.color.bg["brand"]}`};
+
+  font-family: var(--default-font);
+  border-radius: ${(props) => props.theme.border.radius[8]};
+  font-size: 1.125rem;
 `;
