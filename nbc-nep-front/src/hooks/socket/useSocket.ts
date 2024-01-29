@@ -1,3 +1,4 @@
+import { PlayerState } from "@/components/metaverse/types/metaverse";
 import { useEffect, useRef } from "react";
 import { Socket, io } from "socket.io-client";
 
@@ -21,13 +22,18 @@ export default function useSocket({ namespace }: Props) {
     });
   }, []);
 
-  function disconnect() {
+  const disconnect = () => {
     console.log("socket disconnect");
     socketRef.current?.disconnect();
-  }
+  };
+
+  const changePlayerState = (playerId: string, state: PlayerState) => {
+    socketRef.current?.emit("change-player-state", playerId, state);
+  };
 
   return {
     socket: socketRef.current,
     disconnect,
+    changePlayerState,
   };
 }
