@@ -1,8 +1,6 @@
 import { ChatType } from "@/components/metaverse/types/ChatType";
 
 export const formatDate = (date: Date | string | undefined, type: ChatType) => {
-  if (!date) return "시간이 안나오네요";
-
   if (typeof date === "string") date = new Date(date);
 
   const year = date?.getFullYear();
