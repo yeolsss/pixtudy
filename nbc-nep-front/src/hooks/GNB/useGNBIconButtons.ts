@@ -2,6 +2,7 @@ import SettingsIcon from "@/assets/icons/Cog.svg";
 import chartIcon from "@/assets/icons/Comments.svg";
 import reportIcon from "@/assets/icons/User Headset.svg";
 import usersIcon from "@/assets/icons/Users.svg";
+import kanbanIcon from "@/assets/icons/kanbanIcon.svg";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useChatType from "@/zustand/chatTypeStore";
 import useDm from "@/zustand/dmStore";
@@ -18,6 +19,12 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   const { openConfigModal } = useModal();
 
   return [
+    {
+      buttonImage: kanbanIcon,
+      description: "칸반보드",
+      type: "kanban",
+      handleOnClick: () => {},
+    },
     {
       buttonImage: chartIcon,
       description: "채팅",

@@ -13,12 +13,6 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
 
-/**
- * TODO:
- * 1. 카테고리 realtime 구독
- * 2. item DnD 구현
- */
-
 export default function ScrumBoard() {
   const { space_id } = useParams();
   const spaceId = space_id as string;
@@ -31,7 +25,6 @@ export default function ScrumBoard() {
   useScrumBardItemsSubscribe(spaceId, categories as Kanban_categories[]);
 
   useEffect(() => {
-    console.log(categories);
     setCategories(categories!);
   }, [categories]);
 

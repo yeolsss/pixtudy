@@ -5,7 +5,8 @@ export type ButtonType =
   | "settings"
   | "report"
   | "playerList"
-  | "close";
+  | "close"
+  | "kanban";
 export type IconButtonProperty = {
   buttonImage: StaticImageData;
   description: string;
