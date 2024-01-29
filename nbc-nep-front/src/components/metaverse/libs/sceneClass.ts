@@ -1,8 +1,8 @@
 import { CurrentPlayer } from "@/components/metaverse/libs/currentPlayer";
 import { OtherPlayersGroup } from "@/components/metaverse/libs/otherPlayersGroup";
-import { Player, Players } from "@/components/metaverse/types/metaverse";
+import { Player } from "@/components/metaverse/types/metaverse";
 import Phaser from "phaser";
-import io, { Socket } from "socket.io-client";
+import { Socket } from "socket.io-client";
 
 const RUN = 350;
 const WORK = 250;
@@ -41,10 +41,12 @@ export class SceneClass extends Phaser.Scene {
   lastDirection?: string;
   socket: Socket;
   isRunning: boolean = false;
+  playerId: string;
 
-  constructor(socket: Socket) {
+  constructor(socket: Socket, playerId: string) {
     super({ key: "SceneClass" });
     this.socket = socket;
+    this.playerId = playerId;
   }
 
   create() {
@@ -58,63 +60,55 @@ export class SceneClass extends Phaser.Scene {
       TILE_NAME.TOTAL_LAYER,
       TILE_KEY.TOTAL_TILE
     );
+
     const tileSet2 = map.addTilesetImage(
       TILE_NAME.OUTSIDE_LAYER,
       TILE_KEY.OUTSIDE_TILE
     );
+
     const tileSet3 = map.addTilesetImage(TILE_NAME.ROOM, TILE_KEY.ROOM);
+
     map.createLayer(LAYER_NAME.OUTSIDE_LAYER, tileSet2!, 0, 0);
     map.createLayer(LAYER_NAME.TOTAL_LAYER, tileSet1!, 0, 0);
+
     const objLayer = map.createLayer(LAYER_NAME.ROOM_LAYER, tileSet3!, 0, 0);
 
     objLayer?.setCollisionByProperty({ collides: true });
-
-    //소켓 시작
-    this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
     const playerInfo = this.game.registry.get("player");
 
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
 
-    this.socket.on("connect", () => {
-      this.socket?.emit("userData", playerInfo);
-    });
+    this.socket.emit("user-data", playerInfo);
 
     // current player setting
-    this.socket.on("currentPlayers", (players: Players) => {
-      console.log("currentPlayers", players);
-      Object.keys(players).forEach((id) => {
-        if (players[id].socketId === this.socket?.id) {
-          this.addPlayer(players[id], objLayer!);
+    this.socket.on("current-players", (players: Player[]) => {
+      players.forEach((player) => {
+        if (player.playerId === this.playerId) {
+          this.addPlayer(player, objLayer!);
         } else {
-          this.addOtherPlayers(players[id]);
+          this.addOtherPlayers(player);
         }
       });
     });
 
-    this.socket.on("newPlayer", (playerInfo: Player) => {
+    this.socket.on("new-player", (playerInfo: Player) => {
       this.addOtherPlayers(playerInfo);
     });
 
-    this.socket.on("playerDisconnected", (socketId: string) => {
-      this.otherPlayers?.removePlayer(socketId);
+    this.socket.on("player-disconnected", (playerId: string) => {
+      this.otherPlayers?.removePlayer(playerId);
     });
 
-    this.socket.on("metaversePlayerList", (players: Players) => {
-      const event = new CustomEvent("metaversePlayerList", {
-        detail: players,
-      });
-      window.dispatchEvent(event);
+    this.socket.on("player-moved", (playerInfo: Player) => {
+      this.otherPlayers?.movePlayer(playerInfo);
     });
+
     this.createAnimations(playerInfo.character);
 
     this.cursors = this.input.keyboard?.createCursorKeys();
     this.runKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-    this.socket.on("playerMoved", (playerInfo: Player) => {
-      // playerInfo 가 문제인듯
-      this.otherPlayers?.movePlayer(playerInfo);
-    });
 
     this.input.on(
       "wheel",
@@ -125,7 +119,7 @@ export class SceneClass extends Phaser.Scene {
         deltaY: number,
         _deltaZ: number
       ) => {
-        this.onMuseWheel(deltaY);
+        this.onMouseWheel(deltaY);
       }
     );
   }
@@ -141,8 +135,10 @@ export class SceneClass extends Phaser.Scene {
     }
     // 이동 벡터를 초기화하고 animationKey 값을 설정한다.
     const velocity = this.getMovementVector();
+
     this.updateCharacterMovement(velocity);
     this.updateLastDirection();
+
     let animationKey = this.lastDirection; // 마지막 방향을 기본값으로 설정한다.
 
     if (this.isAnyCursorKeyDown()) {
@@ -343,12 +339,7 @@ export class SceneClass extends Phaser.Scene {
           currentPosition.y !== this.character?.oldPosition.y ||
           currentPosition.frame !== this.character?.frame.name)
       ) {
-        // 위치가 바뀌었다면 서버에 전송합니다. 및 context에 전달
-        const event = new CustomEvent("playerMovement", {
-          detail: currentPosition,
-        });
-        window.dispatchEvent(event);
-        this.socket?.emit("playerMovement", currentPosition);
+        this.socket?.emit("player-movement", this.playerId, currentPosition);
       }
 
       // 현재 위치를 이전 위치로 저장합니다.
@@ -356,7 +347,7 @@ export class SceneClass extends Phaser.Scene {
     }
   }
 
-  onMuseWheel(deltaY: number) {
+  onMouseWheel(deltaY: number) {
     if (deltaY > 0) {
       this.cameras.main.setZoom(Math.max(this.cameras.main.zoom - 0.05, 1));
     } else if (deltaY < 0) {

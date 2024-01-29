@@ -3,7 +3,7 @@ const http = require("http");
 require("dotenv").config();
 const socketIO = require("socket.io");
 const cors = require("cors");
-const { init: gameServer, getCurrentUser } = require("./gameServer");
+const { init: gameServer, getCurrentUser } = require("./game");
 const chatServer = require("./chatServer");
 const conferenceServer = require("./conference/index");
 

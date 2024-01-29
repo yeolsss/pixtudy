@@ -3,6 +3,7 @@ import styled from "styled-components";
 import StBadge from "../common/badge/Badge";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import MetaAvatar from "../metaverse/avatar/MetaAvatar";
+import PlayerStateSelector from "./PlayerStateSelector";
 
 interface Props {
   player?: Player;
@@ -19,7 +20,11 @@ export default function DockPlayer({ player }: Props) {
           y={50}
           x={4}
         />
-        <StBadge color={getPlayerStateValue(0)} x={30} y={30} />
+        <StBadge
+          color={getPlayerStateValue(player?.state || 0)}
+          x={30}
+          y={30}
+        />
       </BadgeWrapper>
       <StDockPlayerInfoWrapper>
         <StDockPlayerNickname>{player?.nickname}</StDockPlayerNickname>
@@ -27,20 +32,21 @@ export default function DockPlayer({ player }: Props) {
           {getPlayerStateToText(player?.state)}
         </StDockPlayerState>
       </StDockPlayerInfoWrapper>
+      <PlayerStateSelector />
     </StDockPlayerWrapper>
   );
 }
 
-const getPlayerStateValue = (playerState: PlayerState) => {
+export const getPlayerStateValue = (playerState: PlayerState) => {
   return [
     "var(--state-online)",
     "var(--state-eating)",
     "var(--state-left-seat)",
-    "var(--state-disturb",
+    "var(--state-disturb)",
   ][playerState];
 };
 
-const getPlayerStateToText = (playerState?: PlayerState) => {
+export const getPlayerStateToText = (playerState?: PlayerState) => {
   if (playerState == undefined) {
     return "온라인";
   }

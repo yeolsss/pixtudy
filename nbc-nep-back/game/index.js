@@ -3,17 +3,18 @@ const players = {};
 
 module.exports = {
   init: function (io) {
-    console.log("player[" + socket.id + "] connected");
     io.on("connection", (socket) => {
+      console.log("player[" + socket.id + "] connected");
       socket.on("user-data", (playerInfo) => {
+        if (!playerInfo) return;
+
         const { playerId, spaceId } = playerInfo;
 
         players[playerId] = {
           rotation: 0,
-          x: 100,
-          y: 100,
+          x: 1200,
+          y: 700,
           frame: 0,
-          playerState: 0,
           ...playerInfo,
         };
 
@@ -35,6 +36,7 @@ module.exports = {
 
         if (!socket.playerId) return;
         const player = players[socket.playerId];
+        if (!player) return;
         const { spaceId, playerId } = player;
 
         io.to(spaceId).emit("player-disconnected", playerId);
@@ -42,7 +44,7 @@ module.exports = {
         delete players[playerId];
 
         const updatedPlayersInSpace = getPlayersInSpace(spaceId);
-
+        console.log("updatedPlayersInspace", updatedPlayersInSpace);
         io.to(spaceId).emit("metaverse-players", updatedPlayersInSpace);
       });
 
@@ -57,6 +59,15 @@ module.exports = {
         player = players[playerId];
 
         io.to(player.spaceId).emit("player-moved", player);
+      });
+
+      socket.on("change-player-state", (playerId, state) => {
+        const player = players[playerId];
+        if (!player) return;
+        players[playerId] = setPlayer(player, "state", state);
+        socket
+          .to(player.spaceId)
+          .emit("change-player-state", players[playerId]);
       });
     });
   },
@@ -85,4 +96,8 @@ function setPlayerMovement(player, x, y, frame) {
     y,
     frame,
   };
+}
+
+function setPlayer(player, key, value) {
+  return { ...player, [key]: value };
 }
