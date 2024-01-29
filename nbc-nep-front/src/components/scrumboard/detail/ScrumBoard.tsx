@@ -4,6 +4,7 @@ import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCatego
 import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
 import useModal from "@/hooks/modal/useModal";
 import { useGetCategories } from "@/hooks/query/useSupabase";
+import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
@@ -15,8 +16,6 @@ import ScrumBoardCategory from "./ScrumBoardCategory";
 
 /**
  * TODO:
- * 1. 카테고리 realtime 구독
- * 2. item DnD 구현
  */
 
 export default function ScrumBoard() {
@@ -27,6 +26,7 @@ export default function ScrumBoard() {
   const categories = useGetCategories(spaceId);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
 
+  useCategorySubscribe(spaceId);
   // items에 대한 구독 커스텀훅
   useScrumBardItemsSubscribe(spaceId, categories as Kanban_categories[]);
 

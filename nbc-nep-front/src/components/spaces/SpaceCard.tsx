@@ -57,7 +57,12 @@ export default function SpaceCard({ space }: Props) {
       </StContentsContainer>
       <StButtonContainer>
         <button onClick={() => handleToSpace(space ? space.space_id! : "")}>
-          입장하기
+          <span />
+          스크럼보드
+        </button>
+        <button onClick={() => handleToSpace(space ? space.space_id! : "")}>
+          <span />
+          스페이스
         </button>
       </StButtonContainer>
     </StCardWrapper>
@@ -151,12 +156,44 @@ const StUserIcon = styled(UserIcon)`
 const StButtonContainer = styled.div`
   padding-bottom: ${(props) => props.theme.spacing[12]};
   padding-right: ${(props) => props.theme.spacing[12]};
+  padding-left: ${(props) => props.theme.spacing[12]};
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
   button {
+    padding: 12px;
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
     border-color: ${(props) => props.theme.color.border.interactive.secondary};
     border-radius: ${(props) => props.theme.border.radius[8]};
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
+    padding-left: 10px;
+    padding-right: 10px;
+    & > span {
+      display: block;
+      width: 24px;
+      height: 24px;
+      background: url("/assets/backpack.png");
+      background-position: center;
+      background-size: 120%;
+      background-repeat: no-repeat;
+      filter: saturate(0);
+    }
+    &:hover > span {
+      filter: saturate(1);
+    }
+    &:nth-child(2) > span {
+      width: 24px;
+      height: 24px;
+      background: url("/assets/laptop.png");
+      background-position: center;
+      background-size: 80%;
+      background-repeat: no-repeat;
+    }
   }
 `;

@@ -95,5 +95,6 @@ export const StFormCTAButton = styled.button`
     background-color: ${(props) => props.theme.color.bg.disabled};
     border: 1px solid ${(props) => props.theme.color.border.disabled};
     color: ${(props) => props.theme.color.text.disabled};
+    cursor: not-allowed;
   }
 `;
