@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { PropsWithChildren, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
-import { ShareType } from "./types/ScreenShare.types";
+import { DEVICE_STORAGE_KEY } from "./constants/constants";
+import { LocalStorageDeviceInputs, ShareType } from "./types/ScreenShare.types";
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void;
@@ -39,7 +41,13 @@ export default function ShareButton({
       if (isCanShare === undefined) {
         setIsShare(true);
       }
-      const mediaStream: MediaStream = await getMediaStreamByType(type);
+      const mediaStream: MediaStream | undefined =
+        await getMediaStreamByType(type);
+
+      if (!mediaStream) {
+        setIsShare(false);
+        return;
+      }
       onShare(mediaStream, type);
     } catch (err) {
       setIsShare(false);
@@ -107,8 +115,117 @@ const getDisplayMedia = () =>
     audio: false,
   });
 
-const getUserMedia = () =>
-  navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+const getUserMedia = async () => {
+  const videoConstraints = await getVideoDevice();
+  if (!videoConstraints.deviceId) {
+    toast.error(
+      "카메라 공유를 할 수 없습니다. 설정창에서 카메라를 세팅하거나 권한을 허용해주세요."
+    );
+    return;
+  }
 
-const getUserAudio = () =>
-  navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+  return navigator.mediaDevices.getUserMedia({
+    video: { deviceId: videoConstraints.deviceId },
+    audio: false,
+  });
+};
+
+const getUserAudio = async () => {
+  const audioConstraints = await getAudioDevice();
+
+  if (!audioConstraints.deviceId) {
+    toast.error(
+      "마이크 공유를 할 수 없습니다. 설정창에서 마이크를 세팅하거나 권한을 허용해주세요."
+    );
+    return;
+  }
+
+  return navigator.mediaDevices.getUserMedia({
+    audio: { deviceId: audioConstraints.deviceId },
+    video: false,
+  });
+};
+
+const getVideoDevice = async () => {
+  let deviceInputs = JSON.parse(
+    localStorage.getItem(DEVICE_STORAGE_KEY) as string
+  ) as LocalStorageDeviceInputs;
+
+  if (!deviceInputs) {
+    const initialInputs: LocalStorageDeviceInputs = {
+      audio: {
+        deviceId: null,
+      },
+      video: {
+        deviceId: null,
+      },
+      microphone: {
+        deviceId: null,
+        key: null,
+      },
+    };
+    deviceInputs = initialInputs;
+  }
+
+  if (!deviceInputs["video"].deviceId) {
+    const device = await getInputDevice("videoinput");
+    if (device) {
+      deviceInputs.video.deviceId = device.deviceId;
+    }
+  }
+  localStorage.setItem(DEVICE_STORAGE_KEY, JSON.stringify(deviceInputs));
+
+  return deviceInputs["video"];
+};
+
+const getAudioDevice = async () => {
+  let deviceInputs = JSON.parse(
+    localStorage.getItem(DEVICE_STORAGE_KEY) as string
+  ) as LocalStorageDeviceInputs;
+
+  if (!deviceInputs) {
+    const initialInputs: LocalStorageDeviceInputs = {
+      audio: {
+        deviceId: null,
+      },
+      video: {
+        deviceId: null,
+      },
+      microphone: {
+        deviceId: null,
+        key: null,
+      },
+    };
+    deviceInputs = initialInputs;
+  }
+
+  if (!deviceInputs["audio"].deviceId) {
+    const device = await getInputDevice("audioinput");
+    if (device) {
+      deviceInputs.audio.deviceId = device.deviceId;
+    }
+  }
+  localStorage.setItem(DEVICE_STORAGE_KEY, JSON.stringify(deviceInputs));
+
+  return deviceInputs["audio"];
+};
+
+const getInputDevice = async (kind: "videoinput" | "audioinput") => {
+  const devices = await enumerateDevices();
+
+  return devices?.find((device) => device.kind === kind);
+};
+
+const enumerateDevices = async () => {
+  if (!navigator.mediaDevices?.enumerateDevices) {
+    toast.error("최신 브라우저를 이용해주세요. (enumerateDevices가 없습니다.");
+    return null;
+  }
+
+  try {
+    return await navigator.mediaDevices.enumerateDevices();
+  } catch (error) {
+    toast.error("사용 가능한 media device를 불러오는데 에러가 발생했습니다.");
+    console.error(error);
+  }
+};
