@@ -1,7 +1,7 @@
-import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
-import styled from "styled-components";
 import closeIcon from "@/assets/boards/assingee-delete.svg";
+import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
 import Image from "next/image";
+import styled from "styled-components";
 
 interface Props {
   tagType: "assignees" | "labels";
@@ -44,8 +44,9 @@ const StSelectAssigneesListWrapper = styled.div<{ $tagType: boolean }>`
 
 const StSelectAssigneesCard = styled.div`
   display: flex;
-  padding: ${(props) => props.theme.spacing[4]}
-    ${(props) => props.theme.spacing[8]};
+  //prettier-ignore
+  padding: ${(props) => props.theme.spacing[4]} ${(props) =>
+    props.theme.spacing[8]};
   justify-content: center;
   align-items: center;
   gap: ${(props) => props.theme.spacing[4]};

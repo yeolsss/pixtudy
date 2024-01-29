@@ -46,19 +46,20 @@ export default function ConfigSpaceOwner() {
   const thumbWatch = watch(SPACE_THUMB_FORM);
   const nameError = errors[SPACE_NAME_FORM]?.message;
   const descriptionError = errors[SPACE_DESCRIPTION_FORM]?.message;
-
   const { openConfirmHandler } = useConfirm();
 
   const handleRemoveSpace = async () => {
     if (!spaceInfo) return;
     const result = await openConfirmHandler({
       title: "스페이스 삭제",
-      message:
-        "정말로 스페이스를 삭제하시겠습니까? 한번 삭제되면 되돌릴 수 없습니다.",
+      message: "스페이스를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
       confirmButtonText: "네, 삭제할게요",
-      denyButtonText: "아니요, 삭제하지 않겠습니다.",
+      denyButtonText: "아니요, 취소할게요",
     });
-    if (result) deleteSpace(spaceInfo?.id);
+
+    if (result) {
+      deleteSpace(spaceInfo?.id);
+    }
   };
 
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {

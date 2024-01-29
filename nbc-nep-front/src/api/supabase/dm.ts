@@ -192,6 +192,7 @@ interface ReadDmMessage {
   roomId: string;
   receiverId: string;
 }
+
 export const readDmMessage = async ({ roomId, receiverId }: ReadDmMessage) => {
   const { error } = await supabase
     .from("dm_messages")
@@ -200,4 +201,22 @@ export const readDmMessage = async ({ roomId, receiverId }: ReadDmMessage) => {
     .eq("receiver_id", receiverId)
     .select();
   if (error) throw new Error(error.message);
+};
+
+export const getSpaceMemberInfo = async ({
+  spaceId,
+  userId,
+}: {
+  spaceId: string;
+  userId: string;
+}) => {
+  const { data, error } = await supabase
+    .from("space_members")
+    .select("*")
+    .eq("space_id", spaceId)
+    .eq("user_id", userId)
+    .single();
+
+  if (error) throw error;
+  return data;
 };

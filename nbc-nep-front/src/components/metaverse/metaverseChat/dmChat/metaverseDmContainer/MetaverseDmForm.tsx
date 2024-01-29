@@ -6,6 +6,7 @@ import { Tables } from "@/supabase/types/supabase";
 import useDm from "@/zustand/dmStore";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import styled from "styled-components";
 
 interface Props {
   currentDmChannel: string | null | undefined;
@@ -80,7 +81,7 @@ export default function MetaverseDmForm({
 
   return (
     <form onSubmit={handleOnSubmitDM}>
-      <input
+      <StChatInput
         id="send-input"
         type="text"
         placeholder="메시지를 입력하세요"
@@ -90,7 +91,17 @@ export default function MetaverseDmForm({
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
-      <button type="submit">입력</button>
     </form>
   );
 }
+const StChatInput = styled.input`
+  width: 100%;
+  height: 30px;
+  outline: none;
+  padding: 0 10px;
+  background-color: #1f2542;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+`;

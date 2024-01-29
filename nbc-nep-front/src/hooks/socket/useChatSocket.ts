@@ -1,5 +1,6 @@
 import { Chat } from "@/components/metaverse/types/metaverse";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import useAuth from "@/zustand/authStore";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import io, { Socket } from "socket.io-client";
@@ -9,7 +10,7 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
   const [chatList, setChatList] = useState<Chat[]>([]);
   const socket = useRef<Socket | null>(null);
   const { spaceId } = useMetaversePlayer();
-
+  const { user } = useAuth();
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
 
   useEffect(() => {
@@ -40,7 +41,13 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
   }, [spaceId]);
 
   const sendChatMessage = (message: string) => {
-    const newChat = { playerDisplayName, message, spaceId };
+    const newChat = {
+      playerDisplayName,
+      message,
+      spaceId,
+      playerId: user.id,
+      chatTime: new Date(),
+    };
     socket.current?.emit("sendMessage", newChat);
   };
 

@@ -10,9 +10,14 @@ import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { useDrop } from "react-dnd";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
+
+/**
+ * TODO:
+ * 1. 카테고리 realtime 구독
+ * 2. item DnD 구현
+ */
 
 export default function ScrumBoard() {
   const { space_id } = useParams();
@@ -21,20 +26,12 @@ export default function ScrumBoard() {
   const { setCategories } = useScrumBoard();
   const categories = useGetCategories(spaceId);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
-  const [{ isOver }, drop] = useDrop({
-    accept: ["category"],
-    drop: (item, monitor) => {
-      console.log(item);
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  });
 
   // items에 대한 구독 커스텀훅
   useScrumBardItemsSubscribe(spaceId, categories as Kanban_categories[]);
 
   useEffect(() => {
+    console.log(categories);
     setCategories(categories!);
   }, [categories]);
 
@@ -45,7 +42,7 @@ export default function ScrumBoard() {
   return (
     <StScrumBoardWrapper>
       <StScrumBoardContainer>
-        <div ref={drop}>
+        <div>
           {categories?.map((category) => {
             return <ScrumBoardCategory key={category.id} category={category} />;
           })}
@@ -85,7 +82,6 @@ const StScrumBoardContainer = styled.div`
     align-items: flex-start;
     gap: ${(props) => props.theme.spacing[12]};
     position: relative;
-    border: 3px solid blue;
   }
   &::-webkit-scrollbar {
     display: none;

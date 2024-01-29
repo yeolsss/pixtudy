@@ -1,4 +1,5 @@
 import useConfirm from "@/hooks/confirm/useConfirm";
+import Image from "next/image";
 import styled from "styled-components";
 
 export default function ConfirmModalContainer() {
@@ -17,6 +18,12 @@ export default function ConfirmModalContainer() {
         <h2>{title}</h2>
       </StConfirmTitleArea>
       <StConfirmMessageContainer>
+        <Image
+          src="/assets/dummy_down.png"
+          alt="dummy"
+          width={32}
+          height={32}
+        />
         <p>{message}</p>
         <div>
           <button onClick={closeConfirmHandler}>{denyButtonText}</button>
@@ -78,6 +85,9 @@ const StConfirmMessageContainer = styled.div`
   p {
     font-family: var(--default-font);
     font-weight: normal;
+  }
+  & > img {
+    margin: ${(props) => props.theme.spacing[12]} auto;
   }
   & > div {
     margin-top: ${(props) => props.theme.spacing["24"]};

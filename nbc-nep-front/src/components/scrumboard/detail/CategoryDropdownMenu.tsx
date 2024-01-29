@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface Props {
   setIsEdit: Dispatch<SetStateAction<boolean>>;
   setIsDropdownOpen: Dispatch<SetStateAction<boolean>>;
-  handleDeleteCategory: () => void;
+  handleDeleteCategory: () => Promise<void>;
 }
 
 export default function CategoryDropdownMenu({
@@ -17,18 +17,13 @@ export default function CategoryDropdownMenu({
     setIsDropdownOpen(false);
   };
 
-  const handleDeleteCategoryButton = () => {
-    handleDeleteCategory();
-    setIsDropdownOpen(false);
-  };
-
   return (
     <StDropdownMenuContainer>
       <StDropdownMenuItem onClick={handleEditCategoryButton} $type="edit">
         <span />
         수정
       </StDropdownMenuItem>
-      <StDropdownMenuItem onClick={handleDeleteCategoryButton} $type="delete">
+      <StDropdownMenuItem onClick={handleDeleteCategory} $type="delete">
         <span />
         삭제
       </StDropdownMenuItem>

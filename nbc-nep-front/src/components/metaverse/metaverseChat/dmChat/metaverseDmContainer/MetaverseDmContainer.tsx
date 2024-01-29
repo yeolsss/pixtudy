@@ -9,6 +9,7 @@ import useAuth from "@/zustand/authStore";
 import useDm from "@/zustand/dmStore";
 import { useState } from "react";
 import styled from "styled-components";
+import MetaverseChatCard from "../../metaverseChatBar/MetaverseChatCard";
 
 export default function MetaverseDmContainer() {
   const { otherUserId, otherUserName } = useDm();
@@ -47,13 +48,7 @@ export default function MetaverseDmContainer() {
       <StMetaverseDmChannel>
         <StMessageWrapper>
           {messages?.map((message) => (
-            <StMessageCard key={message.id}>
-              <h3>
-                {message.sender_display_name || message.receiver_display_name}
-              </h3>
-              <span>{message.message}</span>
-              {/*<span>{message.created_at}</span>*/}
-            </StMessageCard>
+            <MetaverseChatCard message={message} key={message.id} type="DM" />
           ))}
           <div ref={endOfChatRef}></div>
         </StMessageWrapper>
