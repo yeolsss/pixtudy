@@ -64,6 +64,8 @@ module.exports = {
       socket.on("change-player-state", (playerId, state) => {
         const player = players[playerId];
         if (!player) return;
+        console.log(player.state, state, player);
+        if (player.state === state) return;
         players[playerId] = setPlayer(player, "state", state);
         socket
           .to(player.spaceId)
