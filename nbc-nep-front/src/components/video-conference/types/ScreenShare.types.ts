@@ -103,5 +103,4 @@ export type DeviceInputs = {
 export type LocalStorageDeviceInputs = {
   audio: DeviceInputs;
   video: DeviceInputs;
-  microphone: DeviceInputs & { key: string | null };
 };

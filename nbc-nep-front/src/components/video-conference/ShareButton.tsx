@@ -159,10 +159,6 @@ const getVideoDevice = async () => {
       video: {
         deviceId: null,
       },
-      microphone: {
-        deviceId: null,
-        key: null,
-      },
     };
     deviceInputs = initialInputs;
   }
@@ -190,10 +186,6 @@ const getAudioDevice = async () => {
       },
       video: {
         deviceId: null,
-      },
-      microphone: {
-        deviceId: null,
-        key: null,
       },
     };
     deviceInputs = initialInputs;
