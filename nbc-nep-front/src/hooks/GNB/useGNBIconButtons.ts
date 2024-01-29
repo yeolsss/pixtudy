@@ -64,7 +64,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       description: "오류제보",
       type: "report",
       handleOnClick: () => {
-        window.location.href = GOOGLE_FORM_LINK;
+        window.open(GOOGLE_FORM_LINK, "_blank");
       },
     },
     {
