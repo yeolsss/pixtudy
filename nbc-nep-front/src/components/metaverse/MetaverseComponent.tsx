@@ -20,6 +20,7 @@ import {
 } from "./constants/constant";
 import MetaverseConfigModal from "./metaverseConfig/MetaverseConfig";
 import { Game } from "./types/metaverse";
+import MetaverseScrumBoard from "@/components/metaverse/metaverseScrumBaord/MetaverseScrumBoard";
 
 const MetaverseComponent = () => {
   const { isOpen } = useConfirm();
@@ -83,14 +84,8 @@ const MetaverseComponent = () => {
     };
   }, []);
 
-  // const toggleScrumBoard = () => {
-  //   setIsScrumBoardOpen(!isScrumBoardOpen);
-  // };
-
   return (
     <StMetaverseWrapper>
-      {/* <button onClick={toggleScrumBoard}>Toggle ScrumBoard</button>
-      {isScrumBoardOpen && <ScrumBoard />} */}
       <GlobalNavBar />
       <MetaverseChatBar />
       <MetaversePlayerList />
@@ -98,6 +93,7 @@ const MetaverseComponent = () => {
       <VideoConference />
       <MetaverseConfigModal />
       {isOpen && <ConfirmModal />}
+      <MetaverseScrumBoard />
     </StMetaverseWrapper>
   );
 };
