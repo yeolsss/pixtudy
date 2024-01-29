@@ -106,7 +106,7 @@ const StNavContainer = styled.div`
   }
 `;
 
-const StButtonContainer = styled.div`
+export const StButtonContainer = styled.div`
   display: flex;
   gap: ${(props) => props.theme.spacing[12]};
   & > div {
