@@ -1,28 +1,43 @@
-const app = require("express")();
-const server = require("http").createServer(app);
+const express = require("express");
+const http = require("http");
+require("dotenv").config();
+const socketIO = require("socket.io");
 const cors = require("cors");
+const { init: gameServer, getCurrentUser } = require("./gameServer");
+const chatServer = require("./chatServer");
+const conferenceServer = require("./conference/index");
 
-const io = require("socket.io")(server);
-app.use(cors());
-
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
-});
-// 일단 들어오면 소켓을 연결을 해야 한다.
-io.on("connection", (socket) => {
-  console.log("socket connected");
-
-  socket.on("offer", (offer) => {
-    socket.broadcast.emit("offer", offer);
-  });
-  socket.on("answer", (answer) => {
-    socket.broadcast.emit("answer", answer);
-  });
-  socket.on("ice", (ice) => {
-    socket.broadcast.emit("ice", ice);
-  });
+const app = express();
+let server = http.Server(app);
+let io = socketIO(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: ["http://localhost:3000", "https://nbc-nep-one.vercel.app"],
+    credentials: true,
+  },
 });
 
-server.listen(3001, () => {
-  console.log("Server listening on port 3000");
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://nbc-nep-one.vercel.app"],
+    credentials: true,
+  })
+);
+
+app.use("/api", getCurrentUser());
+
+const metaverseNamespace = io.of("/metaverse");
+gameServer(metaverseNamespace);
+
+// chat server Socket Handlers
+const chatNamespace = io.of("/chat");
+chatServer(chatNamespace);
+
+const conferenceNamespace = io.of("/conference");
+conferenceServer(conferenceNamespace);
+
+const PORT = process.env.NODE_ENV === "production" ? 8080 : 3001;
+
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });

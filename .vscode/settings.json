@@ -4,5 +4,7 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
-  }
+  },
+  "commentTranslate.targetLanguage": "en",
+  "cSpell.words": ["ideaboards", "Metaverse", "scrumboards"]
 }
