@@ -7,8 +7,6 @@ const PAGES_PATH = [
   { path: "/metaverse", dynamic: true },
   { path: "/signin", dynamic: false },
   { path: "/signup", dynamic: false },
-  { path: "/boards", dynamic: false },
-  { path: "/boards/scrumboards", dynamic: false },
   { path: "/boards/scrumboards", dynamic: true },
   { path: "/changepassword", dynamic: false },
 ];
@@ -112,11 +110,6 @@ export async function middleware(request: NextRequest) {
   if (session && pathname.startsWith("/boards/scrumboards")) {
     if (isDynamicPath) {
       const spaceId = request.url.split("?")[0].split("/").at(-1);
-      if (!spaceId) {
-        return NextResponse.redirect(
-          new URL("/boards/scrumboards", request.url)
-        );
-      }
       await checkSpace(spaceId!);
       const checkResult = await checkSpace(spaceId!);
       if (!checkResult) {

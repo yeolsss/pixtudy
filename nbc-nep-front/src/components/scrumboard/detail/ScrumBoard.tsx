@@ -14,10 +14,6 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
 
-/**
- * TODO:
- */
-
 export default function ScrumBoard() {
   const { space_id } = useParams();
   const spaceId = space_id as string;
@@ -70,9 +66,9 @@ const StScrumBoardWrapper = styled.div`
 const StScrumBoardContainer = styled.div`
   max-width: 1200px;
   width: 100%;
-  overflow: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  overflow: auto;
+  //-ms-overflow-style: none;
+  //scrollbar-width: none;
   margin: 0 auto;
   position: relative;
 
@@ -83,9 +79,9 @@ const StScrumBoardContainer = styled.div`
     gap: ${(props) => props.theme.spacing[12]};
     position: relative;
   }
-  &::-webkit-scrollbar {
+  /*&::-webkit-scrollbar {
     display: none;
-  }
+  }*/
 `;
 
 const StAddCategoryBtn = styled(StCTAButton)`
