@@ -16,7 +16,9 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
   useEffect(() => {
     if (socket.current || !spaceId) return;
 
-    socket.current = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/chat`);
+    socket.current = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/chat`, {
+      withCredentials: true,
+    });
 
     socket.current.emit("joinRoom", spaceId);
 

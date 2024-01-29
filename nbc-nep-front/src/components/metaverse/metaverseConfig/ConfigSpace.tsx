@@ -1,5 +1,6 @@
 import SpaceThumb from "@/components/common/SpaceThumb";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
+import { StSectionMain } from "../styles/config.styles";
 import ConfigSpaceOwner from "./ConfigSpaceOwner";
 
 export default function ConfigSpace() {
@@ -8,7 +9,7 @@ export default function ConfigSpace() {
   return (
     <>
       {!isOwner ? (
-        <section>
+        <StSectionMain>
           <div>
             <span>스페이스 썸네일</span>
             <SpaceThumb src={spaceInfo?.space_thumb || undefined} />
@@ -21,8 +22,7 @@ export default function ConfigSpace() {
             <span>스페이스 설명</span>
             <p>{spaceInfo?.description}</p>
           </div>
-          {/* TODO : 썸네일 사진도 넣어야 함 */}
-        </section>
+        </StSectionMain>
       ) : (
         <ConfigSpaceOwner />
       )}
