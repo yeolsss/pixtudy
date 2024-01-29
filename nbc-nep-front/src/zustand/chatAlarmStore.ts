@@ -7,17 +7,30 @@ interface initialChatAlarmState {
 }
 
 interface ChartAlarmStore extends initialChatAlarmState {
+  sound: string;
+  volume: number;
+  isPlay: boolean;
   setChatAlarmState: ({
     globalChatState,
     dmChatStates,
   }: initialChatAlarmState) => void;
+  setAlarmSound: (sound: string) => void;
+  setAlarmVolume: (volume: number) => void;
+  setAlarmPlayStatus: (status: boolean) => void;
 }
 
-const initialChatAlarm: initialChatAlarmState = {
+const initialChatAlarm = {
   // 전체 채팅 알람
   globalChatState: false,
   // dm 채팅 알람 : dm[]
   dmChatStates: [],
+  sound: localStorage.getItem("sound")
+    ? localStorage.getItem("sound")!
+    : "/assets/alarm/Blop.mp3",
+  volume: localStorage.getItem("volume")
+    ? parseInt(localStorage.getItem("volume")!)
+    : 50,
+  isPlay: false,
 };
 
 const chatAlarmStore = create<ChartAlarmStore>()((set) => ({
@@ -30,6 +43,17 @@ const chatAlarmStore = create<ChartAlarmStore>()((set) => ({
       globalChatState,
       dmChatStates,
     })),
+  setAlarmSound: (sound: string) => {
+    localStorage.setItem("sound", sound);
+    return set(() => ({ sound }));
+  },
+  setAlarmVolume: (volume: number) => {
+    localStorage.setItem("volume", String(volume));
+    return set(() => ({ volume }));
+  },
+  setAlarmPlayStatus: (status: boolean) => {
+    return set(() => ({ isPlay: status }));
+  },
 }));
 
 export default chatAlarmStore;
