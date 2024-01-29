@@ -1,10 +1,10 @@
 import NoContents from "@/components/common/NoContents";
+import { StCTAButton } from "@/components/common/button/button.styles";
 import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 import { useGetCategoryItems } from "@/hooks/query/useSupabase";
+import useDropItem from "@/hooks/scrumBoard/useDropItem";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
-import { useEffect } from "react";
-import { useDrag } from "react-dnd";
 import styled from "styled-components";
 import CategoryHeader from "./CategoryHeader";
 import ScrumBoardItem from "./ScrumBoardItem";
@@ -19,21 +19,17 @@ export default function ScrumBoardCategory({ category }: Props) {
   const handleAddItem = () => {
     setIsOpen(category, null, BACK_DROP_TYPE_CREATE);
   };
-  const [{ isDragging, getItem }, drag] = useDrag({
-    type: "category",
-    item: { order: category.order },
-    collect: (monitor) => ({
-      getItem: !!monitor.getItem(),
-      isDragging: !!monitor.isDragging(),
-    }),
-  });
-  useEffect(() => {
-    console.log(getItem);
-  }, [isDragging]);
+  const { drop, canDrop, isOver, didDrop, dropResult } = useDropItem(
+    category.id
+  );
 
   const items = useGetCategoryItems(categoryId);
+
+  /**
+   * TODO: item 배치하는 순서 기준이 뭐지?
+   */
   return (
-    <StCategoryWrapper ref={drag}>
+    <StCategoryWrapper $isOver={isOver}>
       <CategoryHeader
         name={name}
         color={color}
@@ -41,7 +37,7 @@ export default function ScrumBoardCategory({ category }: Props) {
         itemCount={items ? items?.length : 0}
       />
       {items?.length ? (
-        <StItemsContainer>
+        <StItemsContainer ref={drop}>
           {items?.map((item, index) => {
             return (
               <ScrumBoardItem key={index} item={item} category={category} />
@@ -49,24 +45,30 @@ export default function ScrumBoardCategory({ category }: Props) {
           })}
         </StItemsContainer>
       ) : (
-        <NoContents text="스크럼보드에 아이템을 추가해 보세요!" />
+        <div ref={drop}>
+          <NoContents text="스크럼보드에 아이템을 추가해 보세요!" />
+        </div>
       )}
-      <button onClick={handleAddItem}>Add Item</button>
-      {isDragging && <div>dragging</div>}
+      <StAddItemBtn onClick={handleAddItem}>
+        <span />
+        Add Item
+      </StAddItemBtn>
     </StCategoryWrapper>
   );
 }
 
-const StCategoryWrapper = styled.div`
+const StCategoryWrapper = styled.div<{ $isOver: boolean }>`
   // 임의로 설정한 너비
   min-width: 384px;
+  box-sizing: content-box;
   background-color: ${(props) => props.theme.color.bg.secondary};
-  border: 1px solid ${(props) => props.theme.color.border.secondary};
+  padding: ${(props) => props.theme.spacing[16]};
+  padding-top: 0;
+  ${(props) =>
+    props.$isOver
+      ? `border: 2px solid ${props.theme.color.border.interactive.primary}`
+      : `border : 2px solid ${props.theme.color.border.secondary}`};
   border-radius: ${(props) => props.theme.border.radius[12]};
-  cursor: grab;
-  &:active {
-    cursor: grabbing;
-  }
 `;
 
 const StItemsContainer = styled.ul`
@@ -77,6 +79,27 @@ const StItemsContainer = styled.ul`
   gap: ${(props) => props.theme.spacing[12]};
   background-color: #f5f5f5;
   border-radius: ${(props) => props.theme.border.radius[8]};
-  padding: ${(props) => props.theme.spacing[16]};
-  padding-top: 0;
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const StAddItemBtn = styled(StCTAButton)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: ${(props) => props.theme.spacing[12]};
+  gap: ${(props) => props.theme.spacing[8]};
+  font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
+  & > span {
+    display: block;
+    width: ${(props) => props.theme.unit[14]}px;
+    height: ${(props) => props.theme.unit[14]}px;
+    margin-top: -${(props) => props.theme.unit[4]}px;
+    background: url("/assets/additem.svg") no-repeat center center;
+    background-size: contain;
+  }
 `;

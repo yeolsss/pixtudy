@@ -80,7 +80,7 @@ export default function CreateCategoryForm() {
                   id={option}
                   value={option}
                   {...register("color", {
-                    required: true,
+                    required: "카테고리 색상을 선택해주세요.",
                     onChange: handleCategorySelect,
                   })}
                 />
@@ -88,6 +88,9 @@ export default function CreateCategoryForm() {
             );
           })}
         </div>
+        {errors.color && (
+          <DefaultSpanText>{errors.name?.message as string}</DefaultSpanText>
+        )}
       </div>
       <StFormCTAButton type="submit" disabled={!isValid}>
         확인

@@ -114,7 +114,7 @@ export const getUserSessionHandler = async (
 
 /**
  * Supabase 특정 유저 정보를 가져오는 함수
- * @param string otherUserId - 정보를 가져올 유저 아이디
+ * @param {string} otherUserId - 정보를 가져올 유저 아이디
  * @returns table <users>
  */
 export const getOtherUserHandler = async (

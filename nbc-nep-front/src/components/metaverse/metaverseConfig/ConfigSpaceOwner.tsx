@@ -8,18 +8,20 @@ import {
   SPACE_NAME_MIN_LENGTH,
 } from "@/components/spaces/constants/constants";
 import useChat from "@/hooks/chat/useChat";
+import useConfirm from "@/hooks/confirm/useConfirm";
 import useKeyDownPrevent from "@/hooks/metaverse/useKeyDownPrevent";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useDeleteSpace, useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import styled from "styled-components";
 import {
   SPACE_DESCRIPTION_FORM,
   SPACE_NAME_FORM,
   SPACE_THUMB_FORM,
-} from "../constants/config.contant";
-import { StHiddenInput } from "../styles/config.styles";
+} from "../constants/config.constant";
+import { StHiddenInput, StSectionMain } from "../styles/config.styles";
 import ConfigSpaceFormItem from "./ConfigSpaceFormItem";
 
 export default function ConfigSpaceOwner() {
@@ -44,11 +46,18 @@ export default function ConfigSpaceOwner() {
   const thumbWatch = watch(SPACE_THUMB_FORM);
   const nameError = errors[SPACE_NAME_FORM]?.message;
   const descriptionError = errors[SPACE_DESCRIPTION_FORM]?.message;
+  const { openConfirmHandler } = useConfirm();
 
   const handleRemoveSpace = async () => {
     if (!spaceInfo) return;
-    if (confirm("진짜 삭제할라고?")) {
-      alert("good bye... bro...");
+    const result = await openConfirmHandler({
+      title: "스페이스 삭제",
+      message: "스페이스를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      confirmButtonText: "네, 삭제할게요",
+      denyButtonText: "아니요, 취소할게요",
+    });
+
+    if (result) {
       deleteSpace(spaceInfo?.id);
     }
   };
@@ -56,14 +65,14 @@ export default function ConfigSpaceOwner() {
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
     if (!spaceInfo) return;
     const {
-      SPACE_THUMB_FORM: thumb,
-      SPACE_NAME_FORM: title,
-      SPACE_DESCRIPTION_FORM: description,
+      [SPACE_THUMB_FORM]: thumb,
+      [SPACE_NAME_FORM]: title,
+      [SPACE_DESCRIPTION_FORM]: description,
     } = data;
     let thumbnailURL: string | null = spaceInfo.space_thumb;
-
     if (thumb && thumb.length > 0) {
       const { data, error } = await uploadThumbnail(thumb[0], spaceInfo.id);
+
       if (data) thumbnailURL = data;
 
       if (error) {
@@ -103,7 +112,11 @@ export default function ConfigSpaceOwner() {
   }, [isSuccessDelete]);
 
   return (
-    <form onSubmit={handleSubmit(handleUpdateSpace)} ref={formRef}>
+    <StSection
+      as="form"
+      onSubmit={handleSubmit(handleUpdateSpace)}
+      ref={formRef}
+    >
       <div>
         <span>스페이스 썸네일</span>
         <label htmlFor={SPACE_THUMB_FORM}>
@@ -115,11 +128,16 @@ export default function ConfigSpaceOwner() {
           {...register(SPACE_THUMB_FORM)}
           accept="image/*"
         />
+        {!!watch(SPACE_THUMB_FORM) || (
+          <StHelperSpan>썸네일을 클릭하여 썸네일을 수정해보세요</StHelperSpan>
+        )}
       </div>
       <ConfigSpaceFormItem
         title="스페이스 이름"
         maxLength={SPACE_NAME_MAX_LENGTH}
-        curLength={watch(SPACE_NAME_FORM)?.length || 0}
+        curLength={
+          watch(SPACE_NAME_FORM)?.length || spaceInfo?.title.length || 0
+        }
         error={nameError}
       >
         <input
@@ -138,7 +156,11 @@ export default function ConfigSpaceOwner() {
       <ConfigSpaceFormItem
         title="스페이스 설명"
         maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
-        curLength={watch(SPACE_DESCRIPTION_FORM)?.length || 0}
+        curLength={
+          watch(SPACE_DESCRIPTION_FORM)?.length ||
+          spaceInfo?.description.length ||
+          0
+        }
         error={descriptionError}
       >
         <textarea
@@ -151,11 +173,40 @@ export default function ConfigSpaceOwner() {
       </ConfigSpaceFormItem>
       <div>
         <button type="submit">수정하기</button>
-        <StDangerButton type="button" onClick={handleRemoveSpace}>
+        <StDanger type="button" onClick={handleRemoveSpace}>
           삭제하기
-        </StDangerButton>
+        </StDanger>
       </div>
       {isPendingUpdate && <StLoadingSpinner />}
-    </form>
+    </StSection>
   );
 }
+
+const StSection = styled(StSectionMain)`
+  overflow: auto;
+
+  div label {
+    align-self: center;
+    cursor: pointer;
+  }
+
+  input,
+  textarea {
+    font-family: var(--default-font);
+  }
+  padding-top: 0 !important;
+`;
+
+const StDanger = styled(StDangerButton)`
+  padding: ${(props) => `${props.theme.spacing[8]} ${props.theme.spacing[16]}`};
+  font-size: inherit;
+  border-radius: ${(props) => props.theme.border.radius[8]};
+`;
+
+const StHelperSpan = styled.p`
+  font-size: 0.75rem;
+  font-weight: normal;
+  color: ${(props) => props.theme.color.text.info};
+  text-align: center;
+  opacity: 0.5;
+`;

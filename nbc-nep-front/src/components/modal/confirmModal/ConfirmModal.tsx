@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BackDrop from "../BackDrop";
 import ConfirmModalContainer from "./ConfirmModalContainer";
 
-export default function ConfirmModalModal() {
+export default function ConfirmModal() {
   const { closeConfirmHandler } = useConfirm();
   return (
     <StModalContainer>
@@ -19,5 +19,5 @@ const StModalContainer = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1000;
+  z-index: 10000;
 `;

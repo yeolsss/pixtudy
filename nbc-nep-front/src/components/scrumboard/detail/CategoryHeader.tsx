@@ -1,3 +1,4 @@
+import useConfirm from "@/hooks/confirm/useConfirm";
 import { useDeleteCategory } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -14,10 +15,11 @@ interface Props {
 
 export default function CategoryHeader({ name, color, id, itemCount }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const { space_id } = useParams();
-  const spaceId = space_id as string;
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { openConfirmHandler, isOpen } = useConfirm();
+  const { space_id } = useParams();
+  const spaceId = space_id as string;
   const { remove } = useDeleteCategory(spaceId);
 
   useEffect(() => {
@@ -40,8 +42,15 @@ export default function CategoryHeader({ name, color, id, itemCount }: Props) {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleDeleteCategory = () => {
-    remove(id);
+  const handleDeleteCategory = async () => {
+    openConfirmHandler({
+      title: "카테고리 삭제",
+      message: "이 카테고리를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      confirmButtonText: "네, 삭제할게요",
+      denyButtonText: "아니요, 취소할게요",
+    }).then((result) => {
+      if (result) remove(id);
+    });
   };
 
   return (

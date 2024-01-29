@@ -70,23 +70,24 @@ const StPreviewContents = styled.div`
     font-size: ${(props) => props.theme.body.md.medium.fontSize};
     margin-bottom: ${(props) => props.theme.spacing[8]};
   }
-  h2::after {
+  h3 {
+    width: 100%;
+    font-family: var(--sub-font);
+    font-size: ${(props) => props.theme.body.sm.medium.fontSize};
+    margin-bottom: ${(props) => props.theme.spacing[8]};
+  }
+  h3::after {
     content: "";
     display: block;
     width: 100%;
     height: 1px;
     background-color: ${(props) => props.theme.color.border.primary};
-    margin-bottom: ${(props) => props.theme.spacing[8]};
     margin-top: ${(props) => props.theme.spacing[8]};
-  }
-  h3 {
-    font-family: var(--sub-font);
-    font-size: ${(props) => props.theme.body.sm.medium.fontSize};
-    margin-bottom: ${(props) => props.theme.spacing[8]};
   }
   p {
     font-family: var(--main-font);
     font-size: ${(props) => props.theme.body.sm.regular.fontSize};
+    line-height: ${(props) => props.theme.body.sm.regular.lineHeight};
     word-break: break-word;
   }
 `;
