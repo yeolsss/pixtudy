@@ -1,4 +1,5 @@
 import NoContents from "@/components/common/NoContents";
+import { StCTAButton } from "@/components/common/button/button.styles";
 import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 import { useGetCategoryItems } from "@/hooks/query/useSupabase";
 import useDropItem from "@/hooks/scrumBoard/useDropItem";
@@ -48,7 +49,10 @@ export default function ScrumBoardCategory({ category }: Props) {
           <NoContents text="스크럼보드에 아이템을 추가해 보세요!" />
         </div>
       )}
-      <button onClick={handleAddItem}>Add Item</button>
+      <StAddItemBtn onClick={handleAddItem}>
+        <span />
+        Add Item
+      </StAddItemBtn>
     </StCategoryWrapper>
   );
 }
@@ -58,6 +62,8 @@ const StCategoryWrapper = styled.div<{ $isOver: boolean }>`
   min-width: 384px;
   box-sizing: content-box;
   background-color: ${(props) => props.theme.color.bg.secondary};
+  padding: ${(props) => props.theme.spacing[16]};
+  padding-top: 0;
   ${(props) =>
     props.$isOver
       ? `border: 2px solid ${props.theme.color.border.interactive.primary}`
@@ -73,7 +79,27 @@ const StItemsContainer = styled.ul`
   gap: ${(props) => props.theme.spacing[12]};
   background-color: #f5f5f5;
   border-radius: ${(props) => props.theme.border.radius[8]};
-  padding: ${(props) => props.theme.spacing[16]};
-  padding-top: 0;
-  overflow-y: auto;
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const StAddItemBtn = styled(StCTAButton)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: ${(props) => props.theme.spacing[12]};
+  gap: ${(props) => props.theme.spacing[8]};
+  font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
+  & > span {
+    display: block;
+    width: ${(props) => props.theme.unit[14]}px;
+    height: ${(props) => props.theme.unit[14]}px;
+    margin-top: -${(props) => props.theme.unit[4]}px;
+    background: url("/assets/additem.svg") no-repeat center center;
+    background-size: contain;
+  }
 `;
