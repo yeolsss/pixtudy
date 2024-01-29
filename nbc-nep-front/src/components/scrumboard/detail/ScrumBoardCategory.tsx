@@ -75,4 +75,5 @@ const StItemsContainer = styled.ul`
   border-radius: ${(props) => props.theme.border.radius[8]};
   padding: ${(props) => props.theme.spacing[16]};
   padding-top: 0;
+  overflow-y: auto;
 `;

@@ -121,7 +121,7 @@ const StLinkWrapper = styled.div`
   align-items: center;
 `;
 
-const StLine = styled.div`
+export const StLine = styled.div`
   width: 0px;
   height: ${(props) => props.theme.body.md.medium.fontSize};
   border: 1px solid

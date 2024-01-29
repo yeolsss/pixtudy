@@ -31,6 +31,10 @@ export default function SpaceCard({ space }: Props) {
       });
   };
 
+  const handleScrumBoardClick = async (space_id: string) => {
+    await router.push(`/boards/scrumboards/${space_id}`);
+  };
+
   return (
     <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
       <StContentsContainer>
@@ -56,6 +60,11 @@ export default function SpaceCard({ space }: Props) {
         </StUserCounter>
       </StContentsContainer>
       <StButtonContainer>
+        <button
+          onClick={() => handleScrumBoardClick(space ? space.space_id! : "")}
+        >
+          스크럼보드
+        </button>
         <button onClick={() => handleToSpace(space ? space.space_id! : "")}>
           입장하기
         </button>
@@ -149,14 +158,27 @@ const StUserIcon = styled(UserIcon)`
 `;
 
 const StButtonContainer = styled.div`
-  padding-bottom: ${(props) => props.theme.spacing[12]};
-  padding-right: ${(props) => props.theme.spacing[12]};
+  padding: ${(props) => props.theme.spacing[12]};
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  gap: ${(props) => props.theme.spacing[8]};
+
   button {
     border-color: ${(props) => props.theme.color.border.interactive.secondary};
     border-radius: ${(props) => props.theme.border.radius[8]};
-    font-size: ${(props) => props.theme.body.lg.regular.fontSize};
+    /* font-size: ${(props) => props.theme.body.sm.regular.fontSize}; */
+    font-size: 16px;
+    padding: ${(props) => props.theme.spacing[8]};
+  }
+  button:last-child {
+    flex: 0.9;
+    background-color: ${(props) => props.theme.color.bg.brand};
+    color: white;
+  }
+  button:first-child {
+    flex: 0.75;
+    &:hover {
+    }
   }
 `;
