@@ -1,4 +1,8 @@
-import { fieldValues } from "@/components/spaces/constants/constants";
+import {
+  fieldValues,
+  SPACE_DESCRIPTION_MAX_LENGTH,
+  SPACE_NAME_MAX_LENGTH,
+} from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
 import { Tables } from "@/supabase/types/supabase";
 import useSpace from "@/zustand/spaceStore";
@@ -8,27 +12,31 @@ import {
   FieldValues,
   FormState,
   SubmitHandler,
+  UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
 import styled from "styled-components";
-import {
-  StContentsContainer,
-  StFormCTAButton,
-  StInputWrapper,
-} from "./JoinSpaceForm";
+import { StFormCTAButton } from "../common/button/button.styles";
+import DefaultSpanText from "../common/text/DefaultSpanText";
+import { StContentsContainer } from "./JoinSpaceForm";
+import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { CreateSpaceInfo } from "./types/space.types";
 
 interface Props {
   handleSubmit: UseFormHandleSubmit<FieldValues>;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
+  getValues: UseFormGetValues<FieldValues>;
+  isValid: boolean;
 }
 
 export default function CreateSpaceForm({
   register,
   handleSubmit,
   errors,
+  getValues,
+  isValid,
 }: Props) {
   const router = useRouter();
   const { userProfile, setCreateSpaceInfo } = useSpace();
@@ -53,6 +61,7 @@ export default function CreateSpaceForm({
       title: data.spaceName,
       description: data.spaceDescription,
     };
+
     setCreateSpaceInfo({ ...spaceInfo, ...userProfile });
     createSpace({
       description: spaceInfo.description,
@@ -71,29 +80,41 @@ export default function CreateSpaceForm({
           {fieldValues.map((fieldValue) =>
             fieldValue.type === "text" ? (
               <div key={fieldValue.name}>
-                <label htmlFor="">스페이스 이름</label>
-                <StCreateInputWrapper key={fieldValue.name}>
+                <label htmlFor={fieldValue.name}>스페이스 이름</label>
+                <StCreateInputWrapper
+                  key={fieldValue.name}
+                  $isError={!!errors.spaceName?.message}
+                >
                   <input
                     type={fieldValue.type}
                     placeholder={fieldValue.placeholder}
+                    maxLength={SPACE_NAME_MAX_LENGTH}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceName && (
-                    <span>{errors.spaceName?.message as string}</span>
+                    <DefaultSpanText>
+                      {errors.spaceName?.message as string}
+                    </DefaultSpanText>
                   )}
                 </StCreateInputWrapper>
               </div>
             ) : (
               <div key={fieldValue.name}>
-                <label htmlFor="">스페이스 설명</label>
-                <StCreateInputWrapper key={fieldValue.name}>
+                <label htmlFor="">스페이스 설명 </label>
+                <StCreateInputWrapper
+                  key={fieldValue.name}
+                  $isError={!!errors.spaceDescription?.message}
+                >
                   <textarea
                     key={fieldValue.name}
                     placeholder={fieldValue.placeholder}
+                    maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceDescription && (
-                    <span>{errors.spaceDescription?.message as string}</span>
+                    <DefaultSpanText>
+                      {errors.spaceDescription?.message as string}
+                    </DefaultSpanText>
                   )}
                 </StCreateInputWrapper>
               </div>
@@ -102,7 +123,9 @@ export default function CreateSpaceForm({
         </div>
       </StCreateContentsContainer>
       <div>
-        <StFormCTAButton type="submit">스페이스 생성하기</StFormCTAButton>
+        <StFormCTAButton type="submit" disabled={!isValid}>
+          스페이스 생성하기
+        </StFormCTAButton>
       </div>
     </StCreateSpaceForm>
   );
@@ -128,8 +151,4 @@ const StCreateContentsContainer = styled(StContentsContainer)`
   & + div {
     width: 100%;
   }
-`;
-
-const StCreateInputWrapper = styled(StInputWrapper)`
-  height: auto;
 `;

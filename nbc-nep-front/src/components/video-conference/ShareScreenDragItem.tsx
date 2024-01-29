@@ -87,5 +87,10 @@ const StDragContainer = styled.div<{ $active: boolean; $isDragging: boolean }>`
     top: 1rem;
     background: rgba(0, 0, 0, 0.5);
     color: white;
+    border: none;
+    &:hover {
+      background: ${(props) =>
+        props.theme.color.bg.interactive["danger-hovered"]};
+    }
   }
 `;

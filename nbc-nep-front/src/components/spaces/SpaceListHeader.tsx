@@ -1,4 +1,6 @@
 import useModal from "@/hooks/modal/useModal";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import ModalPortal from "../modal/ModalPortal";
 import CreateSpaceModal from "../modal/spaceModals/createSpaceModal/CreateSpaceModal";
@@ -16,25 +18,44 @@ export default function SpaceListHeader() {
   const handleOpenJoinSpaceModal = () => {
     openJoinSpaceModal();
   };
+
   const handleOpenCreateSpaceModal = () => {
     openCreateSpaceModal();
   };
 
+  const router = useRouter();
   return (
     <>
       <StHeaderWrapper>
         <StNavContainer>
-          <button>최근 방문</button>
-          <button>나의 스페이스</button>
+          <StLinkWrapper>
+            <StLink
+              $isSelected={router.asPath !== "/dashboard"}
+              href="/dashboard"
+            >
+              최근 방문
+            </StLink>
+          </StLinkWrapper>
+          <StLine />
+          <StLinkWrapper>
+            <StLink
+              $isSelected={router.asPath !== "/dashboard?query=myspace"}
+              href="/dashboard?query=myspace"
+            >
+              나의 스페이스
+            </StLink>
+          </StLinkWrapper>
         </StNavContainer>
         <StButtonContainer>
           <SpaceSearchForm />
-          <button onClick={handleOpenCreateSpaceModal}>
-            새로운 스페이스 만들기
-          </button>
-          <button onClick={handleOpenJoinSpaceModal}>
-            초대 코드로 입장하기
-          </button>
+          <div className="dashboard-join-buttons">
+            <button onClick={handleOpenCreateSpaceModal}>
+              새로운 스페이스 만들기
+            </button>
+            <button onClick={handleOpenJoinSpaceModal}>
+              초대 코드로 입장하기
+            </button>
+          </div>
         </StButtonContainer>
       </StHeaderWrapper>
       {isJoinSpaceModalOpen && (
@@ -69,6 +90,7 @@ const StHeaderWrapper = styled.div`
 const StNavContainer = styled.div`
   display: flex;
   gap: ${(props) => props.theme.spacing[32]};
+  align-items: center;
   button {
     position: relative;
     border: none;
@@ -82,19 +104,42 @@ const StNavContainer = styled.div`
         props.theme.color.text.interactive["secondary-pressed"]};
     }
   }
-  & > button:nth-child(2)::before {
-    content: "";
-    position: absolute;
-    top: var(--unit-18);
-    left: -16px;
-    display: block;
-    width: 1px;
-    height: var(--unit-20);
-    background-color: ${(props) => props.theme.color.grey[300]};
+`;
+
+export const StButtonContainer = styled.div`
+  display: flex;
+  gap: ${(props) => props.theme.spacing[12]};
+  & > div {
+    display: flex;
+    gap: ${(props) => props.theme.spacing[12]};
   }
 `;
 
-const StButtonContainer = styled.div`
+const StLinkWrapper = styled.div`
   display: flex;
-  gap: ${(props) => props.theme.spacing[12]};
+  justify-content: center;
+  align-items: center;
+`;
+
+export const StLine = styled.div`
+  width: 0px;
+  height: ${(props) => props.theme.body.md.medium.fontSize};
+  border: 1px solid
+    ${(props) => props.theme.color.text.interactive["secondary-pressed"]};
+`;
+
+const StLink = styled(Link)<{ $isSelected: boolean }>`
+  position: relative;
+  border: none;
+
+  font-family: var(--point-font);
+  ${(props) => props.$isSelected && `color: var(--color-neutral-400);`};
+
+  font-size: ${(props) => props.theme.body.lg.medium.fontSize};
+  font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
+
+  vertical-align: bottom;
+  padding: 0;
+
+  display: inline-block;
 `;

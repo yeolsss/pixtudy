@@ -21,8 +21,10 @@ export default function CreateSpaceModalMainContainer() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+    getValues,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({ mode: "onChange" });
 
   const handleCloseModal = () => {
     closeModal();
@@ -39,14 +41,18 @@ export default function CreateSpaceModalMainContainer() {
             <CreateSpaceForm
               handleSubmit={handleSubmit}
               register={register}
+              getValues={getValues}
+              isValid={isValid}
               errors={errors}
             />
           </>
         ) : (
           <ProfileForm
+            watch={watch}
             setProcedure={setProcedure}
             handleSubmit={handleSubmit}
             register={register}
+            isValid={isValid}
             mode="createSpace"
             errors={errors}
           />

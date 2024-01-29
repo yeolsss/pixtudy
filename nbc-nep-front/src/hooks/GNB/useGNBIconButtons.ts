@@ -2,20 +2,38 @@ import SettingsIcon from "@/assets/icons/Cog.svg";
 import chartIcon from "@/assets/icons/Comments.svg";
 import reportIcon from "@/assets/icons/User Headset.svg";
 import usersIcon from "@/assets/icons/Users.svg";
+import kanbanIcon from "@/assets/icons/kanbanIcon.svg";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useChatType from "@/zustand/chatTypeStore";
 import useDm from "@/zustand/dmStore";
 import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
+import useModal from "../modal/useModal";
+import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
     useGlobalNavBar();
   const { closeDm } = useDm();
   const { openChat, closeChat } = useChatType();
+  const { openConfigModal } = useModal();
+  const {
+    isOpen: isScrumOpen,
+    openMetaverseScrum,
+    closeMetaverseScrum,
+  } = useMetaverseScrumIsOpen();
 
   return [
+    {
+      buttonImage: kanbanIcon,
+      description: "칸반보드",
+      type: "kanban",
+      handleOnClick: () => {
+        if (isScrumOpen) closeMetaverseScrum();
+        else openMetaverseScrum();
+      },
+    },
     {
       buttonImage: chartIcon,
       description: "채팅",
@@ -36,7 +54,9 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       buttonImage: SettingsIcon,
       description: "설정",
       type: "settings",
-      handleOnClick: () => {},
+      handleOnClick: () => {
+        openConfigModal();
+      },
     },
     {
       buttonImage: reportIcon,
@@ -53,11 +73,11 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
           setSectionVisibility(
             changeSectionVisibility("isPlayerListOn", false)
           );
+          closeChat();
           closeDm();
 
           return;
         }
-        closeChat();
         setSectionVisibility(changeSectionVisibility("isPlayerListOn", true));
       },
     },

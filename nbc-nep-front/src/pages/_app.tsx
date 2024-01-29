@@ -1,11 +1,14 @@
 import CheckUserSession from "@/components/layout/CheckUserSession";
 import GlobalStyle, { theme } from "@/styles/Globalstyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "styled-components";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -31,8 +34,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
               <Component {...pageProps} />
             </>
           )}
+
+          <ToastContainer position="top-left" autoClose={2000} />
         </ThemeProvider>
       </DndProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

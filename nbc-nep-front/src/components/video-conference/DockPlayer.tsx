@@ -17,18 +17,15 @@ export default function DockPlayer({ player }: Props) {
           width={40}
           height={40}
           y={50}
-          x={3}
+          x={4}
         />
         <StBadge color={getPlayerStateValue(0)} x={30} y={30} />
       </BadgeWrapper>
       <StDockPlayerInfoWrapper>
         <StDockPlayerNickname>{player?.nickname}</StDockPlayerNickname>
-        <StPlayerNicknameContainer>
-          <StDockPlayerState>
-            {getPlayerStateToText(player?.state)}
-          </StDockPlayerState>
-          <StDockPlayerState>{player?.playerId}</StDockPlayerState>
-        </StPlayerNicknameContainer>
+        <StDockPlayerState>
+          {getPlayerStateToText(player?.state)}
+        </StDockPlayerState>
       </StDockPlayerInfoWrapper>
     </StDockPlayerWrapper>
   );
@@ -44,12 +41,15 @@ const getPlayerStateValue = (playerState: PlayerState) => {
 };
 
 const getPlayerStateToText = (playerState?: PlayerState) => {
-  if (playerState === undefined) return null;
+  if (playerState == undefined) {
+    return "온라인";
+  }
   return ["온라인", "식사중", "자리비움", "방해금지"][playerState];
 };
 
 const StDockPlayerWrapper = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: row;
   gap: ${(props) => props.theme.spacing[8]};
 
@@ -57,10 +57,6 @@ const StDockPlayerWrapper = styled.div`
   font-family: var(--sub-font);
 
   max-width: 200px;
-`;
-const StPlayerNicknameContainer = styled.div`
-  height: ${(props) => props.theme.unit[12]}px;
-  overflow: hidden;
 `;
 
 const StDockPlayerNickname = styled.p`
@@ -74,13 +70,14 @@ const StDockPlayerState = styled.p`
 
 const StDockPlayerInfoWrapper = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: ${(props) => props.theme.spacing[4]};
+  gap: ${(props) => props.theme.spacing[6]};
   margin-left: 40px;
   padding-top: ${(props) => props.theme.spacing[4]};
 
   &:hover {
-    background-color: ${(props) => props.theme.color.bg["info-bold"]};
+    background-color: ${(props) => props.theme.color.bg["success-bold"]};
     background-blend-mode: ${StDockPlayerState} {
       transform: translateY(
         calc(${(props) => props.theme.spacing[12]} * -1)

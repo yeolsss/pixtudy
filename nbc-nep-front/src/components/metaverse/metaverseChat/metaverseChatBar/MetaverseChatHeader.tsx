@@ -1,16 +1,21 @@
-import React from "react";
-import styled from "styled-components";
 import CloseIcon from "@/assets/icons/Times.svg";
 import Image from "next/image";
+import styled from "styled-components";
 
 interface Props {
   title: string;
+  subtitle?: string;
   handler: () => void;
 }
-export default function MetaverseChatHeader({ title, handler }: Props) {
+export default function MetaverseChatHeader({
+  title,
+  subtitle,
+  handler,
+}: Props) {
   return (
     <StMetaverseDmHeader>
       <h1>{title}</h1>
+      {subtitle && <h2>To. {subtitle}</h2>}
       <button onClick={handler}>
         <Image src={CloseIcon} alt="close" width={12} height={12} />
       </button>
@@ -20,16 +25,31 @@ export default function MetaverseChatHeader({ title, handler }: Props) {
 
 const StMetaverseDmHeader = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 10px 0;
-
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  margin-bottom: ${(props) => props.theme.spacing["20"]};
   > h1 {
-    font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
-    font-family: ${({ theme }) => theme.body.lg.regular.fontFamily};
+    font-size: ${(props) => props.theme.unit["20"]}px;
+    font-family: var(--point-font);
+    font-weight: bold;
     color: ${({ theme }) => theme.color.text.interactive.inverse};
+    white-space: nowrap;
+  }
+  > h2 {
+    margin-top: ${(props) => props.theme.spacing["24"]};
+    font-size: ${(props) => props.theme.unit["16"]}px;
+    font-family: var(--main-font);
+    font-weight: bold;
+    color: ${({ theme }) => theme.color.text.interactive.inverse};
+    white-space: nowrap;
+    padding-bottom: ${(props) => props.theme.spacing["12"]};
+    border-bottom: 1px solid white;
   }
   > button {
+    position: absolute;
+    right: 0;
+    top: 0;
     width: 12px !important;
     height: 12px !important;
     background-color: transparent;

@@ -17,11 +17,11 @@ export default function MetaverseChat() {
   const { id, spaceId } = useMetaversePlayer();
   const { handleSetDmChatAlarmState } = useChatAlarm();
   const dmList = useGetLastDMList(spaceId, id);
-
   const queryClient = useQueryClient();
   const handleRefetchDMList = async () => {
     await queryClient.invalidateQueries({ queryKey: ["lastDMList"] });
   };
+
   useEffect(() => {
     const dmChannel = supabase.channel(`dm_channel_${spaceId}`);
     dmChannel
@@ -50,30 +50,26 @@ export default function MetaverseChat() {
 
   return (
     <StMetaverseGlobalChatWrapper $isOpenChat={isOpenChat}>
-      {chatType === "GLOBAL" ? (
+      {chatType === "GLOBAL" && (
         <>
           <MetaverseChatList />
           <MetaverseChatForm />
         </>
-      ) : (
-        <MetaverseDmList dmList={dmList} />
       )}
+      {chatType === "DM" && <MetaverseDmList dmList={dmList} />}
     </StMetaverseGlobalChatWrapper>
   );
 }
 
 const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
-  width: ${({ $isOpenChat }) => ($isOpenChat ? "240px" : "0")};
+  width: ${({ $isOpenChat }) => ($isOpenChat ? "260px" : "0")};
   overflow: hidden; // width가 0일 때 내부 내용이 보이지 않도록 설정
   background-color: ${({ theme }) => theme.color.metaverse.secondary};
   display: flex;
   flex-direction: column;
   max-height: 100vh;
-  //prettier-ignore
   padding: ${({ theme, $isOpenChat }) =>
-    $isOpenChat ? theme.spacing["24"] : "0"} ${({ theme, $isOpenChat }) =>
-    $isOpenChat ? theme.spacing["20"] : "0"};
-  gap: 30px;
+    `${$isOpenChat ? theme.spacing["16"] : "0"} ${$isOpenChat ? theme.spacing["12"] : "0"}`};
   transition:
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;

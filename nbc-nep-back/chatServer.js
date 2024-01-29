@@ -4,10 +4,12 @@ module.exports = function (io) {
     console.log("chat [" + socket.id + "] connected");
 
     socket.on("joinRoom", (spaceId) => {
+      console.log("joinRoom", spaceId, socket.id);
       chat[socket.id] = {
         userId: socket.id,
         playerDisplayName: socket.playerDisplayName || socket.id,
         message: "",
+        playerId: "",
         spaceId,
       };
 
@@ -16,24 +18,44 @@ module.exports = function (io) {
 
     socket.on("disconnect", function () {
       console.log("chat [" + socket.id + "] disconnected");
-      const spaceId = chat[socket.id].spaceId;
+      try {
+        const spaceId = chat[socket.id].spaceId;
 
-      delete chat[socket.id];
-
-      io.to(spaceId).emit("chatDisconnected", socket.id);
+        io.to(spaceId).emit("chatDisconnected", socket.id);
+      } catch (error) {
+        console.error("error disconnect chat", error);
+      } finally {
+        delete chat[socket.id];
+      }
     });
 
     socket.on(
       "sendMessage",
-      function ({ playerDisplayName, message, spaceId }) {
+      function ({ playerDisplayName, message, spaceId, playerId, chatTime }) {
         chat[socket.id] = {
           userId: socket.id,
           playerDisplayName: playerDisplayName || socket.id,
           message: message,
+          playerId: playerId,
+          chatTime: chatTime,
           spaceId,
         };
         io.to(spaceId).emit("receiveMessage", chat[socket.id]);
       }
     );
+
+    socket.on("removeRoom", () => {
+      try {
+        console.log(socket.rooms);
+        const player = chat[socket.id];
+        const spaceId = player.spaceId;
+
+        io.to(spaceId).emit("removedRoom");
+      } catch (error) {
+        console.log("an error occurred while remove room :", error);
+      }
+
+      // TODO : io room 제거...
+    });
   });
 };

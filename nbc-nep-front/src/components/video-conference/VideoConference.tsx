@@ -3,9 +3,11 @@ import {
   isEmptyTracks,
 } from "@/components/video-conference/libs/util";
 import useDevice from "@/hooks/conference/useDevice";
+import useLayout from "@/hooks/conference/useLayout";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useSocket from "@/hooks/socket/useSocket";
 import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
@@ -30,7 +32,6 @@ import {
   TransPortParams,
 } from "./types/ScreenShare.types";
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
-import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 
 export default function VideoConference() {
   const { socket, disconnect } = useSocket({ namespace: "/conference" });
@@ -39,6 +40,7 @@ export default function VideoConference() {
   const {
     user: { id: currentPlayerId },
   } = useAuth();
+  const { isOpen } = useLayout();
 
   const {
     consumers,
@@ -180,6 +182,10 @@ export default function VideoConference() {
         throw new Error("no producer...");
       }
 
+      track.addEventListener("ended", () => {
+        removeProducer(producer);
+      });
+
       addProducer(producer);
     } catch (error) {
       console.log("handle share error", error);
@@ -199,10 +205,9 @@ export default function VideoConference() {
     socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
   }
   const screenCount = filterProducersByShareType("screen").length;
-
   return (
     <>
-      <StDockContainer>
+      <StDockContainer $isOpen={isOpen}>
         <DockPlayer player={currentPlayer} />
         <ShareButton
           type="screen"
@@ -246,12 +251,13 @@ export default function VideoConference() {
   );
 }
 
-const StDockContainer = styled.div`
+const StDockContainer = styled.div<{ $isOpen: boolean }>`
   position: absolute;
 
   left: 50%;
-  bottom: ${(props) => props.theme.spacing[64]};
+  bottom: ${(props) => props.theme.spacing[32]};
   transform: translateX(-50%);
+  z-index: 3;
 
   background-color: ${(props) => props.theme.color.metaverse.primary};
 
@@ -265,4 +271,11 @@ const StDockContainer = styled.div`
 
   gap: ${(props) => props.theme.unit[15]};
   width: 465px;
+
+  transition: opacity 0.2s ease-in-out;
+
+  ${(props) => props.$isOpen && "opacity: 0.3"};
+  &:hover {
+    ${(props) => props.$isOpen && "opacity: 1"};
+  }
 `;

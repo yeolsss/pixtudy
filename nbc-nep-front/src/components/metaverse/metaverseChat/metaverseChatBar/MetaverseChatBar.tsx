@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 export default function MetaverseChatBar() {
   const { isChatSectionOn } = useGlobalNavBar();
-  const { openChat } = useChatType();
+  const { openChat, chatType } = useChatType();
 
   const handleChatTypeOpen = (chatType: ChatType) => {
     openChat(chatType);
@@ -14,19 +14,35 @@ export default function MetaverseChatBar() {
 
   return (
     <>
-      <StMetaverseChatBar $isOpenChatSection={isChatSectionOn}>
+      <StMetaverseChatBar
+        $isOpenChatSection={isChatSectionOn}
+        $chatType={chatType}
+      >
         <StChatWrapperTitle>
-          <h1>chat</h1>
+          <h1>Chat</h1>
         </StChatWrapperTitle>
-        <button onClick={() => handleChatTypeOpen("GLOBAL")}>Room</button>
-        <button onClick={() => handleChatTypeOpen("DM")}>DM</button>
+        <StChatButton
+          onClick={() => handleChatTypeOpen("GLOBAL")}
+          $isActive={chatType === "GLOBAL"}
+        >
+          Space
+        </StChatButton>
+        <StChatButton
+          onClick={() => handleChatTypeOpen("DM")}
+          $isActive={chatType === "DM"}
+        >
+          DM
+        </StChatButton>
       </StMetaverseChatBar>
       <MetaverseChat />
     </>
   );
 }
 
-const StMetaverseChatBar = styled.div<{ $isOpenChatSection: boolean }>`
+const StMetaverseChatBar = styled.div<{
+  $isOpenChatSection: boolean;
+  $chatType: ChatType;
+}>`
   width: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "93px" : "0")};
   border-right: ${({ $isOpenChatSection }) =>
       $isOpenChatSection ? "1px" : "0"}
@@ -35,23 +51,40 @@ const StMetaverseChatBar = styled.div<{ $isOpenChatSection: boolean }>`
   background-color: #1f2542;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  align-items: center;
   transition:
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
   z-index: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "100" : "-1")};
   padding: ${({ theme }) => theme.spacing["16"]} 0;
-  // ${({ $isOpenChatSection }) => ($isOpenChatSection ? "24px" : "0")};
-  > button {
-    width: 100%;
-  }
 `;
 const StChatWrapperTitle = styled.div`
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  font-family: var(--sub-font);
+  font-weight: bold;
   color: #fff;
+  padding-bottom: ${(props) => props.theme.spacing["20"]};
+  margin-bottom: ${(props) => props.theme.spacing["8"]};
+  width: 80%;
+  text-align: center;
+  border-bottom: 1px solid ${(props) => props.theme.color.border["sub-line"]};
+  & > h1 {
+    font-size: ${(props) => props.theme.unit["20"]}px;
+    font-family: var(--point-font);
+  }
+`;
+
+const StChatButton = styled.button<{ $isActive: boolean }>`
+  background: ${(props) =>
+    props.$isActive ? props.theme.color.metaverse.secondary : "none"};
+  color: ${(props) => props.theme.color.base.white};
+  border: none;
+  font-size: ${(props) => props.theme.unit["12"]}px;
+  font-weight: ${(props) => (props.$isActive ? "bold" : "normal")};
+  font-family: var(--main-font);
+  padding: 0;
+  width: 100%;
+  border-radius: 0;
+  padding: ${(props) => props.theme.spacing["8"]};
+  &:hover {
+    background: #111424;
+  }
 `;

@@ -55,9 +55,25 @@ export default function VideoSourceDisplayContainer({
 const StContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: ${(props) => props.theme.spacing[32]};
 
   position: absolute;
   right: ${(props) => props.theme.spacing[16]};
   top: ${(props) => props.theme.spacing[32]};
+
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-wrap: nowrap;
+
+  width: 50%;
+  height: 90%;
+
+  * {
+    flex-shrink: 0;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

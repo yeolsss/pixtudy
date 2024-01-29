@@ -1,6 +1,6 @@
 import { CreateSpaceInfo } from "@/components/spaces/types/space.types";
 import { supabase } from "@/supabase/supabase";
-import { Tables, TablesInsert } from "@/supabase/types/supabase";
+import { Tables, TablesInsert, TablesUpdate } from "@/supabase/types/supabase";
 
 export const createSpaceHandler = async (
   spaceInfo: CreateSpaceInfo
@@ -54,10 +54,8 @@ export const getSpaceData = async (spaceId: string) => {
       .eq("id", spaceId)
       .single();
 
-    if (error) {
-      throw new Error(error.message);
-    }
-    console.log(data);
+    if (error) return Promise.reject(error);
+
     return data;
   } catch (error) {
     console.error(error);
@@ -76,10 +74,30 @@ export const getPlayerSpaceData = async (
     .eq("space_id", spaceId)
     .single();
 
-  if (error) {
-    console.error(error);
-    throw new Error(error.message); // 에러를 던집니다.
-  }
+  if (error) return Promise.reject(error);
+
+  return data;
+};
+
+export const removeSpace = async (spaceId: string): Promise<string> => {
+  const { error } = await supabase.from("spaces").delete().eq("id", spaceId);
+
+  if (error) return Promise.reject(error);
+
+  return spaceId;
+};
+
+export const updateSpace = async (
+  updatedSpace: TablesUpdate<"spaces"> & { id: string }
+): Promise<Tables<"spaces">> => {
+  const { data, error } = await supabase
+    .from("spaces")
+    .update(updatedSpace)
+    .eq("id", updatedSpace.id)
+    .select()
+    .single();
+
+  if (error) return Promise.reject(error);
 
   return data;
 };

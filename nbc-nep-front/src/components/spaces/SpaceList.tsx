@@ -1,39 +1,74 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import { Space_members } from "@/supabase/types/supabase.tables.type";
-import { useEffect, useState } from "react";
+import useAuth from "@/zustand/authStore";
+import useSpaceSearch from "@/zustand/spaceListStore";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import styled from "styled-components";
 import SpaceCard from "./SpaceCard";
 import SpaceListHeader from "./SpaceListHeader";
 
 interface Props {
   currentUserId: string;
+  setRunState: (isRun: boolean) => void;
+  showTemporaryComponent: boolean;
 }
 
-export default function SpaceList({ currentUserId }: Props) {
-  const [userSpaces, setUserSpaces] = useState<Space_members[]>([]);
+export default function SpaceList({
+  currentUserId,
+  setRunState,
+  showTemporaryComponent,
+}: Props) {
   const getUserSpaces = useGetUserSpaces(currentUserId);
+  const { spaces, filteredSpaces, setSpaces } = useSpaceSearch();
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (getUserSpaces) setUserSpaces(getUserSpaces);
-  }, [getUserSpaces]);
+    if (getUserSpaces) {
+      const query = router.query.query;
+      if (query === "myspace") {
+        setSpaces(
+          getUserSpaces.filter((space) => space.spaces?.owner === user.id)
+        );
+        return;
+      }
+      setSpaces(getUserSpaces);
+      if (!getUserSpaces.length) {
+        setRunState(true);
+      }
+    }
+  }, [getUserSpaces, router.query.query]);
+
+  useEffect(() => {
+    if (showTemporaryComponent) {
+      setSpaces([null]);
+    } else {
+      if (!!spaces.length) {
+        if (!spaces[0]) {
+          const [drop, ...newSpaces] = spaces;
+          setSpaces(newSpaces);
+        }
+      }
+    }
+  }, [showTemporaryComponent]);
 
   return (
-    <StSpaceListWrapper>
+    <StCardListWrapper>
       <SpaceListHeader />
       <StSpaceList>
-        {userSpaces?.map((space) => {
+        {filteredSpaces?.map((space, index) => {
           return (
-            <li key={space.id}>
-              <SpaceCard space={space} />
+            <li key={space ? space.id : index}>
+              <SpaceCard space={space ? space : null} />
             </li>
           );
         })}
       </StSpaceList>
-    </StSpaceListWrapper>
+    </StCardListWrapper>
   );
 }
 
-const StSpaceListWrapper = styled.section`
+export const StCardListWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[32]};
@@ -46,14 +81,14 @@ const StSpaceListWrapper = styled.section`
 `;
 
 const StSpaceList = styled.ul`
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
   width: 100%;
   gap: ${(props) => props.theme.spacing[24]};
   margin-right: -${(props) => props.theme.spacing[24]};
   margin-bottom: 64px;
   li {
-    width: calc(25% - ${(props) => props.theme.spacing[24]});
+    width: 100%;
   }
 `;

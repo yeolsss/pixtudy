@@ -39,14 +39,18 @@ export class OtherPlayersGroup {
       )
       .setOrigin(0.5, 0.5)
       .setDepth(PLAYER_NAME_DEPTH);
+
     const otherPlayer = this.scene.physics.add
       .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
       .setCollideWorldBounds(true) as CurrentPlayer;
+
     otherPlayer.body?.setSize(PLAYER_BODY_SIZE_X, PLAYER_BODY_SIZE_Y);
     otherPlayer.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
     otherPlayer.playerId = playerInfo.playerId;
+
     // otherPlayer를 구분짓기 위한 유니크한 값으로 socketId를 사용한다. 수정할 때에는 여기서부터 시작할 것.
     otherPlayer.socketId = playerInfo.socketId;
+
     // otherPlayer 그룹에 새 플레이어를 추가한다.
     this.group.add(otherPlayer);
 
