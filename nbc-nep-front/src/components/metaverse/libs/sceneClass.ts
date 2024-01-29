@@ -12,20 +12,21 @@ const PLAYER_BODY_SIZE_X = 32;
 const PLAYER_BODY_SIZE_Y = 32;
 const PLAYER_BODY_OFFSET_X = 0;
 const PLAYER_BODY_OFFSET_Y = 25;
+
 const TILE_KEY = {
-  TOTALTILE: "tiles1",
-  OUTSIDETILE: "tiles2",
+  TOTAL_TILE: "tiles1",
+  OUTSIDE_TILE: "tiles2",
   ROOM: "tiles3",
 };
 const TILE_NAME = {
-  OUTSIDELAYER: "outSideTile",
-  TOTALLAYER: "totalTile",
+  OUTSIDE_LAYER: "outSideTile",
+  TOTAL_LAYER: "totalTile",
   ROOM: "room",
 };
 const LAYER_NAME = {
-  OUTSIDELAYER: "outSideLayer",
-  TOTALLAYER: "totalLayer",
-  ROOMLAYER: "roomLayer",
+  OUTSIDE_LAYER: "outSideLayer",
+  TOTAL_LAYER: "totalLayer",
+  ROOM_LAYER: "roomLayer",
 };
 
 /**
@@ -54,17 +55,17 @@ export class SceneClass extends Phaser.Scene {
     });
 
     const tileSet1 = map.addTilesetImage(
-      TILE_NAME.TOTALLAYER,
-      TILE_KEY.TOTALTILE
+      TILE_NAME.TOTAL_LAYER,
+      TILE_KEY.TOTAL_TILE
     );
     const tileSet2 = map.addTilesetImage(
-      TILE_NAME.OUTSIDELAYER,
-      TILE_KEY.OUTSIDETILE
+      TILE_NAME.OUTSIDE_LAYER,
+      TILE_KEY.OUTSIDE_TILE
     );
     const tileSet3 = map.addTilesetImage(TILE_NAME.ROOM, TILE_KEY.ROOM);
-    map.createLayer(LAYER_NAME.OUTSIDELAYER, tileSet2!, 0, 0);
-    map.createLayer(LAYER_NAME.TOTALLAYER, tileSet1!, 0, 0);
-    const objLayer = map.createLayer(LAYER_NAME.ROOMLAYER, tileSet3!, 0, 0);
+    map.createLayer(LAYER_NAME.OUTSIDE_LAYER, tileSet2!, 0, 0);
+    map.createLayer(LAYER_NAME.TOTAL_LAYER, tileSet1!, 0, 0);
+    const objLayer = map.createLayer(LAYER_NAME.ROOM_LAYER, tileSet3!, 0, 0);
 
     objLayer?.setCollisionByProperty({ collides: true });
 
