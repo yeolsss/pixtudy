@@ -9,18 +9,21 @@ import { useGetLastDMList } from "@/hooks/query/useSupabase";
 import { supabase } from "@/supabase/supabase";
 import useChatType from "@/zustand/chatTypeStore";
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 export default function MetaverseChat() {
   const { isOpenChat, chatType } = useChatType();
   const { id, spaceId } = useMetaversePlayer();
-  const { handleSetDmChatAlarmState } = useChatAlarm();
+  const { handleSetDmChatAlarmState, setAlarmPlayStatus } = useChatAlarm();
   const dmList = useGetLastDMList(spaceId, id);
   const queryClient = useQueryClient();
+
   const handleRefetchDMList = async () => {
     await queryClient.invalidateQueries({ queryKey: ["lastDMList"] });
   };
+
+  const countUnRead = useRef<number>(0);
 
   useEffect(() => {
     const dmChannel = supabase.channel(`dm_channel_${spaceId}`);
@@ -40,10 +43,16 @@ export default function MetaverseChat() {
 
   useEffect(() => {
     if (dmList) {
+      let count = 0;
       const dmAlarmType = dmList?.reduce((acc, cur: DMListCard) => {
+        count += cur.unread_count ? cur.unread_count : 0;
         acc.push({ dm_id: cur.room_id, state: !!cur.unread_count });
         return acc;
       }, [] as dmChatAlarmState[]);
+      if (countUnRead.current < count) {
+        setAlarmPlayStatus(true);
+      }
+      countUnRead.current = count;
       handleSetDmChatAlarmState(dmAlarmType!);
     }
   }, [dmList]);
