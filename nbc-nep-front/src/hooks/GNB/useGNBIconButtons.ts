@@ -10,6 +10,7 @@ import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
 import useModal from "../modal/useModal";
+import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
@@ -17,13 +18,21 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   const { closeDm } = useDm();
   const { openChat, closeChat } = useChatType();
   const { openConfigModal } = useModal();
+  const {
+    isOpen: isScrumOpen,
+    openMetaverseScrum,
+    closeMetaverseScrum,
+  } = useMetaverseScrumIsOpen();
 
   return [
     {
       buttonImage: kanbanIcon,
       description: "칸반보드",
       type: "kanban",
-      handleOnClick: () => {},
+      handleOnClick: () => {
+        if (isScrumOpen) closeMetaverseScrum();
+        else openMetaverseScrum();
+      },
     },
     {
       buttonImage: chartIcon,

@@ -4,6 +4,7 @@ import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCatego
 import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
 import useModal from "@/hooks/modal/useModal";
 import { useGetCategories } from "@/hooks/query/useSupabase";
+import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
@@ -21,10 +22,12 @@ export default function ScrumBoard() {
   const categories = useGetCategories(spaceId);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
 
+  useCategorySubscribe(spaceId);
   // items에 대한 구독 커스텀훅
   useScrumBardItemsSubscribe(spaceId, categories as Kanban_categories[]);
 
   useEffect(() => {
+    console.log(categories);
     setCategories(categories!);
   }, [categories]);
 
@@ -63,9 +66,9 @@ const StScrumBoardWrapper = styled.div`
 const StScrumBoardContainer = styled.div`
   max-width: 1200px;
   width: 100%;
-  overflow: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  overflow: auto;
+  //-ms-overflow-style: none;
+  //scrollbar-width: none;
   margin: 0 auto;
   position: relative;
 
@@ -76,9 +79,9 @@ const StScrumBoardContainer = styled.div`
     gap: ${(props) => props.theme.spacing[12]};
     position: relative;
   }
-  &::-webkit-scrollbar {
+  /*&::-webkit-scrollbar {
     display: none;
-  }
+  }*/
 `;
 
 const StAddCategoryBtn = styled(StCTAButton)`
