@@ -66,8 +66,8 @@ const StContainer = styled.div`
   overflow-x: hidden;
   flex-wrap: nowrap;
 
-  width: 50%;
-  height: 90%;
+  width: 300px;
+  height: auto;
 
   * {
     flex-shrink: 0;

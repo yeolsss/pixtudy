@@ -17,8 +17,8 @@ module.exports = {
         socket.join(playerInfo.spaceId);
         players[socket.id] = {
           rotation: 0,
-          x: 100,
-          y: 100,
+          x: 1200,
+          y: 700,
           socketId: socket.id,
           playerId: playerInfo.playerId,
           nickname: playerInfo.nickname,

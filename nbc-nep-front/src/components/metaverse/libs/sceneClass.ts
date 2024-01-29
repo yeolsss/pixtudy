@@ -12,6 +12,21 @@ const PLAYER_BODY_SIZE_X = 32;
 const PLAYER_BODY_SIZE_Y = 32;
 const PLAYER_BODY_OFFSET_X = 0;
 const PLAYER_BODY_OFFSET_Y = 25;
+const TILE_KEY = {
+  TOTALTILE: "tiles1",
+  OUTSIDETILE: "tiles2",
+  ROOM: "tiles3",
+};
+const TILE_NAME = {
+  OUTSIDELAYER: "outSideTile",
+  TOTALLAYER: "totalTile",
+  ROOM: "room",
+};
+const LAYER_NAME = {
+  OUTSIDELAYER: "outSideLayer",
+  TOTALLAYER: "totalLayer",
+  ROOMLAYER: "roomLayer",
+};
 
 /**
  * SceneClass 클래스는 Phaser.Scene을 확장해서 게임 캐릭터의 동작을 관리한다.
@@ -33,13 +48,23 @@ export class SceneClass extends Phaser.Scene {
 
   create() {
     const map = this.make.tilemap({
-      key: "basic_map",
+      key: "bigRoom",
       tileWidth: 32,
       tileHeight: 32,
     });
-    const tileSet = map.addTilesetImage("tile1", "tiles");
-    const _ = map.createLayer("tileLayer", tileSet!, 0, 0);
-    const objLayer = map.createLayer("objectLayer", tileSet!, 0, 0);
+
+    const tileSet1 = map.addTilesetImage(
+      TILE_NAME.TOTALLAYER,
+      TILE_KEY.TOTALTILE
+    );
+    const tileSet2 = map.addTilesetImage(
+      TILE_NAME.OUTSIDELAYER,
+      TILE_KEY.OUTSIDETILE
+    );
+    const tileSet3 = map.addTilesetImage(TILE_NAME.ROOM, TILE_KEY.ROOM);
+    map.createLayer(LAYER_NAME.OUTSIDELAYER, tileSet2!, 0, 0);
+    map.createLayer(LAYER_NAME.TOTALLAYER, tileSet1!, 0, 0);
+    const objLayer = map.createLayer(LAYER_NAME.ROOMLAYER, tileSet3!, 0, 0);
 
     objLayer?.setCollisionByProperty({ collides: true });
 
@@ -47,7 +72,7 @@ export class SceneClass extends Phaser.Scene {
     this.socket = io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/metaverse`);
 
     const playerInfo = this.game.registry.get("player");
-    
+
     // socket setting
     this.otherPlayers = new OtherPlayersGroup(this);
 

@@ -3,7 +3,17 @@ import chatAlarmStore from "@/zustand/chatAlarmStore";
 
 export default function useChatAlarm() {
   // chat alarm state
-  const { dmChatStates, globalChatState, setChatAlarmState } = chatAlarmStore();
+  const {
+    dmChatStates,
+    globalChatState,
+    setChatAlarmState,
+    setAlarmSound,
+    setAlarmVolume,
+    setAlarmPlayStatus,
+    isPlay,
+    sound,
+    volume,
+  } = chatAlarmStore();
 
   // 전체 채팅 알람
   const handleSetGlobalChatAlarmState = (state: boolean) => {
@@ -18,6 +28,12 @@ export default function useChatAlarm() {
   return {
     handleSetGlobalChatAlarmState,
     handleSetDmChatAlarmState,
+    setAlarmSound,
+    setAlarmVolume,
+    setAlarmPlayStatus,
+    isPlay,
+    sound,
+    volume,
     dmChatStates,
     globalChatState,
   };

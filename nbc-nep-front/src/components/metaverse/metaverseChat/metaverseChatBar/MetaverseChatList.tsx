@@ -34,37 +34,34 @@ export default function MetaverseChatList() {
   }, [isOpenChat, chatList]);
 
   return (
-    <>
-      <StMetaverseChatList>
-        <MetaverseChatHeader
-          title={"Space Chat"}
-          handler={handleOnClickCloseChat}
-        />
-        <div>
-          {chatList?.map((chat, index) => {
-            return (
-              <MetaverseChatCard
-                chat={chat}
-                key={chat.userId + index}
-                type="GLOBAL"
-              />
-            );
-          })}
-          <div ref={endOfChatsRef}></div>
-        </div>
-      </StMetaverseChatList>
-    </>
+    <StMetaverseChatList>
+      <MetaverseChatHeader
+        title={"Space Chat"}
+        handler={handleOnClickCloseChat}
+      />
+      <div>
+        {chatList?.map((chat, index) => {
+          return (
+            <MetaverseChatCard
+              chat={chat}
+              key={chat.userId + index}
+              type="GLOBAL"
+            />
+          );
+        })}
+        <div ref={endOfChatsRef}></div>
+      </div>
+    </StMetaverseChatList>
   );
 }
 
 const StMetaverseChatList = styled.div`
   width: 100%;
-  height: 200px;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  /* overflow: scroll; */
   flex: 10;
+  height: 95%;
 
   background-color: ${({ theme }) => theme.color.metaverse.secondary};
   color: white;

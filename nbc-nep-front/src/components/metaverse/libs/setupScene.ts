@@ -6,8 +6,10 @@ export class SetupScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("tiles", "/assets/tiles/gather_pixel_spritesheet.png");
-    this.load.tilemapTiledJSON("basic_map", "/assets/map/basic_map.json");
+    this.load.image("tiles1", "/assets/tiles/gather_pixel_spritesheet.png");
+    this.load.image("tiles2", "/assets/tiles/floors_1.png");
+    this.load.image("tiles3", "/assets/tiles/zoom_university_hall.png");
+    this.load.tilemapTiledJSON("bigRoom", "/assets/map/room.json");
 
     const characters = [
       "ginger",
