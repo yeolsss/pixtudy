@@ -13,7 +13,7 @@ export default function GlobalNavBar() {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume;
+      audioRef.current.volume = volume === 0 ? volume : volume / 100;
     }
   }, [volume]);
 
@@ -22,11 +22,17 @@ export default function GlobalNavBar() {
   }, [setAlarmPlayStatus]);
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (isPlay && audio) {
-      audio.play();
+    const play = async (audio: HTMLAudioElement) => {
+      await audio.play();
       audio.addEventListener("ended", handleAudioEnd);
+    };
+
+    const audio = audioRef.current;
+
+    if (isPlay && audio) {
+      play(audio);
     }
+
     return () => {
       if (audio) {
         audio.removeEventListener("ended", handleAudioEnd);

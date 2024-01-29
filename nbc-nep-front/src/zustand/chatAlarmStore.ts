@@ -29,7 +29,7 @@ const initialChatAlarm = {
     : "/assets/alarm/Blop.mp3",
   volume: localStorage.getItem("volume")
     ? parseInt(localStorage.getItem("volume")!)
-    : 0.5,
+    : 50,
   isPlay: false,
 };
 
