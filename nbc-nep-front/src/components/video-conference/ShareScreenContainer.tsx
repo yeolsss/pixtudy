@@ -201,7 +201,7 @@ export default function ShareScreenContainer() {
   );
 }
 
-const StVideosLayoutContainer = styled.div`
+export const StVideosLayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
