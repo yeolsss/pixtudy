@@ -16,6 +16,7 @@ import {
   BACK_DROP_TYPE_DETAIL,
   BACK_DROP_TYPE_UPDATE,
 } from "@/components/scrumboard/constants/constants";
+import useConfirm from "@/hooks/confirm/useConfirm";
 
 interface ReturnType {
   handleOnClickCreate: () => void;
@@ -55,6 +56,8 @@ export default function useCreateScrumButtons(): ReturnType {
     mutationFn: patchScrumBoardItem,
   });
 
+  const { openConfirmHandler } = useConfirm();
+
   const handleOnClickCreate = () => {
     if (scrumBoardText === "") {
       setValidBoardText(true);
@@ -93,7 +96,14 @@ export default function useCreateScrumButtons(): ReturnType {
       return;
     }
 
-    if (confirm("스크럼 보드 아이템을 수정하시겠습니까?")) {
+    openConfirmHandler({
+      title: "스크럼 보드 아이템을 수정",
+      message:
+        "스크럼 보드 아이템을 수정하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      confirmButtonText: "네, 수정할게요",
+      denyButtonText: "아니요, 취소할게요",
+    }).then((result) => {
+      if (!result) return;
       updateMutate.mutate(
         {
           id: kanbanItem?.id!,
@@ -109,21 +119,30 @@ export default function useCreateScrumButtons(): ReturnType {
           },
         }
       );
-    }
+    });
   };
   const handleOnClickUpdateCancel = () => {
     setBackDropType(BACK_DROP_TYPE_DETAIL);
   };
 
   const handleOnClickDelete = () => {
-    deleteMutate.mutate(kanbanItem?.id!, {
-      onSuccess: () => {
-        toast.dark("스크럼 보드 아이템이 삭제되었습니다.");
-        closeBackDrop();
-      },
-      onError: (error) => {
-        toast.error("스크럼 보드 아이템 삭제에 실패하였습니다.");
-      },
+    openConfirmHandler({
+      title: "스크럼 보드 아이템을 삭제",
+      message:
+        "스크럼 보드 아이템을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      confirmButtonText: "네, 삭제할게요",
+      denyButtonText: "아니요, 취소할게요",
+    }).then((result) => {
+      if (!result) return;
+      deleteMutate.mutate(kanbanItem?.id!, {
+        onSuccess: () => {
+          toast.dark("스크럼 보드 아이템이 삭제되었습니다.");
+          closeBackDrop();
+        },
+        onError: (error) => {
+          toast.error("스크럼 보드 아이템 삭제에 실패하였습니다.");
+        },
+      });
     });
   };
 
