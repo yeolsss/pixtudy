@@ -38,12 +38,11 @@ export class SceneClass extends Phaser.Scene {
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
   runKey?: Phaser.Input.Keyboard.Key;
   lastDirection?: string;
-  socket: Socket;
+  socket?: Socket;
   isRunning: boolean = false;
 
-  constructor(socket: Socket) {
+  constructor() {
     super({ key: "SceneClass" });
-    this.socket = socket;
   }
 
   create() {
