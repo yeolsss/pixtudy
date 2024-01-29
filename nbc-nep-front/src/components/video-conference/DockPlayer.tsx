@@ -1,4 +1,5 @@
 import { Player, PlayerState } from "@/components/metaverse/types/metaverse";
+import { useState } from "react";
 import styled from "styled-components";
 import StBadge from "../common/badge/Badge";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
@@ -10,6 +11,11 @@ interface Props {
 }
 
 export default function DockPlayer({ player }: Props) {
+  const [isPlayerStateSelectionOpen, setPlayerStateSelection] =
+    useState<boolean>(false);
+  const handleTogglePlayerStateSelector = () => {
+    setPlayerStateSelection(!isPlayerStateSelectionOpen);
+  };
   return (
     <StDockPlayerWrapper>
       <BadgeWrapper>
@@ -26,13 +32,13 @@ export default function DockPlayer({ player }: Props) {
           y={30}
         />
       </BadgeWrapper>
-      <StDockPlayerInfoWrapper>
+      <StDockPlayerInfoWrapper onClick={handleTogglePlayerStateSelector}>
         <StDockPlayerNickname>{player?.nickname}</StDockPlayerNickname>
         <StDockPlayerState>
           {getPlayerStateToText(player?.state)}
         </StDockPlayerState>
+        {isPlayerStateSelectionOpen && <PlayerStateSelector />}
       </StDockPlayerInfoWrapper>
-      <PlayerStateSelector />
     </StDockPlayerWrapper>
   );
 }
@@ -82,12 +88,7 @@ const StDockPlayerInfoWrapper = styled.div`
   margin-left: 40px;
   padding-top: ${(props) => props.theme.spacing[4]};
 
-  &:hover {
-    background-color: ${(props) => props.theme.color.bg["success-bold"]};
-    background-blend-mode: ${StDockPlayerState} {
-      transform: translateY(
-        calc(${(props) => props.theme.spacing[12]} * -1)
-      ); // Adjust the value as needed
-    }
-  }
+  position: relative;
+
+  cursor: pointer;
 `;
