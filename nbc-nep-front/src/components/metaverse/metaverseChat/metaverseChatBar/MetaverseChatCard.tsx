@@ -20,12 +20,13 @@ export default function MetaverseChatCard({ chat, message, type }: Props) {
     userId: type === "DM" ? message?.sender_id! : chat?.playerId!,
   });
 
+  console.log("chatMessage>>>>>>>>>: ", chat);
   const getFormatTime = () => {
     switch (type) {
       case "DM":
-        return formatDate(message?.created_at!, "DM");
+        return formatDate(message?.created_at, "DM");
       case "GLOBAL":
-        return formatDate(chat?.chatTime!, "GLOBAL");
+        return formatDate(chat?.chatTime, "GLOBAL");
       default:
         return "";
     }
