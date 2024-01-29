@@ -1,5 +1,6 @@
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import { BACK_DROP_TYPE_DETAIL } from "@/components/scrumboard/constants/constants";
+import useDragItem from "@/hooks/scrumBoard/useDragItem";
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
@@ -12,13 +13,20 @@ interface Props {
   item: GetKanbanItemsByAssignees;
   category: Kanban_categories;
 }
+
 function ScrumBoardItem({ category, item }: Props) {
   const { setIsOpen } = useScrumBoardItemBackDrop();
   const handleOpenItemDetail = (item: GetKanbanItemsByAssignees) => {
     setIsOpen(category, item, BACK_DROP_TYPE_DETAIL);
   };
+  const { drag, didDrop, targetCategoryId, isDragging } = useDragItem(item);
+
   return (
-    <StListItem onClick={() => handleOpenItemDetail(item)}>
+    <StListItem
+      ref={drag}
+      $isDragging={isDragging}
+      onClick={() => handleOpenItemDetail(item)}
+    >
       <StAvatar>
         <MetaAvatar spaceAvatar={item.item_creator_space_avatar} />
       </StAvatar>
@@ -44,7 +52,7 @@ function ScrumBoardItem({ category, item }: Props) {
   );
 }
 
-const StListItem = styled.li`
+const StListItem = styled.li<{ $isDragging: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -55,7 +63,10 @@ const StListItem = styled.li`
   width: 100%;
   height: auto;
   border-radius: ${(props) => props.theme.border.radius[12]};
-  border: 1px solid ${(props) => props.theme.color.border.secondary};
+  ${(props) =>
+    props.$isDragging
+      ? `border: 2px solid ${props.theme.color.border.interactive.primary}`
+      : `border : 1px solid ${props.theme.color.border.secondary}`};
   background-color: ${(props) => props.theme.color.bg.primary};
   cursor: grab;
 

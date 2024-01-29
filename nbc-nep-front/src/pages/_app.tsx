@@ -1,8 +1,7 @@
 import CheckUserSession from "@/components/layout/CheckUserSession";
-import ConfirmModalModal from "@/components/modal/confirmModal/ConfirmModal";
-import useConfirm from "@/hooks/confirm/useConfirm";
 import GlobalStyle, { theme } from "@/styles/Globalstyle";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
@@ -23,7 +22,6 @@ type AppPropsWithLayout = AppProps & {
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const queryClient = new QueryClient();
   const getLayout = Component.getLayout ?? ((page) => page);
-  const { isOpen } = useConfirm();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -36,10 +34,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
               <Component {...pageProps} />
             </>
           )}
-          {isOpen && <ConfirmModalModal />}
+
           <ToastContainer position="top-left" autoClose={2000} />
         </ThemeProvider>
       </DndProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

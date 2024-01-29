@@ -1,11 +1,11 @@
-import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
-import styled from "styled-components";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
-import { useMutation } from "@tanstack/react-query";
 import { updateCategoryItem } from "@/api/supabase/scrumBoard";
-import { toast } from "react-toastify";
 import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
+import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
+import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import styled from "styled-components";
 
 interface Props {
   isOpen: boolean;
@@ -83,8 +83,9 @@ const StCreateCategoryBackDrop = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: ${(props) => props.theme.spacing[24]}
-    ${(props) => props.theme.spacing[8]};
+  //prettier-ignore
+  padding: ${(props) => props.theme.spacing[24]} ${(props) =>
+    props.theme.spacing[8]};
   border-radius: ${(props) => props.theme.border.radius[8]};
   &:hover {
     box-shadow: ${(props) => props.theme.elevation.Light.shadow16};

@@ -65,7 +65,6 @@ export default function InvitationCodeForm({
     getSpace(data.invitationCode, {
       onSuccess: (targetSpace) => {
         setJoinSpaceInfo(targetSpace);
-        reset({ invitationCode: "" });
       },
       onError: (error) => {
         // 에러 핸들링
@@ -88,6 +87,7 @@ export default function InvitationCodeForm({
       space_display_name: userProfile.display_name,
       user_id: userProfile.owner,
     });
+    reset({ invitationCode: "" });
   };
 
   return (

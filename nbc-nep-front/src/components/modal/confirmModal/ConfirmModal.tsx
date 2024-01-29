@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BackDrop from "../BackDrop";
 import ConfirmModalContainer from "./ConfirmModalContainer";
 
-export default function ConfirmModalModal() {
+export default function ConfirmModal() {
   const { closeConfirmHandler } = useConfirm();
   return (
     <StModalContainer>
