@@ -60,7 +60,9 @@ export default function SpaceCard({ space }: Props) {
         </StUserCounter>
       </StContentsContainer>
       <StButtonContainer>
-        <button onClick={() => handleScrumBoardClick(space ? space.space_id! : "")}>
+        <button
+          onClick={() => handleScrumBoardClick(space ? space.space_id! : "")}
+        >
           <span />
           스크럼보드
         </button>
@@ -178,6 +180,17 @@ const StButtonContainer = styled.div`
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
     padding-left: 10px;
     padding-right: 10px;
+    &:hover {
+      /* border: none; */
+      background-color: ${(props) =>
+        props.theme.color.bg.interactive["primary-hovered"]};
+    }
+    &:active {
+      /* border: none; */
+      background-color: ${(props) =>
+        props.theme.color.bg.interactive["primary-pressed"]};
+    }
+
     & > span {
       display: block;
       width: 24px;

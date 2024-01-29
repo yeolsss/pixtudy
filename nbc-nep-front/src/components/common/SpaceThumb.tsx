@@ -12,7 +12,15 @@ export default function SpaceThumb({
   height = 150,
   src = "/assets/card.png",
 }: Props) {
-  return <StImage width={width} height={height} src={src} alt="space thumb" />;
+  return (
+    <StImage
+      width={width}
+      height={height}
+      src={src}
+      alt="space thumb"
+      quality={100}
+    />
+  );
 }
 
 const StImage = styled(Image)`
