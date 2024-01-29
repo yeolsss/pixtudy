@@ -56,8 +56,10 @@ export default function Header() {
       <StNavContainer>
         <div>
           <Link href="/">Pixtudy</Link>
-          <StNavButton>서비스 소개</StNavButton>
-          <StNavButton>고객지원</StNavButton>
+          <StNavLink href="/">서비스 소개</StNavLink>
+          <StNavLink as="a" href="https://forms.gle/mDpaz6tnSpTwcLVp7">
+            고객지원
+          </StNavLink>
         </div>
         <div>
           {isLogin && <p>{display_name}</p>}
@@ -105,6 +107,19 @@ const StNavContainer = styled.header`
   }
 `;
 
+const StNavLink = styled(Link)`
+  border: none !important;
+  padding: 0 !important;
+  font-family: var(--sub-font) !important;
+  font-size: ${(props) => props.theme.body.lg.regular.fontSize} !important;
+  font-weight: ${(props) => props.theme.body.lg.regular.fontWeight} !important;
+  color: ${(props) => props.theme.color.text.disabled} !important;
+  &:hover {
+    background-color: ${(props) => props.theme.color.bg.primary} !important;
+    color: ${(props) =>
+      props.theme.color.text.interactive["secondary-pressed"]} !important;
+  }
+`;
 const StNavButton = styled.button`
   border: none;
   padding: 0;
