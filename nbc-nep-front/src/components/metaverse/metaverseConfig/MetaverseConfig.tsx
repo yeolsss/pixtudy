@@ -2,10 +2,15 @@ import ModalPortal from "@/components/modal/ModalPortal";
 import useModal from "@/hooks/modal/useModal";
 import { useState } from "react";
 import styled from "styled-components";
-import { SPACE_CONFIG, VIDEO_CONFIG } from "../constants/config.constant";
+import {
+  CHAT_CONFIG,
+  SPACE_CONFIG,
+  VIDEO_CONFIG,
+} from "../constants/config.constant";
 import { Config } from "../types/config.types";
 import ConfigAside from "./ConfigAside";
 import ConfigSpace from "./ConfigSpace";
+import ConfigSpaceChat from "./ConfigSpaceChat";
 import ConfigVideo from "./ConfigVideo";
 
 export default function MetaverseConfigModal() {
@@ -33,6 +38,7 @@ export default function MetaverseConfigModal() {
             />
             {currentConfigMode === SPACE_CONFIG && <ConfigSpace />}
             {currentConfigMode === VIDEO_CONFIG && <ConfigVideo />}
+            {currentConfigMode === CHAT_CONFIG && <ConfigSpaceChat />}
           </StConfigModalWrapper>
         </ModalPortal>
       )}

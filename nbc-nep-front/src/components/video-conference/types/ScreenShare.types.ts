@@ -95,3 +95,12 @@ export type MediaConsumeParams = {
   rtpParameters: RtpParameters;
   appData: AppData;
 };
+
+export type DeviceInputs = {
+  deviceId: string | null;
+};
+
+export type LocalStorageDeviceInputs = {
+  audio: DeviceInputs;
+  video: DeviceInputs;
+};
