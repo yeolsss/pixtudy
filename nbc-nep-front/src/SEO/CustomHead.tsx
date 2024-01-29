@@ -5,6 +5,9 @@ interface Props {
   description: string;
 }
 export default function CustomHead({ title, description }: Props) {
+  const imageUrl =
+    "https://lrklhpcxbdiunpubmvio.supabase.co/storage/v1/object/public/openGraph_image/authHero5.png";
+
   return (
     <Head>
       <title>{`Pixtudy | ${title}`}</title>
@@ -19,7 +22,7 @@ export default function CustomHead({ title, description }: Props) {
         content={`Pixtudy는 메타버스 환경에서 화면, 카메라 및 음성을 공유하고 스크럼보드를 이용해 협업할 수 있는 웹 애플리케이션입니다.`}
       />
       <meta property="og:url" content="https://www.pixtudy.site" />
-      <meta property="og:image" content="../assets/auth/authHero5.png" />
+      <meta property="og:image" content={imageUrl} />
 
       <link
         href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
