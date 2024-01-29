@@ -8,7 +8,6 @@ export default function PlayerStateSelector() {
   const { changePlayerState } = useSocket({ namespace: "/metaverse" });
 
   const handleChangeState = (state: PlayerState) => () => {
-    console.log("click");
     changePlayerState(id, state);
   };
 
@@ -56,6 +55,7 @@ const StUlWrapper = styled.ul`
 const StItem = styled.li`
   color: ${(props) => props.theme.color.text.disabled};
   display: flex;
+  font-size: ${(props) => props.theme.body.md.medium.fontSize};
   flex-direction: row;
   gap: ${(props) => props.theme.spacing[8]};
   align-items: center;
