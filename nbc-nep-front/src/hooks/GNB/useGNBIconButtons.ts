@@ -3,14 +3,15 @@ import chartIcon from "@/assets/icons/Comments.svg";
 import reportIcon from "@/assets/icons/User Headset.svg";
 import usersIcon from "@/assets/icons/Users.svg";
 import kanbanIcon from "@/assets/icons/kanbanIcon.svg";
+import { GOOGLE_FORM_LINK } from "@/components/layout/Header";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useChatType from "@/zustand/chatTypeStore";
 import useDm from "@/zustand/dmStore";
 import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
-import useModal from "../modal/useModal";
 import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
+import useModal from "../modal/useModal";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
@@ -62,7 +63,9 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       buttonImage: reportIcon,
       description: "오류제보",
       type: "report",
-      handleOnClick: () => {},
+      handleOnClick: () => {
+        window.location.href = GOOGLE_FORM_LINK;
+      },
     },
     {
       buttonImage: usersIcon,

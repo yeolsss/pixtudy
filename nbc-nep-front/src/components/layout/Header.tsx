@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { StCTAButton } from "../common/button/button.styles";
+export const GOOGLE_FORM_LINK = "https://forms.gle/mDpaz6tnSpTwcLVp7";
 
 export default function Header() {
   const router = useRouter();
@@ -57,7 +58,7 @@ export default function Header() {
         <div>
           <Link href="/">Pixtudy</Link>
           <StNavLink href="/">서비스 소개</StNavLink>
-          <StNavLink as="a" href="https://forms.gle/mDpaz6tnSpTwcLVp7">
+          <StNavLink as="a" href={GOOGLE_FORM_LINK}>
             고객지원
           </StNavLink>
         </div>
