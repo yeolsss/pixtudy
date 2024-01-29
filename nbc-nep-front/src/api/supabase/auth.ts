@@ -148,7 +148,7 @@ export const forgottenPasswordHandler = async (
     const { error: sendMailError } = await supabase.auth.resetPasswordForEmail(
       userEmail,
       {
-        redirectTo: "http://localhost:3000/changepassword",
+        redirectTo: "https://pixtudy.site/changepassword",
       }
     );
     if (sendMailError) throw sendMailError;
