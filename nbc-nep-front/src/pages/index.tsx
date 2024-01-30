@@ -181,7 +181,7 @@ const StSection = styled.div`
   }
 `;
 
-const StSectionContents = styled.div`
+export const StSectionContents = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[24]};
@@ -203,3 +203,5 @@ const StSectionContents = styled.div`
     }
   }
 `;
+
+const StSectionOne = styled(StSection)``;

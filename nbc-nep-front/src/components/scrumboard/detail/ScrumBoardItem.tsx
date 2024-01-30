@@ -93,8 +93,7 @@ const StUserInfoWrapper = styled.div`
   > div {
     display: flex;
     align-items: center;
-    height: 30px;
-
+    height: 3rem;
     > p {
       flex: 1;
     }
@@ -109,7 +108,7 @@ const StAvatar = styled.div`
 
 const StAssigneesWrapper = styled(StAvatar)`
   position: relative;
-  height: 30px;
+  height: 3rem;
   flex: 1;
 `;
 
