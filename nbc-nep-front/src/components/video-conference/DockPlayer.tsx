@@ -1,14 +1,21 @@
 import { Player, PlayerState } from "@/components/metaverse/types/metaverse";
+import { useState } from "react";
 import styled from "styled-components";
 import StBadge from "../common/badge/Badge";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import MetaAvatar from "../metaverse/avatar/MetaAvatar";
+import PlayerStateSelector from "./PlayerStateSelector";
 
 interface Props {
   player?: Player;
 }
 
 export default function DockPlayer({ player }: Props) {
+  const [isPlayerStateSelectionOpen, setPlayerStateSelection] =
+    useState<boolean>(false);
+  const handleTogglePlayerStateSelector = () => {
+    setPlayerStateSelection(!isPlayerStateSelectionOpen);
+  };
   return (
     <StDockPlayerWrapper>
       <BadgeWrapper>
@@ -19,28 +26,33 @@ export default function DockPlayer({ player }: Props) {
           y={50}
           x={4}
         />
-        <StBadge color={getPlayerStateValue(0)} x={30} y={30} />
+        <StBadge
+          color={getPlayerStateValue(player?.state || 0)}
+          x={30}
+          y={30}
+        />
       </BadgeWrapper>
-      <StDockPlayerInfoWrapper>
+      <StDockPlayerInfoWrapper onClick={handleTogglePlayerStateSelector}>
         <StDockPlayerNickname>{player?.nickname}</StDockPlayerNickname>
         <StDockPlayerState>
           {getPlayerStateToText(player?.state)}
         </StDockPlayerState>
+        {isPlayerStateSelectionOpen && <PlayerStateSelector />}
       </StDockPlayerInfoWrapper>
     </StDockPlayerWrapper>
   );
 }
 
-const getPlayerStateValue = (playerState: PlayerState) => {
+export const getPlayerStateValue = (playerState: PlayerState) => {
   return [
     "var(--state-online)",
     "var(--state-eating)",
     "var(--state-left-seat)",
-    "var(--state-disturb",
+    "var(--state-disturb)",
   ][playerState];
 };
 
-const getPlayerStateToText = (playerState?: PlayerState) => {
+export const getPlayerStateToText = (playerState?: PlayerState) => {
   if (playerState == undefined) {
     return "온라인";
   }
@@ -76,12 +88,7 @@ const StDockPlayerInfoWrapper = styled.div`
   margin-left: 40px;
   padding-top: ${(props) => props.theme.spacing[4]};
 
-  &:hover {
-    background-color: ${(props) => props.theme.color.bg["success-bold"]};
-    background-blend-mode: ${StDockPlayerState} {
-      transform: translateY(
-        calc(${(props) => props.theme.spacing[12]} * -1)
-      ); // Adjust the value as needed
-    }
-  }
+  position: relative;
+
+  cursor: pointer;
 `;

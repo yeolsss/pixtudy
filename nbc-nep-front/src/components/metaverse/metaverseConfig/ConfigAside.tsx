@@ -48,6 +48,7 @@ const StUl = styled.ul`
 
 const StLi = styled.li<{ $isSelected: boolean }>`
   padding: ${(props) => props.theme.spacing[6]};
+  cursor: pointer;
 
   ${(props) =>
     props.$isSelected &&

@@ -2,17 +2,12 @@ export type Player = {
   rotation: number;
   x: number;
   y: number;
-  socketId: string;
   playerId: string;
   nickname: string;
   character: string;
   frame: string;
   spaceId: string;
   state: PlayerState;
-};
-
-export type Players = {
-  [id: string]: Player;
 };
 
 export type MapData = {

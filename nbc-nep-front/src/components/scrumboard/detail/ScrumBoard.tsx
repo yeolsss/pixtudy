@@ -2,8 +2,9 @@ import { StCTAButton } from "@/components/common/button/button.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
 import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCategoryModal";
 import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
+import useFocusInput from "@/hooks/metaverse/useFocusInput";
 import useModal from "@/hooks/modal/useModal";
-import { useGetCategories } from "@/hooks/query/useSupabase";
+import { useGetCategories, useGetSpaceQuery } from "@/hooks/query/useSupabase";
 import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
@@ -13,6 +14,7 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
+import ScrumBoardHeader from "./ScrumBoardHeader";
 
 export default function ScrumBoard() {
   const { space_id } = useParams();
@@ -21,6 +23,7 @@ export default function ScrumBoard() {
   const { setCategories } = useScrumBoard();
   const categories = useGetCategories(spaceId);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
+  const spaceData = useGetSpaceQuery(spaceId);
 
   useCategorySubscribe(spaceId);
   // items에 대한 구독 커스텀훅
@@ -35,10 +38,13 @@ export default function ScrumBoard() {
     openCreateCategoryModal();
   };
 
+  const [handleFocus, handleBlur] = useFocusInput();
+
   return (
     <StScrumBoardWrapper>
+      <ScrumBoardHeader title={spaceData?.title!} />
       <StScrumBoardContainer>
-        <div>
+        <div onFocus={handleFocus} onBlur={handleBlur}>
           {categories?.map((category) => {
             return <ScrumBoardCategory key={category.id} category={category} />;
           })}

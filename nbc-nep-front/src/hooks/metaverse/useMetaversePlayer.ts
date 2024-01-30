@@ -1,10 +1,8 @@
 import { getPlayerSpaceData, getSpaceData } from "@/api/supabase/space";
-import { Player } from "@/components/metaverse/types/metaverse";
 import useAuth from "@/zustand/authStore";
 import usePlayerList from "@/zustand/metaversePlayerStore";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const useMetaversePlayer = () => {
   const { id, display_name } = useAuth((state) => state.user);
@@ -29,20 +27,6 @@ const useMetaversePlayer = () => {
     enabled: !!spaceId,
   });
 
-  useEffect(() => {
-    const handlePlayerList = (event: Event) => {
-      const customEvent = event as CustomEvent;
-      const players = Object.values(customEvent.detail) as Player[];
-      setPlayerList(players);
-    };
-
-    window.addEventListener("metaversePlayerList", handlePlayerList);
-
-    return () => {
-      window.removeEventListener("metaversePlayerList", handlePlayerList);
-    };
-  }, []);
-
   const findPlayerById = (playerId: string) => {
     return playerList.find((player) => player.playerId === playerId);
   };
@@ -61,6 +45,7 @@ const useMetaversePlayer = () => {
     spaceInfo,
     isOwner,
     currentUserInfo,
+    setPlayerList,
   };
 };
 

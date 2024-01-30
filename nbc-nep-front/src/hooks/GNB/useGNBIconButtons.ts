@@ -12,6 +12,8 @@ import useGlobalNavBar, {
 } from "@/zustand/globalNavBarStore";
 import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
 import useModal from "../modal/useModal";
+import { useEffect } from "react";
+import usePhaserInput from "@/hooks/phaser/usePhaserInput";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
@@ -24,6 +26,13 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
     openMetaverseScrum,
     closeMetaverseScrum,
   } = useMetaverseScrumIsOpen();
+
+  //
+  const { enableInput, disableInput } = usePhaserInput();
+  useEffect(() => {
+    if (isScrumOpen) enableInput();
+    else disableInput();
+  }, [isScrumOpen]);
 
   return [
     {
@@ -64,7 +73,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       description: "오류제보",
       type: "report",
       handleOnClick: () => {
-        window.location.href = GOOGLE_FORM_LINK;
+        window.open(GOOGLE_FORM_LINK, "_blank");
       },
     },
     {

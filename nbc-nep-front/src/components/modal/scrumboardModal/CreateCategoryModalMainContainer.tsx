@@ -1,5 +1,6 @@
 import ModalHeader from "@/components/common/modal/ModalHeader";
 import CreateCategoryForm from "@/components/scrumboard/detail/CreateCategoryForm";
+import useFocusInput from "@/hooks/metaverse/useFocusInput";
 import useModal from "@/hooks/modal/useModal";
 import styled from "styled-components";
 import {
@@ -13,14 +14,17 @@ export default function CreateCategoryModalMainContainer() {
   const handleCloseModal = () => {
     closeModal();
   };
+
+  const [handleFocus, handleBlur] = useFocusInput();
+
   return (
-    <div>
-      <StCreateCategoryModalContainer>
+    <div onFocus={handleFocus} onBlur={handleBlur}>
+      <StModalContainer>
         <ModalHeader text="카테고리 만들기" handler={handleCloseModal} />
         <StCreateCategoryModalContents>
           <CreateCategoryForm />
         </StCreateCategoryModalContents>
-      </StCreateCategoryModalContainer>
+      </StModalContainer>
     </div>
   );
 }

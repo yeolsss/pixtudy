@@ -1,6 +1,7 @@
 import { CreateSpaceInfo } from "@/components/spaces/types/space.types";
 import { supabase } from "@/supabase/supabase";
 import { Tables, TablesInsert, TablesUpdate } from "@/supabase/types/supabase";
+import { Spaces } from "@/supabase/types/supabase.tables.type";
 
 export const createSpaceHandler = async (
   spaceInfo: CreateSpaceInfo
@@ -46,20 +47,16 @@ export const joinSpaceHandler = async (
   return data;
 };
 
-export const getSpaceData = async (spaceId: string) => {
-  try {
-    const { data, error } = await supabase
-      .from("spaces")
-      .select("*")
-      .eq("id", spaceId)
-      .single();
+export const getSpaceData = async (spaceId: string): Promise<Spaces> => {
+  const { data, error } = await supabase
+    .from("spaces")
+    .select("*")
+    .eq("id", spaceId)
+    .single();
 
-    if (error) return Promise.reject(error);
+  if (error) return Promise.reject(error);
 
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
+  return data;
 };
 
 export const getPlayerSpaceData = async (

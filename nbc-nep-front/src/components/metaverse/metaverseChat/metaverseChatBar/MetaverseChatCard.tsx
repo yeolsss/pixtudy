@@ -23,9 +23,9 @@ export default function MetaverseChatCard({ chat, message, type }: Props) {
   const getFormatTime = () => {
     switch (type) {
       case "DM":
-        return formatDate(message?.created_at!, "DM");
+        return formatDate(message?.created_at, "DM");
       case "GLOBAL":
-        return formatDate(chat?.chatTime!, "GLOBAL");
+        return formatDate(chat?.chatTime, "GLOBAL");
       default:
         return "";
     }
