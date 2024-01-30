@@ -12,14 +12,22 @@ let server = http.Server(app);
 let io = socketIO(server, {
   pingTimeout: 60000,
   cors: {
-    origin: ["http://localhost:3000", "https://nbc-nep-one.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://nbc-nep-one.vercel.app",
+      "https://www.pixtudy.site",
+    ],
     credentials: true,
   },
 });
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://nbc-nep-one.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://nbc-nep-one.vercel.app",
+      "https://www.pixtudy.site",
+    ],
     credentials: true,
   })
 );
