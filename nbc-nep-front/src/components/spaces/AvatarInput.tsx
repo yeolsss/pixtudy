@@ -57,7 +57,7 @@ export const StInputContainer = styled.div`
   display: grid;
   gap: ${(props) => props.theme.spacing[12]};
   padding: ${(props) => props.theme.spacing[24]};
-  max-height: ${(props) => props.theme.unit[220]}px;
+  max-height: ${(props) => props.theme.unit[220]};
   overflow: auto;
   border-radius: ${(props) => props.theme.border.radius[12]};
   background-color: ${(props) => props.theme.color.bg.secondary};

@@ -79,7 +79,7 @@ export default function Header() {
 const StNavContainer = styled.header`
   display: flex;
   width: 100%;
-  height: ${(props) => props.theme.unit[96]}px;
+  height: ${(props) => props.theme.unit[96]};
   padding: ${(props) => props.theme.spacing[24]};
   justify-content: space-between;
   align-items: center;

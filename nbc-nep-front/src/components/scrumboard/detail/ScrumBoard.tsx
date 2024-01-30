@@ -11,7 +11,7 @@ import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { WheelEvent, useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
 import ScrumBoardHeader from "./ScrumBoardHeader";
@@ -40,10 +40,16 @@ export default function ScrumBoard() {
 
   const [handleFocus, handleBlur] = useFocusInput();
 
+  const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
+    if (e.deltaY != 0) {
+      e.currentTarget.scrollLeft += e.deltaY;
+    }
+  };
+
   return (
     <StScrumBoardWrapper>
       <ScrumBoardHeader title={spaceData?.title!} />
-      <StScrumBoardContainer>
+      <StScrumBoardContainer onWheel={handleWheel}>
         <div onFocus={handleFocus} onBlur={handleBlur}>
           {categories?.map((category) => {
             return <ScrumBoardCategory key={category.id} category={category} />;
@@ -73,11 +79,9 @@ const StScrumBoardContainer = styled.div`
   max-width: 1200px;
   width: 100%;
   overflow: auto;
-  //-ms-overflow-style: none;
-  //scrollbar-width: none;
   margin: 0 auto;
   position: relative;
-
+  padding: 0 ${(props) => props.theme.spacing[24]};
   > div {
     display: flex;
     justify-content: flex-start;
@@ -85,13 +89,10 @@ const StScrumBoardContainer = styled.div`
     gap: ${(props) => props.theme.spacing[12]};
     position: relative;
   }
-  /*&::-webkit-scrollbar {
-    display: none;
-  }*/
 `;
 
 const StAddCategoryBtn = styled(StCTAButton)`
   display: block;
   width: 320px;
-  height: ${(props) => props.theme.unit[80]}px;
+  height: ${(props) => props.theme.unit[80]};
 `;

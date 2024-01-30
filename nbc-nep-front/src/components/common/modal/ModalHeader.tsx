@@ -26,8 +26,8 @@ const StModalHeaderContainer = styled.div`
     font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
   }
   button {
-    width: ${(props) => props.theme.unit[20]}px;
-    height: ${(props) => props.theme.unit[20]}px;
+    width: ${(props) => props.theme.unit[20]};
+    height: ${(props) => props.theme.unit[20]};
     border: none;
     padding: 0;
     background: url("/assets/close.svg") no-repeat center;

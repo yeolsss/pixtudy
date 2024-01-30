@@ -78,7 +78,7 @@ const StHeaderWrapper = styled.div`
   gap: ${(props) => props.theme.spacing[16]};
   padding: 0 ${(props) => props.theme.spacing[16]};
   button {
-    height: ${(props) => props.theme.unit[48]}px;
+    height: ${(props) => props.theme.unit[48]};
     padding-top: ${(props) => props.theme.spacing[12]};
     padding-bottom: ${(props) => props.theme.spacing[12]};
     padding-right: ${(props) => props.theme.spacing[24]};

@@ -30,7 +30,7 @@ const StMetaverseDmHeader = styled.div`
   position: relative;
   margin-bottom: ${(props) => props.theme.spacing["20"]};
   > h1 {
-    font-size: ${(props) => props.theme.unit["20"]}px;
+    font-size: ${(props) => props.theme.unit["20"]};
     font-family: var(--point-font);
     font-weight: bold;
     color: ${({ theme }) => theme.color.text.interactive.inverse};
@@ -38,7 +38,7 @@ const StMetaverseDmHeader = styled.div`
   }
   > h2 {
     margin-top: ${(props) => props.theme.spacing["24"]};
-    font-size: ${(props) => props.theme.unit["16"]}px;
+    font-size: ${(props) => props.theme.unit["16"]};
     font-family: var(--main-font);
     font-weight: bold;
     color: ${({ theme }) => theme.color.text.interactive.inverse};
