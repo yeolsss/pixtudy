@@ -91,6 +91,7 @@ export type GetKanbanItemsByAssignees = {
   deadline: string;
   type: string;
   categoryId: string;
+  item_creator_space_display_name: string;
   item_creator_space_avatar: string;
   create_user_id: string;
   space_id?: string;
