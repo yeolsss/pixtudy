@@ -57,8 +57,6 @@ const StHeroBanner = styled.div<{ $formType: AuthFormType }>`
   }
 
   @media screen and (max-width: 1000px) {
-    overflow: hidden;
-    width: 0;
-    height: 0;
+    display: none;
   }
 `;

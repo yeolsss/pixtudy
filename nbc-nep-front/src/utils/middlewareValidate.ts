@@ -14,6 +14,8 @@ export function pathValidation(errorMessage: string) {
     case "invalid_path":
       toast.error("허용되지 않은 경로 접근입니다.");
       break;
+    case "mobile_error":
+      toast.error("모바일 환경에서 접근이 불가능합니다.");
     default:
       break;
   }
