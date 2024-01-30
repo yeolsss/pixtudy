@@ -52,14 +52,14 @@ const StNoticeContainer = styled.div<{ $formType: AuthFormType }>`
     margin-bottom: ${(props) => props.theme.spacing["24"]};
     & > span {
       margin-left: ${(props) => props.theme.spacing["12"]};
-      font-size: ${(props) => props.theme.unit["16"]}px;
+      font-size: ${(props) => props.theme.unit["16"]};
       font-weight: bold;
     }
   }
 
   & > p {
     line-height: ${(props) => props.theme.spacing["32"]};
-    font-size: ${(props) => props.theme.unit["20"]}px;
+    font-size: ${(props) => props.theme.unit["20"]};
     word-break: keep-all;
   }
 `;

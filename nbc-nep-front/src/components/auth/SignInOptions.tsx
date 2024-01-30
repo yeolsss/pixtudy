@@ -50,11 +50,11 @@ const StSignInOptions = styled.div`
     margin: unset;
     align-items: center;
     & label {
-      font-size: ${(props) => props.theme.unit["12"]}px;
+      font-size: ${(props) => props.theme.unit["12"]};
     }
   }
   & > span {
-    font-size: ${(props) => props.theme.unit["14"]}px;
+    font-size: ${(props) => props.theme.unit["14"]};
     cursor: pointer;
     color: #d93f21;
     &:hover {
@@ -73,8 +73,8 @@ const StSaveLoginInfoToggleCheckBox = styled.label<{ $isCheck: boolean }>`
   & > div {
     position: relative;
     margin-right: ${(props) => props.theme.spacing["8"]};
-    width: ${(props) => props.theme.unit["40"]}px;
-    height: ${(props) => props.theme.unit["20"]}px;
+    width: ${(props) => props.theme.unit["40"]};
+    height: ${(props) => props.theme.unit["20"]};
     border-radius: ${(props) => props.theme.border.radius["36"]};
     background: ${(props) =>
       props.$isCheck ? props.theme.color.success["400"] : "#ececec"};
@@ -86,8 +86,8 @@ const StSaveLoginInfoToggleCheckBox = styled.label<{ $isCheck: boolean }>`
       left: ${(props) => (props.$isCheck ? "unset" : props.theme.spacing["2"])};
       right: ${(props) =>
         props.$isCheck ? props.theme.spacing["2"] : "unset"};
-      width: ${(props) => props.theme.unit["16"]}px;
-      height: ${(props) => props.theme.unit["16"]}px;
+      width: ${(props) => props.theme.unit["16"]};
+      height: ${(props) => props.theme.unit["16"]};
       border-radius: ${(props) => props.theme.border.radius.circle};
       background: var(--color-base-white);
     }

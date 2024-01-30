@@ -123,7 +123,7 @@ const StContentsContainer = styled.div`
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 
-    padding: ${(props) => props.theme.unit[2]}px;
+    padding: ${(props) => props.theme.unit[2]};
     letter-spacing: ${(props) => props.theme.body.md.medium.letterSpacing};
     line-height: ${(props) => props.theme.body.md.medium.lineHeight};
   }
@@ -135,8 +135,8 @@ const StUserCounter = styled.div`
   gap: ${(props) => props.theme.spacing[4]};
   justify-content: center;
   align-items: center;
-  top: var(--unit-8);
-  right: var(--unit-20);
+  top: ${(props) => props.theme.unit["8"]};
+  right: ${(props) => props.theme.unit["20"]};
   padding-top: ${(props) => props.theme.spacing[4]};
   padding-bottom: ${(props) => props.theme.spacing[4]};
   padding-right: ${(props) => props.theme.spacing[8]};
@@ -155,8 +155,8 @@ const StSpan = styled.span<{ $userExists: number }>`
 `;
 
 const StUserIcon = styled(UserIcon)`
-  width: var(--unit-8);
-  height: var(--unit-8);
+  width: ${(props) => props.theme.unit["8"]};
+  height: ${(props) => props.theme.unit["8"]};
 `;
 
 const StButtonContainer = styled.div`

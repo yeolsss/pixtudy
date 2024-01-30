@@ -20,7 +20,7 @@ export default function CreateBackDropCtaButton({
 
 const StCreateBackDropCtaButton = styled.button`
   border: none;
-  font-size: ${(props) => props.theme.unit[14]}px;
+  font-size: ${(props) => props.theme.unit[14]};
   font-family: var(--point-font);
   font-weight: 300;
   padding: ${(props) => props.theme.spacing[8]} 0;

@@ -335,43 +335,15 @@ export interface Interactive4 {
 }
 
 export interface Unit {
-  "0": number;
-  "2": number;
-  "4": number;
-  "8": number;
-  "12": number;
-  "13": number;
-  "14": number;
-  "15": number;
-  "16": number;
-  "19-5": number;
-  "20": number;
-  "24": number;
-  "32": number;
-  "36": number;
-  "40": number;
-  "48": number;
-  "56": number;
-  "64": number;
-  "80": number;
-  "96": number;
-  "112": number;
-  "128": number;
-  "130": number;
-  "181": number;
-  "220": number;
-  "412": number;
-  "460": number;
-}
-
-export interface Spacing {
   "0": string;
   "2": string;
   "4": string;
   "6": string;
   "8": string;
   "12": string;
+  "13": string;
   "14": string;
+  "15": string;
   "16": string;
   "19-5": string;
   "20": string;
@@ -381,12 +353,51 @@ export interface Spacing {
   "40": string;
   "44": string;
   "48": string;
+  "56": string;
   "64": string;
   "80": string;
   "96": string;
   "112": string;
   "118": string;
   "128": string;
+  "130": string;
+  "181": string;
+  "220": string;
+  "412": string;
+  "460": string;
+}
+
+export interface Spacing {
+  "0": string;
+  "2": string;
+  "4": string;
+  "6": string;
+  "8": string;
+  "12": string;
+  "13": string;
+  "14": string;
+  "15": string;
+  "16": string;
+  "19-5": string;
+  "20": string;
+  "24": string;
+  "32": string;
+  "36": string;
+  "40": string;
+  "44": string;
+  "48": string;
+  "56": string;
+  "64": string;
+  "80": string;
+  "96": string;
+  "112": string;
+  "118": string;
+  "128": string;
+  "130": string;
+  "181": string;
+  "220": string;
+  "412": string;
+  "460": string;
 }
 
 export interface Border2 {

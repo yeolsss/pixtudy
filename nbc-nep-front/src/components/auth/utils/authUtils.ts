@@ -8,7 +8,6 @@ import {
 import {
   authHero1,
   authHero2,
-  authHero3,
   authHero4,
   authHero5,
   authHero6,
@@ -18,7 +17,6 @@ import {
 export const imageArray = [
   authHero1,
   authHero2,
-  authHero3,
   authHero4,
   authHero5,
   authHero6,
