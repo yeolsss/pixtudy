@@ -207,45 +207,49 @@ export default function VideoConference() {
   const screenCount = filterProducersByShareType("screen").length;
   return (
     <>
-      <StDockContainer $isOpen={isOpen}>
-        <DockPlayer player={currentPlayer} />
-        <ShareButton
-          type="screen"
-          onShare={handleShare}
-          shareButtonText="화면 공유"
-          stopSharingButtonText="공유 불가"
-          isCanShare={isCanShare}
-          shareSvg={ScreenOff}
-          stopShareSvg={ScreenOn}
-        >
-          <BadgeWrapper>
-            {screenCount ? <BadgeNumber count={screenCount} /> : null}
-          </BadgeWrapper>
-        </ShareButton>
-        <ShareButton
-          type="webcam"
-          onShare={handleShare}
-          onStopShare={handleStopShare}
-          shareButtonText="카메라 켜기"
-          stopSharingButtonText="카메라 끄기"
-          shareSvg={CameraOn}
-          stopShareSvg={CameraOff}
-        />
-        <ShareButton
-          type="audio"
-          onShare={handleShare}
-          onStopShare={handleStopShare}
-          shareButtonText="마이크 켜기"
-          stopSharingButtonText="마이크 끄기"
-          shareSvg={MicOn}
-          stopShareSvg={MicOff}
-        />
-      </StDockContainer>
-      {playerList.length !== 0 && (
-        <VideoSourceDisplayContainer
-          playerList={playerList}
-          currentPlayer={currentPlayer!}
-        />
+      {currentPlayer && (
+        <>
+          <StDockContainer $isOpen={isOpen}>
+            <DockPlayer player={currentPlayer} />
+            <ShareButton
+              type="screen"
+              onShare={handleShare}
+              shareButtonText="화면 공유"
+              stopSharingButtonText="공유 불가"
+              isCanShare={isCanShare}
+              shareSvg={ScreenOff}
+              stopShareSvg={ScreenOn}
+            >
+              <BadgeWrapper>
+                {screenCount ? <BadgeNumber count={screenCount} /> : null}
+              </BadgeWrapper>
+            </ShareButton>
+            <ShareButton
+              type="webcam"
+              onShare={handleShare}
+              onStopShare={handleStopShare}
+              shareButtonText="카메라 켜기"
+              stopSharingButtonText="카메라 끄기"
+              shareSvg={CameraOn}
+              stopShareSvg={CameraOff}
+            />
+            <ShareButton
+              type="audio"
+              onShare={handleShare}
+              onStopShare={handleStopShare}
+              shareButtonText="마이크 켜기"
+              stopSharingButtonText="마이크 끄기"
+              shareSvg={MicOn}
+              stopShareSvg={MicOff}
+            />
+          </StDockContainer>
+          {playerList.length !== 0 && (
+            <VideoSourceDisplayContainer
+              playerList={playerList}
+              currentPlayer={currentPlayer}
+            />
+          )}
+        </>
       )}
     </>
   );

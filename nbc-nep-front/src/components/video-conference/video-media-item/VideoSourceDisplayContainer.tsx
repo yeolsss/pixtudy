@@ -43,7 +43,7 @@ export default function VideoSourceDisplayContainer({
       {playerList.map((player) => (
         <OtherPlayerShareMediaItem
           player={player}
-          currentPlayerId={currentPlayer.playerId}
+          currentPlayerId={currentPlayer?.playerId}
           key={player.playerId}
         />
       ))}
