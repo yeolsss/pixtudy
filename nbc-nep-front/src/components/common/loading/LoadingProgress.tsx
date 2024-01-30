@@ -8,7 +8,6 @@ export default function LoadingProgress() {
   );
 }
 
-// 회전 애니메이션을 위한 keyframes 정의
 const rotate = keyframes`
   from {
     transform: rotate(0deg);

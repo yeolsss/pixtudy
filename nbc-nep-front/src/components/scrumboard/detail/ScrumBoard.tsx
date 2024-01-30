@@ -30,7 +30,6 @@ export default function ScrumBoard() {
   useScrumBardItemsSubscribe(spaceId, categories as Kanban_categories[]);
 
   useEffect(() => {
-    console.log(categories);
     setCategories(categories!);
   }, [categories]);
 
