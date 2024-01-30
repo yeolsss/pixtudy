@@ -76,11 +76,17 @@ const StMetaverseGlobalChatWrapper = styled.div<{ $isOpenChat: boolean }>`
   display: flex;
   flex-direction: column;
   max-height: 100vh;
+
   padding: ${({ theme, $isOpenChat }) =>
     `${$isOpenChat ? theme.spacing["16"] : "0"} ${$isOpenChat ? theme.spacing["12"] : "0"}`};
+
   transition:
     width 0.3s ease-in-out,
-    transform 0.3s ease-in-out;
+    transform 0.3s ease-in-out,
+    padding 0.4s ease;
+
+  word-break: keep-all;
+
   z-index: ${({ $isOpenChat }) => ($isOpenChat ? "100" : "-1")};
 `;
 

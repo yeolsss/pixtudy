@@ -52,9 +52,11 @@ const StMetaverseChatBar = styled.div<{
   display: flex;
   flex-direction: column;
   align-items: center;
+
   transition:
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
+
   z-index: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "100" : "-1")};
   padding: ${({ theme }) => theme.spacing["16"]} 0;
 `;
