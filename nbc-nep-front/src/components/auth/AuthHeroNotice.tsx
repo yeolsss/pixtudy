@@ -31,8 +31,9 @@ const StNoticeContainer = styled.div<{ $formType: AuthFormType }>`
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin-top: ${(props) => props.theme.spacing["20"]};
-  margin-bottom: ${(props) => props.theme.spacing["48"]};
+  position: absolute;
+  /* margin-top: ${(props) => props.theme.spacing["20"]}; */
+  bottom: ${(props) => props.theme.spacing["48"]};
   color: ${(props) =>
     props.$formType === "signUp"
       ? props.theme.color.base.white

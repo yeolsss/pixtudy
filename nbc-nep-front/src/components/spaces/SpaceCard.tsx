@@ -36,7 +36,7 @@ export default function SpaceCard({ space }: Props) {
   };
 
   return (
-    <StCardWrapper className={space ? "" : "tour-tooltip-item"}>
+    <StCardWrapper>
       <StContentsContainer>
         <SpaceThumb src={space?.spaces?.space_thumb || undefined} />
         <h1>
@@ -61,12 +61,16 @@ export default function SpaceCard({ space }: Props) {
       </StContentsContainer>
       <StButtonContainer>
         <button
+          className={space ? "" : "tour-tooltip-scrum-button"}
           onClick={() => handleScrumBoardClick(space ? space.space_id! : "")}
         >
           <span />
           스크럼보드
         </button>
-        <button onClick={() => handleToSpace(space ? space.space_id! : "")}>
+        <button
+          className={space ? "" : "tour-tooltip-space-button"}
+          onClick={() => handleToSpace(space ? space.space_id! : "")}
+        >
           <span />
           스페이스
         </button>
