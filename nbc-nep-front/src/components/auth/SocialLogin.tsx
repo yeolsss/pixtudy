@@ -1,8 +1,8 @@
 import { SignInPlatformType } from "@/api/supabase/auth";
+import { github, google, kakao } from "@/assets/auth";
 import { useSignInUser } from "@/hooks/query/useSupabase";
 import Image from "next/image";
 import styled from "styled-components";
-import { google, github, kakao } from "@/assets/auth";
 
 const socialLoginButtons = [
   { text: "구글", platform: "google", icon: google },
@@ -49,7 +49,7 @@ const StSocialLoginContainer = styled.div`
   width: 100%;
 
   & > h2 {
-    font-size: ${(props) => props.theme.unit[13]}px;
+    font-size: ${(props) => props.theme.unit[13]};
     line-height: ${(props) => props.theme.spacing["19-5"]};
     margin-bottom: ${(props) => props.theme.spacing[12]};
   }
@@ -58,12 +58,12 @@ const StSocialLoginContainer = styled.div`
     display: flex;
 
     & > button {
-      width: ${(props) => props.theme.unit["130"]}px;
-      height: ${(props) => props.theme.unit["48"]}px;
+      width: ${(props) => props.theme.unit["130"]};
+      height: ${(props) => props.theme.unit["48"]};
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: ${(props) => props.theme.unit["12"]}px;
+      font-size: ${(props) => props.theme.unit["12"]};
       border: 1px solid ${(props) => props.theme.color.border["sub-line"]};
       & > img {
         margin-right: ${(props) => props.theme.spacing["6"]};

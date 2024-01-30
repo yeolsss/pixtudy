@@ -10,7 +10,7 @@ export const ChangeAuthPage = styled.span`
   position: absolute;
   top: ${(props) => props.theme.spacing["40"]};
   right: ${(props) => props.theme.spacing["48"]};
-  font-size: ${(props) => props.theme.unit["14"]}px;
+  font-size: ${(props) => props.theme.unit["14"]};
   font-family: var(--sub-font);
   & > a {
     font-family: inherit;

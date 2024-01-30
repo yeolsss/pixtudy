@@ -39,6 +39,10 @@ const Home: NextPageWithLayout = () => {
             </StLink>
           </StHeroBannerWrapper>
         </StHeroBanner>
+        <div>
+          <video src="/assets/walk.mp4" autoPlay muted loop />
+          <video src="/assets/mediashare.mp4" autoPlay muted loop />
+        </div>
       </StWrapper>
     </>
   );
@@ -64,10 +68,10 @@ const StHeroBanner = styled.div`
 
   margin: 0 auto;
 
-  background-image: url("./assets/home_bg_layer.png");
+  background-image: url("./assets/landing.png");
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 0px ${(props) => props.theme.spacing[128]};
+  background-size: 50%;
+  background-position: 100% 0;
 `;
 
 const StHeroBannerWrapper = styled.div`

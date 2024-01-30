@@ -2,17 +2,19 @@ import { StCTAButton } from "@/components/common/button/button.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
 import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCategoryModal";
 import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
+import useFocusInput from "@/hooks/metaverse/useFocusInput";
 import useModal from "@/hooks/modal/useModal";
-import { useGetCategories } from "@/hooks/query/useSupabase";
+import { useGetCategories, useGetSpaceQuery } from "@/hooks/query/useSupabase";
 import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { WheelEvent, useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
+import ScrumBoardHeader from "./ScrumBoardHeader";
 
 export default function ScrumBoard() {
   const { space_id } = useParams();
@@ -21,6 +23,7 @@ export default function ScrumBoard() {
   const { setCategories } = useScrumBoard();
   const categories = useGetCategories(spaceId);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
+  const spaceData = useGetSpaceQuery(spaceId);
 
   useCategorySubscribe(spaceId);
   // items에 대한 구독 커스텀훅
@@ -35,10 +38,19 @@ export default function ScrumBoard() {
     openCreateCategoryModal();
   };
 
+  const [handleFocus, handleBlur] = useFocusInput();
+
+  const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
+    if (e.deltaY != 0) {
+      e.currentTarget.scrollLeft += e.deltaY;
+    }
+  };
+
   return (
     <StScrumBoardWrapper>
-      <StScrumBoardContainer>
-        <div>
+      <ScrumBoardHeader title={spaceData?.title!} />
+      <StScrumBoardContainer onWheel={handleWheel}>
+        <div onFocus={handleFocus} onBlur={handleBlur}>
           {categories?.map((category) => {
             return <ScrumBoardCategory key={category.id} category={category} />;
           })}
@@ -67,11 +79,9 @@ const StScrumBoardContainer = styled.div`
   max-width: 1200px;
   width: 100%;
   overflow: auto;
-  //-ms-overflow-style: none;
-  //scrollbar-width: none;
   margin: 0 auto;
   position: relative;
-
+  padding: 0 ${(props) => props.theme.spacing[24]};
   > div {
     display: flex;
     justify-content: flex-start;
@@ -79,13 +89,10 @@ const StScrumBoardContainer = styled.div`
     gap: ${(props) => props.theme.spacing[12]};
     position: relative;
   }
-  /*&::-webkit-scrollbar {
-    display: none;
-  }*/
 `;
 
 const StAddCategoryBtn = styled(StCTAButton)`
   display: block;
   width: 320px;
-  height: ${(props) => props.theme.unit[80]}px;
+  height: ${(props) => props.theme.unit[80]};
 `;

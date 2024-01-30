@@ -27,27 +27,29 @@ function ScrumBoardItem({ category, item }: Props) {
       $isDragging={isDragging}
       onClick={() => handleOpenItemDetail(item)}
     >
-      <StAvatar>
-        <MetaAvatar spaceAvatar={item.item_creator_space_avatar} />
-      </StAvatar>
       <p>{item.description}</p>
-      {item.assignees[0].userId !== null && (
-        <StAssigneesWrapper>
-          {item.assignees.map((assignee, index) => {
-            return (
-              <StMetaAvatarWrapper $index={index} key={index}>
-                <MetaAvatar
-                  spaceAvatar={assignee.spaceAvatar}
-                  width={24}
-                  height={24}
-                  y={39}
-                  x={-5}
-                />
-              </StMetaAvatarWrapper>
-            );
-          })}
-        </StAssigneesWrapper>
-      )}
+      <StUserInfoWrapper>
+        <div>
+          <p>{item.item_creator_space_display_name}</p>
+        </div>
+        {item.assignees[0].userId !== null && (
+          <StAssigneesWrapper>
+            {item.assignees.map((assignee, index) => {
+              return (
+                <StMetaAvatarWrapper $index={index} key={index}>
+                  <MetaAvatar
+                    spaceAvatar={assignee.spaceAvatar}
+                    width={24}
+                    height={24}
+                    y={39}
+                    x={-5}
+                  />
+                </StMetaAvatarWrapper>
+              );
+            })}
+          </StAssigneesWrapper>
+        )}
+      </StUserInfoWrapper>
     </StListItem>
   );
 }
@@ -73,12 +75,29 @@ const StListItem = styled.li<{ $isDragging: boolean }>`
   > p {
     color: ${(props) => props.theme.color.text.secondary};
     text-overflow: ellipsis;
-    font-size: ${(props) => props.theme.unit[14]}px;
+    font-size: ${(props) => props.theme.unit[14]};
     font-style: normal;
     font-weight: 400;
     line-height: 150%; /* 19.5px */
     letter-spacing: -0.26px;
     font-family: var(--main-font);
+  }
+`;
+
+const StUserInfoWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > div {
+    display: flex;
+    align-items: center;
+    height: 30px;
+
+    > p {
+      flex: 1;
+    }
   }
 `;
 
@@ -91,6 +110,7 @@ const StAvatar = styled.div`
 const StAssigneesWrapper = styled(StAvatar)`
   position: relative;
   height: 30px;
+  flex: 1;
 `;
 
 const StMetaAvatarWrapper = styled.div<{ $index: number }>`

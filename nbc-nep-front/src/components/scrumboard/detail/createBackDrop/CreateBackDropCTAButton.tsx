@@ -20,13 +20,15 @@ export default function CreateBackDropCtaButton({
 
 const StCreateBackDropCtaButton = styled.button`
   border: none;
-  font-size: ${(props) => props.theme.unit[14]}px;
+  font-size: ${(props) => props.theme.unit[14]};
   font-family: var(--point-font);
   font-weight: 300;
   padding: ${(props) => props.theme.spacing[8]} 0;
+  color: ${(props) => props.theme.color.text.primary};
+  opacity: 0.3;
   &:hover {
-    font-weight: 700;
     background-color: unset;
     color: ${(props) => props.theme.color.text.primary};
+    opacity: 1;
   }
 `;

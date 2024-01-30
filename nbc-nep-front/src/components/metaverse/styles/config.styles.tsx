@@ -65,8 +65,8 @@ export const StSectionChatConfig = styled.section`
     display: flex;
     align-items: center;
     & > select {
-      width: ${(props) => props.theme.unit["112"]}px;
-      height: ${(props) => props.theme.unit["24"]}px;
+      width: ${(props) => props.theme.unit["112"]};
+      height: ${(props) => props.theme.unit["24"]};
     }
 
     input[type="range"] {
@@ -79,11 +79,11 @@ export const StSectionChatConfig = styled.section`
     input[type="number"] {
       text-align: center;
       width: auto;
-      height: ${(props) => props.theme.unit["40"]}px;
+      height: ${(props) => props.theme.unit["40"]};
       outline: none;
       padding: 0;
       /* border: none; */
-      font-size: ${(props) => props.theme.unit["16"]}px;
+      font-size: ${(props) => props.theme.unit["16"]};
       margin-left: ${(props) => props.theme.spacing["12"]};
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
@@ -98,7 +98,7 @@ export const StSectionChatConfig = styled.section`
     border-top: 1px solid ${(props) => props.theme.color.bg.secondary};
   }
   & button {
-    width: ${(props) => props.theme.unit["112"]}px;
+    width: ${(props) => props.theme.unit["112"]};
     margin-top: ${(props) => props.theme.spacing["40"]};
   }
 

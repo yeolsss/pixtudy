@@ -99,7 +99,7 @@ const StInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: ${(props) => props.theme.unit[8]}px;
+  gap: ${(props) => props.theme.unit[8]};
 
   background-color: ${(props) => props.theme.color.base.white};
   padding: ${(props) =>

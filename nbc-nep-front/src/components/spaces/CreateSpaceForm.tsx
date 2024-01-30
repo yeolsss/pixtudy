@@ -19,7 +19,7 @@ import {
 import styled from "styled-components";
 import { StFormCTAButton } from "../common/button/button.styles";
 import DefaultSpanText from "../common/text/DefaultSpanText";
-import { StContentsContainer } from "./JoinSpaceForm";
+import { StContentsContainer, StErrorMessage } from "./JoinSpaceForm";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 import { CreateSpaceInfo } from "./types/space.types";
 
@@ -80,11 +80,11 @@ export default function CreateSpaceForm({
           {fieldValues.map((fieldValue) =>
             fieldValue.type === "text" ? (
               <div key={fieldValue.name}>
-                <label htmlFor={fieldValue.name}>스페이스 이름</label>
                 <StCreateInputWrapper
                   key={fieldValue.name}
                   $isError={!!errors.spaceName?.message}
                 >
+                  <label htmlFor={fieldValue.name}>스페이스 이름</label>
                   <input
                     type={fieldValue.type}
                     placeholder={fieldValue.placeholder}
@@ -92,19 +92,19 @@ export default function CreateSpaceForm({
                     {...register(fieldValue.name, fieldValue.register)}
                   />
                   {errors.spaceName && (
-                    <DefaultSpanText>
+                    <StErrorMessage>
                       {errors.spaceName?.message as string}
-                    </DefaultSpanText>
+                    </StErrorMessage>
                   )}
                 </StCreateInputWrapper>
               </div>
             ) : (
               <div key={fieldValue.name}>
-                <label htmlFor="">스페이스 설명 </label>
                 <StCreateInputWrapper
                   key={fieldValue.name}
                   $isError={!!errors.spaceDescription?.message}
                 >
+                  <label htmlFor="">스페이스 설명 </label>
                   <textarea
                     key={fieldValue.name}
                     placeholder={fieldValue.placeholder}

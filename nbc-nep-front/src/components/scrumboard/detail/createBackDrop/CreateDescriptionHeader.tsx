@@ -9,7 +9,7 @@ interface Props {
 export default function CreateDescriptionHeader({ text, countType }: Props) {
   return (
     <StCreateBackDropDescriptionHeader>
-      <CreateBackDropTitle title={"보드 설명"} />
+      <CreateBackDropTitle title={"내용"} />
       <span>
         {countType === "C" &&
           `${text?.length}/${SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH}`}
@@ -24,7 +24,7 @@ const StCreateBackDropDescriptionHeader = styled.div`
   > span {
     color: #5e6066;
     font-family: var(--sub-font);
-    font-size: ${(props) => props.theme.unit[12]}px;
+    font-size: ${(props) => props.theme.unit[12]};
     font-weight: 400;
     line-height: 100%;
   }

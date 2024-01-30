@@ -109,7 +109,7 @@ const StItemCounter = styled.p`
   align-self: end;
   padding-right: ${(props) => props.theme.spacing[24]};
   opacity: 0.3;
-  margin-bottom: -${(props) => props.theme.unit[2]}px;
+  margin-bottom: -${(props) => props.theme.unit[2]};
   font-family: var(--sub-font);
   font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
   font-weight: ${(props) => props.theme.heading.desktop.md.fontWeight};
@@ -118,9 +118,9 @@ const StItemCounter = styled.p`
 
 const StCategoryColor = styled.span<{ $color: string }>`
   display: block;
-  width: ${(props) => props.theme.unit[12]}px;
-  height: ${(props) => props.theme.unit[12]}px;
-  margin-top: -${(props) => props.theme.unit[2]}px;
+  width: ${(props) => props.theme.unit[12]};
+  height: ${(props) => props.theme.unit[12]};
+  margin-bottom: ${(props) => props.theme.unit[2]};
   border-radius: ${(props) => props.theme.border.radius.circle};
   font-size: 0;
   background-color: ${(props) => props.$color};
@@ -137,8 +137,8 @@ const StDropDownMenuBtnWrapper = styled.div`
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    width: ${(props) => props.theme.unit[20]}px;
-    height: ${(props) => props.theme.unit[20]}px;
+    width: ${(props) => props.theme.unit[20]};
+    height: ${(props) => props.theme.unit[20]};
     padding: 0;
     border: none;
     font-size: 0;

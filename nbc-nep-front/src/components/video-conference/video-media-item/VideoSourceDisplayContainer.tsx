@@ -68,6 +68,7 @@ const StContainer = styled.div`
 
   width: 300px;
   height: auto;
+  max-height: 90vh;
 
   * {
     flex-shrink: 0;

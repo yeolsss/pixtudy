@@ -4,8 +4,12 @@ import { SceneClass } from "@/components/metaverse/libs/sceneClass";
 import { SetupScene } from "@/components/metaverse/libs/setupScene";
 import MetaverseChatBar from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatBar";
 import MetaversePlayerList from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
+import MetaverseScrumBoard from "@/components/metaverse/metaverseScrumBaord/MetaverseScrumBoard";
 import useConfirm from "@/hooks/confirm/useConfirm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
+import useSocket from "@/hooks/socket/useSocket";
+import usePlayerList from "@/zustand/metaversePlayerStore";
+import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
 import Phaser from "phaser";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
@@ -19,16 +23,16 @@ import {
   VERTICAL_BORDER_OFFSET,
 } from "./constants/constant";
 import MetaverseConfigModal from "./metaverseConfig/MetaverseConfig";
-import { Game } from "./types/metaverse";
-import MetaverseScrumBoard from "@/components/metaverse/metaverseScrumBaord/MetaverseScrumBoard";
-import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
+import { Game, Player, PlayerState } from "./types/metaverse";
 
 const MetaverseComponent = () => {
   const { isOpen } = useConfirm();
-  const { spaceId, playerSpaceInfoData, id, display_name } =
+  const { spaceId, playerSpaceInfoData, id, display_name, setPlayerList } =
     useMetaversePlayer();
+  const changePlayerState = usePlayerList((state) => state.changePlayerState);
   const { isOpen: IsScrumOpen } = useMetaverseScrumIsOpen();
   const gameRef = useRef<Game | null>();
+  const { socket } = useSocket({ namespace: "/metaverse" });
 
   useEffect(() => {
     if (playerSpaceInfoData?.space_avatar) {
@@ -47,7 +51,7 @@ const MetaverseComponent = () => {
             fps: GAME_FPS,
           },
         },
-        scene: [SetupScene, SceneClass],
+        scene: [SetupScene, new SceneClass(socket, id)],
       };
 
       gameRef.current = new Phaser.Game(config);
@@ -57,13 +61,34 @@ const MetaverseComponent = () => {
         nickname: playerSpaceInfoData?.space_display_name || display_name,
         character: playerSpaceInfoData?.space_avatar || "pinkybonz",
         spaceId,
+        state: PlayerState.ONLINE,
       });
 
       PhaserSceneManager.setGameInstance(gameRef.current);
     }
+    // 스페이스 별로 인원 받는거 대시보드에서 fetch
+
+    const handlePlayerList = (players: Player[]) => {
+      setPlayerList(players);
+    };
+
+    const handleChangePlyerState = (player: Player) => {
+      changePlayerState(player.playerId, player.state);
+    };
+
+    socket.on("current-players", handlePlayerList);
+
+    socket.on("metaverse-players", handlePlayerList);
+
+    socket.on("change-player-state", handleChangePlyerState);
 
     return () => {
       // gameRef.current?.destroy(true);
+      socket.off("current-players", handlePlayerList);
+
+      socket.off("metaverse-players", handlePlayerList);
+
+      socket.off("change-player-state", handleChangePlyerState);
     };
   }, [playerSpaceInfoData]);
 
