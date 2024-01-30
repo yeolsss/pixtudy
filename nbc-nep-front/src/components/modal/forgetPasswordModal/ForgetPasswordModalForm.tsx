@@ -82,6 +82,10 @@ const StForgetPasswordModalForm = styled.form<{ $isPending: boolean }>`
   flex-direction: column;
   width: ${(props) => props.theme.unit["412"]};
 
+  @media screen and (max-width: 500px) {
+    width: 30rem;
+  }
+
   & > input {
     font-family: inherit;
   }

@@ -47,8 +47,11 @@ export const StFormContainer = styled.div`
     @media screen and (max-width: 1000px) {
       padding: ${(props) => props.theme.spacing["32"]};
       padding-top: ${(props) => props.theme.spacing["118"]};
-      width: 100%;
+      width: 80%;
       height: 100%;
+    }
+    @media screen and (max-width: 500px) {
+      width: 100%;
     }
   }
 `;
