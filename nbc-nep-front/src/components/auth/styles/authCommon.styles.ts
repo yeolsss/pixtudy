@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 export const AuthOuterContainer = styled.div`
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: auto;
+  min-height: 100%;
+  min-width: 38rem;
 `;
 
 export const ChangeAuthPage = styled.span`
@@ -17,5 +18,9 @@ export const ChangeAuthPage = styled.span`
     margin-left: ${(props) => props.theme.spacing["12"]};
     text-decoration: none;
     color: ${(props) => props.theme.color.text.interactive.primary};
+  }
+  @media screen and (max-width: 500px) {
+    font-size: ${(props) => props.theme.unit["12"]};
+    right: ${(props) => props.theme.spacing["24"]};
   }
 `;

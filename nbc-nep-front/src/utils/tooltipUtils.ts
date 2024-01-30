@@ -22,7 +22,13 @@ export const DASHBOARD_TOUR_TOOLTIP: TooltipType[] = [
     disableBeacon: true,
   },
   {
-    target: ".tour-tooltip-item button",
+    target: ".tour-tooltip-scrum-button",
+    content: "스크럼보드를 통해 프로젝드 및 일정을 관리하세요",
+    placement: "right",
+    disableBeacon: true,
+  },
+  {
+    target: ".tour-tooltip-space-button",
     content: "입장하기 버튼으로 기존 스페이스에 입장하세요.",
     placement: "right",
     disableBeacon: true,
