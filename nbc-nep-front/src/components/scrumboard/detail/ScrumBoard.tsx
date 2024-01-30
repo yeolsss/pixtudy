@@ -2,6 +2,7 @@ import { StCTAButton } from "@/components/common/button/button.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
 import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCategoryModal";
 import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
+import useFocusInput from "@/hooks/metaverse/useFocusInput";
 import useModal from "@/hooks/modal/useModal";
 import { useGetCategories } from "@/hooks/query/useSupabase";
 import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
@@ -35,10 +36,12 @@ export default function ScrumBoard() {
     openCreateCategoryModal();
   };
 
+  const [handleFocus, handleBlur] = useFocusInput();
+
   return (
     <StScrumBoardWrapper>
       <StScrumBoardContainer>
-        <div>
+        <div onFocus={handleFocus} onBlur={handleBlur}>
           {categories?.map((category) => {
             return <ScrumBoardCategory key={category.id} category={category} />;
           })}

@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import CreateDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader";
-import BackDropTextArea from "@/components/scrumboard/detail/BackDropTextArea";
-import useCreateScrumFormTextArea from "@/hooks/scrumBoard/useCreateScrumFormTextArea";
-import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
 import {
   SCRUM_BOARD_TEXT_AREA_FONT_SIZE,
   SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH,
 } from "@/components/scrumboard/constants/constants";
+import BackDropTextArea from "@/components/scrumboard/detail/BackDropTextArea";
+import CreateDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader";
+import useCreateScrumFormTextArea from "@/hooks/scrumBoard/useCreateScrumFormTextArea";
+import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
+import styled from "styled-components";
 
 export default function CreateDescription() {
   // update 할때 고려해볼려고

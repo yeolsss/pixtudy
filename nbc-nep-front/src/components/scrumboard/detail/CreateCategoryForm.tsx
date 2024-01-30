@@ -24,7 +24,6 @@ export default function CreateCategoryForm() {
     watch,
     formState: { errors, isValid },
   } = useForm<FieldValues>({ mode: "onChange" });
-
   const validateCategoryName = (name: string) => {
     return categoryNames?.some((category) => category === name)
       ? "이미 존재하는 카테고리입니다."
@@ -35,7 +34,6 @@ export default function CreateCategoryForm() {
   };
 
   const handleCreateCategory = (data: FieldValues) => {
-    console.log(data);
     const newCategory = {
       spaceId,
       name: data.name,

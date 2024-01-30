@@ -48,30 +48,28 @@ export class OtherPlayersGroup {
     otherPlayer.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
     otherPlayer.playerId = playerInfo.playerId;
 
-    // otherPlayer를 구분짓기 위한 유니크한 값으로 socketId를 사용한다. 수정할 때에는 여기서부터 시작할 것.
-    otherPlayer.socketId = playerInfo.socketId;
-
     // otherPlayer 그룹에 새 플레이어를 추가한다.
     this.group.add(otherPlayer);
 
     // otherPlayerNames에 otherPlayerNames gameObject를 추가한다.
-    this.otherPlayerNames.set(playerInfo.socketId, otherPlayerName);
+    this.otherPlayerNames.set(playerInfo.playerId, otherPlayerName);
   }
 
   /**
    *
-   * @param socketId - 삭제할 플레이어의 socketId. 이 socketId를 가진 플레이어를 group에서 찾아 삭제한다.
+   * @param playerId - 삭제할 플레이어의 socketId. 이 socketId를 가진 플레이어를 group에서 찾아 삭제한다.
    */
-  removePlayer(socketId: string) {
+  removePlayer(playerId: string) {
     this.group
       .getChildren()
       .forEach((gameObject: Phaser.GameObjects.GameObject) => {
         const otherPlayer = gameObject as CurrentPlayer;
-        const otherPlayerName = this.otherPlayerNames.get(socketId);
-        if (socketId === otherPlayer.socketId && otherPlayerName) {
+        const otherPlayerName = this.otherPlayerNames.get(playerId);
+
+        if (playerId === otherPlayer.playerId && otherPlayerName) {
           otherPlayerName.destroy();
           otherPlayer.destroy();
-          this.otherPlayerNames.delete(socketId);
+          this.otherPlayerNames.delete(playerId);
         }
       });
   }
@@ -85,8 +83,8 @@ export class OtherPlayersGroup {
       .getChildren()
       .forEach((gameObject: Phaser.GameObjects.GameObject) => {
         const otherPlayer = gameObject as CurrentPlayer;
-        const otherPlayerName = this.otherPlayerNames.get(playerInfo.socketId);
-        if (playerInfo.socketId === otherPlayer.socketId && otherPlayerName) {
+        const otherPlayerName = this.otherPlayerNames.get(playerInfo.playerId);
+        if (playerInfo.playerId === otherPlayer.playerId && otherPlayerName) {
           otherPlayer.setPosition(playerInfo.x, playerInfo.y);
           otherPlayerName.setPosition(
             playerInfo.x,
