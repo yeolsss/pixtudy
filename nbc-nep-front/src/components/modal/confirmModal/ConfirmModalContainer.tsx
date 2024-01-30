@@ -43,7 +43,7 @@ const StConfirmContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-  z-index: 10;
+  z-index: 2020;
 
   min-width: ${(props) => props.theme.unit["412"]}px;
 
