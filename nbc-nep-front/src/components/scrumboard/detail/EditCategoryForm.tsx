@@ -29,6 +29,7 @@ export default function EditCategoryForm({
   const [isOpen, setIsOpen] = useState(false);
   const { update, isSuccess, isError } = useUpdateCategory(spaceId);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
   const {
     control,
     handleSubmit,
@@ -37,6 +38,7 @@ export default function EditCategoryForm({
     setFocus,
     formState: { errors },
   } = useForm({ mode: "onChange" });
+
   const selectedOption = watch<"color">("color", currentColor);
 
   useEffect(() => {
