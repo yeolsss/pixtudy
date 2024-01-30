@@ -29,7 +29,9 @@ function ScrumBoardItem({ category, item }: Props) {
     >
       <p>{item.description}</p>
       <StUserInfoWrapper>
-        <p>{item.item_creator_space_display_name}</p>
+        <div>
+          <p>{item.item_creator_space_display_name}</p>
+        </div>
         {item.assignees[0].userId !== null && (
           <StAssigneesWrapper>
             {item.assignees.map((assignee, index) => {
@@ -87,8 +89,15 @@ const StUserInfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  > p {
-    flex: 1;
+
+  > div {
+    display: flex;
+    align-items: center;
+    height: 30px;
+
+    > p {
+      flex: 1;
+    }
   }
 `;
 
