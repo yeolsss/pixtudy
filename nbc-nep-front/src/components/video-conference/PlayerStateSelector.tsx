@@ -1,6 +1,6 @@
 import useSocket from "@/hooks/socket/useSocket";
 import useAuth from "@/zustand/authStore";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { PlayerState } from "../metaverse/types/metaverse";
 
 export default function PlayerStateSelector() {
@@ -33,6 +33,15 @@ export default function PlayerStateSelector() {
   );
 }
 
+const slideUp = keyframes`
+  from {
+    transform: translateY(20px);
+  } 
+  to {
+    transform: translateY(0);
+  }
+`;
+
 const StUlWrapper = styled.ul`
   position: absolute;
 
@@ -51,6 +60,8 @@ const StUlWrapper = styled.ul`
   background-color: ${(props) => props.theme.color.metaverse.primary};
 
   bottom: calc(100% + ${(props) => props.theme.spacing[24]});
+
+  animation: ${slideUp} 0.3s forwards;
 `;
 const StItem = styled.li`
   color: ${(props) => props.theme.color.text.disabled};
