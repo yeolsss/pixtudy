@@ -1,3 +1,4 @@
+import { theme } from "@/styles/Globalstyle";
 import Image from "next/image";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -49,9 +50,29 @@ export default function ShareButton({
         return;
       }
       onShare(mediaStream, type);
-    } catch (err) {
+    } catch (err: unknown) {
       setIsShare(false);
       console.error("on error when start capture", err);
+
+      if (err instanceof Error) {
+        if (err.name === "NotAllowedError") {
+          callToastDockError(
+            "권한 설정이 돼있지 않습니다.\n 권한 설정을 해주시길 바랍니다."
+          );
+          return;
+        }
+        if (err.name === "NotFoundError") {
+          callToastDockError(
+            "사용자 웹캠정보를 찾을 수 없습니다. 웹캠의 작동 상태 및 연결 상태를 확인해주시길 바랍니다."
+          );
+          return;
+        }
+
+        toast.error(
+          "사용자 웹 캠 정보를 가져오는 과정에서 오류가 발생했습니다. 콘솔 창에 에러 메시지와 함께 개발자에게 문의바랍니다."
+        );
+        console.error(err);
+      }
     }
   };
 
@@ -117,15 +138,9 @@ const getDisplayMedia = () =>
 
 const getUserMedia = async () => {
   const videoConstraints = await getVideoDevice();
-  if (!videoConstraints.deviceId) {
-    toast.error(
-      "카메라 공유를 할 수 없습니다. 설정창에서 카메라를 세팅하거나 권한을 허용해주세요."
-    );
-    return;
-  }
 
   return navigator.mediaDevices.getUserMedia({
-    video: { deviceId: videoConstraints.deviceId },
+    video: videoConstraints,
     audio: false,
   });
 };
@@ -133,15 +148,8 @@ const getUserMedia = async () => {
 const getUserAudio = async () => {
   const audioConstraints = await getAudioDevice();
 
-  if (!audioConstraints.deviceId) {
-    toast.error(
-      "마이크 공유를 할 수 없습니다. 설정창에서 마이크를 세팅하거나 권한을 허용해주세요."
-    );
-    return;
-  }
-
   return navigator.mediaDevices.getUserMedia({
-    audio: { deviceId: audioConstraints.deviceId },
+    audio: audioConstraints,
     video: false,
   });
 };
@@ -152,24 +160,8 @@ const getVideoDevice = async () => {
   ) as LocalStorageDeviceInputs;
 
   if (!deviceInputs) {
-    const initialInputs: LocalStorageDeviceInputs = {
-      audio: {
-        deviceId: null,
-      },
-      video: {
-        deviceId: null,
-      },
-    };
-    deviceInputs = initialInputs;
+    return true;
   }
-
-  if (!deviceInputs["video"].deviceId) {
-    const device = await getInputDevice("videoinput");
-    if (device) {
-      deviceInputs.video.deviceId = device.deviceId;
-    }
-  }
-  localStorage.setItem(DEVICE_STORAGE_KEY, JSON.stringify(deviceInputs));
 
   return deviceInputs["video"];
 };
@@ -180,44 +172,14 @@ const getAudioDevice = async () => {
   ) as LocalStorageDeviceInputs;
 
   if (!deviceInputs) {
-    const initialInputs: LocalStorageDeviceInputs = {
-      audio: {
-        deviceId: null,
-      },
-      video: {
-        deviceId: null,
-      },
-    };
-    deviceInputs = initialInputs;
+    return true;
   }
-
-  if (!deviceInputs["audio"].deviceId) {
-    const device = await getInputDevice("audioinput");
-    if (device) {
-      deviceInputs.audio.deviceId = device.deviceId;
-    }
-  }
-  localStorage.setItem(DEVICE_STORAGE_KEY, JSON.stringify(deviceInputs));
-
   return deviceInputs["audio"];
 };
 
-const getInputDevice = async (kind: "videoinput" | "audioinput") => {
-  const devices = await enumerateDevices();
-
-  return devices?.find((device) => device.kind === kind);
-};
-
-const enumerateDevices = async () => {
-  if (!navigator.mediaDevices?.enumerateDevices) {
-    toast.error("최신 브라우저를 이용해주세요. (enumerateDevices가 없습니다.");
-    return null;
-  }
-
-  try {
-    return await navigator.mediaDevices.enumerateDevices();
-  } catch (error) {
-    toast.error("사용 가능한 media device를 불러오는데 에러가 발생했습니다.");
-    console.error(error);
-  }
+const callToastDockError = (message: string) => {
+  toast.error(message, {
+    position: "bottom-center",
+    style: { bottom: theme.spacing[112], fontSize: "1.25rem" },
+  });
 };
