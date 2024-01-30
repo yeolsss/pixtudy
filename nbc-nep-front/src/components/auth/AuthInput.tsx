@@ -88,8 +88,8 @@ const StAuthInputSection = styled.div<{ $isError: boolean }>`
 
     & input {
       width: 100%;
-      height: ${(props) => props.theme.unit["48"]}px;
-      font-size: ${(props) => props.theme.unit["14"]}px;
+      height: ${(props) => props.theme.unit["48"]};
+      font-size: ${(props) => props.theme.unit["14"]};
       font-family: inherit;
       outline-color: ${(props) =>
         props.$isError
@@ -113,7 +113,7 @@ const StAuthInputSection = styled.div<{ $isError: boolean }>`
   & span {
     display: flex;
     align-items: center;
-    font-size: ${(props) => props.theme.unit["12"]}px;
+    font-size: ${(props) => props.theme.unit["12"]};
     margin-top: ${(props) => props.theme.spacing["8"]};
     & img {
       margin: 0 ${(props) => props.theme.spacing[8]};

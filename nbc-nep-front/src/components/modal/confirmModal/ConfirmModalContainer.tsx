@@ -45,7 +45,7 @@ const StConfirmContainer = styled.div`
   flex-direction: column;
   z-index: 10;
 
-  min-width: ${(props) => props.theme.unit["412"]}px;
+  min-width: ${(props) => props.theme.unit["412"]};
 
   background: ${(props) => props.theme.color.base.white};
 `;
@@ -60,12 +60,12 @@ const StConfirmTitleArea = styled.div`
     transform: translateY(-50%);
     font-family: var(--point-font);
     font-weight: bold;
-    font-size: ${(props) => props.theme.unit["12"]}px;
+    font-size: ${(props) => props.theme.unit["12"]};
   }
   & h2 {
     text-align: center;
     padding: ${(props) => `${props.theme.spacing["12"]} 0`};
-    font-size: ${(props) => props.theme.unit["20"]}px;
+    font-size: ${(props) => props.theme.unit["20"]};
     font-weight: bold;
     background: ${(props) => props.theme.color.bg.brand};
     border-radius: ${(props) =>
@@ -81,7 +81,7 @@ const StConfirmMessageContainer = styled.div`
   align-items: center;
   font-weight: bold;
   justify-content: center;
-  font-size: ${(props) => props.theme.unit["16"]}px;
+  font-size: ${(props) => props.theme.unit["16"]};
   p {
     font-family: var(--default-font);
     font-weight: normal;

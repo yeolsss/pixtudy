@@ -96,5 +96,5 @@ const StScrumBoardContainer = styled.div`
 const StAddCategoryBtn = styled(StCTAButton)`
   display: block;
   width: 320px;
-  height: ${(props) => props.theme.unit[80]}px;
+  height: ${(props) => props.theme.unit[80]};
 `;

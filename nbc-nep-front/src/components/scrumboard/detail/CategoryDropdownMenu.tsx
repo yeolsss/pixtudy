@@ -33,8 +33,8 @@ export default function CategoryDropdownMenu({
 
 const StDropdownMenuContainer = styled.ul`
   position: absolute;
-  bottom: -${(props) => props.theme.unit[40]}px;
-  left: ${(props) => props.theme.unit[24]}px;
+  bottom: -${(props) => props.theme.unit[40]};
+  left: ${(props) => props.theme.unit[24]};
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.theme.color.bg.secondary};
@@ -43,21 +43,21 @@ const StDropdownMenuContainer = styled.ul`
   &:before {
     content: "";
     position: absolute;
-    top: ${(props) => props.theme.unit[12]}px;
-    left: ${(props) => props.theme.unit[0]}px;
+    top: ${(props) => props.theme.unit[12]};
+    left: ${(props) => props.theme.unit[0]};
     width: 0;
     height: 0;
-    border: ${(props) => props.theme.unit[8]}px solid transparent;
+    border: ${(props) => props.theme.unit[8]} solid transparent;
     border-right-color: ${(props) => props.theme.color.bg.secondary};
     border-left: 0;
-    margin-left: -${(props) => props.theme.unit[8]}px;
+    margin-left: -${(props) => props.theme.unit[8]};
   }
 `;
 
 const StDropdownMenuItem = styled.li<{ $type: string }>`
   display: flex;
   justify-content: space-between;
-  width: ${(props) => props.theme.unit[80]}px;
+  width: ${(props) => props.theme.unit[80]};
   padding: ${(props) => props.theme.spacing[12]};
   cursor: pointer;
   font-family: var(--sub-font);

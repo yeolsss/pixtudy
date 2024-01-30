@@ -191,8 +191,8 @@ const StFormContainer = styled.form<{
     width: 100%;
     font-family: var(--point-font);
     font-weight: bold;
-    font-size: ${(props) => props.theme.unit[15]}px;
-    height: ${(props) => props.theme.unit["56"]}px;
+    font-size: ${(props) => props.theme.unit["15"]};
+    height: ${(props) => props.theme.unit["56"]};
     border: 1px solid
       ${(props) =>
         props.$isOpen
@@ -238,7 +238,7 @@ const StSuccessChangePw = styled.span`
   display: flex;
   justify-content: center;
   margin: ${(props) => props.theme.spacing["16"]} 0;
-  font-size: ${(props) => props.theme.unit["16"]}px;
+  font-size: ${(props) => props.theme.unit["16"]};
   font-weight: bold;
   color: ${(props) => props.theme.color.text.brand};
 `;

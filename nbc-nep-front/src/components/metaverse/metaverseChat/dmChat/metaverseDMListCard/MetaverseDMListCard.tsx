@@ -85,7 +85,7 @@ const StMetaverseDMCard = styled.div`
   flex-direction: column;
   padding-left: ${({ theme }) => theme.spacing["6"]};
   font-family: ${({ theme }) => theme.body.lg.regular.fontFamily};
-  width: ${(props) => props.theme.unit["112"]}px;
+  width: ${(props) => props.theme.unit["112"]};
 
   > span {
     display: inline-block;
@@ -94,13 +94,13 @@ const StMetaverseDMCard = styled.div`
     text-overflow: ellipsis;
   }
   > span:first-child {
-    font-size: ${(props) => props.theme.unit["14"]}px;
+    font-size: ${(props) => props.theme.unit["14"]};
     font-weight: bold;
     margin-bottom: ${(props) => props.theme.spacing["6"]};
   }
 
   > span:last-child {
-    font-size: ${(props) => props.theme.unit["12"]}px;
+    font-size: ${(props) => props.theme.unit["12"]};
   }
 `;
 
@@ -111,8 +111,8 @@ const StUnreadCount = styled.div`
   align-items: center;
   top: ${({ theme }) => theme.spacing["8"]};
   right: ${({ theme }) => theme.spacing["12"]};
-  width: ${(props) => props.theme.unit["20"]}px;
-  height: ${(props) => props.theme.unit["20"]}px;
+  width: ${(props) => props.theme.unit["20"]};
+  height: ${(props) => props.theme.unit["20"]};
   border-radius: ${({ theme }) => theme.border.radius["circle"]};
   background-color: ${({ theme }) => theme.color.bg.primary};
 

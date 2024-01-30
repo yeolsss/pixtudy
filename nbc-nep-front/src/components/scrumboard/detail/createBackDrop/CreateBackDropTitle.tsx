@@ -11,7 +11,7 @@ export default function CreateBackDropTitle({ title }: Props) {
 const StCreateBackDropTitle = styled.h2`
   color: ${(props) => props.theme.color.text.primary};
   font-family: var(--sub-font);
-  font-size: ${(props) => props.theme.unit[14]}px;
+  font-size: ${(props) => props.theme.unit[14]};
   font-style: normal;
   font-weight: 400;
   line-height: 100%;

@@ -24,14 +24,14 @@ export const StModalContainer = styled.div`
   border-radius: ${(props) => props.theme.border.radius[8]};
 
   & > h2 {
-    font-size: ${(props) => props.theme.unit["32"]}px;
+    font-size: ${(props) => props.theme.unit["32"]};
     margin-bottom: ${(props) => props.theme.spacing["12"]};
     font-family: var(--point-font);
     font-weight: bold;
   }
 
   & > span {
-    font-size: ${(props) => props.theme.unit["12"]}px;
+    font-size: ${(props) => props.theme.unit["12"]};
     margin-bottom: ${(props) => props.theme.spacing["24"]};
   }
 `;

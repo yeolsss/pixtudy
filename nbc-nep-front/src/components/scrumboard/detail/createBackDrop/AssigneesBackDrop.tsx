@@ -50,7 +50,7 @@ export const StAssigneesBackDropItemNoSearch = styled.li`
   > span {
     color: ${(props) => props.theme.color.text.secondary};
     font-family: var(--main-font);
-    font-size: ${(props) => props.theme.unit[12]}px;
+    font-size: ${(props) => props.theme.unit[12]};
     font-style: normal;
     font-weight: 400;
     line-height: 100%; /* 11px */

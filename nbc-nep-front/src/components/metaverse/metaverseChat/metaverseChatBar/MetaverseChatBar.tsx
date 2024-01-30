@@ -67,7 +67,7 @@ const StChatWrapperTitle = styled.div`
   text-align: center;
   border-bottom: 1px solid ${(props) => props.theme.color.border["sub-line"]};
   & > h1 {
-    font-size: ${(props) => props.theme.unit["20"]}px;
+    font-size: ${(props) => props.theme.unit["20"]};
     font-family: var(--point-font);
   }
 `;
@@ -77,7 +77,7 @@ const StChatButton = styled.button<{ $isActive: boolean }>`
     props.$isActive ? props.theme.color.metaverse.secondary : "none"};
   color: ${(props) => props.theme.color.base.white};
   border: none;
-  font-size: ${(props) => props.theme.unit["12"]}px;
+  font-size: ${(props) => props.theme.unit["12"]};
   font-weight: ${(props) => (props.$isActive ? "bold" : "normal")};
   font-family: var(--main-font);
   padding: 0;

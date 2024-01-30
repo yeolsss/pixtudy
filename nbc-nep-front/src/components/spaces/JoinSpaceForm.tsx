@@ -157,7 +157,7 @@ export const StInputWrapper = styled.div<{ $isError: string }>`
   margin-top: ${(props) => props.theme.spacing[6]};
   gap: ${(props) => props.theme.spacing[12]};
   width: 100%;
-  height: ${(props) => props.theme.unit[48]}px;
+  height: ${(props) => props.theme.unit[48]};
   input {
     width: 100%;
     flex-shrink: 1;
@@ -174,8 +174,8 @@ export const StInputWrapper = styled.div<{ $isError: string }>`
     }
   }
   & > button {
-    height: ${(props) => props.theme.unit[48]}px;
-    width: ${(props) => props.theme.unit[80]}px;
+    height: ${(props) => props.theme.unit[48]};
+    width: ${(props) => props.theme.unit[80]};
     padding: 0;
     font-size: ${(props) => props.theme.body.md.regular.fontSize};
   }
