@@ -1,5 +1,6 @@
 import ModalPortal from "@/components/modal/ModalPortal";
 import useModal from "@/hooks/modal/useModal";
+import { elasticPop } from "@/styles/animations";
 import { useState } from "react";
 import styled from "styled-components";
 import {
@@ -70,6 +71,8 @@ const StConfigModalWrapper = styled.div`
     "header header"
     "aside main";
   overflow: hidden;
+
+  animation: ${elasticPop} 0.25s ease-out;
 `;
 
 const StConfigHeader = styled.header`
