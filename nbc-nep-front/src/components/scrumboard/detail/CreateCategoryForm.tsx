@@ -1,6 +1,5 @@
 import { StFormCTAButton } from "@/components/common/button/button.styles";
 import DefaultSpanText from "@/components/common/text/DefaultSpanText";
-import useFocusInput from "@/hooks/metaverse/useFocusInput";
 import useModal from "@/hooks/modal/useModal";
 import { useCreateCategory, useGetCategories } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
@@ -25,11 +24,13 @@ export default function CreateCategoryForm() {
     watch,
     formState: { errors, isValid },
   } = useForm<FieldValues>({ mode: "onChange" });
+
   const validateCategoryName = (name: string) => {
     return categoryNames?.some((category) => category === name)
       ? "이미 존재하는 카테고리입니다."
       : true;
   };
+
   const handleCategorySelect = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedColor(e.target.value);
   };
@@ -44,8 +45,6 @@ export default function CreateCategoryForm() {
     closeModal();
   };
 
-  const [handleFocus, handleBlur] = useFocusInput();
-
   return (
     <StCreateCategoryForm onSubmit={handleSubmit(handleCreateCategory)}>
       <div>
@@ -57,8 +56,6 @@ export default function CreateCategoryForm() {
             required: "카테고리 이름을 입력해주세요.",
             validate: validateCategoryName,
           })}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
         />
         {errors.name && (
           <DefaultSpanText>{errors.name.message as string}</DefaultSpanText>
