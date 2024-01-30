@@ -30,8 +30,8 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   //
   const { enableInput, disableInput } = usePhaserInput();
   useEffect(() => {
-    if (isScrumOpen) enableInput();
-    else disableInput();
+    if (isScrumOpen) disableInput();
+    else enableInput();
   }, [isScrumOpen]);
 
   return [
