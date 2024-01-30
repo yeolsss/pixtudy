@@ -42,6 +42,7 @@ import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
   Space_members,
+  Spaces,
 } from "@/supabase/types/supabase.tables.type";
 import { authValidation } from "@/utils/authValidate";
 import useAuth from "@/zustand/authStore";
@@ -169,14 +170,14 @@ export function useGetSpace() {
 // }
 
 // TODO 이거 useQuery 사용하는 함수 하나 만들어야함
-// export function useGetSpaceQuery(spaceId:string) {
-//   const getSpaceOptions = {
-//     queryKey: ['userSpaces', spaceId],
-//     queryFn: () => getSpaceData(spaceId),
-//     enabled: !!spaceId,
-//   };
-//   return useCustomQuery<Spaces, Error>(getSpaceOptions);
-// }
+export function useGetSpaceQuery(spaceId: string) {
+  const getSpaceOptions = {
+    queryKey: ["userSpaces", spaceId],
+    queryFn: () => getSpaceData(spaceId),
+    enabled: !!spaceId,
+  };
+  return useCustomQuery<Spaces, Error>(getSpaceOptions);
+}
 
 // get current user spaces
 export function useGetUserSpaces(currentUserId: string) {

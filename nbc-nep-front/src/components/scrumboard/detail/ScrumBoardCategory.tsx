@@ -78,7 +78,7 @@ const StCategoryWrapper = styled.div<{ $isOver: boolean }>`
 const StItemsContainer = styled.ul`
   display: flex;
   // 임의로 설정한 높이
-  height: calc(100vh - 300px);
+  height: calc(92vh - 320px);
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[12]};
   background-color: #f5f5f5;

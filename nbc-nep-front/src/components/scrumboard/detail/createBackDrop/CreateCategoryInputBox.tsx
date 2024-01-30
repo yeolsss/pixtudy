@@ -16,7 +16,7 @@ export default function CreateCategoryInputBox() {
     <StCategoryWrapper>
       <h1>{name}</h1>
       <div onClick={handleOnClickBackDropToggle}>
-        <Image src={down} alt={"down button"} width={24} height={24} />
+        <Image src={down} alt={"down button"} width={16} height={16} />
       </div>
       <CreateCategoryBackDrop isOpen={isOpenCategoryBackDrop} />
     </StCategoryWrapper>
@@ -40,7 +40,7 @@ const StCategoryWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: ${(props) => props.theme.unit["24"]};
-    height: ${(props) => props.theme.unit["24"]};
+    width: ${(props) => props.theme.unit[32]};
+    height: ${(props) => props.theme.unit[32]};
   }
 `;

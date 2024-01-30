@@ -181,9 +181,9 @@ export const StInputWrapper = styled.div<{ $isError: string }>`
   }
 `;
 
-const StErrorMessage = styled.p`
+export const StErrorMessage = styled.p`
   position: absolute;
-  top: 0;
+  top: 4px;
   right: 0;
   color: ${(props) => props.theme.color.danger[500]};
 `;

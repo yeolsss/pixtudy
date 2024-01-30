@@ -1,5 +1,6 @@
 import { StFormCTAButton } from "@/components/common/button/button.styles";
 import DefaultSpanText from "@/components/common/text/DefaultSpanText";
+import { StErrorMessage } from "@/components/spaces/JoinSpaceForm";
 import useModal from "@/hooks/modal/useModal";
 import { useCreateCategory, useGetCategories } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
@@ -58,7 +59,7 @@ export default function CreateCategoryForm() {
           })}
         />
         {errors.name && (
-          <DefaultSpanText>{errors.name.message as string}</DefaultSpanText>
+          <StErrorMessage>{errors.name.message as string}</StErrorMessage>
         )}
       </div>
       <div>
@@ -71,19 +72,22 @@ export default function CreateCategoryForm() {
                 $isSelected={selectedColor === option}
               >
                 <StCategoryColor
-                  htmlFor={option}
                   key={option}
                   $color={option}
-                />
-                <input
-                  type="radio"
-                  id={option}
-                  value={option}
-                  {...register("color", {
-                    required: "카테고리 색상을 선택해주세요.",
-                    onChange: handleCategorySelect,
-                  })}
-                />
+                  $isSelected={selectedColor === option}
+                >
+                  <label htmlFor={option}>
+                    <input
+                      type="radio"
+                      id={option}
+                      value={option}
+                      {...register("color", {
+                        required: "카테고리 색상을 선택해주세요.",
+                        onChange: handleCategorySelect,
+                      })}
+                    />
+                  </label>
+                </StCategoryColor>
               </StCategoryItemWrapper>
             );
           })}
@@ -112,7 +116,7 @@ const StCreateCategoryForm = styled.form`
   }
   & > div > div {
     display: flex;
-    gap: ${(props) => props.theme.spacing[8]};
+    gap: ${(props) => props.theme.spacing[2]};
   }
   & h3 {
     font-size: ${(props) => props.theme.body.lg.medium.fontSize};
@@ -131,13 +135,29 @@ const StCategoryItemWrapper = styled.div<{ $isSelected: boolean }>`
   }
 `;
 
-const StCategoryColor = styled.label<{ $color: string }>`
-  display: block;
-  width: ${(props) => props.theme.unit[16]};
-  height: ${(props) => props.theme.unit[16]};
-  border-radius: ${(props) => props.theme.border.radius.circle};
-  padding: 12px;
-  background-color: ${(props) => props.$color};
+const StCategoryColor = styled.div<{ $color: string; $isSelected: boolean }>`
+  padding: ${(props) => props.theme.spacing[6]};
+  border-radius: ${(props) => props.theme.border.radius[8]};
+  background-color: ${(props) =>
+    props.$isSelected
+      ? props.theme.color.blue[100]
+      : props.theme.color.bg.secondary};
+  &:hover {
+    background-color: ${(props) => props.theme.color.blue[300]};
+  }
+  & > label {
+    display: block;
+    width: ${(props) => props.theme.unit[16]};
+    height: ${(props) => props.theme.unit[16]};
+    border-radius: ${(props) => props.theme.border.radius.circle};
+    padding: 12px;
+    background-color: ${(props) => props.$color};
+    background-image: ${(props) =>
+      props.$isSelected ? `url('/assets/selected.svg')` : "none"};
+    background-size: 12px;
+    background-repeat: no-repeat;
+    background-position: center 60%;
+  }
 `;
 
 const StSubmitBtn = styled(StFormCTAButton)`
