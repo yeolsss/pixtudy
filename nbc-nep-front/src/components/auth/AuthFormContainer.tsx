@@ -13,9 +13,13 @@ export const StFormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 50%;
+  height: auto;
+  min-height: 100%;
   background: ${(props) => props.theme.color.bg.secondary};
   position: relative;
-
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+  }
   & > div {
     padding-top: ${(props) => props.theme.spacing["118"]};
     width: ${(props) => props.theme.unit["412"]};
@@ -38,6 +42,16 @@ export const StFormContainer = styled.div`
         font-family: var(--point-font);
         color: ${(props) => props.theme.color.text.interactive.primary};
       }
+    }
+
+    @media screen and (max-width: 1000px) {
+      padding: ${(props) => props.theme.spacing["32"]};
+      padding-top: ${(props) => props.theme.spacing["118"]};
+      width: 80%;
+      height: 100%;
+    }
+    @media screen and (max-width: 500px) {
+      width: 100%;
     }
   }
 `;

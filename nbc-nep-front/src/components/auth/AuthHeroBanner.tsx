@@ -13,14 +13,14 @@ interface Props {
 export default function AuthHeroBanner({ formType }: Props) {
   const randomIndex = generateRandomIndex(imageArray.length);
   return (
-    <StHeroBannerTemp $formType={formType}>
+    <StHeroBanner $formType={formType}>
       <Link href={"/"}>pixtudy</Link>
       <Image alt="auth-hero" src={imageArray[randomIndex]} />
       <AuthHeroNotice formType={formType} />
-    </StHeroBannerTemp>
+    </StHeroBanner>
   );
 }
-const StHeroBannerTemp = styled.div<{ $formType: AuthFormType }>`
+const StHeroBanner = styled.div<{ $formType: AuthFormType }>`
   background-color: ${(props) =>
     props.$formType === "signUp"
       ? props.theme.color.bg.interactive.primary
@@ -30,7 +30,7 @@ const StHeroBannerTemp = styled.div<{ $formType: AuthFormType }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 
   & > a {
     cursor: pointer;
@@ -53,5 +53,10 @@ const StHeroBannerTemp = styled.div<{ $formType: AuthFormType }>`
   & > img {
     width: 70%;
     height: auto;
+    padding-bottom: ${(props) => props.theme.spacing["80"]};
+  }
+
+  @media screen and (max-width: 1000px) {
+    display: none;
   }
 `;
