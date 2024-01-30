@@ -1,16 +1,51 @@
 import CustomHead from "@/SEO/CustomHead";
 import { StCTALink } from "@/components/common/button/button.styles";
+import PixelBackground from "@/components/introduction/PixelBackground";
 import Layout from "@/components/layout/Layout";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
 import useAuth from "@/zustand/authStore";
 import Image from "next/image";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { NextPageWithLayout } from "./_app";
 
+const HEIGHT = 400;
+
 const Home: NextPageWithLayout = () => {
+  const [isInSection, setIsInSection] = useState<boolean>(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
   const { user } = useAuth();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (wrapperRef.current) {
+      const rect = wrapperRef.current.getBoundingClientRect();
+      console.log(rect.top, rect.right, rect.bottom, rect.left);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   window.addEventListener("resize", updateDimensions);
+  //   return () => window.removeEventListener("resize", updateDimensions);
+  // }, []);
+
+  useEffect(() => {
+    const { top, left } = wrapperRef.current?.getBoundingClientRect()!;
+    setPosition({ top, left });
+    const handleScroll = () => {
+      const { scrollY } = window;
+      console.log(scrollY);
+      if (scrollY > top) {
+        setIsInSection(true);
+      } else {
+        setIsInSection(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     const message = getCookie("message");
     if (message) {
@@ -21,6 +56,8 @@ const Home: NextPageWithLayout = () => {
         "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
   }, []);
+
+  // const imagesPerSection = {'section1', 'section2', 'section3' };
 
   return (
     <>
@@ -42,7 +79,7 @@ const Home: NextPageWithLayout = () => {
         </StHeroBanner>
         <StSection>
           <Image
-            src="/assets/introduction_2.png"
+            src="/assets/introduction/section1.png"
             alt="hero image"
             width={479}
             height={430}
@@ -60,7 +97,7 @@ const Home: NextPageWithLayout = () => {
               구성하고, 스크럼 보드에서 프로젝트 완성을 위한 업무를 계획하고
               분배하는 등 가상환경 내에서 자유롭게 소통하고 협업해보세요. 이
               과정에서 생겨나는 아이디어는 팀의 창의력을 자극하고, 업무의
-              효율성을 높여줄 겁니다.{" "}
+              효율성을 높여줄 겁니다.
             </p>
             <p>
               <span>Pixtudy</span>에서 아이디어가 살아 숨 쉬는 공간을
@@ -68,8 +105,9 @@ const Home: NextPageWithLayout = () => {
             </p>
           </StSectionContents>
         </StSection>
-        <StSection>
-          <video src="/assets/walk.mp4" autoPlay muted loop />
+        <StPixelBackground isInSection={isInSection} position={position} />
+        <StSection ref={wrapperRef}>
+          <video src="/assets/introduction/walk.mp4" autoPlay muted loop />
           <StSectionContents>
             <h2>Pixtudy에서의 회의는 다릅니다.</h2>
             <p>
@@ -79,7 +117,12 @@ const Home: NextPageWithLayout = () => {
           </StSectionContents>
         </StSection>
         <StSection>
-          <video src="/assets/mediashare.mp4" autoPlay muted loop />
+          <video
+            src="/assets/introduction/mediashare.mp4"
+            autoPlay
+            muted
+            loop
+          />
         </StSection>
       </StWrapper>
     </>
@@ -97,6 +140,7 @@ const StWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 `;
 
 const StHeroBanner = styled.div`
@@ -108,7 +152,7 @@ const StHeroBanner = styled.div`
 
   margin: 0 auto;
 
-  background-image: url("./assets/landing.png");
+  background-image: url("./assets/introduction/landing.png");
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: 100% 0;
@@ -204,4 +248,15 @@ export const StSectionContents = styled.div`
   }
 `;
 
-const StSectionOne = styled(StSection)``;
+const StSectionOne = styled(StSection)`
+  background-image: url("./assets/introduction/landing.png");
+`;
+const StSectionTwo = styled(StSection)``;
+const StSectionThree = styled(StSection)``;
+
+const StPixelBackground = styled(PixelBackground)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+`;
