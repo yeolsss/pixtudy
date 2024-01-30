@@ -1,9 +1,18 @@
 import useSocket from "@/hooks/socket/useSocket";
+import { slideDown, slideUp } from "@/styles/animations";
 import useAuth from "@/zustand/authStore";
 import styled from "styled-components";
 import { PlayerState } from "../metaverse/types/metaverse";
 
-export default function PlayerStateSelector() {
+interface Props {
+  isRender: boolean;
+  handleAnimatedEnd: () => void;
+}
+
+export default function PlayerStateSelector({
+  isRender,
+  handleAnimatedEnd,
+}: Props) {
   const { id } = useAuth((state) => state.user);
   const { changePlayerState } = useSocket({ namespace: "/metaverse" });
 
@@ -12,7 +21,7 @@ export default function PlayerStateSelector() {
   };
 
   return (
-    <StUlWrapper>
+    <StUlWrapper $isRender={isRender} onAnimationEnd={handleAnimatedEnd}>
       <StItem onClick={handleChangeState(PlayerState.ONLINE)}>
         <span></span>
         <span>온라인</span>
@@ -33,7 +42,7 @@ export default function PlayerStateSelector() {
   );
 }
 
-const StUlWrapper = styled.ul`
+const StUlWrapper = styled.ul<{ $isRender: boolean }>`
   position: absolute;
 
   border-radius: ${(props) => props.theme.border.radius[16]};
@@ -51,6 +60,8 @@ const StUlWrapper = styled.ul`
   background-color: ${(props) => props.theme.color.metaverse.primary};
 
   bottom: calc(100% + ${(props) => props.theme.spacing[24]});
+
+  animation: ${(props) => (props.$isRender ? slideUp : slideDown)} 0.3s forwards;
 `;
 const StItem = styled.li`
   color: ${(props) => props.theme.color.text.disabled};

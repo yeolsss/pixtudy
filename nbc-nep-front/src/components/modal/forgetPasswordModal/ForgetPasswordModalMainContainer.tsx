@@ -34,4 +34,11 @@ export const StModalContainer = styled.div`
     font-size: ${(props) => props.theme.unit["12"]};
     margin-bottom: ${(props) => props.theme.spacing["24"]};
   }
+
+  @media screen and (max-width: 500px) {
+    padding: ${(props) => props.theme.spacing["24"]};
+    & > h2 {
+      font-size: ${(props) => props.theme.unit["24"]};
+    }
+  }
 `;

@@ -13,6 +13,8 @@ const PAGES_PATH = [
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
+  const userAgent = request.headers.get("user-agent")?.toLowerCase();
+  const isMobile = /android|iphone/i.test(userAgent || "");
 
   const supabase = createMiddlewareClient({ req: request, res: response });
 
@@ -58,6 +60,15 @@ export async function middleware(request: NextRequest) {
     const response = NextResponse.redirect(url);
     response.cookies.set("message", "invalid_path");
     return response;
+  }
+
+  if (isMobile) {
+    if (pathname.startsWith("/metaverse")) {
+      const url = new URL("/", request.url);
+      const response = NextResponse.redirect(url);
+      response.cookies.set("message", "mobile_error");
+      return response;
+    }
   }
 
   // 로그인 세션에 따른 조건부 처리

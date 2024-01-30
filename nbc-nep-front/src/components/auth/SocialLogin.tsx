@@ -65,8 +65,16 @@ const StSocialLoginContainer = styled.div`
       justify-content: center;
       font-size: ${(props) => props.theme.unit["12"]};
       border: 1px solid ${(props) => props.theme.color.border["sub-line"]};
+      @media screen and (max-width: 1000px) {
+        width: ${(props) => props.theme.spacing["112"]};
+        font-size: ${(props) => props.theme.unit["12"]};
+      }
+
       & > img {
         margin-right: ${(props) => props.theme.spacing["6"]};
+        @media screen and (max-width: 1000px) {
+          margin-right: ${(props) => props.theme.spacing["2"]};
+        }
       }
     }
     & > button + button {
