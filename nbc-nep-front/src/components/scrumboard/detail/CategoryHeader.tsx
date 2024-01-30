@@ -120,7 +120,7 @@ const StCategoryColor = styled.span<{ $color: string }>`
   display: block;
   width: ${(props) => props.theme.unit[12]};
   height: ${(props) => props.theme.unit[12]};
-  margin-top: -${(props) => props.theme.unit[2]};
+  margin-bottom: ${(props) => props.theme.unit[2]};
   border-radius: ${(props) => props.theme.border.radius.circle};
   font-size: 0;
   background-color: ${(props) => props.$color};

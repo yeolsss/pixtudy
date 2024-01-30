@@ -28,7 +28,7 @@ export default function NoContents({ text = "게시물이 없습니다" }: Props
 
 const StNoContents = styled.div`
   display: flex;
-  height: calc(100vh - 300px);
+  height: calc(92vh - 320px);
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;

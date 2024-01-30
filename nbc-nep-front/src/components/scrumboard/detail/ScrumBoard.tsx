@@ -4,7 +4,7 @@ import CreateCategoryModal from "@/components/modal/scrumboardModal/CreateCatego
 import CreateBackDrop from "@/components/scrumboard/detail/CreateBackDrop";
 import useFocusInput from "@/hooks/metaverse/useFocusInput";
 import useModal from "@/hooks/modal/useModal";
-import { useGetCategories } from "@/hooks/query/useSupabase";
+import { useGetCategories, useGetSpaceQuery } from "@/hooks/query/useSupabase";
 import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
@@ -14,6 +14,7 @@ import { useParams } from "next/navigation";
 import { WheelEvent, useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
+import ScrumBoardHeader from "./ScrumBoardHeader";
 
 export default function ScrumBoard() {
   const { space_id } = useParams();
@@ -22,6 +23,7 @@ export default function ScrumBoard() {
   const { setCategories } = useScrumBoard();
   const categories = useGetCategories(spaceId);
   const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
+  const spaceData = useGetSpaceQuery(spaceId);
 
   useCategorySubscribe(spaceId);
   // items에 대한 구독 커스텀훅
@@ -46,6 +48,7 @@ export default function ScrumBoard() {
 
   return (
     <StScrumBoardWrapper>
+      <ScrumBoardHeader title={spaceData?.title!} />
       <StScrumBoardContainer onWheel={handleWheel}>
         <div onFocus={handleFocus} onBlur={handleBlur}>
           {categories?.map((category) => {
@@ -76,11 +79,9 @@ const StScrumBoardContainer = styled.div`
   max-width: 1200px;
   width: 100%;
   overflow: auto;
-  //-ms-overflow-style: none;
-  //scrollbar-width: none;
   margin: 0 auto;
   position: relative;
-
+  padding: 0 ${(props) => props.theme.spacing[24]};
   > div {
     display: flex;
     justify-content: flex-start;
@@ -88,9 +89,6 @@ const StScrumBoardContainer = styled.div`
     gap: ${(props) => props.theme.spacing[12]};
     position: relative;
   }
-  /*&::-webkit-scrollbar {
-    display: none;
-  }*/
 `;
 
 const StAddCategoryBtn = styled(StCTAButton)`

@@ -21,5 +21,5 @@ const StBackDrop = styled.div<{ $isBackground?: boolean }>`
   height: 100vh;
   ${(props) => props.$isBackground && "background: rgba(0, 0, 0, 0.5)"};
   backdrop-filter: blur(4px);
-  z-index: 4;
+  z-index: 2010;
 `;

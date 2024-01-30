@@ -20,8 +20,7 @@ export default function CreateBackDrop() {
     <StCreateBackDrop onFocus={handleFocus} onBlur={handleBlur}>
       <StCreateBackDropHeader>
         <CreateInput />
-
-        {BackDropTypeButtonGroup(backDropType)}
+        <div>{BackDropTypeButtonGroup(backDropType)}</div>
       </StCreateBackDropHeader>
       {backDropType === BACK_DROP_TYPE_CREATE ||
       backDropType === BACK_DROP_TYPE_UPDATE ? (
@@ -60,4 +59,8 @@ const StCreateBackDropHeader = styled.div`
   justify-content: space-between;
   flex: 1 0 0;
   gap: ${(props) => props.theme.spacing[4]};
+  & > div {
+    display: flex;
+    gap: ${(props) => props.theme.spacing[12]};
+  }
 `;
