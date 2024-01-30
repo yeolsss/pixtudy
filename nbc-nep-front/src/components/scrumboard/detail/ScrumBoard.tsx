@@ -11,7 +11,7 @@ import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { WheelEvent, useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
 
@@ -38,9 +38,17 @@ export default function ScrumBoard() {
 
   const [handleFocus, handleBlur] = useFocusInput();
 
+  const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
+    if (e.deltaY != 0) {
+      // Scrolling up or down
+      e.currentTarget.scrollLeft += e.deltaY;
+      e.preventDefault();
+    }
+  };
+
   return (
     <StScrumBoardWrapper>
-      <StScrumBoardContainer>
+      <StScrumBoardContainer onWheel={handleWheel}>
         <div onFocus={handleFocus} onBlur={handleBlur}>
           {categories?.map((category) => {
             return <ScrumBoardCategory key={category.id} category={category} />;

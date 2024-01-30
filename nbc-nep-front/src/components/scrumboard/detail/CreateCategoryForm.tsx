@@ -1,5 +1,6 @@
 import { StFormCTAButton } from "@/components/common/button/button.styles";
 import DefaultSpanText from "@/components/common/text/DefaultSpanText";
+import useFocusInput from "@/hooks/metaverse/useFocusInput";
 import useModal from "@/hooks/modal/useModal";
 import { useCreateCategory, useGetCategories } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
@@ -44,6 +45,8 @@ export default function CreateCategoryForm() {
     closeModal();
   };
 
+  const [handleFocus, handleBlur] = useFocusInput();
+
   return (
     <StCreateCategoryForm onSubmit={handleSubmit(handleCreateCategory)}>
       <div>
@@ -55,6 +58,8 @@ export default function CreateCategoryForm() {
             required: "카테고리 이름을 입력해주세요.",
             validate: validateCategoryName,
           })}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
         {errors.name && (
           <DefaultSpanText>{errors.name.message as string}</DefaultSpanText>
