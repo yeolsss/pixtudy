@@ -97,10 +97,10 @@ export type MediaConsumeParams = {
 };
 
 export type DeviceInputs = {
-  deviceId: string | null;
+  deviceId: string;
 };
 
 export type LocalStorageDeviceInputs = {
-  audio: DeviceInputs;
-  video: DeviceInputs;
+  audio: MediaTrackConstraints;
+  video: MediaTrackConstraints;
 };
