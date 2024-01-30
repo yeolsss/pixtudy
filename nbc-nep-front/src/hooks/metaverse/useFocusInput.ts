@@ -9,7 +9,6 @@ export default function useFocusInput() {
       e.target instanceof HTMLInputElement ||
       e.target instanceof HTMLTextAreaElement
     ) {
-      console.log("blur here");
       enableInput();
     }
   };
@@ -19,7 +18,6 @@ export default function useFocusInput() {
       e.target instanceof HTMLInputElement ||
       e.target instanceof HTMLTextAreaElement
     ) {
-      console.log("focus here");
       disableInput();
     }
   };
