@@ -5,6 +5,7 @@ import { useGetCategoryItems } from "@/hooks/query/useSupabase";
 import useDropItem from "@/hooks/scrumBoard/useDropItem";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import { WheelEvent } from "react";
 import styled from "styled-components";
 import CategoryHeader from "./CategoryHeader";
 import ScrumBoardItem from "./ScrumBoardItem";
@@ -19,11 +20,14 @@ export default function ScrumBoardCategory({ category }: Props) {
   const handleAddItem = () => {
     setIsOpen(category, null, BACK_DROP_TYPE_CREATE);
   };
-  const { drop, canDrop, isOver, didDrop, dropResult } = useDropItem(
-    category.id
-  );
+  const { drop, isOver } = useDropItem(category.id);
 
   const items = useGetCategoryItems(categoryId);
+
+  const handleWheel = (e: WheelEvent<HTMLUListElement>) => {
+    const element = e.currentTarget;
+    if (element.scrollHeight > element.clientHeight) e.stopPropagation();
+  };
 
   /**
    * TODO: item 배치하는 순서 기준이 뭐지?
@@ -37,7 +41,7 @@ export default function ScrumBoardCategory({ category }: Props) {
         itemCount={items ? items?.length : 0}
       />
       {items?.length ? (
-        <StItemsContainer ref={drop}>
+        <StItemsContainer ref={drop} onWheel={handleWheel}>
           {items?.map((item, index) => {
             return (
               <ScrumBoardItem key={index} item={item} category={category} />

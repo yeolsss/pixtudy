@@ -40,9 +40,7 @@ export default function ScrumBoard() {
 
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     if (e.deltaY != 0) {
-      // Scrolling up or down
       e.currentTarget.scrollLeft += e.deltaY;
-      e.preventDefault();
     }
   };
 
