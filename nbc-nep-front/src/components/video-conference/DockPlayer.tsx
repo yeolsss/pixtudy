@@ -1,4 +1,5 @@
 import { Player, PlayerState } from "@/components/metaverse/types/metaverse";
+import useAnimated from "@/hooks/useAnimated";
 import { useState } from "react";
 import styled from "styled-components";
 import StBadge from "../common/badge/Badge";
@@ -13,9 +14,14 @@ interface Props {
 export default function DockPlayer({ player }: Props) {
   const [isPlayerStateSelectionOpen, setPlayerStateSelection] =
     useState<boolean>(false);
+
   const handleTogglePlayerStateSelector = () => {
     setPlayerStateSelection(!isPlayerStateSelectionOpen);
   };
+
+  const [shouldRender, handleAnimatedEnd] = useAnimated(
+    isPlayerStateSelectionOpen
+  );
   return (
     <StDockPlayerWrapper>
       <BadgeWrapper>
@@ -37,7 +43,12 @@ export default function DockPlayer({ player }: Props) {
         <StDockPlayerState>
           {getPlayerStateToText(player?.state)}
         </StDockPlayerState>
-        {isPlayerStateSelectionOpen && <PlayerStateSelector />}
+        {shouldRender && (
+          <PlayerStateSelector
+            isRender={isPlayerStateSelectionOpen}
+            handleAnimatedEnd={handleAnimatedEnd}
+          />
+        )}
       </StDockPlayerInfoWrapper>
     </StDockPlayerWrapper>
   );
