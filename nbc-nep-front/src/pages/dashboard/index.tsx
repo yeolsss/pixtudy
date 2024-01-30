@@ -10,7 +10,6 @@ import ModalPortal from "@/components/modal/ModalPortal";
 import Spaces from "@/components/spaces/Spaces";
 import useModal from "@/hooks/modal/useModal";
 import useTourTooltip from "@/hooks/tooltip/useTourTooltip";
-import { theme } from "@/styles/Globalstyle";
 import { Database, Tables } from "@/supabase/types/supabase";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
@@ -61,7 +60,7 @@ const Dashboard: NextPage<Props> & {
       <CustomHead title={"Dashboard"} description={"Dashboard 페이지입니다."} />
       <StSwiperWrapper>
         <Swiper
-          spaceBetween={theme.unit[24]}
+          spaceBetween={"24"}
           slidesPerView={2.8}
           modules={[Pagination, Mousewheel]}
           pagination={{ clickable: true }}
@@ -81,7 +80,7 @@ const Dashboard: NextPage<Props> & {
             </SwiperSlide>
           ))}
         </Swiper>
-        <StBlurDiv />
+        {!run && <StBlurDiv />}
       </StSwiperWrapper>
       {isAvatarModalOpen && (
         <ModalPortal>
@@ -168,13 +167,13 @@ export const getStaticProps = async () => {
 };
 
 const StSwiperWrapper = styled.div`
-  max-width: 1280px;
-  min-width: 1280px;
+  max-width: 128rem;
+  min-width: 128rem;
   margin: 0 auto;
   position: relative;
 
   .swiper {
-    height: 297px;
+    height: 29.7rem;
     width: 100%;
     padding: ${(props) =>
       `${props.theme.spacing[24]} ${props.theme.spacing[40]}`};
@@ -182,8 +181,8 @@ const StSwiperWrapper = styled.div`
 `;
 
 const StBlurDiv = styled.div`
-  width: 313px;
-  height: 286px;
+  width: 31.3rem;
+  height: 28.6rem;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.05) 0%,
@@ -194,7 +193,7 @@ const StBlurDiv = styled.div`
   z-index: 2;
   pointer-events: none;
   top: 0;
-  right: -${(props) => props.theme.unit[32]};
+  right: 0;
   position: absolute;
 `;
 
