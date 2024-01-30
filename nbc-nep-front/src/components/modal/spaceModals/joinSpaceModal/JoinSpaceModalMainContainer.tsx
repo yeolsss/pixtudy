@@ -79,7 +79,7 @@ export const StModalContents = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${(props) => props.theme.spacing[16]};
-  width: ${(props) => props.theme.unit[460]}px;
+  width: ${(props) => props.theme.unit[460]};
   padding: ${(props) => props.theme.spacing[32]};
   padding-top: 0;
   height: 100%;

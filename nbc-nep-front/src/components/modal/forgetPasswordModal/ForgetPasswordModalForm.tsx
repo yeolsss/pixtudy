@@ -80,7 +80,7 @@ export default function ForgetPasswordModalForm({}) {
 const StForgetPasswordModalForm = styled.form<{ $isPending: boolean }>`
   display: flex;
   flex-direction: column;
-  width: ${(props) => props.theme.unit["412"]}px;
+  width: ${(props) => props.theme.unit["412"]};
 
   & > input {
     font-family: inherit;
@@ -88,8 +88,8 @@ const StForgetPasswordModalForm = styled.form<{ $isPending: boolean }>`
 
   & > button {
     margin-top: ${(props) => props.theme.spacing["20"]};
-    font-size: ${(props) => props.theme.unit["16"]}px;
-    height: ${(props) => props.theme.unit["40"]}px;
+    font-size: ${(props) => props.theme.unit["16"]};
+    height: ${(props) => props.theme.unit["40"]};
     background: ${(props) =>
       props.$isPending
         ? props.theme.color.bg.disabled
@@ -102,7 +102,7 @@ const StForgetPasswordModalForm = styled.form<{ $isPending: boolean }>`
   & > span {
     display: flex;
     align-items: center;
-    font-size: ${(props) => props.theme.unit["12"]}px;
+    font-size: ${(props) => props.theme.unit["12"]};
     margin-top: ${(props) => props.theme.spacing["8"]};
     line-height: ${(props) => props.theme.spacing["20"]};
     white-space: pre-line;

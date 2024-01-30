@@ -39,7 +39,7 @@ const StScrumItemDetailWrapper = styled.div`
 const StDescription = styled.p`
   color: ${(props) => props.theme.color.text.secondary};
   text-overflow: ellipsis;
-  font-size: ${(props) => props.theme.unit[16]}px;
+  font-size: ${(props) => props.theme.unit[16]};
   font-style: normal;
   font-weight: 400;
   line-height: 150%; /* 19.5px */
@@ -52,6 +52,6 @@ const StCreateDisplayName = styled.div`
   display: flex;
   justify-content: flex-end;
   > span {
-    font-size: ${(props) => props.theme.unit[14]}px;
+    font-size: ${(props) => props.theme.unit[14]};
   }
 `;

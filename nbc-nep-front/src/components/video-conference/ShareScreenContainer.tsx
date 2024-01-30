@@ -218,7 +218,7 @@ export const StVideosLayoutContainer = styled.div`
     position: absolute;
     background: ${(props) => props.theme.color.bg.interactive.danger};
     color: ${(props) => props.theme.color.base.white};
-    font-size: ${(props) => props.theme.unit["16"]}px;
+    font-size: ${(props) => props.theme.unit["16"]};
     border: none;
     right: 1rem;
     top: 1rem;
@@ -235,11 +235,11 @@ const StNoActiveLayoutDiv = styled.div`
   flex-direction: column;
   align-items: center;
   & h4 {
-    font-size: ${(props) => props.theme.unit["24"]}px;
+    font-size: ${(props) => props.theme.unit["24"]};
     margin-bottom: ${(props) => props.theme.spacing["40"]};
   }
   & > span {
-    font-size: ${(props) => props.theme.unit["16"]}px;
+    font-size: ${(props) => props.theme.unit["16"]};
   }
   & > span + span {
     margin-top: ${(props) => props.theme.spacing["20"]};

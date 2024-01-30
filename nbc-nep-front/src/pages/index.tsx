@@ -39,6 +39,10 @@ const Home: NextPageWithLayout = () => {
             </StLink>
           </StHeroBannerWrapper>
         </StHeroBanner>
+        <div>
+          <video src="/assets/walk.mp4" autoPlay muted loop />
+          <video src="/assets/mediashare.mp4" autoPlay muted loop />
+        </div>
       </StWrapper>
     </>
   );

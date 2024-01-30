@@ -75,7 +75,7 @@ const StListItem = styled.li<{ $isDragging: boolean }>`
   > p {
     color: ${(props) => props.theme.color.text.secondary};
     text-overflow: ellipsis;
-    font-size: ${(props) => props.theme.unit[14]}px;
+    font-size: ${(props) => props.theme.unit[14]};
     font-style: normal;
     font-weight: 400;
     line-height: 150%; /* 19.5px */

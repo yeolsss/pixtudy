@@ -24,11 +24,13 @@ export default function CreateCategoryForm() {
     watch,
     formState: { errors, isValid },
   } = useForm<FieldValues>({ mode: "onChange" });
+
   const validateCategoryName = (name: string) => {
     return categoryNames?.some((category) => category === name)
       ? "이미 존재하는 카테고리입니다."
       : true;
   };
+
   const handleCategorySelect = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedColor(e.target.value);
   };
@@ -131,8 +133,8 @@ const StCategoryItemWrapper = styled.div<{ $isSelected: boolean }>`
 
 const StCategoryColor = styled.label<{ $color: string }>`
   display: block;
-  width: ${(props) => props.theme.unit[16]}px;
-  height: ${(props) => props.theme.unit[16]}px;
+  width: ${(props) => props.theme.unit[16]};
+  height: ${(props) => props.theme.unit[16]};
   border-radius: ${(props) => props.theme.border.radius.circle};
   padding: 12px;
   background-color: ${(props) => props.$color};
