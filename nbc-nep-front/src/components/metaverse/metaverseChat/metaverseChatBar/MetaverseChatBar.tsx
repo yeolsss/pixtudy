@@ -59,6 +59,11 @@ const StMetaverseChatBar = styled.div<{
 
   z-index: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "100" : "-1")};
   padding: ${({ theme }) => theme.spacing["16"]} 0;
+
+  * {
+    color: ${(props) =>
+      props.$isOpenChatSection ? "white" : "rgba(0,0,0,0)"} !important;
+  }
 `;
 const StChatWrapperTitle = styled.div`
   font-weight: bold;
