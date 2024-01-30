@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
 export default function AuthFormContainer({ children }: PropsWithChildren) {
   return (
     <StFormContainer>
+      <Link href={"/"}>pixtudy</Link>
       <div>{children}</div>
     </StFormContainer>
   );
@@ -17,9 +19,18 @@ export const StFormContainer = styled.div`
   min-height: 100%;
   background: ${(props) => props.theme.color.bg.secondary};
   position: relative;
-  @media screen and (max-width: 1000px) {
-    width: 100%;
+  & > a {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    top: ${(props) => props.theme.spacing["36"]};
+    left: ${(props) => props.theme.spacing["48"]};
+    color: ${(props) => props.theme.color.text.interactive.primary};
+    font-family: var(--point-font);
+    font-size: ${(props) => props.theme.unit["16"]};
+    font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
   }
+
   & > div {
     padding-top: ${(props) => props.theme.spacing["118"]};
     width: ${(props) => props.theme.unit["412"]};
@@ -52,6 +63,12 @@ export const StFormContainer = styled.div`
     }
     @media screen and (max-width: 500px) {
       width: 100%;
+    }
+  }
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+    & > a {
+      display: inline-block;
     }
   }
 `;
