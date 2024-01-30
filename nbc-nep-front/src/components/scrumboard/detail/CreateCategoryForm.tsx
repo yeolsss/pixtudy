@@ -133,8 +133,8 @@ const StCategoryItemWrapper = styled.div<{ $isSelected: boolean }>`
 
 const StCategoryColor = styled.label<{ $color: string }>`
   display: block;
-  width: ${(props) => props.theme.unit[16]}px;
-  height: ${(props) => props.theme.unit[16]}px;
+  width: ${(props) => props.theme.unit[16]};
+  height: ${(props) => props.theme.unit[16]};
   border-radius: ${(props) => props.theme.border.radius.circle};
   padding: 12px;
   background-color: ${(props) => props.$color};

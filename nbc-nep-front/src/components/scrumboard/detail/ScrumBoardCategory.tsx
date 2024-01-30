@@ -96,9 +96,9 @@ const StAddItemBtn = styled(StCTAButton)`
   font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
   & > span {
     display: block;
-    width: ${(props) => props.theme.unit[14]}px;
-    height: ${(props) => props.theme.unit[14]}px;
-    margin-top: -${(props) => props.theme.unit[4]}px;
+    width: ${(props) => props.theme.unit[14]};
+    height: ${(props) => props.theme.unit[14]};
+    margin-top: -${(props) => props.theme.unit[4]};
     background: url("/assets/additem.svg") no-repeat center center;
     background-size: contain;
   }

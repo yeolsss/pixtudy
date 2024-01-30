@@ -10,7 +10,7 @@ export const StCTAButton = styled.button`
   background-color: ${(props) => props.theme.color.bg.interactive.primary};
   padding-top: ${(props) => props.theme.spacing[12]};
   padding-bottom: ${(props) => props.theme.spacing[12]};
-  letter-spacing: var(--unit-2);
+  letter-spacing: ${(props) => props.theme.spacing["2"]};
   font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
   color: ${(props) => props.theme.color.text.interactive.inverse};
   border: 0;
@@ -29,7 +29,7 @@ export const StDangerButton = styled.button`
   background-color: ${(props) => props.theme.color.bg.interactive.danger};
   padding-top: ${(props) => props.theme.spacing[12]};
   padding-bottom: ${(props) => props.theme.spacing[12]};
-  letter-spacing: var(--unit-2);
+  letter-spacing: ${(props) => props.theme.spacing["2"]};
   font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
   color: ${(props) => props.theme.color.text.interactive.inverse};
   &:hover {
@@ -43,7 +43,7 @@ export const StCTALink = styled(Link)`
   background-color: ${(props) => props.theme.color.bg.interactive.primary};
   padding-top: ${(props) => props.theme.spacing[12]};
   padding-bottom: ${(props) => props.theme.spacing[12]};
-  letter-spacing: var(--unit-2);
+  letter-spacing: ${(props) => props.theme.spacing["2"]};
   font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
   color: ${(props) => props.theme.color.text.interactive.inverse};
   &:hover {
@@ -56,7 +56,7 @@ export const StToPreviousButton = styled.button`
   display: block;
   padding-top: ${(props) => props.theme.spacing[12]};
   padding-bottom: ${(props) => props.theme.spacing[12]};
-  letter-spacing: var(--unit-2);
+  letter-spacing: ${(props) => props.theme.spacing["2"]};
   font-size: ${(props) => props.theme.body.md.medium.fontSize};
   font-family: var(--point-font);
   font-weight: ${(props) => props.theme.heading.desktop["4xl"].fontWeight};
@@ -80,7 +80,7 @@ export const StFormCTAButton = styled.button`
   background-color: ${(props) => props.theme.color.bg.interactive.primary};
   padding-top: ${(props) => props.theme.spacing[12]};
   padding-bottom: ${(props) => props.theme.spacing[12]};
-  letter-spacing: var(--unit-2);
+  letter-spacing: ${(props) => props.theme.spacing["2"]};
   color: ${(props) => props.theme.color.text.interactive.inverse};
   font-size: ${(props) => props.theme.body.md.medium.fontSize};
   font-family: var(--point-font);

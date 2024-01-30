@@ -194,7 +194,7 @@ const StBlurDiv = styled.div`
   z-index: 2;
   pointer-events: none;
   top: 0;
-  right: -${(props) => props.theme.unit[32]}px;
+  right: -${(props) => props.theme.unit[32]};
   position: absolute;
 `;
 

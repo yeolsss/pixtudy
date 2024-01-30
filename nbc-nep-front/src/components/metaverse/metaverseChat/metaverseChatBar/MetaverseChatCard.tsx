@@ -90,7 +90,7 @@ const StMetaverseChatCard = styled.div<{ $isCurrentUser: boolean }>`
       display: flex;
       flex-direction: column;
       > span {
-        font-size: ${(props) => props.theme.unit["12"]}px;
+        font-size: ${(props) => props.theme.unit["12"]};
       }
       > span:first-child {
         color: ${(props) =>
@@ -109,7 +109,7 @@ const StMetaverseChatCard = styled.div<{ $isCurrentUser: boolean }>`
     line-height: ${(props) => props.theme.spacing["20"]};
     letter-spacing: -0.32px;
     font-family: var(--default-font);
-    font-size: ${(props) => props.theme.unit["16"]}px;
+    font-size: ${(props) => props.theme.unit["16"]};
     margin-bottom: ${(props) => props.theme.spacing["12"]};
   }
 `;

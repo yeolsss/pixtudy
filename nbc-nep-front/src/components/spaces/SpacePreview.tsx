@@ -94,7 +94,7 @@ const StPreviewContents = styled.div`
 
 const StPreviewDisabled = styled.div`
   background-color: ${(props) => props.theme.color.bg.secondary};
-  height: ${(props) => props.theme.unit[128]}px;
+  height: ${(props) => props.theme.unit[128]};
   width: 100%;
   display: flex;
   justify-content: center;

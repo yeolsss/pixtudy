@@ -57,7 +57,7 @@ const StSelectAssigneesCard = styled.div`
     color: ${(props) => props.theme.color.blue["600"]};
     text-overflow: ellipsis;
     font-family: var(--sub-font);
-    font-size: ${(props) => props.theme.unit[14]}px;
+    font-size: ${(props) => props.theme.unit[14]};
     font-style: normal;
     font-weight: 400;
     line-height: 100%;

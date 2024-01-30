@@ -139,12 +139,12 @@ const StCategoryForm = styled.form`
   justify-content: space-between;
   align-items: center;
   gap: ${(props) => props.theme.spacing[12]};
-  height: ${(props) => props.theme.unit[20]}px;
+  height: ${(props) => props.theme.unit[20]};
 
   & > input {
     flex-shrink: 1;
     width: 100%;
-    height: ${(props) => props.theme.unit[16]}px;
+    height: ${(props) => props.theme.unit[16]};
     padding: ${(props) => props.theme.spacing[12]} 0;
     border: none;
     border-radius: 0;
@@ -164,8 +164,8 @@ const StDropdownWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  top: ${(props) => props.theme.unit[24]}px;
-  left: -${(props) => props.theme.unit[4]}px;
+  top: ${(props) => props.theme.unit[24]};
+  left: -${(props) => props.theme.unit[4]};
   box-shadow: ${(props) => props.theme.elevation.Light.shadow2};
   border-radius: ${(props) => props.theme.border.radius[8]};
 `;
@@ -175,13 +175,13 @@ const StDropdownButton = styled.div<{ $isOpen: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: ${(props) => props.theme.unit[16]}px;
+  height: ${(props) => props.theme.unit[16]};
   font-size: 0;
   cursor: pointer;
   & > span {
     font-size: 0;
-    width: ${(props) => props.theme.unit[14]}px;
-    height: ${(props) => props.theme.unit[16]}px;
+    width: ${(props) => props.theme.unit[14]};
+    height: ${(props) => props.theme.unit[16]};
     background-image: url("/assets/dropdownArrow.svg");
     transform: ${(props) =>
       props.$isOpen ? "rotateX(0deg)" : "rotateX(180deg)"};
@@ -190,8 +190,8 @@ const StDropdownButton = styled.div<{ $isOpen: boolean }>`
 
 const StSelectedColor = styled.div<{ $color: string }>`
   background-color: ${(props) => props.$color};
-  width: ${(props) => props.theme.unit[12]}px;
-  height: ${(props) => props.theme.unit[12]}px;
+  width: ${(props) => props.theme.unit[12]};
+  height: ${(props) => props.theme.unit[12]};
   border-radius: ${(props) => props.theme.border.radius.circle};
   font-size: 0;
 `;
@@ -209,8 +209,8 @@ const StColorOption = styled.div<{ $color: string; $isSelected: boolean }>`
     background-color: ${(props) => props.theme.color.blue[300]};
   }
   & > span {
-    width: ${(props) => props.theme.unit[12]}px;
-    height: ${(props) => props.theme.unit[12]}px;
+    width: ${(props) => props.theme.unit[12]};
+    height: ${(props) => props.theme.unit[12]};
     border-radius: ${(props) => props.theme.border.radius.circle};
     font-size: 0;
     background-color: ${(props) => props.$color};
@@ -233,8 +233,8 @@ const StColorOption = styled.div<{ $color: string; $isSelected: boolean }>`
 `;
 
 const StEditSubmitButton = styled.button`
-  width: ${(props) => props.theme.unit[96]}px;
-  height: ${(props) => props.theme.unit[40]}px;
+  width: ${(props) => props.theme.unit[96]};
+  height: ${(props) => props.theme.unit[40]};
   font-size: ${(props) => props.theme.body.sm.regular.fontSize};
   background-color: ${(props) => props.theme.color.bg.interactive.primary};
   color: ${(props) => props.theme.color.base.white};
@@ -250,6 +250,6 @@ const StEditSubmitButton = styled.button`
 `;
 
 const StEditErrorMessage = styled(DefaultSpanText)`
-  top: ${(props) => props.theme.unit[24]}px;
-  left: ${(props) => props.theme.unit[40]}px;
+  top: ${(props) => props.theme.unit[24]};
+  left: ${(props) => props.theme.unit[40]};
 `;

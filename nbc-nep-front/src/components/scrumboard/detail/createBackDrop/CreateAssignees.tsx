@@ -1,10 +1,10 @@
-import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
-import styled from "styled-components";
-import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
 import AssigneesBackDrop from "@/components/scrumboard/detail/createBackDrop/AssigneesBackDrop";
-import useDebounceSpaceMemberSearch from "@/hooks/scrumBoard/useDebounceSpaceMemberSearch";
-import { useRef } from "react";
+import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
 import SelectAssigneesList from "@/components/scrumboard/detail/createBackDrop/SelectAssigneesList";
+import useDebounceSpaceMemberSearch from "@/hooks/scrumBoard/useDebounceSpaceMemberSearch";
+import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
+import { useRef } from "react";
+import styled from "styled-components";
 
 export default function CreateAssignees() {
   const { searchValue, changeSearchValue, setBackDropIsOpen, assignees } =
@@ -58,7 +58,7 @@ const StCreateAssigneesInput = styled.input`
   outline: none;
   width: 100%;
   font-family: var(--main-font);
-  font-size: ${(props) => props.theme.unit[14]}px;
+  font-size: ${(props) => props.theme.unit[14]};
   border-radius: ${(props) => props.theme.border.radius[8]};
   border: 1px solid ${(props) => props.theme.color.border.secondary};
   background: ${(props) => props.theme.color.text.interactive.inverse};
