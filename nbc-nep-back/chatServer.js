@@ -54,8 +54,6 @@ module.exports = function (io) {
       } catch (error) {
         console.log("an error occurred while remove room :", error);
       }
-
-      // TODO : io room 제거...
     });
   });
 };

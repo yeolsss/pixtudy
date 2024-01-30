@@ -24,7 +24,6 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // supabase에 접근하여 유효한 spaceid인지 확인
   const checkSpace = async (id: string) => {
     const { data: spaceInfo } = await supabase
       .from("spaces")
@@ -34,7 +33,6 @@ export async function middleware(request: NextRequest) {
     return !!spaceInfo;
   };
 
-  // 정적 파일, 이미지(public 포함), 프리패칭에 대한 요청을 허용하는 로직
   const isPublicResource =
     pathname.startsWith("/assets/") || pathname.startsWith("/styles/");
   const isStaticFile =
@@ -45,7 +43,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // request 정보가 지정한 path에 등록된 정보인지 확인
   const isDynamicPath = PAGES_PATH.some(
     (page) => page.dynamic && pathname.startsWith(`${page.path}/`)
   );
@@ -54,7 +51,6 @@ export async function middleware(request: NextRequest) {
     (page) => !page.dynamic && pathname === page.path
   );
 
-  // 등록된 정보가 아니라면
   if (!isDynamicPath && !isStaticPath) {
     const url = new URL("/", request.url);
     const response = NextResponse.redirect(url);
@@ -71,7 +67,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 로그인 세션에 따른 조건부 처리
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse")) {
     if (!session && request.headers.get("Purpose") !== "prefetch") {
       const url = new URL("/signin", request.url);
@@ -90,7 +85,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 유효한 메타버스 id가 없을 때
   if (session && pathname.startsWith("/metaverse")) {
     const spaceId = request.url.split("?")[0].split("/").at(-1);
     const checkResult = await checkSpace(spaceId!);
@@ -134,8 +128,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    // 모든 경로에 대해 미들웨어를 적용
-    "/(.*)",
-  ],
+  matcher: ["/(.*)"],
 };

@@ -25,6 +25,7 @@ const StScrumBoardHeader = styled.div`
     font-family: var(--point-font);
     font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
     font-size: ${(props) => props.theme.heading.desktop["2xl"].fontSize};
+    color: ${(props) => props.theme.color.text.brand};
   }
   p {
     font-family: var(--main-font);
