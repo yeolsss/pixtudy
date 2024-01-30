@@ -1,6 +1,7 @@
 import useSocket from "@/hooks/socket/useSocket";
+import { slideDown, slideUp } from "@/styles/animations";
 import useAuth from "@/zustand/authStore";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { PlayerState } from "../metaverse/types/metaverse";
 
 interface Props {
@@ -40,25 +41,6 @@ export default function PlayerStateSelector({
     </StUlWrapper>
   );
 }
-
-const slideUp = keyframes`
-  from {
-    transform: translateY(20px);
-  } 
-  to {
-    transform: translateY(0);
-  }
-`;
-
-const slideDown = keyframes`
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  } to {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-`;
 
 const StUlWrapper = styled.ul<{ $isRender: boolean }>`
   position: absolute;
