@@ -44,8 +44,8 @@ const StCreateBackDrop = styled.div`
   z-index: 1100;
   right: 50px;
   width: 100%;
-  min-width: 344px;
-  max-width: 460px;
+  min-width: 344px !important;
+  max-width: 460px !important;
   background-color: ${(props) => props.theme.color.bg.primary};
   padding: ${(props) => props.theme.spacing[24]};
   border-radius: ${(props) => props.theme.border.radius[12]};

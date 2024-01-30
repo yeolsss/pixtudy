@@ -6,6 +6,7 @@ import {
   StModalContainer,
   StModalContents,
 } from "../spaceModals/joinSpaceModal/JoinSpaceModalMainContainer";
+import useFocusInput from "@/hooks/metaverse/useFocusInput";
 
 export default function CreateCategoryModalMainContainer() {
   const { closeModal } = useModal();
@@ -13,8 +14,11 @@ export default function CreateCategoryModalMainContainer() {
   const handleCloseModal = () => {
     closeModal();
   };
+
+  const [handleFocus, handleBlur] = useFocusInput();
+
   return (
-    <div>
+    <div onFocus={handleFocus} onBlur={handleBlur}>
       <StModalContainer>
         <ModalHeader text="카테고리 만들기" handler={handleCloseModal} />
         <StCreateCategoryModalContents>
