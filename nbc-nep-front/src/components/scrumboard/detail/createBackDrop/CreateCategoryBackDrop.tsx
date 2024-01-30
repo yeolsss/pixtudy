@@ -67,11 +67,10 @@ const StCreateCategoryBackDropWrapper = styled.div<{
   bottom: 0;
   transform: translateY(100%);
   left: 0;
-  width: 100%;
+  width: ${(props) => props.theme.unit[128]};
   flex-direction: column;
   border-radius: ${(props) => props.theme.border.radius[8]};
   background-color: ${(props) => props.theme.color.bg.primary};
-  padding: ${(props) => props.theme.spacing[12]};
   box-shadow: ${(props) => props.theme.elevation.Light.shadow8};
   z-index: 100;
 `;
@@ -80,23 +79,30 @@ const StCreateCategoryBackDrop = styled.div`
   width: 100%;
   height: ${(props) => props.theme.spacing[32]};
   padding: ${(props) => props.theme.spacing[8]};
+  background-color: ${(props) => props.theme.color.bg.secondary};
   display: flex;
   align-items: center;
   cursor: pointer;
   //prettier-ignore
   padding: ${(props) => props.theme.spacing[24]} ${(props) =>
-    props.theme.spacing[8]};
-  border-radius: ${(props) => props.theme.border.radius[8]};
+    props.theme.spacing[12]};
   &:hover {
-    box-shadow: ${(props) => props.theme.elevation.Light.shadow16};
+    background-color: ${(props) => props.theme.color.bg.primary};
+    /* box-shadow: ${(props) => props.theme.elevation.Light.shadow16}; */
   }
-  > span {
-    color: ${(props) => props.theme.color.text.secondary};
-    font-family: var(--main-font);
-    font-size: ${(props) => props.theme.unit[12]};
-    font-style: normal;
-    font-weight: 400;
-    line-height: 100%; /* 11px */
-    letter-spacing: -0.11px;
+  color: ${(props) => props.theme.color.text.secondary};
+  font-family: var(--point-font);
+  font-size: ${(props) => props.theme.unit[12]};
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 11px */
+  letter-spacing: -0.11px;
+  &:nth-child(1) {
+    border-radius: ${(props) =>
+      `${props.theme.border.radius["8"]} ${props.theme.border.radius["8"]} 0 0`};
+  }
+  &:nth-last-child(1) {
+    border-radius: ${(props) =>
+      `0 0 ${props.theme.border.radius["8"]} ${props.theme.border.radius["8"]}`};
   }
 `;

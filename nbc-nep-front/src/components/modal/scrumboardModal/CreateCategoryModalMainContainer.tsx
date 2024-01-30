@@ -19,18 +19,18 @@ export default function CreateCategoryModalMainContainer() {
 
   return (
     <div onFocus={handleFocus} onBlur={handleBlur}>
-      <StModalContainer>
+      <StCreateCategoryModalContainer>
         <ModalHeader text="카테고리 만들기" handler={handleCloseModal} />
         <StCreateCategoryModalContents>
           <CreateCategoryForm />
         </StCreateCategoryModalContents>
-      </StModalContainer>
+      </StCreateCategoryModalContainer>
     </div>
   );
 }
 
 const StCreateCategoryModalContainer = styled(StModalContainer)`
-  box-shadow: ${(props) => props.theme.elevation.Light.shadow4};
+  box-shadow: ${(props) => props.theme.elevation.Light.shadow8};
   border: 1px solid var(--color-neutral-200);
 `;
 const StCreateCategoryModalContents = styled(StModalContents)`
