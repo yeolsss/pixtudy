@@ -9,7 +9,7 @@ interface Props {
 export default function CreateDescriptionHeader({ text, countType }: Props) {
   return (
     <StCreateBackDropDescriptionHeader>
-      <CreateBackDropTitle title={"보드 설명"} />
+      <CreateBackDropTitle title={"내용"} />
       <span>
         {countType === "C" &&
           `${text?.length}/${SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH}`}

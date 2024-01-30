@@ -27,27 +27,27 @@ function ScrumBoardItem({ category, item }: Props) {
       $isDragging={isDragging}
       onClick={() => handleOpenItemDetail(item)}
     >
-      <StAvatar>
-        <MetaAvatar spaceAvatar={item.item_creator_space_avatar} />
-      </StAvatar>
       <p>{item.description}</p>
-      {item.assignees[0].userId !== null && (
-        <StAssigneesWrapper>
-          {item.assignees.map((assignee, index) => {
-            return (
-              <StMetaAvatarWrapper $index={index} key={index}>
-                <MetaAvatar
-                  spaceAvatar={assignee.spaceAvatar}
-                  width={24}
-                  height={24}
-                  y={39}
-                  x={-5}
-                />
-              </StMetaAvatarWrapper>
-            );
-          })}
-        </StAssigneesWrapper>
-      )}
+      <StUserInfoWrapper>
+        <p>{item.item_creator_space_display_name}</p>
+        {item.assignees[0].userId !== null && (
+          <StAssigneesWrapper>
+            {item.assignees.map((assignee, index) => {
+              return (
+                <StMetaAvatarWrapper $index={index} key={index}>
+                  <MetaAvatar
+                    spaceAvatar={assignee.spaceAvatar}
+                    width={24}
+                    height={24}
+                    y={39}
+                    x={-5}
+                  />
+                </StMetaAvatarWrapper>
+              );
+            })}
+          </StAssigneesWrapper>
+        )}
+      </StUserInfoWrapper>
     </StListItem>
   );
 }
@@ -82,6 +82,16 @@ const StListItem = styled.li<{ $isDragging: boolean }>`
   }
 `;
 
+const StUserInfoWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > p {
+    flex: 1;
+  }
+`;
+
 const StAvatar = styled.div`
   width: 100%;
   display: flex;
@@ -91,6 +101,7 @@ const StAvatar = styled.div`
 const StAssigneesWrapper = styled(StAvatar)`
   position: relative;
   height: 30px;
+  flex: 1;
 `;
 
 const StMetaAvatarWrapper = styled.div<{ $index: number }>`
