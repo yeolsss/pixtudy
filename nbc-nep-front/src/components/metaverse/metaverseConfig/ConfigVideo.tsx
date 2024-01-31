@@ -33,14 +33,14 @@ export default function ConfigVideo() {
         if (!settingsLocalStorage) {
           setSettings({
             audio: {
-              deviceId:
-                fetchedDevices.find((device) => device.kind === "audioinput")
-                  ?.deviceId || null,
+              deviceId: fetchedDevices.find(
+                (device) => device.kind === "audioinput"
+              )?.deviceId,
             },
             video: {
-              deviceId:
-                fetchedDevices.find((device) => device.kind === "videoinput")
-                  ?.deviceId || null,
+              deviceId: fetchedDevices.find(
+                (device) => device.kind === "videoinput"
+              )?.deviceId,
             },
           });
         }

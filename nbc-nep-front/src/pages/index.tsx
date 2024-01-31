@@ -1,5 +1,6 @@
 import CustomHead from "@/SEO/CustomHead";
 import { StCTALink } from "@/components/common/button/button.styles";
+import HomeScrollContainer from "@/components/home/HomeScrollContainer";
 import Layout from "@/components/layout/Layout";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
@@ -81,6 +82,7 @@ const Home: NextPageWithLayout = () => {
         <StSection>
           <video src="/assets/mediashare.mp4" autoPlay muted loop />
         </StSection>
+        <HomeScrollContainer />
       </StWrapper>
     </>
   );
