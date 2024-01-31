@@ -70,10 +70,11 @@ export default function ConfigSpaceOwner() {
       [SPACE_NAME_FORM]: title,
       [SPACE_DESCRIPTION_FORM]: description,
     } = data;
+
     let thumbnailURL: string | null = spaceInfo.space_thumb;
 
     if (thumb && thumb.length > 0) {
-      const { data, error } = await uploadThumbnail(thumb[0], spaceInfo.id);
+      const { data, error } = await uploadThumbnail(thumb[0]);
 
       if (data) thumbnailURL = data;
 
