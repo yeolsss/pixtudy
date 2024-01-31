@@ -157,11 +157,17 @@ const StSwiperWrapper = styled.div`
   position: relative;
 
   .swiper {
-    /* height: 29.7rem; */
     height: fit-content;
     width: 100%;
     padding: ${(props) =>
       `${props.theme.spacing[24]} ${props.theme.spacing[32]}`};
+    padding-bottom: ${(props) => props.theme.spacing[36]};
+  }
+  .swiper-pagination {
+    span {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
   }
 `;
 
