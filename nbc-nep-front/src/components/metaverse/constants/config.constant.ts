@@ -16,3 +16,5 @@ export const CHAT_CONFIG = "CHAT_CONFIG";
 export const SPACE_NAME_FORM = "SPACE_NAME";
 export const SPACE_DESCRIPTION_FORM = "SPACE_DESCRIPTION";
 export const SPACE_THUMB_FORM = "SPACE_THUMB";
+
+export const IMAGE_MAX_SIZE = 50 * 1024 * 1024;

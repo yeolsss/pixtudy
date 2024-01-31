@@ -17,6 +17,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import {
+  IMAGE_MAX_SIZE,
   SPACE_DESCRIPTION_FORM,
   SPACE_NAME_FORM,
   SPACE_THUMB_FORM,
@@ -30,6 +31,7 @@ export default function ConfigSpaceOwner() {
     handleSubmit,
     register,
     watch,
+    resetField,
     formState: { errors },
   } = useForm({ mode: "onChange" });
   const {
@@ -97,7 +99,17 @@ export default function ConfigSpaceOwner() {
 
   useEffect(() => {
     if (thumbWatch && thumbWatch.length > 0) {
-      const file = thumbWatch[0];
+      const file = thumbWatch[0] as File;
+
+      if (file.size > IMAGE_MAX_SIZE) {
+        // file validation
+        toast.error("이미지 사이즈는 최대 50MB이하로 넣을 수 있습니다.", {
+          position: "top-center",
+        });
+        resetField(SPACE_THUMB_FORM);
+        return;
+      }
+
       setThumbPreviewSrc(URL.createObjectURL(file));
     }
   }, [thumbWatch]);
