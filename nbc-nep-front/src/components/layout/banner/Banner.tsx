@@ -49,8 +49,8 @@ export default function Banner({ title, description, bgSrc, space }: Props) {
 }
 
 const StBannerItem = styled.li`
-  width: 420px;
-  height: 233px;
+  /* width: 420px; */
+  height: 50rem;
   border-radius: ${(props) => props.theme.border.radius[12]};
   border: 1px solid ${(props) => props.theme.color.border.secondary};
   overflow: hidden;
