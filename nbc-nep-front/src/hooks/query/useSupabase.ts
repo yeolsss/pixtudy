@@ -57,13 +57,11 @@ export function useSignUpUser() {
   const { mutate: signUp } = useMutation({
     mutationFn: signUpHandler,
     onError: (error) => {
-      // TODO: error메시지 핸들링 필요
       authValidation(error.message, "signUp");
     },
   });
   return signUp;
 }
-// Login
 export function useSignInUser() {
   const { mutate: signIn } = useMutation({
     mutationFn: signInHandler,
@@ -73,7 +71,6 @@ export function useSignInUser() {
   });
   return signIn;
 }
-// Logout
 export function useLogoutUser() {
   const { mutate: logout } = useMutation({
     mutationFn: logoutHandler,
@@ -101,7 +98,7 @@ export function useGetSessionInfo() {
     queryKey: ["session"],
     queryFn: async () => {
       const result = await getSession();
-      return result.session; // 여기서 session 속성을 직접 반환
+      return result.session;
     },
     queryOption: { staleTime: Infinity },
   };
@@ -158,24 +155,14 @@ export function useGetSpace() {
   });
   return getSpace;
 }
-// export function useGetDmMessages(dmChannel: string | null) {
-//   const getDmMessagesOptions = {
-//     queryKey: ["dmMessages", dmChannel],
-//     queryFn: () => getDmChannelMessages(dmChannel),
-//     enabled: !!dmChannel,
-//   };
-//   return useCustomQuery<getDmChannelMessagesReturns[], Error>(
-//     getDmMessagesOptions
-//   );
-// }
 
-// TODO 이거 useQuery 사용하는 함수 하나 만들어야함
 export function useGetSpaceQuery(spaceId: string) {
   const getSpaceOptions = {
     queryKey: ["userSpaces", spaceId],
     queryFn: () => getSpaceData(spaceId),
     enabled: !!spaceId,
   };
+
   return useCustomQuery<Spaces, Error>(getSpaceOptions);
 }
 

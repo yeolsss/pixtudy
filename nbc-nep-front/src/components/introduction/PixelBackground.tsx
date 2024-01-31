@@ -1,29 +1,28 @@
+import useScroll from "@/hooks/scroll/useScroll";
 import { Variants, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-interface Props {
-  isInSection: boolean;
-  position: { top: number; left: number };
-}
+interface Props {}
 
 const anim: (i: number) => Variants = (i: number) => {
   return {
     initial: {
       opacity: 0,
     },
-    open: (i) => ({
+    hide: (i) => ({
       opacity: 0,
       transition: { duration: 0, delay: 0.03 * i },
     }),
-    closed: (i) => ({
+    show: (i) => ({
       opacity: 1,
       transition: { duration: 0, delay: 0.03 * i },
     }),
   };
 };
 
-export default function PixelBackground({ isInSection, position }: Props) {
+export default function PixelBackground() {
+  const { section } = useScroll();
   const [windowDimensions, setWindowDimensions] = useState({
     innerHeight: 0,
     innerWidth: 0,
@@ -33,9 +32,8 @@ export default function PixelBackground({ isInSection, position }: Props) {
     const { innerHeight, innerWidth } = window;
     setWindowDimensions({ innerHeight, innerWidth });
   }, []);
-  const { innerWidth, innerHeight } = windowDimensions;
 
-  console.log(position.top, position.left);
+  const { innerWidth, innerHeight } = windowDimensions;
 
   const shuffle = (array: number[]) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -58,7 +56,7 @@ export default function PixelBackground({ isInSection, position }: Props) {
           key={index}
           variants={anim(index)}
           initial="initial"
-          animate={isInSection ? "open" : "closed"}
+          animate={section === "intro" ? "hide" : "show"}
           custom={randomIndex}
         />
       );
@@ -66,17 +64,24 @@ export default function PixelBackground({ isInSection, position }: Props) {
   };
 
   return (
-    <StPixelBackground $position={position}>
-      {[...Array(20)].map((_, index) => {
-        return <div key={index}>{getBlocks()}</div>;
-      })}
-    </StPixelBackground>
+    <StPixelBackgroundContainer>
+      <StPixelBackground>
+        {[...Array(20)].map((_, index) => {
+          return <div key={index}>{getBlocks()}</div>;
+        })}
+      </StPixelBackground>
+    </StPixelBackgroundContainer>
   );
 }
 
-const StPixelBackground = styled.div<{
-  $position: { top: number; left: number };
-}>`
+const StPixelBackgroundContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+`;
+
+const StPixelBackground = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
@@ -96,7 +101,6 @@ const StPixelBackground = styled.div<{
     & > div {
       width: 10vw;
       height: 100%;
-      /* background-color: #398cff; */
       background-color: ${(props) => props.theme.color.bg.interactive.selected};
     }
   }

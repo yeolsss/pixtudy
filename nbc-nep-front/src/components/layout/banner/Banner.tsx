@@ -2,55 +2,48 @@
 // 가장 상위 top을 뽑아야 하는데 일단은 4개를 뽑아놓고...
 
 import useModal from "@/hooks/modal/useModal";
+import { useGetUserSpaces } from "@/hooks/query/useSupabase";
 import { Spaces } from "@/supabase/types/supabase.tables.type";
 import useAuth from "@/zustand/authStore";
 import { StaticImageData } from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 interface Props {
   title: string;
   description: string;
   bgSrc: StaticImageData;
-  space: Omit<Spaces, "users"> & { users: string[] };
-  users: string[];
+  space: Spaces;
 }
 
-export default function Banner({
-  title,
-  description,
-  bgSrc,
-  space,
-  users,
-}: Props) {
+export default function Banner({ title, description, bgSrc, space }: Props) {
   const { user } = useAuth();
-
-  const isInUser = users.includes(user.id);
+  const spaceMembers = useGetUserSpaces(user.id);
   const { openAvatarModal, setSpace } = useModal();
+  const { push } = useRouter();
 
-  const handleOpenModal = () => {
-    setSpace(space);
-    openAvatarModal();
+  const handleClickBanner = () => {
+    const isInUser = !!spaceMembers?.find(
+      ({ space_id }) => space_id === space.id
+    );
+
+    if (!isInUser) {
+      setSpace(space);
+      openAvatarModal();
+      return;
+    }
+
+    push(`/metaverse/${space.id}`);
   };
 
   return (
     <StBannerItem>
-      {isInUser && (
-        <StLink href={`/metaverse/${space.id}`} $bgSrc={bgSrc.src}>
-          <StInfoWrapper>
-            <StTitle>{title}</StTitle>
-            <StDescription>{description}</StDescription>
-          </StInfoWrapper>
-        </StLink>
-      )}
-      {!isInUser && (
-        <StButton $bgSrc={bgSrc.src} onClick={() => handleOpenModal()}>
-          <StInfoWrapper>
-            <StTitle>{title}</StTitle>
-            <StDescription>{description}</StDescription>
-          </StInfoWrapper>
-        </StButton>
-      )}
+      <StButton $bgSrc={bgSrc.src} onClick={handleClickBanner}>
+        <StInfoWrapper>
+          <StTitle>{title}</StTitle>
+          <StDescription>{description}</StDescription>
+        </StInfoWrapper>
+      </StButton>
     </StBannerItem>
   );
 }
@@ -61,20 +54,6 @@ const StBannerItem = styled.li`
   border-radius: ${(props) => props.theme.border.radius[12]};
   border: 1px solid ${(props) => props.theme.color.border.secondary};
   overflow: hidden;
-`;
-
-const StLink = styled(Link)<{ $bgSrc: string }>`
-  background-image: url(${(props) => props.$bgSrc});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: ${(props) => props.theme.elevation.Light.shadow4};
-
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
 `;
 
 const StButton = styled.button<{ $bgSrc: string }>`

@@ -1,13 +1,13 @@
-import React, { ReactElement } from "react";
-import * as St from "@/components/auth/styles/authCommon.styles";
-import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
-import AuthFormContainer from "@/components/auth/AuthFormContainer";
-import Link from "next/link";
-import SocialLogin from "@/components/auth/SocialLogin";
-import AuthForm from "@/components/auth/AuthForm";
-import AuthFooter from "@/components/auth/AuthFooter";
-import AuthDivider from "@/components/auth/AuthDivider";
 import CustomHead from "@/SEO/CustomHead";
+import AuthDivider from "@/components/auth/AuthDivider";
+import AuthFooter from "@/components/auth/AuthFooter";
+import AuthForm from "@/components/auth/AuthForm";
+import AuthFormContainer from "@/components/auth/AuthFormContainer";
+import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
+import SocialLogin from "@/components/auth/SocialLogin";
+import * as St from "@/components/auth/styles/authCommon.styles";
+import Link from "next/link";
+import { ReactElement } from "react";
 
 export function SignUp() {
   return (
