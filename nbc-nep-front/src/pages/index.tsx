@@ -5,12 +5,29 @@ import Layout from "@/components/layout/Layout";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
 import useAuth from "@/zustand/authStore";
+import { Variants, motion } from "framer-motion";
 import Image from "next/image";
 import { ReactElement, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { NextPageWithLayout } from "./_app";
 
 const HEIGHT = 400;
+
+const anim: (i: number) => Variants = (i: number) => {
+  return {
+    initial: {
+      opacity: 0,
+    },
+    open: (i) => ({
+      opacity: 0,
+      transition: { duration: 0, delay: 0.03 * i },
+    }),
+    closed: (i) => ({
+      opacity: 1,
+      transition: { duration: 0, delay: 0.03 * i },
+    }),
+  };
+};
 
 const Home: NextPageWithLayout = () => {
   const [isInSection, setIsInSection] = useState<boolean>(false);
@@ -131,6 +148,7 @@ const Home: NextPageWithLayout = () => {
             />
           </StSection>
         </StSectionWrapper>
+        <motion.div />
         <div style={{ height: "2000px" }}>mo?lu</div>
       </StWrapper>
     </>
@@ -160,7 +178,7 @@ const StHeroBanner = styled.div`
   height: 100%;
   padding: ${(props) => props.theme.spacing[40]};
   z-index: 2;
-  margin: ${(props) => props.theme.spacing[80]} auto;
+  margin: 5vh auto;
   & > img {
     width: 658px;
     height: 563px;
@@ -216,14 +234,14 @@ const StSectionWrapper = styled.div`
   position: relative;
   max-width: 1200px;
   width: 100%;
-  height: 3600px;
+  height: 3200px;
   margin: 0 auto;
 `;
 
 const StSection = styled.div<{ $isInSection: boolean }>`
   /* position: relative; */
   position: sticky;
-  top: calc(50vh - ${HEIGHT}px);
+  top: -20vh;
   left: 0;
   max-width: 1200px;
   margin: 0 auto;
@@ -233,7 +251,7 @@ const StSection = styled.div<{ $isInSection: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 1;
   opacity: ${(props) => (props.$isInSection ? 1 : 0)};
   transition: opacity 0.2s ease-in-out;
   gap: ${(props) => props.theme.spacing[24]};

@@ -13,12 +13,12 @@ const anim: (i: number) => Variants = (i: number) => {
       opacity: 0,
     },
     open: (i) => ({
-      opacity: 1,
-      transition: { duration: 0, delay: 0.02 * i },
+      opacity: 0,
+      transition: { duration: 0, delay: 0.03 * i },
     }),
     closed: (i) => ({
-      opacity: 0,
-      transition: { duration: 0, delay: 0.02 * i },
+      opacity: 1,
+      transition: { duration: 0, delay: 0.03 * i },
     }),
   };
 };
@@ -47,7 +47,7 @@ export default function PixelBackground({ isInSection, position }: Props) {
 
   const getBlocks = () => {
     if (!innerHeight || !innerWidth) return;
-    const blockSize = innerWidth * 0.02;
+    const blockSize = innerWidth * 0.04;
     const numberOfBlocks = Math.ceil(innerHeight / blockSize);
     const shuffledArray = shuffle(
       [...Array(numberOfBlocks)].map((_, index) => index)
@@ -96,8 +96,8 @@ const StPixelBackground = styled.div<{
     & > div {
       width: 10vw;
       height: 100%;
-      /* background-color: #ff6a00; */
-      background-color: ${(props) => props.theme.color.bg.brand};
+      /* background-color: #398cff; */
+      background-color: ${(props) => props.theme.color.bg.interactive.selected};
     }
   }
 `;
