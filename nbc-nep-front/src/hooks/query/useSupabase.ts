@@ -162,6 +162,7 @@ export function useGetSpaceQuery(spaceId: string) {
     queryFn: () => getSpaceData(spaceId),
     enabled: !!spaceId,
   };
+
   return useCustomQuery<Spaces, Error>(getSpaceOptions);
 }
 

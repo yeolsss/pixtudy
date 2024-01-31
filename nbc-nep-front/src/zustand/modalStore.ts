@@ -8,13 +8,13 @@ interface ModalState {
   isAvatarModalOpen: boolean;
   isForgetPasswordModalOpen: boolean;
   isConfigModalOpen: boolean;
-  space: (Omit<Spaces, "users"> & { users: string[] }) | null;
+  space: Spaces | null;
 }
 
 interface ModalStoreState extends ModalState {
   openModal: (kind: keyof Omit<ModalState, "space">) => void;
   closeModal: () => void;
-  setSpace: (space: Omit<Spaces, "users"> & { users: string[] }) => void;
+  setSpace: (space: Spaces) => void;
   clearSpace: () => void;
 }
 
@@ -38,8 +38,7 @@ const modalStore = create<ModalStoreState>()((set) => ({
     set(() => ({
       ...initialState,
     })),
-  setSpace: (space: Omit<Spaces, "users"> & { users: string[] }) =>
-    set(() => ({ space })),
+  setSpace: (space: Spaces) => set(() => ({ space })),
   clearSpace: () => set(() => ({ space: null })),
 }));
 
