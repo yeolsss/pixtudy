@@ -1,4 +1,4 @@
-import { uploadThumbnail } from "@/api/supabase/storage";
+import { deleteThumbnail, uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
 import { StDangerButton } from "@/components/common/button/button.styles";
 import { StLoadingSpinner } from "@/components/common/loading/LoadingProgress";
@@ -76,17 +76,28 @@ export default function ConfigSpaceOwner() {
     let thumbnailURL: string | null = spaceInfo.space_thumb;
 
     if (thumb && thumb.length > 0) {
-      const { data, error } = await uploadThumbnail(thumb[0]);
+      const { data: url, error: uploadError } = await uploadThumbnail(thumb[0]);
 
-      if (data) thumbnailURL = data;
-
-      if (error) {
+      if (uploadError || !url) {
         toast.error(
-          "space를 업데이트하는데 실패하였습니다! 개발자에게 문의바랍니다..."
+          "사진을 업로드하는 과정에서 에러가 발생했습니다. 개발자에게 문의바랍니다..."
         );
-        console.error(error);
+        console.error(uploadError);
         return;
       }
+
+      if (thumbnailURL) {
+        // 기존에 thumbnailURL이 있다면
+        const fileName = thumbnailURL.split("/").at(-1);
+        const isSuccessDeleting = await deleteThumbnail(fileName!);
+
+        if (!isSuccessDeleting) {
+          toast.error(
+            "사진을 제거하는 과정에서 에러가 발생했습니다. 개발자에게 문의바랍니다."
+          );
+        }
+      }
+      thumbnailURL = url;
     }
 
     updateSpace({

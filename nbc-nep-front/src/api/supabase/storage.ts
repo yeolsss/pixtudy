@@ -16,6 +16,6 @@ export const uploadThumbnail = async (thumbnailFile: Blob | File) => {
 
 export const deleteThumbnail = async (fileName: string) => {
   const { error } = await supabase.storage.from(BUCKET_NAME).remove([fileName]);
-  if (error) return error;
+  if (error) return false;
   return true;
 };
