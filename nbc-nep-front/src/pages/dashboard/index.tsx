@@ -21,8 +21,9 @@ import { StaticImageData } from "next/image";
 import { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import "swiper/css";
+import "swiper/css/autoplay";
 import "swiper/css/pagination";
-import { Mousewheel, Pagination } from "swiper/modules";
+import { Autoplay, Mousewheel, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface Props {
@@ -60,13 +61,13 @@ const Dashboard: NextPage<Props> & {
       <CustomHead title={"Dashboard"} description={"Dashboard 페이지입니다."} />
       <StSwiperWrapper>
         <Swiper
-          spaceBetween={"24"}
-          slidesPerView={2.8}
-          modules={[Pagination, Mousewheel]}
+          className="dashboard-banner"
+          modules={[Pagination, Mousewheel, Autoplay]}
+          spaceBetween={50}
           pagination={{ clickable: true }}
           grabCursor={true}
           mousewheel={true}
-          className="dashboard-banner"
+          autoplay={{ delay: 5000 }}
         >
           {spaces.map((space) => (
             <SwiperSlide key={space.id}>
@@ -79,7 +80,6 @@ const Dashboard: NextPage<Props> & {
             </SwiperSlide>
           ))}
         </Swiper>
-        {!run && <StBlurDiv />}
       </StSwiperWrapper>
       {isAvatarModalOpen && (
         <ModalPortal>
@@ -157,28 +157,18 @@ const StSwiperWrapper = styled.div`
   position: relative;
 
   .swiper {
-    height: 29.7rem;
+    height: fit-content;
     width: 100%;
     padding: ${(props) =>
-      `${props.theme.spacing[24]} ${props.theme.spacing[40]}`};
+      `${props.theme.spacing[24]} ${props.theme.spacing[32]}`};
+    padding-bottom: ${(props) => props.theme.spacing[36]};
   }
-`;
-
-const StBlurDiv = styled.div`
-  width: 31.3rem;
-  height: 28.6rem;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 1) 71.86%,
-    rgba(255, 255, 255, 1) 93.84%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  z-index: 2;
-  pointer-events: none;
-  top: 0;
-  right: 0;
-  position: absolute;
+  .swiper-pagination {
+    span {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
 `;
 
 export default Dashboard;

@@ -75,12 +75,18 @@ export default function PlayerProducerContainer({
 }
 
 const StSwiperVideoWrapper = styled(StVideoWrapper)`
+  .swiper-pagination {
+    background-color: black;
+    bottom: 0;
+    border-bottom-left-radius: ${(props) => props.theme.border.radius.circle};
+    border-bottom-right-radius: ${(props) => props.theme.border.radius.circle};
+  }
   .swiper-pagination-bullet {
     background-color: ${(props) => props.theme.color.bg.secondary};
     opacity: 1;
   }
   .swiper-pagination-bullet-active {
-    background-color: ${(props) => props.theme.color.bg.interactive.primary};
+    background-color: var(--color-brand-500);
   }
 `;
 
