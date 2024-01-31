@@ -25,22 +25,38 @@ export default function IconButton({
   }, [dmChatStates, globalChatState]);
 
   return (
-    <StButton onClick={handleOnClick}>
+    <StButton onClick={handleOnClick} $isClose={type === "close"}>
       <Image src={buttonImage} alt={description} width={"32"} height={"32"} />
       {alarmState && type === "chat" && (
         <StBadge color={"var(--state-online)"} x={30} y={30} />
       )}
+      <span>{description}</span>
     </StButton>
   );
 }
 
-const StButton = styled.button`
+const StButton = styled.button<{ $isClose: boolean }>`
   background-color: unset;
   border: unset;
   padding: unset;
   cursor: pointer;
   position: relative;
+  color: white;
+
+  & > span {
+    display: inline-block;
+    overflow: hidden;
+    height: ${(props) => (props.$isClose ? "100%" : "0")};
+    margin-top: 3px;
+    white-space: ${(props) => (props.$isClose ? "pre-line" : "nowrap")};
+    line-height: 1.5rem;
+    transition: 0.5s ease-in-out height;
+  }
+
   &:hover {
+    & > span {
+      height: 100%;
+    }
     background-color: unset;
   }
 `;

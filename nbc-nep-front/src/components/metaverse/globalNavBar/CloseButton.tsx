@@ -20,7 +20,8 @@ export default function CloseButton() {
     <StCloseButton>
       <IconButton
         buttonImage={CloseIcon}
-        description={"닫기 버튼"}
+        description={`펼친메뉴
+        닫기`}
         type={"close"}
         handleOnClick={handleOnClickClose}
       />
