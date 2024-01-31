@@ -6,6 +6,7 @@ import {
   StStickyItem,
   StStickyWrapper,
 } from "./styles/home.styles";
+
 const SCROLL_THRESHOLDS = [2160, 3160, 4160, 5160];
 
 export default function HomeScrollContainer() {
@@ -21,6 +22,7 @@ export default function HomeScrollContainer() {
         if (window.scrollY > v) setIndex(i);
       });
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
