@@ -66,7 +66,9 @@ const StContainer = styled.div`
   overflow-x: hidden;
   flex-wrap: nowrap;
 
-  width: 300px;
+  width: 30rem;
+  padding-right: 2rem;
+  padding-top: 2rem;
   height: auto;
   max-height: 90vh;
 
