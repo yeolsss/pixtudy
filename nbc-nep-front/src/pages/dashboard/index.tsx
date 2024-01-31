@@ -26,7 +26,7 @@ import { Mousewheel, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface Props {
-  spaces: (Tables<"spaces"> & { users: string[]; bgSrc: StaticImageData })[];
+  spaces: (Tables<"spaces"> & { bgSrc: StaticImageData })[];
 }
 
 const NoSSRJoyride = dynamic(() => import("react-joyride"), { ssr: false });
@@ -72,10 +72,9 @@ const Dashboard: NextPage<Props> & {
             <SwiperSlide key={space.id}>
               <Banner
                 bgSrc={space.bgSrc}
-                users={space.users}
                 description={space.description}
-                space={space}
                 title={space.title}
+                space={space}
               />
             </SwiperSlide>
           ))}
@@ -141,27 +140,12 @@ export const getServerSideProps = async () => {
 
   if (!data || error) return { props: {} };
 
-  const { data: spaceMembers, error: spacesMembersError } = await supabase
-    .from("space_members")
-    .select("space_id, users(id)")
-    .in("space_id", spaceIds);
-
-  if (!spaceMembers || spacesMembersError) return { props: {} };
-
   const bgs = [BannerBg1, BannerBg2, BannerBg3, BannerBg4];
 
   const spaces = data.map((space, index) => ({
     ...space,
-    users: [] as string[],
     bgSrc: bgs[index],
   }));
-
-  spaceMembers?.forEach(({ space_id, users }) => {
-    const space = spaces.find((space) => space.id === space_id);
-    if (!users) return;
-
-    space!.users = [...space!.users, users.id];
-  });
 
   return { props: { spaces } };
 };
