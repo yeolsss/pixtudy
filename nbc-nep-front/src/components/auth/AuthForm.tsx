@@ -72,6 +72,7 @@ export default function AuthForm({ formType }: Props) {
                 localStorage.removeItem("saveLogin");
               }
             }
+            // toast.success(`${data.}님 로그인 성공`);
             router.push("/dashboard");
           },
         }
