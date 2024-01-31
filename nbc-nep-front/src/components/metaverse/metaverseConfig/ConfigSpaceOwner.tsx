@@ -64,20 +64,22 @@ export default function ConfigSpaceOwner() {
 
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
     if (!spaceInfo) return;
+
     const {
       [SPACE_THUMB_FORM]: thumb,
       [SPACE_NAME_FORM]: title,
       [SPACE_DESCRIPTION_FORM]: description,
     } = data;
     let thumbnailURL: string | null = spaceInfo.space_thumb;
+
     if (thumb && thumb.length > 0) {
       const { data, error } = await uploadThumbnail(thumb[0], spaceInfo.id);
 
       if (data) thumbnailURL = data;
 
       if (error) {
-        alert(
-          "space를 업데이트하는데 실패하였습니다! 개발자에게 문의바랍니다..ㅜ"
+        toast.error(
+          "space를 업데이트하는데 실패하였습니다! 개발자에게 문의바랍니다..."
         );
         console.error(error);
         return;
