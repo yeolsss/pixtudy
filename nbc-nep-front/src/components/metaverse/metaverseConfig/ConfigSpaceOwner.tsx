@@ -27,6 +27,7 @@ import ConfigSpaceFormItem from "./ConfigSpaceFormItem";
 
 export default function ConfigSpaceOwner() {
   const { spaceInfo } = useMetaversePlayer();
+
   const {
     handleSubmit,
     register,
@@ -34,16 +35,16 @@ export default function ConfigSpaceOwner() {
     resetField,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-  const {
-    updateSpace,
-    isSuccess: isSuccessUpdate,
-    isPending: isPendingUpdate,
-  } = useUpdateSpaceInfo();
+
+  const { updateSpace, isPending: isPendingUpdate } = useUpdateSpaceInfo();
+
   const { deleteSpace, isSuccess: isSuccessDelete } = useDeleteSpace();
   const formRef = useKeyDownPrevent<HTMLFormElement>();
+
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
   );
+
   const { emitRemoveSpace } = useChat();
   const thumbWatch = watch(SPACE_THUMB_FORM);
   const nameError = errors[SPACE_NAME_FORM]?.message;
@@ -124,12 +125,6 @@ export default function ConfigSpaceOwner() {
       setThumbPreviewSrc(URL.createObjectURL(file));
     }
   }, [thumbWatch]);
-
-  useEffect(() => {
-    if (isSuccessUpdate) {
-      toast.success("수정이 완료됐습니다!", { position: "top-right" });
-    }
-  }, [isSuccessUpdate]);
 
   useEffect(() => {
     if (isSuccessDelete) {
