@@ -198,7 +198,11 @@ export default function ConfigSpaceOwner() {
           삭제하기
         </StDanger>
       </div>
-      {isPendingUpdate && <StLoadingSpinner />}
+      {isPendingUpdate && (
+        <StFloatingLoading>
+          <StLoadingSpinner as="div" />
+        </StFloatingLoading>
+      )}
     </StSection>
   );
 }
@@ -230,4 +234,11 @@ const StHelperSpan = styled.p`
   color: ${(props) => props.theme.color.text.info};
   text-align: center;
   opacity: 0.5;
+`;
+
+const StFloatingLoading = styled.div`
+  position: absolute;
+
+  right: ${(props) => props.theme.spacing[24]};
+  top: ${(props) => props.theme.spacing[64]};
 `;
