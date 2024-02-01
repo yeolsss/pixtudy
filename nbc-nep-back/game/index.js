@@ -4,12 +4,24 @@ const players = {};
 module.exports = {
   init: function (io) {
     io.on("connection", (socket) => {
+      // 중복 접속 감지 코드
+      const isUserInSpaces = Object.entries(players).filter(
+        (player) => player[0] === socket.handshake.auth.userId
+      );
+
+      if (isUserInSpaces.length !== 0) {
+        console.log("중복접속", socket.handshake.auth);
+        socket.emit("duplicate-login", "중복 접속이 감지되었습니다.");
+        return;
+      }
+
       console.log("player[" + socket.id + "] connected");
       socket.on("user-data", (playerInfo) => {
         if (!playerInfo) return;
 
         const { playerId, spaceId } = playerInfo;
 
+        console.log(players);
         players[playerId] = {
           rotation: 0,
           x: 1200,
