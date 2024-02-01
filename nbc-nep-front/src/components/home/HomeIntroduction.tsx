@@ -45,7 +45,7 @@ const StSectionWrapper = styled.div`
   justify-content: end;
   max-width: 1300px;
   width: 100%;
-  height: 100vh;
+  height: 200vh;
   margin: 0 auto;
   z-index: 1;
 `;
