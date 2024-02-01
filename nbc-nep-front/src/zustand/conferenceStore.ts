@@ -1,3 +1,4 @@
+import { filterVideoSourcesByPlayerId } from "@/components/video-conference/libs/util";
 import {
   Consumer,
   Producer,
@@ -15,6 +16,7 @@ interface ConferenceState {
   removeProducer: (producer: Producer) => void;
   findProducerByShareType: (type: ShareType) => Producer | undefined;
   filterProducersByShareType: (type: ShareType) => Producer[];
+  filterConsumersById: (playerId: string) => Consumer[];
   isAlreadyConsume: (removeProducerId: string) => boolean;
 }
 
@@ -32,15 +34,6 @@ const conferenceStore = create<ConferenceState>()((set, get) => ({
         }
         return true;
       });
-      console.log(
-        "streamId is :",
-        streamId,
-        "prev consumers: ",
-        state.consumers,
-        "updated consumers: ",
-        updatedConsumers
-      );
-
       return { consumers: updatedConsumers };
     }),
   addProducer: (producer: Producer) =>
@@ -91,6 +84,10 @@ const conferenceStore = create<ConferenceState>()((set, get) => ({
   isAlreadyConsume: (remoteProducerId: string) => {
     const consumers = get().consumers;
     return consumers.some((consumer) => consumer.id === remoteProducerId);
+  },
+  filterConsumersById: (playerId: string) => {
+    const consumers = get().consumers;
+    return filterVideoSourcesByPlayerId(consumers, playerId) as Consumer[];
   },
 }));
 
