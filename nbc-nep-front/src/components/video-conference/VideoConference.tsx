@@ -3,7 +3,7 @@ import useDevice from "@/hooks/conference/useDevice";
 import useLayout from "@/hooks/conference/useLayout";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
-import useVideoSource from "@/hooks/conference/useVideoSourceRefactor";
+import useVideoSource from "@/hooks/conference/useVideoSource";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useSocket from "@/hooks/socket/useSocket";
 import useAuth from "@/zustand/authStore";
