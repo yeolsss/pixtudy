@@ -3,6 +3,7 @@ import {
   Producer,
 } from "@/components/video-conference/types/ScreenShare.types";
 import { create } from "zustand";
+import createSelectors from "./createSelector";
 
 interface ConferenceState {
   consumers: Consumer[];
@@ -62,4 +63,6 @@ const conferenceStore = create<ConferenceState>()((set) => ({
     }),
 }));
 
-export default conferenceStore;
+const useConferenceStore = createSelectors(conferenceStore);
+
+export default useConferenceStore;
