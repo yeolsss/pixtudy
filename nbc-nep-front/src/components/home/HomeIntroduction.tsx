@@ -51,7 +51,6 @@ const StSectionWrapper = styled.div`
 `;
 
 const StSection = styled(motion.section)`
-  /* position: relative; */
   position: sticky;
   top: 0;
   left: 0;
