@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import IconButton from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButton";
+import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
+import styled from "styled-components";
 
 interface Props {
   button: IconButtonProperty;
@@ -26,7 +26,11 @@ const StIconButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+
+  & + div {
+    margin-top: 20px;
+  }
+
   > span {
     font-size: 12px;
     color: #fff;

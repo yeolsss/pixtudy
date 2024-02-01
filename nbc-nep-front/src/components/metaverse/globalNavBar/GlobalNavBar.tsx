@@ -64,6 +64,11 @@ const StGlobalNavBar = styled.nav`
   border-right: 1px solid rgba(0, 0, 0, 0.5);
   background-color: ${({ theme }) => theme.color.metaverse.primary};
   color: ${({ theme }) => theme.color.icon.interactive.primary};
+  > div:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const StHomeLink = styled.a`
