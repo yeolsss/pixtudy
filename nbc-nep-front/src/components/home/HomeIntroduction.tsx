@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 interface Props {}
 
-const HomeSection = forwardRef<HTMLDivElement>(
+const HomeIntroduction = forwardRef<HTMLDivElement>(
   function HomeSection(props, ref) {
     const { section } = useScroll();
     return (
@@ -17,7 +17,7 @@ const HomeSection = forwardRef<HTMLDivElement>(
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
             >
               <Image
                 src="/assets/introduction/section1.png"
@@ -26,6 +26,7 @@ const HomeSection = forwardRef<HTMLDivElement>(
                 height={430}
               />
               <StSectionContents>
+                <h1>새로운 회의를 위한 새로운 공간.</h1>
                 <p>
                   <span>Pixtudy</span>는 혁신적인 가상 업무 및 스터디 공간으로
                   뛰어난 협업 경험을 제공합니다. 단순한 업무 전달을 넘어,
@@ -44,7 +45,7 @@ const HomeSection = forwardRef<HTMLDivElement>(
 const StSectionWrapper = styled.div`
   display: flex;
   justify-content: end;
-  max-width: 1200px;
+  max-width: 1300px;
   width: 100%;
   height: 250vh;
   margin: 0 auto;
@@ -59,11 +60,11 @@ const StSection = styled(motion.div)`
   max-width: 1200px;
   width: 100%;
   height: 100vh;
-  padding: ${(props) => props.theme.spacing[40]};
+  padding: ${(props) => props.theme.spacing[40]} 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${(props) => props.theme.spacing[24]};
+  gap: ${(props) => props.theme.spacing[56]};
 
   & > video {
     width: var(--size-460);
@@ -79,16 +80,22 @@ export const StSectionContents = styled.div`
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[24]};
   & > h1 {
+    font-family: var(--point-font);
+    font-weight: ${(props) => props.theme.heading.desktop["3xl"].fontWeight};
+    font-size: ${(props) => props.theme.heading.desktop["3xl"].fontSize};
+    letter-spacing: ${(props) =>
+      props.theme.heading.desktop["3xl"].letterSpacing};
+    line-height: ${(props) => props.theme.heading.desktop["4xl"].lineHeight};
   }
 
   & > h2 {
   }
 
   & > p {
-    font-family: var(--main-font);
-    font-size: ${(props) => props.theme.body.lg.regular.fontSize};
-    line-height: ${(props) => props.theme.body.lg.regular.lineHeight};
-    letter-spacing: ${(props) => props.theme.body.lg.regular.letterSpacing};
+    font-family: var(--point-font);
+    font-size: ${(props) => props.theme.body.lg.medium.fontSize};
+    letter-spacing: ${(props) => props.theme.body.lg.medium.letterSpacing};
+    line-height: ${(props) => props.theme.heading.desktop.lg.lineHeight};
     word-break: keep-all;
     & > span {
       font-family: var(--point-font);
@@ -97,4 +104,4 @@ export const StSectionContents = styled.div`
   }
 `;
 
-export default HomeSection;
+export default HomeIntroduction;

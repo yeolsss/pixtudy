@@ -1,46 +1,36 @@
+import { throttle } from "lodash";
 import { RefObject, useEffect } from "react";
 import useScroll from "./useScroll";
 
+const SCROLL_THRESHOLDS = [3260, 4260, 5260, 6260];
+
 export default function useHandleScroll(refs: RefObject<HTMLDivElement>[]) {
-  const { section, setSection, setIsInSection } = useScroll();
+  const { setSection, setScrollIndex } = useScroll();
 
-  const mapSection = (index: number) => {
-    switch (index) {
-      case 0:
-        return "banner";
-      case 1:
-        return "intro";
-      case 2:
-        return "feature";
-      default:
-        return "banner";
+  const handleScroll = throttle(() => {
+    if (window.scrollY < SCROLL_THRESHOLDS[0]) {
+      setScrollIndex(-1);
+      return;
     }
-  };
+    SCROLL_THRESHOLDS.forEach((v, i) => {
+      if (window.scrollY > v) setScrollIndex(i);
+    });
+  }, 300);
 
-  const handleScroll = () => {
-    if (section === "intro") {
-      console.log("intro");
-    }
-    if (section === "feature") {
-      console.log("feature");
-    }
-  };
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log("entry: ", entry.target);
             const index = refs.findIndex((ref) => ref.current === entry.target);
             if (index !== -1) {
               const section = mapSection(index);
-              console.log("entry section: ", section);
               setSection(section);
             }
           }
         });
       },
-      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] }
+      { threshold: [0.3, 0.5, 0.6] }
     );
 
     refs.forEach((ref) => {
@@ -63,3 +53,16 @@ export default function useHandleScroll(refs: RefObject<HTMLDivElement>[]) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 }
+
+const mapSection = (index: number) => {
+  switch (index) {
+    case 0:
+      return "banner";
+    case 1:
+      return "intro";
+    case 2:
+      return "feature";
+    default:
+      return "banner";
+  }
+};

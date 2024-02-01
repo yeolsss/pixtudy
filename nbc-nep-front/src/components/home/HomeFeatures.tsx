@@ -1,5 +1,6 @@
+import useScroll from "@/hooks/scroll/useScroll";
 import { AnimatePresence } from "framer-motion";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef } from "react";
 import ScrollItem from "./ScrollItem";
 import {
   StScrollSection,
@@ -7,28 +8,9 @@ import {
   StStickyWrapper,
 } from "./styles/home.styles";
 
-const SCROLL_THRESHOLDS = [2160, 3160, 4160, 5160];
-
-const HomeScrollContainer = forwardRef<HTMLDivElement>(
+const HomeFeatures = forwardRef<HTMLDivElement>(
   function HomeScrollContainer(props, ref) {
-    const [index, setIndex] = useState(-1);
-
-    useEffect(() => {
-      const handleScroll = () => {
-        if (window.scrollY < SCROLL_THRESHOLDS[0]) {
-          setIndex(-1);
-          return;
-        }
-        SCROLL_THRESHOLDS.forEach((v, i) => {
-          if (window.scrollY > v) setIndex(i);
-        });
-      };
-      // throttling needed
-      window.addEventListener("scroll", handleScroll);
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }, []);
+    const { scrollIndex } = useScroll();
 
     return (
       <StScrollSection ref={ref}>
@@ -41,7 +23,7 @@ const HomeScrollContainer = forwardRef<HTMLDivElement>(
             </p>
           </StStickyItem>
           <AnimatePresence>
-            {Array.from({ length: index + 1 }).map((_, i) => (
+            {Array.from({ length: scrollIndex + 1 }).map((_, i) => (
               <ScrollItem key={`scroll-item${i}`} index={i} />
             ))}
           </AnimatePresence>
@@ -51,4 +33,4 @@ const HomeScrollContainer = forwardRef<HTMLDivElement>(
   }
 );
 
-export default HomeScrollContainer;
+export default HomeFeatures;

@@ -1,8 +1,8 @@
 import CustomHead from "@/SEO/CustomHead";
-import HomeHeroBanner from "@/components/home/HomeHeroBanner";
-import HomeScrollContainer from "@/components/home/HomeScrollContainer";
-import HomeSection from "@/components/home/HomeSection";
-import PixelBackground from "@/components/introduction/PixelBackground";
+import HomeBanner from "@/components/home/HomeBanner";
+import HomeFeatures from "@/components/home/HomeFeatures";
+import HomeIntroduction from "@/components/home/HomeIntroduction";
+import PixelBackground from "@/components/home/PixelBackground";
 import Layout from "@/components/layout/Layout";
 import useHandleScroll from "@/hooks/scroll/useHandleScroll";
 import { getCookie } from "@/utils/middlewareUtils";
@@ -36,11 +36,9 @@ const Home: NextPageWithLayout = () => {
     <>
       <CustomHead title={"Main"} description={"메인 페이지입니다."} />
       <StWrapper>
-        <div ref={bannerRef}>
-          <HomeHeroBanner isLoggedIn={!!user.email} />
-        </div>
-        <HomeSection ref={introRef} />
-        <HomeScrollContainer ref={featuresRef} />
+        <HomeBanner isLoggedIn={!!user.email} ref={bannerRef} />
+        <HomeIntroduction ref={introRef} />
+        <HomeFeatures ref={featuresRef} />
         <PixelBackground />
       </StWrapper>
     </>
