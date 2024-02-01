@@ -21,7 +21,9 @@ export default function CheckUserSession() {
             .then((userData) => {
               if (
                 !sessionRef.current &&
-                router.pathname !== "/changepassword"
+                router.pathname !== "/changepassword" &&
+                router.pathname !== "/dashboard" &&
+                !router.pathname.includes("/metaverse")
               ) {
                 toast.success(`${userData.display_name}님 로그인 성공`);
                 sessionRef.current = session;

@@ -34,15 +34,17 @@ app.use(
 
 app.use("/api", getCurrentUser());
 
+const loginCheck = {};
+
 const metaverseNamespace = io.of("/metaverse");
-gameServer(metaverseNamespace);
+gameServer(metaverseNamespace, loginCheck);
 
 // chat server Socket Handlers
 const chatNamespace = io.of("/chat");
 chatServer(chatNamespace);
 
 const conferenceNamespace = io.of("/conference");
-conferenceServer(conferenceNamespace);
+conferenceServer(conferenceNamespace, loginCheck);
 
 const PORT = process.env.NODE_ENV === "production" ? 8080 : 3001;
 

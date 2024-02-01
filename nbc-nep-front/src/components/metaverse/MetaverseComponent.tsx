@@ -32,10 +32,12 @@ const MetaverseComponent = () => {
   const changePlayerState = usePlayerList((state) => state.changePlayerState);
   const { isOpen: IsScrumOpen } = useMetaverseScrumIsOpen();
   const gameRef = useRef<Game | null>();
-  const { socket } = useSocket({ namespace: "/metaverse" });
+  const { socket, connect } = useSocket({ namespace: "/metaverse" });
 
   useEffect(() => {
     if (playerSpaceInfoData?.space_avatar) {
+      connect();
+
       const config = {
         type: Phaser.AUTO,
         width: window.innerWidth,

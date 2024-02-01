@@ -401,6 +401,7 @@ export function useUpdateSpaceInfo() {
       const spaceId = spaceInfo.id;
       client.invalidateQueries({ queryKey: ["spaceInfo", spaceId] });
       client.invalidateQueries({ queryKey: ["userSpaces", spaceInfo.owner] });
+      toast.success("수정이 완료됐습니다!", { position: "top-right" });
     },
     onError: () => {},
   });

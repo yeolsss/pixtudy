@@ -4,8 +4,6 @@ import Image from "next/image";
 import { forwardRef } from "react";
 import styled from "styled-components";
 
-interface Props {}
-
 const HomeIntroduction = forwardRef<HTMLDivElement>(
   function HomeSection(props, ref) {
     const { section } = useScroll();
@@ -28,7 +26,7 @@ const HomeIntroduction = forwardRef<HTMLDivElement>(
               <StSectionContents>
                 <h1>새로운 회의를 위한 새로운 공간.</h1>
                 <p>
-                  <span>Pixtudy</span>는 혁신적인 가상 업무 및 스터디 공간으로
+                  <em>Pixtudy</em>는 혁신적인 가상 업무 및 스터디 공간으로
                   뛰어난 협업 경험을 제공합니다. 단순한 업무 전달을 넘어,
                   팀원들과의 화상 교류를 통해 새로운 아이디어를 탐색하고,
                   프로젝트를 좀 더 생동감 있게 진행해 보세요.
@@ -47,12 +45,12 @@ const StSectionWrapper = styled.div`
   justify-content: end;
   max-width: 1300px;
   width: 100%;
-  height: 250vh;
+  height: 100vh;
   margin: 0 auto;
   z-index: 1;
 `;
 
-const StSection = styled(motion.div)`
+const StSection = styled(motion.section)`
   /* position: relative; */
   position: sticky;
   top: 0;
@@ -97,7 +95,7 @@ export const StSectionContents = styled.div`
     letter-spacing: ${(props) => props.theme.body.lg.medium.letterSpacing};
     line-height: ${(props) => props.theme.heading.desktop.lg.lineHeight};
     word-break: keep-all;
-    & > span {
+    & > em {
       font-family: var(--point-font);
       font-weight: bold;
     }

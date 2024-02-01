@@ -1,4 +1,4 @@
-import { uploadThumbnail } from "@/api/supabase/storage";
+import { deleteThumbnail, uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
 import { StDangerButton } from "@/components/common/button/button.styles";
 import { StLoadingSpinner } from "@/components/common/loading/LoadingProgress";
@@ -17,6 +17,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import {
+  IMAGE_MAX_SIZE,
   SPACE_DESCRIPTION_FORM,
   SPACE_NAME_FORM,
   SPACE_THUMB_FORM,
@@ -26,22 +27,24 @@ import ConfigSpaceFormItem from "./ConfigSpaceFormItem";
 
 export default function ConfigSpaceOwner() {
   const { spaceInfo } = useMetaversePlayer();
+
   const {
     handleSubmit,
     register,
     watch,
+    resetField,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-  const {
-    updateSpace,
-    isSuccess: isSuccessUpdate,
-    isPending: isPendingUpdate,
-  } = useUpdateSpaceInfo();
+
+  const { updateSpace, isPending: isPendingUpdate } = useUpdateSpaceInfo();
+
   const { deleteSpace, isSuccess: isSuccessDelete } = useDeleteSpace();
   const formRef = useKeyDownPrevent<HTMLFormElement>();
+
   const [thumbPreviewSrc, setThumbPreviewSrc] = useState(
     spaceInfo?.space_thumb || undefined
   );
+
   const { emitRemoveSpace } = useChat();
   const thumbWatch = watch(SPACE_THUMB_FORM);
   const nameError = errors[SPACE_NAME_FORM]?.message;
@@ -64,24 +67,38 @@ export default function ConfigSpaceOwner() {
 
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
     if (!spaceInfo) return;
+
     const {
       [SPACE_THUMB_FORM]: thumb,
       [SPACE_NAME_FORM]: title,
       [SPACE_DESCRIPTION_FORM]: description,
     } = data;
+
     let thumbnailURL: string | null = spaceInfo.space_thumb;
+
     if (thumb && thumb.length > 0) {
-      const { data, error } = await uploadThumbnail(thumb[0], spaceInfo.id);
+      const { data: url, error: uploadError } = await uploadThumbnail(thumb[0]);
 
-      if (data) thumbnailURL = data;
-
-      if (error) {
-        alert(
-          "space를 업데이트하는데 실패하였습니다! 개발자에게 문의바랍니다..ㅜ"
+      if (uploadError || !url) {
+        toast.error(
+          "사진을 업로드하는 과정에서 에러가 발생했습니다. 개발자에게 문의바랍니다..."
         );
-        console.error(error);
+        console.error(uploadError);
         return;
       }
+
+      if (thumbnailURL) {
+        // 기존에 thumbnailURL이 있다면
+        const fileName = thumbnailURL.split("/").at(-1);
+        const isSuccessDeleting = await deleteThumbnail(fileName!);
+
+        if (!isSuccessDeleting) {
+          toast.error(
+            "사진을 제거하는 과정에서 에러가 발생했습니다. 개발자에게 문의바랍니다."
+          );
+        }
+      }
+      thumbnailURL = url;
     }
 
     updateSpace({
@@ -94,16 +111,20 @@ export default function ConfigSpaceOwner() {
 
   useEffect(() => {
     if (thumbWatch && thumbWatch.length > 0) {
-      const file = thumbWatch[0];
+      const file = thumbWatch[0] as File;
+
+      if (file.size > IMAGE_MAX_SIZE) {
+        // file validation
+        toast.error("이미지 사이즈는 최대 50MB이하로 넣을 수 있습니다.", {
+          position: "top-center",
+        });
+        resetField(SPACE_THUMB_FORM);
+        return;
+      }
+
       setThumbPreviewSrc(URL.createObjectURL(file));
     }
   }, [thumbWatch]);
-
-  useEffect(() => {
-    if (isSuccessUpdate) {
-      toast.success("수정이 완료됐습니다!", { position: "top-right" });
-    }
-  }, [isSuccessUpdate]);
 
   useEffect(() => {
     if (isSuccessDelete) {
@@ -177,7 +198,11 @@ export default function ConfigSpaceOwner() {
           삭제하기
         </StDanger>
       </div>
-      {isPendingUpdate && <StLoadingSpinner />}
+      {isPendingUpdate && (
+        <StFloatingLoading>
+          <StLoadingSpinner as="div" />
+        </StFloatingLoading>
+      )}
     </StSection>
   );
 }
@@ -209,4 +234,11 @@ const StHelperSpan = styled.p`
   color: ${(props) => props.theme.color.text.info};
   text-align: center;
   opacity: 0.5;
+`;
+
+const StFloatingLoading = styled.div`
+  position: absolute;
+
+  right: ${(props) => props.theme.spacing[24]};
+  top: ${(props) => props.theme.spacing[64]};
 `;

@@ -16,7 +16,7 @@ const {
 
 let clients = {};
 
-module.exports = function (io) {
+module.exports = function (io, loginCheck) {
   io.on("connection", (socket) => {
     // socket이 연결이 된다면, 그 socket에 대한 정보를 여기서 초기화를 애초에 해줘야겠다.fc
     socket.on("disconnect", () => {
@@ -25,6 +25,12 @@ module.exports = function (io) {
         const client = clients[playerId];
 
         if (!client) return;
+
+        if (loginCheck[playerId]) {
+          delete loginCheck[playerId];
+          return;
+        }
+
         console.log("disconnect", playerId);
         socket.to(client.spaceId).emit("client-disconnected", playerId);
 

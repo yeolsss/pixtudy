@@ -16,6 +16,9 @@ export function pathValidation(errorMessage: string) {
       break;
     case "mobile_error":
       toast.error("모바일 환경에서 접근이 불가능합니다.");
+    case "duplicate":
+      toast.error("중복 로그인 혹은 비정상적인 접근이 감지됐습니다.");
+      break;
     default:
       break;
   }

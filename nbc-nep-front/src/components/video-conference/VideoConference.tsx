@@ -34,7 +34,9 @@ import {
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 
 export default function VideoConference() {
-  const { socket, disconnect } = useSocket({ namespace: "/conference" });
+  const { socket, disconnect, connect } = useSocket({
+    namespace: "/conference",
+  });
 
   const { playerList, spaceId, findPlayerById } = useMetaversePlayer();
   const {
@@ -75,9 +77,13 @@ export default function VideoConference() {
   const currentPlayer = findPlayerById(currentPlayerId);
 
   useEffect(() => {
-    socket.emit("join-room", spaceId, currentPlayerId);
+    connect();
 
-    socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
+    socket.on("connect", () => {
+      console.log("socket connect");
+      socket.emit("join-room", spaceId, currentPlayerId);
+      socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
+    });
 
     socket.on("new-producer", handleConsumeNewProducer);
 
@@ -87,7 +93,6 @@ export default function VideoConference() {
 
     return () => {
       socket.emit("transport-close", currentPlayerId);
-      disconnect();
       socket.off("new-producer", handleConsumeProducers);
       socket.off("producer-closed", handleProducerClose);
     };
