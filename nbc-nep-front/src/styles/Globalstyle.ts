@@ -493,7 +493,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   header {
-    max-width: 1200px;
+    max-width: 100vw;
     margin: 0 auto;
   }
   main > section {

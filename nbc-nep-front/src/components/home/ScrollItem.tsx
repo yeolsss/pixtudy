@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { contents } from "./home.constant";
 import { StScrollItemWrapper } from "./styles/home.styles";
 
@@ -7,7 +6,7 @@ interface Props {
 }
 
 export default function ScrollItem({ index }: Props) {
-  const { title, description, imgSrc, initialY, top, left } = contents[index];
+  const { title, description, videoSrc, initialY, top, left } = contents[index];
 
   return (
     <StScrollItemWrapper
@@ -19,12 +18,21 @@ export default function ScrollItem({ index }: Props) {
       transition={{ duration: 0.5 }}
     >
       <div>
-        <Image
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          src={videoSrc}
+          height={270}
+          width={300}
+        />
+        {/* <Image
           src={imgSrc}
           width={80}
           height={81}
           alt={"contents scroll item image"}
-        />
+        /> */}
         <h2>{title}</h2>
       </div>
       <p>{description}</p>
