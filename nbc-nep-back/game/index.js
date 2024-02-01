@@ -2,7 +2,7 @@ const router = require("express").Router();
 const players = {};
 
 module.exports = {
-  init: function (io) {
+  init: function (io, loginCheck) {
     io.on("connection", (socket) => {
       console.log("player[" + socket.id + "] connected");
 
@@ -38,14 +38,16 @@ module.exports = {
 
       socket.on("disconnect", (reason) => {
         console.log("player [" + socket.id + "] disconnected");
-        if (reason === "client namespace disconnect") {
-          return;
-        }
 
         if (!socket.playerId) return;
         const player = players[socket.playerId];
         if (!player) return;
         const { spaceId, playerId } = player;
+
+        if (reason === "client namespace disconnect") {
+          loginCheck[playerId] = true;
+          return;
+        }
 
         io.to(spaceId).emit("player-disconnected", playerId);
 

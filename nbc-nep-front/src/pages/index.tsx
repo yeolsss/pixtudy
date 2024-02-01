@@ -21,16 +21,14 @@ const Home: NextPageWithLayout = () => {
 
   useEffect(() => {
     const message = getCookie("message");
-    if (message) {
-      // 메시지로 이벤트 처리
-      pathValidation(message);
-      // 쿠키 삭제
+    const localMessage = localStorage.getItem("message");
+
+    if (message || localMessage) {
+      pathValidation(message || localMessage!);
       document.cookie =
         "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
   }, []);
-
-  // const imagesPerSection = {'section1', 'section2', 'section3' };
 
   return (
     <>

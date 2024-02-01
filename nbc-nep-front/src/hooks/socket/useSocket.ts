@@ -15,7 +15,7 @@ export default function useSocket({ namespace }: Props) {
   );
 
   const handleConnect = () => {
-    console.log("connect socket in userSo");
+    console.log("connect socket in userSocket");
   };
 
   useEffect(() => {

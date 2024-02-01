@@ -80,6 +80,7 @@ export default function VideoConference() {
     connect();
 
     socket.on("connect", () => {
+      console.log("socket connect");
       socket.emit("join-room", spaceId, currentPlayerId);
       socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
     });
@@ -92,7 +93,6 @@ export default function VideoConference() {
 
     return () => {
       socket.emit("transport-close", currentPlayerId);
-      disconnect();
       socket.off("new-producer", handleConsumeProducers);
       socket.off("producer-closed", handleProducerClose);
     };

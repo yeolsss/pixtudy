@@ -32,7 +32,6 @@ const MetaverseComponent = () => {
   const changePlayerState = usePlayerList((state) => state.changePlayerState);
   const { isOpen: IsScrumOpen } = useMetaverseScrumIsOpen();
   const gameRef = useRef<Game | null>();
-  // 얘를 막아야 할 것 같아 원인은 중복 호출
   const { socket, connect } = useSocket({ namespace: "/metaverse" });
 
   useEffect(() => {
