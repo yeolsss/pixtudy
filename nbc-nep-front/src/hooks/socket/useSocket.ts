@@ -10,21 +10,32 @@ export default function useSocket({ namespace }: Props) {
   const socketRef = useRef<Socket>(
     io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}${namespace}`, {
       withCredentials: true,
+      autoConnect: false,
     })
   );
 
-  useEffect(() => {
-    if (socketRef.current?.connected) return;
+  const handleConnect = () => {
+    console.log("connect socket in userSo");
+  };
 
+  useEffect(() => {
     const socket = socketRef.current;
-    socket.on("connect", () => {
-      console.log("connect socket in useSocket.ts");
-    });
+
+    socket.on("connect", handleConnect);
+
+    return () => {
+      socket.off("connect", handleConnect);
+    };
   }, []);
 
   const disconnect = () => {
     console.log("socket disconnect");
     socketRef.current?.disconnect();
+  };
+
+  const connect = () => {
+    if (socketRef.current.connected) return;
+    socketRef.current.connect();
   };
 
   const changePlayerState = (playerId: string, state: PlayerState) => {
@@ -34,6 +45,7 @@ export default function useSocket({ namespace }: Props) {
   return {
     socket: socketRef.current,
     disconnect,
+    connect,
     changePlayerState,
   };
 }

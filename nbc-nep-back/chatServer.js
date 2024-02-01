@@ -46,7 +46,6 @@ module.exports = function (io) {
 
     socket.on("removeRoom", () => {
       try {
-        console.log(socket.rooms);
         const player = chat[socket.id];
         const spaceId = player.spaceId;
 

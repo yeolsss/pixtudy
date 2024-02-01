@@ -105,6 +105,14 @@ export class SceneClass extends Phaser.Scene {
       this.otherPlayers?.movePlayer(playerInfo);
     });
 
+    this.socket.on("duplicated-user", (playerId: string) => {
+      if (this.playerId !== playerId) return;
+
+      this.socket.disconnect();
+      window.location.href = "/dashboard";
+      localStorage.setItem("message", "duplicate");
+    });
+
     this.createAnimations(playerInfo.character);
 
     this.cursors = this.input.keyboard?.createCursorKeys();

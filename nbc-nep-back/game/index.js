@@ -5,11 +5,16 @@ module.exports = {
   init: function (io) {
     io.on("connection", (socket) => {
       console.log("player[" + socket.id + "] connected");
+
       socket.on("user-data", (playerInfo) => {
         if (!playerInfo) return;
-
         const { playerId, spaceId } = playerInfo;
 
+        const isInUserInSpace = findExistPlayer(playerId);
+
+        if (isInUserInSpace) {
+          socket.to(spaceId).emit("duplicated-user", playerId);
+        }
         players[playerId] = {
           rotation: 0,
           x: 1200,
@@ -31,8 +36,11 @@ module.exports = {
         io.to(spaceId).emit("metaverse-players", playersInSpace);
       });
 
-      socket.on("disconnect", () => {
+      socket.on("disconnect", (reason) => {
         console.log("player [" + socket.id + "] disconnected");
+        if (reason === "client namespace disconnect") {
+          return;
+        }
 
         if (!socket.playerId) return;
         const player = players[socket.playerId];
@@ -69,6 +77,17 @@ module.exports = {
           .to(player.spaceId)
           .emit("change-player-state", players[playerId]);
       });
+
+      socket.on("removeRoom", () => {
+        try {
+          const player = players[playerId];
+          const spaceId = player.spaceId;
+
+          io.to(spaceId).emit("removedRoom");
+        } catch (error) {
+          console.log("an error occurred while remove room :", error);
+        }
+      });
     });
   },
   getCurrentUser,
@@ -100,4 +119,8 @@ function setPlayerMovement(player, x, y, frame) {
 
 function setPlayer(player, key, value) {
   return { ...player, [key]: value };
+}
+
+function findExistPlayer(playerId) {
+  return Object.values(players).find((player) => player.playerId === playerId);
 }
