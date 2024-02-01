@@ -1,19 +1,10 @@
-import { Player } from "@/components/metaverse/types/metaverse";
-import { Consumer } from "mediasoup-client/lib/Consumer";
+import { filter, find } from "lodash";
 import {
-  Producer,
+  AppData,
   ShareType,
   SplitVideoSource,
-  UserVideoSourceMap,
   VideoSource,
 } from "../types/ScreenShare.types";
-
-export function isAlreadyConsume(
-  consumers: Consumer[],
-  remoteProducerId: string
-) {
-  return consumers.some((consumer) => consumer.id === remoteProducerId);
-}
 
 export function isEmptyTracks(tracks: MediaStreamTrack[]) {
   return tracks.length === 0;
@@ -21,40 +12,6 @@ export function isEmptyTracks(tracks: MediaStreamTrack[]) {
 
 export function isVideoTrack(track: MediaStreamTrack) {
   return track.kind === "video";
-}
-
-export function updateUserVideoSourceMap(
-  prevUsers: UserVideoSourceMap,
-  playerList: Player[]
-) {
-  const newUserForVideoSource = { ...prevUsers };
-
-  playerList.forEach((player) => {
-    if (!newUserForVideoSource[player.playerId]) {
-      newUserForVideoSource[player.playerId] = {
-        ...player,
-        consumers: [],
-        producers: [],
-      };
-    }
-  });
-
-  return newUserForVideoSource;
-}
-
-export function isArrayEmpty(array: unknown[]) {
-  return array.length === 0;
-}
-
-function filterByShareType(item: VideoSource, shareType: ShareType) {
-  return item.appData.shareType === shareType;
-}
-
-export function getProducersByShareType(
-  producers: Producer[],
-  shareType: ShareType
-) {
-  return producers.filter((producer) => filterByShareType(producer, shareType));
 }
 
 export function splitVideoSource(videoSources: VideoSource[]) {
@@ -74,17 +31,44 @@ export function splitVideoSource(videoSources: VideoSource[]) {
   );
 }
 
-export function getVideoSourcesExcludeAudio(videoSources: VideoSource[]) {
-  return videoSources.filter(
-    (videoSource) => videoSource.appData.shareType !== "audio"
+function findVideoSourceBy<Key extends keyof AppData>(
+  videoSources: VideoSource[],
+  key: Key,
+  predicate: (value: AppData[Key]) => boolean
+) {
+  return find(videoSources, (videoSource) =>
+    predicate(videoSource.appData[key])
   );
 }
 
-export function findVideoSourceByType(
-  videoSource: VideoSource[],
+export function findVideoSourcesByType(
+  videoSources: VideoSource[],
   type: ShareType
 ) {
-  return videoSource.find(
-    (videoSource) => videoSource.appData.shareType === type
+  return findVideoSourceBy(
+    videoSources,
+    "shareType",
+    (videoSourceType) => videoSourceType === type
+  );
+}
+
+function filterVideoSourcesBy<Key extends keyof AppData>(
+  videoSources: VideoSource[],
+  key: Key,
+  predicate: (value: AppData[Key]) => boolean
+) {
+  return filter(videoSources, (videoSource) =>
+    predicate(videoSource.appData[key])
+  );
+}
+
+export function filterVideoSourcesByPlayerId(
+  videoSources: VideoSource[],
+  playerId: string
+) {
+  return filterVideoSourcesBy(
+    videoSources,
+    "playerId",
+    (videoSourcePlayerId) => videoSourcePlayerId === playerId
   );
 }
