@@ -28,7 +28,6 @@ export default function Footer() {
 }
 
 const StFooter = styled.footer`
-  position: fixed;
   width: 100%;
   bottom: 0;
   left: 0%;
