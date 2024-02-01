@@ -53,7 +53,7 @@ export default function Header() {
   ];
   const currentButton = isLogin ? loginModeButton : logoutModeButton;
   return (
-    <StNavWrapper>
+    <>
       <StNavContainer>
         <div>
           <Link href="/">Pixtudy</Link>
@@ -72,28 +72,18 @@ export default function Header() {
           <StCTAButton onClick={handleToDashboard}>Dashboard</StCTAButton>
         </div>
       </StNavContainer>
-    </StNavWrapper>
+    </>
   );
 }
-const StNavWrapper = styled.header`
-  width: 100%;
-  background-color: ${(props) => props.theme.color.bg.primary};
-  position: relative;
-  z-index: 2;
-`;
 
-const StNavContainer = styled.div`
+const StNavContainer = styled.header`
   display: flex;
-  max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
   height: ${(props) => props.theme.unit[96]};
   padding: ${(props) => props.theme.spacing[24]};
   justify-content: space-between;
   align-items: center;
   font-family: var(--sub-font);
-  position: relative;
-  z-index: 100;
 
   a {
     display: block;

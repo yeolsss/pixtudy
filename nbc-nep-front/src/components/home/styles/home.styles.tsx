@@ -3,11 +3,10 @@ import styled from "styled-components";
 
 export const StScrollSection = styled.section`
   width: 100vw;
-  height: 600vh;
+  height: 500vh;
 
   display: flex;
   flex-direction: row;
-  z-index: 1;
 `;
 
 export const StStickyWrapper = styled.div`
@@ -40,19 +39,16 @@ export const StStickyItem = styled.div`
   gap: ${(props) => props.theme.spacing[16]};
 
   h1 {
-    font-family: var(--point-font);
-    font-weight: ${(props) => props.theme.heading.desktop["3xl"].fontWeight};
     font-size: ${(props) => props.theme.heading.desktop["3xl"].fontSize};
     letter-spacing: ${(props) =>
       props.theme.heading.desktop["3xl"].letterSpacing};
-    line-height: ${(props) => props.theme.heading.desktop["4xl"].lineHeight};
+    line-height: ${(props) => props.theme.heading.desktop["3xl"].lineHeight};
   }
 
   p {
-    font-family: var(--point-font);
-    font-size: ${(props) => props.theme.body.lg.medium.fontSize};
-    letter-spacing: ${(props) => props.theme.body.lg.medium.letterSpacing};
-    line-height: ${(props) => props.theme.heading.desktop.lg.lineHeight};
+    font-size: ${(props) => props.theme.body.md.medium.fontSize};
+    letter-spacing: ${(props) => props.theme.body.md.medium.letterSpacing};
+    line-height: ${(props) => props.theme.body.md.medium.lineHeight};
   }
 `;
 
@@ -64,11 +60,11 @@ export const StScrollItemWrapper = styled(motion.div)<{
   top: ${(props) => props.$top};
   left: ${(props) => props.$left};
 
-  width: 34rem;
-  height: 30rem;
+  width: 30rem;
+  height: 38rem;
 
   display: flex;
-  padding: ${(props) => props.theme.spacing[24]};
+  padding: ${(props) => props.theme.spacing[32]};
   flex-direction: column;
   align-items: center;
   gap: ${(props) => props.theme.spacing[16]};
@@ -84,23 +80,15 @@ export const StScrollItemWrapper = styled(motion.div)<{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: ${(props) => props.theme.spacing[16]};
-
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: ${(props) => props.theme.border.radius[16]};
-    }
+    gap: ${(props) => props.theme.spacing[32]};
 
     h2 {
-      max-width: 100%;
+      max-width: 60%;
       font-size: ${(props) => props.theme.heading.desktop["sm"].fontSize};
       letter-spacing: ${(props) =>
         props.theme.heading.desktop["sm"].letterSpacing};
       line-height: ${(props) => props.theme.heading.desktop["sm"].lineHeight};
-      font-family: var(--sub-font);
-      font-weight: ${(props) => props.theme.heading.desktop["sm"].fontWeight};
+      font-family: ${(props) => props.theme.heading.desktop["sm"].fontFamily};
       text-align: center;
       word-break: keep-all;
     }
