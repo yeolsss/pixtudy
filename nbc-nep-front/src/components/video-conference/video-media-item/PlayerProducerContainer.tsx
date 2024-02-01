@@ -27,7 +27,9 @@ export default function PlayerProducerContainer({
   producers,
   nickname,
 }: Props) {
-  const { socket, disconnect } = useSocket({ namespace: "/conference" });
+  const socketResult = useSocket({
+    namespace: "/conference",
+  });
 
   const {
     user: { id: currentPlayerId },
@@ -37,14 +39,21 @@ export default function PlayerProducerContainer({
 
   useEffect(() => {
     return () => {
-      disconnect();
+      if (socketResult) {
+        socketResult.disconnect();
+      }
     };
   }, []);
 
   function handleShareStop(producer: Producer) {
     removeProducer(producer);
-
-    socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
+    if (socketResult) {
+      socketResult.socket?.emit(
+        "producer-close",
+        currentPlayerId,
+        producer.appData.streamId
+      );
+    }
   }
 
   return (

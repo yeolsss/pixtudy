@@ -37,12 +37,15 @@ const Dashboard: NextPage<Props> & {
 } = ({ spaces }) => {
   useEffect(() => {
     const message = getCookie("message");
-    if (message) {
+    const localMessage = localStorage.getItem("message");
+    if (message || localMessage) {
       // 메시지로 이벤트 처리
-      pathValidation(message);
+      pathValidation(message || localMessage!);
       // 쿠키 삭제
       document.cookie =
         "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      // 로컬스토리지 삭제
+      localStorage.removeItem("message");
     }
   }, []);
 

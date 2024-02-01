@@ -59,15 +59,19 @@ export const getSpaceData = async (spaceId: string): Promise<Spaces> => {
   return data;
 };
 
-export const getPlayerSpaceData = async (
-  spaceId: string
-): Promise<Tables<"space_members">> => {
-  const { data: currentUsersSession } = await supabase.auth.getSession();
+export const getPlayerSpaceData = async ({
+  userId,
+  spaceId,
+}: {
+  userId: string;
+  spaceId: string;
+}): Promise<Tables<"space_members">> => {
+  // const { data: currentUsersSession } = await supabase.auth.getSession();
 
   const { data, error } = await supabase
     .from("space_members")
     .select("*")
-    .eq("user_id", currentUsersSession.session?.user.id!)
+    .eq("user_id", userId)
     .eq("space_id", spaceId)
     .single();
 

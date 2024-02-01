@@ -32,10 +32,21 @@ const MetaverseComponent = () => {
   const changePlayerState = usePlayerList((state) => state.changePlayerState);
   const { isOpen: IsScrumOpen } = useMetaverseScrumIsOpen();
   const gameRef = useRef<Game | null>();
-  const { socket } = useSocket({ namespace: "/metaverse" });
+
+  const socketResult = useSocket({
+    namespace: "/metaverse",
+    userId: playerSpaceInfoData?.user_id!,
+    spaceId: playerSpaceInfoData?.space_id!,
+  });
+
+  const socket = socketResult?.socket;
 
   useEffect(() => {
-    if (playerSpaceInfoData?.space_avatar) {
+    if (
+      !!playerSpaceInfoData &&
+      playerSpaceInfoData?.space_avatar &&
+      socketResult
+    ) {
       const config = {
         type: Phaser.AUTO,
         width: window.innerWidth,
@@ -51,7 +62,7 @@ const MetaverseComponent = () => {
             fps: GAME_FPS,
           },
         },
-        scene: [SetupScene, new SceneClass(socket, id)],
+        scene: [SetupScene, new SceneClass(socket!, id)],
       };
 
       gameRef.current = new Phaser.Game(config);
@@ -76,19 +87,19 @@ const MetaverseComponent = () => {
       changePlayerState(player.playerId, player.state);
     };
 
-    socket.on("current-players", handlePlayerList);
+    socket?.on("current-players", handlePlayerList);
 
-    socket.on("metaverse-players", handlePlayerList);
+    socket?.on("metaverse-players", handlePlayerList);
 
-    socket.on("change-player-state", handleChangePlyerState);
+    socket?.on("change-player-state", handleChangePlyerState);
 
     return () => {
       // gameRef.current?.destroy(true);
-      socket.off("current-players", handlePlayerList);
+      socket?.off("current-players", handlePlayerList);
 
-      socket.off("metaverse-players", handlePlayerList);
+      socket?.off("metaverse-players", handlePlayerList);
 
-      socket.off("change-player-state", handleChangePlyerState);
+      socket?.off("change-player-state", handleChangePlyerState);
     };
   }, [playerSpaceInfoData]);
 

@@ -16,8 +16,8 @@ const useMetaversePlayer = () => {
 
   const { data: playerSpaceInfoData } = useQuery({
     queryKey: ["playerSpaceInfo", spaceId],
-    queryFn: () => getPlayerSpaceData(spaceId),
-    enabled: !!spaceId,
+    queryFn: () => getPlayerSpaceData({ userId: id, spaceId }),
+    enabled: !!spaceId && !!id,
     staleTime: Infinity,
   });
 

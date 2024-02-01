@@ -1,3 +1,4 @@
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useSocket from "@/hooks/socket/useSocket";
 import { slideDown, slideUp } from "@/styles/animations";
 import useAuth from "@/zustand/authStore";
@@ -14,10 +15,16 @@ export default function PlayerStateSelector({
   handleAnimatedEnd,
 }: Props) {
   const { id } = useAuth((state) => state.user);
-  const { changePlayerState } = useSocket({ namespace: "/metaverse" });
+  const { playerSpaceInfoData } = useMetaversePlayer();
+
+  const socketResult = useSocket({
+    namespace: "/metaverse",
+    userId: playerSpaceInfoData?.user_id!,
+    spaceId: playerSpaceInfoData?.space_id!,
+  });
 
   const handleChangeState = (state: PlayerState) => () => {
-    changePlayerState(id, state);
+    socketResult?.changePlayerState(id, state);
   };
 
   return (

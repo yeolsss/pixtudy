@@ -16,6 +16,10 @@ export function pathValidation(errorMessage: string) {
       break;
     case "mobile_error":
       toast.error("모바일 환경에서 접근이 불가능합니다.");
+    case "duplicate":
+      toast.error(
+        "중복접속이 감지되었습니다. 기존 접속을 종료하고 다시 시도하세요."
+      );
     default:
       break;
   }
