@@ -40,7 +40,9 @@ export default function AvatarModalContainer() {
 
   const { closeModal, space, clearSpace } = useModal();
 
-  const { onChange, ...restParam } = register("avatar");
+  const { onChange, ...restParam } = register("avatar", {
+    required: "스페이스 아바타를 선택해주세요",
+  });
 
   const handleCloseModal = () => {
     closeModal();
@@ -126,6 +128,7 @@ export default function AvatarModalContainer() {
                 </StInputWrapper>
               ))}
             </StInputContainer>
+            {errors.avatar && <span>{errors.avatar.message as string}</span>}
             <StButtonWrapper>
               <button type="submit">확인</button>
             </StButtonWrapper>
