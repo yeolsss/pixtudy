@@ -1,21 +1,20 @@
 import MetaverseChatCard from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatCard";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
-import useChat from "@/hooks/chat/useChat";
 import useEndOfChat from "@/hooks/metaverse/useEndOfChat";
 import useChatType from "@/zustand/chatTypeStore";
 import useDm from "@/zustand/dmStore";
 import useGlobalNavBar from "@/zustand/globalNavBarStore";
 import { useEffect } from "react";
 import styled from "styled-components";
+import useChatListStore from "@/zustand/chatListStore";
 
 export default function MetaverseChatList() {
-  const { chatList } = useChat();
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
   const { isOpenChat, chatType, closeChat } = useChatType();
   const { resetAllSections } = useGlobalNavBar();
   const { closeDm } = useDm();
-
+  const chatList = useChatListStore((state) => state.chatList);
   const endOfChatsRef = useEndOfChat([chatList]);
 
   const handleOnClickCloseChat = () => {

@@ -37,7 +37,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   return [
     {
       buttonImage: kanbanIcon,
-      description: "칸반보드",
+      description: "스크럼보드",
       type: "kanban",
       handleOnClick: () => {
         if (isScrumOpen) closeMetaverseScrum();
