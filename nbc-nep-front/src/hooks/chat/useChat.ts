@@ -16,7 +16,7 @@ export default function useChat() {
     (player) => player.playerId === currentPlayerId
   );
 
-  const { chatList, sendChatMessage, emitRemoveSpace } = useChatSocket(
+  const { sendChatMessage, emitRemoveSpace } = useChatSocket(
     currentPlayer?.nickname
   );
 
@@ -31,7 +31,6 @@ export default function useChat() {
     chatInput,
     handleOnChangeChat,
     handleOnSubmitChat,
-    chatList,
     handleFocus,
     handleBlur,
     emitRemoveSpace,
