@@ -9,17 +9,19 @@ import useSocket from "@/hooks/socket/useSocket";
 import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
 import styled from "styled-components";
-import CameraOff from "../../assets/dock-icons/camera-off.svg";
-import CameraOn from "../../assets/dock-icons/camera-on.svg";
-import MicOff from "../../assets/dock-icons/mic-off.svg";
-import MicOn from "../../assets/dock-icons/mic-on.svg";
-import ScreenOff from "../../assets/dock-icons/screen-off.svg";
-import ScreenOn from "../../assets/dock-icons/screen-on.svg";
 import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
 import { MAX_SHARE_SCREEN_SIZE, videoParams } from "./constants/constants";
+import {
+  CameraOff,
+  CameraOn,
+  MicOff,
+  MicOn,
+  ScreenOff,
+  ScreenOn,
+} from "./styles/icons";
 import {
   AppData,
   MediaConsumeParams,
