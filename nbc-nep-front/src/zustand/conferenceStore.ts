@@ -5,7 +5,7 @@ import {
   ShareType,
 } from "@/components/video-conference/types/ScreenShare.types";
 import { create } from "zustand";
-import createSelectors from "./createSelector";
+import createSelectors from "./config/createSelector";
 
 interface ConferenceState {
   consumers: Consumer[];

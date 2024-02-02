@@ -14,7 +14,7 @@ export default function MetaverseChatList() {
   const { isOpenChat, chatType, closeChat } = useChatType();
   const { resetAllSections } = useGlobalNavBar();
   const { closeDm } = useDm();
-  const chatList = useChatListStore((state) => state.chatList);
+  const chatList = useChatListStore.use.chatList();
   const endOfChatsRef = useEndOfChat([chatList]);
 
   const handleOnClickCloseChat = () => {

@@ -17,7 +17,7 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
   const { spaceId } = useMetaversePlayer();
   const user = useAuthStore.use.user();
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
-  const setChatList = useChatListStore((state) => state.setChatList);
+  const setChatList = useChatListStore.use.setChatList();
 
   const handleConnect = () => {
     socket.current!.emit("joinRoom", spaceId);

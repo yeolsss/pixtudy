@@ -1,6 +1,6 @@
 import { Tables } from "@/supabase/types/supabase";
 import { create } from "zustand";
-import createSelector from "@/zustand/createSelector";
+import createSelector from "@/zustand/config/createSelector";
 
 interface AuthState {
   isLogin: boolean;
