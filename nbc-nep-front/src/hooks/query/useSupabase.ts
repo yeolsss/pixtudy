@@ -31,6 +31,7 @@ import {
   createSpaceHandler,
   getSpaceData,
   joinSpaceHandler,
+  leavingSpace,
   removeSpace,
   removeSpace as removeSpaceSupabase,
   updateSpace,
@@ -211,6 +212,23 @@ export function useUpdateSpace() {
     },
   });
   return { updateSpace, isUpdatingSuccess, isUpdatingError };
+}
+
+export function useLeavingSpace() {
+  const client = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: leavingSpace,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["userSpaces"] });
+
+      window.location.href = "/dashboard";
+    },
+    onError: (error) => {
+      console.error("leaving space error", error);
+    },
+  });
+
+  return { leavingSpace: mutate };
 }
 
 /* dm */
