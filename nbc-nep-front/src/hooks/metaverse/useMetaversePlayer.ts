@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 
 const useMetaversePlayer = () => {
   const { id, display_name } = useAuth((state) => state.user);
-  const { playerList, setPlayerList } = usePlayerList((state) => state);
+  const playerList = usePlayerList((state) => state.playerList);
+  const setPlayerList = usePlayerList((state) => state.setPlayerList);
 
   const router = useRouter();
 
