@@ -6,7 +6,7 @@ import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useSocket from "@/hooks/socket/useSocket";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { useEffect } from "react";
 import styled from "styled-components";
 import CameraOff from "../../assets/dock-icons/camera-off.svg";
@@ -37,10 +37,7 @@ export default function VideoConference() {
   });
 
   const { playerList, spaceId, findPlayerById } = useMetaversePlayer();
-  const {
-    user: { id: currentPlayerId },
-  } = useAuth();
-
+  const { id: currentPlayerId } = useAuthStore.use.user();
   const { isOpen } = useLayout();
 
   const {

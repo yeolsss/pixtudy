@@ -10,7 +10,7 @@ import {
 } from "react-hook-form";
 
 import { FORM_SPACE, SRC_BASE } from "@/components/spaces/constants/constants";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import useSpace from "@/zustand/spaceStore";
 import styled from "styled-components";
 import {
@@ -41,7 +41,7 @@ export default function ProfileForm({
   isValid,
 }: ProfileFormProps) {
   const { setUserProfile } = useSpace();
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
 
   const handleToPrevious = () => {
     setProcedure(FORM_SPACE);

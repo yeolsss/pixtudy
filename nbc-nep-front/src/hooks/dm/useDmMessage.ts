@@ -1,6 +1,6 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { useGetDmMessages, useReadDMMessage } from "@/hooks/query/useSupabase";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import useDm from "@/zustand/dmStore";
 import React, { useEffect } from "react";
 
@@ -21,7 +21,7 @@ export default function useDmMessage({
   const { dmRoomId } = useDm();
 
   // 현재 세션의 유저정보
-  const { user: currentUser } = useAuth();
+  const currentUser = useAuthStore.use.user();
 
   // 채팅창에 들어오면 읽은것으로 간주.
   useEffect(() => {

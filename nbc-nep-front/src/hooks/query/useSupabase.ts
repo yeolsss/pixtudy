@@ -46,7 +46,7 @@ import {
   Spaces,
 } from "@/supabase/types/supabase.tables.type";
 import { authValidation } from "@/utils/authValidate";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { Session } from "@supabase/supabase-js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -237,9 +237,7 @@ export function useGetDmChannel({
   receiverId,
   spaceId,
 }: Omit<checkDmChannelArgs, "currentUserId">) {
-  const {
-    user: { id: currentUserId },
-  } = useAuth();
+  const { id: currentUserId } = useAuthStore.use.user();
   const getDmChannelOptions = {
     queryKey: ["dmChannel", receiverId],
     queryFn: () => checkDmChannel({ receiverId, currentUserId, spaceId }),
@@ -262,9 +260,7 @@ export function useGetDmMessages(dmChannel: string | null) {
 
 // 메시지 보내기
 export function useSendMessage() {
-  const {
-    user: { id: currentUserId },
-  } = useAuth();
+  const { id: currentUserId } = useAuthStore.use.user();
   const { mutate: message } = useMutation({
     mutationFn: ({
       currentDmChannel,

@@ -1,12 +1,12 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { StCardListWrapper } from "../spaces/SpaceList";
 import ScrumBoardCard from "./ScrumBoardCard";
 import styled from "styled-components";
 import ScrumBoardHeader from "@/components/scrumboard/ScrumBoardHeader";
 
 export default function ScrumBoardList() {
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const userSpaces = useGetUserSpaces(user.id);
   return (
     <StCardListWrapper>

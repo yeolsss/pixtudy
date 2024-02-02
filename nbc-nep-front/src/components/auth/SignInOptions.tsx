@@ -1,9 +1,10 @@
 import useModal from "@/hooks/modal/useModal";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import styled from "styled-components";
 
 export default function SignInOptions() {
-  const { isSaveLoginInfo: isCheck, setSaveLoginInfo } = useAuth();
+  const isCheck = useAuthStore.use.isSaveLoginInfo();
+  const setSaveLoginInfo = useAuthStore.use.setSaveLoginInfo();
   const { openForgetPasswordModal } = useModal();
 
   const handleIsCheck = () => {

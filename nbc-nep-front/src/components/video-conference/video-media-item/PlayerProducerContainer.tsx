@@ -1,6 +1,6 @@
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import useSocket from "@/hooks/socket/useSocket";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { useEffect } from "react";
 import styled from "styled-components";
 import "swiper/css";
@@ -31,9 +31,7 @@ export default function PlayerProducerContainer({
     namespace: "/conference",
   });
 
-  const {
-    user: { id: currentPlayerId },
-  } = useAuth();
+  const { id: currentPlayerId } = useAuthStore.use.user();
 
   const { removeProducer } = useVideoSource();
 

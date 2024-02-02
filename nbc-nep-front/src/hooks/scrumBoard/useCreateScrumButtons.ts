@@ -10,7 +10,7 @@ import {
   postScrumBoardItem,
 } from "@/api/supabase/scrumBoard";
 import { useParams } from "next/navigation";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import {
   BACK_DROP_TYPE_CREATE,
   BACK_DROP_TYPE_DETAIL,
@@ -28,7 +28,7 @@ interface ReturnType {
 }
 export default function useCreateScrumButtons(): ReturnType {
   const { space_id } = useParams();
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const {
     scrumBoardText,
     resetScrumBoardItem,

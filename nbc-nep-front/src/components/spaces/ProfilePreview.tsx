@@ -1,4 +1,4 @@
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import useSpace from "@/zustand/spaceStore";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function ProfilePreview({ setProcedure }: Props) {
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const {
     userProfile: { avatar, display_name },
     setUserProfile,

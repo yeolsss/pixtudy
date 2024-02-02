@@ -1,11 +1,11 @@
 import { getPlayerSpaceData, getSpaceData } from "@/api/supabase/space";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import usePlayerList from "@/zustand/metaversePlayerStore";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
 const useMetaversePlayer = () => {
-  const { id, display_name } = useAuth((state) => state.user);
+  const { id, display_name } = useAuthStore((state) => state.user);
   const { playerList, setPlayerList } = usePlayerList((state) => state);
 
   const router = useRouter();

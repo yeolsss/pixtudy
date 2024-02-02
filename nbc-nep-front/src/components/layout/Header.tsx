@@ -1,23 +1,22 @@
 import useConfirm from "@/hooks/confirm/useConfirm";
 import { useLogoutUser } from "@/hooks/query/useSupabase";
 import { pathValidation } from "@/utils/middlewareValidate";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { StCTAButton } from "../common/button/button.styles";
+
 export const GOOGLE_FORM_LINK = "https://forms.gle/mDpaz6tnSpTwcLVp7";
 
 export default function Header() {
   const router = useRouter();
   const logout = useLogoutUser();
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const { openConfirmHandler } = useConfirm();
 
-  const {
-    isLogin,
-    user: { display_name },
-  } = useAuth();
+  const isLogin = useAuthStore.use.isLogin();
+  const { display_name } = useAuthStore.use.user();
 
   const handleToLoginPage = () => {
     router.push("/signin");
