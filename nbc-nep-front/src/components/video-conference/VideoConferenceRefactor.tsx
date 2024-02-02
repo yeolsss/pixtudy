@@ -5,7 +5,6 @@ import useRecvTransport from "@/hooks/conference/useRecvTransport";
 import useSendTransport from "@/hooks/conference/useSendTransport";
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
-import useSocket from "@/hooks/socket/useSocket";
 import useAuth from "@/zustand/authStore";
 import { useEffect } from "react";
 import styled from "styled-components";
@@ -25,7 +24,6 @@ import {
 } from "./styles/icons";
 import {
   AppData,
-  MediaConsumeParams,
   Producer,
   ProducerForConsume,
   RtpCapabilities,
@@ -35,12 +33,15 @@ import {
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 
 export default function VideoConference() {
-  const { socket, connect } = useSocket({
-    namespace: "/conference",
-  });
-
-  const { socket: testSocket } = useSocketTest();
-
+  const {
+    socket,
+    joinRoom,
+    createTransport,
+    closeProducer,
+    getProducers,
+    transportRecvConsume,
+    closeTransport: transportClose,
+  } = useSocketTest();
   const { playerList, spaceId, findPlayerById } = useMetaversePlayer();
   const {
     user: { id: currentPlayerId },
@@ -83,24 +84,22 @@ export default function VideoConference() {
   const currentPlayer = findPlayerById(currentPlayerId);
 
   useEffect(() => {
-    connect();
-
     socket.on("connect", () => {
-      console.log("socket connect");
-      socket.emit("join-room", spaceId, currentPlayerId);
-      socket.emit("create-transport", currentPlayerId, handleCreatedTransport);
+      console.log("video conference socket connected");
+      joinRoom(spaceId, currentPlayerId);
+      createTransport(currentPlayerId, handleCreatedTransport);
     });
 
     socket.on("new-producer", handleConsumeNewProducer);
-
     socket.on("producer-closed", handleProducerClose);
-
     socket.on("consumer-closed", handleRemoveConsumer);
 
     return () => {
-      socket.emit("transport-close", currentPlayerId);
+      transportClose(currentPlayerId);
       socket.off("new-producer", handleConsumeProducers);
       socket.off("producer-closed", handleProducerClose);
+      socket.off("consumer-closed", handleRemoveConsumer);
+      socket.disconnect();
     };
   }, []);
 
@@ -113,12 +112,7 @@ export default function VideoConference() {
     createSendTransport(sendTransportParams);
     createRecvTransport(recvTransportParams);
 
-    socket.emit(
-      "get-producers",
-      spaceId,
-      currentPlayerId,
-      handleConsumeProducers
-    );
+    getProducers(spaceId, currentPlayerId, handleConsumeProducers);
   }
 
   async function handleConsumeNewProducer(
@@ -132,23 +126,13 @@ export default function VideoConference() {
 
     try {
       const rtpCapabilities = getRtpCapabilitiesFromDevice();
-
-      socket.emit(
-        "transport-recv-consume",
+      transportRecvConsume(
         { rtpCapabilities, producerId, appData, playerId: currentPlayerId },
-        async (params: MediaConsumeParams) => {
-          const consumer = await consume({ ...params, appData });
-
-          if (!consumer) {
-            throw new Error("no consumer");
-          }
-
+        async (params) => {
+          const consumer = await consume({ ...params });
+          if (!consumer) return null;
           addConsumer(consumer);
-
-          socket.emit("consumer-resume", {
-            consumerId: consumer.id,
-            playerId: currentPlayerId,
-          });
+          return consumer;
         }
       );
     } catch (error) {
@@ -201,7 +185,7 @@ export default function VideoConference() {
 
   const handleStopShare = (type: ShareType) => {
     handleProducerRemoval(type, (producer: Producer) => {
-      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
+      closeProducer(currentPlayerId, producer.appData.streamId);
     });
   };
 

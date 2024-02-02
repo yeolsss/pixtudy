@@ -96,6 +96,13 @@ export type MediaConsumeParams = {
   appData: AppData;
 };
 
+export type MediaConsumeParamsForEmit = {
+  rtpCapabilities: RtpCapabilities;
+  playerId: string;
+  appData: AppData;
+  producerId: string;
+};
+
 export type DeviceInputs = {
   deviceId: string;
 };
