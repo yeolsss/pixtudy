@@ -27,7 +27,9 @@ export default function PlayerProducerContainer({
   producers,
   nickname,
 }: Props) {
-  const { socket, disconnect } = useSocket({ namespace: "/conference" });
+  const { socket, disconnect, connect } = useSocket({
+    namespace: "/conference",
+  });
 
   const {
     user: { id: currentPlayerId },
@@ -36,6 +38,7 @@ export default function PlayerProducerContainer({
   const { removeProducer } = useVideoSource();
 
   useEffect(() => {
+    connect();
     return () => {
       disconnect();
     };
