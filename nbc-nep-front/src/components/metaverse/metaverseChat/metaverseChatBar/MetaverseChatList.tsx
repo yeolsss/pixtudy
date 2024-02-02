@@ -11,7 +11,9 @@ import useChatListStore from "@/zustand/chatListStore";
 
 export default function MetaverseChatList() {
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
-  const { isOpenChat, chatType, closeChat } = useChatType();
+  const isOpenChat = useChatType.use.isOpenChat();
+  const chatType = useChatType.use.chatType();
+  const closeChat = useChatType.use.closeChat();
   const { resetAllSections } = useGlobalNavBar();
   const { closeDm } = useDm();
   const chatList = useChatListStore.use.chatList();

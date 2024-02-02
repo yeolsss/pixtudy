@@ -8,7 +8,7 @@ import styled from "styled-components";
 export default function CloseButton() {
   const { resetAllSections } = useGlobalNavBar();
   const { closeDm } = useDm();
-  const { closeChat } = useChatType();
+  const closeChat = useChatType.use.closeChat();
 
   const handleOnClickClose = () => {
     resetAllSections();

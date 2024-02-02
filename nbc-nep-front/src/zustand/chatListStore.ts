@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Chat } from "@/components/metaverse/types/metaverse";
-import createSelector from "@/zustand/config/createSelector";
+import createSelectors from "@/zustand/config/createSelector";
 
 type ChatListStore = {
   chatList: Chat[];
@@ -12,5 +12,5 @@ const useChatListStoreBase = create<ChatListStore>((set) => ({
     set((state) => ({ chatList: [...state.chatList, chat] })),
 }));
 
-const useChatListStore = createSelector(useChatListStoreBase);
+const useChatListStore = createSelectors(useChatListStoreBase);
 export default useChatListStore;

@@ -21,7 +21,7 @@ export default function MetaversePlayerList() {
   const { playerList } = useMetaversePlayer();
   const { spaceId } = useMetaversePlayer();
   const { openDm } = useDm();
-  const { openChat } = useChatType();
+  const openChat = useChatType.use.openChat();
 
   // dm 채팅방 열기
   const handleOpenDmContainer = ({

@@ -6,7 +6,8 @@ import styled from "styled-components";
 
 export default function MetaverseChatBar() {
   const { isChatSectionOn } = useGlobalNavBar();
-  const { openChat, chatType } = useChatType();
+  const openChat = useChatType.use.openChat();
+  const chatType = useChatType.use.chatType();
 
   const handleChatTypeOpen = (chatType: ChatType) => {
     openChat(chatType);

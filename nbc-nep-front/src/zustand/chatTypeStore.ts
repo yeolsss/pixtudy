@@ -1,5 +1,6 @@
 import { ChatType } from "@/components/metaverse/types/ChatType";
 import { create } from "zustand";
+import createSelector from "@/zustand/config/createSelector";
 
 interface ChatTypeState {
   isOpenChat: boolean;
@@ -16,7 +17,7 @@ const initialState: ChatTypeState = {
   chatType: "GLOBAL",
 };
 
-const useChatType = create<ChatTypeStoreState>()((set) => ({
+const useChatTypeBase = create<ChatTypeStoreState>()((set) => ({
   ...initialState,
   closeChat: () => set(() => ({ ...initialState })),
   openChat: (chatType: ChatType) =>
@@ -26,4 +27,5 @@ const useChatType = create<ChatTypeStoreState>()((set) => ({
     })),
 }));
 
+const useChatType = createSelector(useChatTypeBase);
 export default useChatType;

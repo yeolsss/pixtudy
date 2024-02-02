@@ -13,7 +13,8 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 export default function MetaverseChat() {
-  const { isOpenChat, chatType } = useChatType();
+  const isOpenChat = useChatType.use.isOpenChat();
+  const chatType = useChatType.use.chatType();
   const { id, spaceId } = useMetaversePlayer();
   const { handleSetDmChatAlarmState, setAlarmPlayStatus } = useChatAlarm();
   const dmList = useGetLastDMList(spaceId, id);

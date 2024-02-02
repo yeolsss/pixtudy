@@ -19,7 +19,8 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
     useGlobalNavBar();
   const { closeDm } = useDm();
-  const { openChat, closeChat } = useChatType();
+  const openChat = useChatType.use.openChat();
+  const closeChat = useChatType.use.closeChat();
   const { openConfigModal } = useModal();
   const {
     isOpen: isScrumOpen,

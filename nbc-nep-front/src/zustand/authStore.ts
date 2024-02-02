@@ -1,6 +1,6 @@
 import { Tables } from "@/supabase/types/supabase";
 import { create } from "zustand";
-import createSelector from "@/zustand/config/createSelector";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface AuthState {
   isLogin: boolean;
@@ -32,5 +32,5 @@ const useAuthStoreBase = create<AuthState>()((set) => ({
     set(() => ({ isSaveLoginInfo: isRememberLoginInfo })),
 }));
 
-const useAuthStore = createSelector(useAuthStoreBase);
+const useAuthStore = createSelectors(useAuthStoreBase);
 export default useAuthStore;

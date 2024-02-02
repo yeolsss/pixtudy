@@ -15,7 +15,8 @@ interface Props {
 }
 
 export default function MetaverseDmList({ dmList, isOpen }: Props) {
-  const { isOpenChat, closeChat } = useChatType();
+  const isOpenChat = useChatType.use.isOpenChat();
+  const closeChat = useChatType.use.closeChat();
   const { isOpen: isOpenDm, otherUserName, closeDm } = useDm();
 
   const { resetAllSections } = useGlobalNavBar();
