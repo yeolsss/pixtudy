@@ -120,6 +120,10 @@ export default function ConfigVideo() {
         </div>
         <button type="submit">저장하기</button>
       </StForm>
+      <p>
+        아무것도 나타나지 않을 시에는 브라우저 상 카메라, 마이크 권한 설정 후
+        새로고침을 해주시길 바랍니다.
+      </p>
     </StSectionMain>
   );
 }
