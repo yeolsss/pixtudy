@@ -1,11 +1,11 @@
 import { splitVideoSource } from "@/components/video-conference/libs/util";
 import { LayoutConsumersType } from "@/components/video-conference/types/ScreenShare.types";
+import useConferenceStore from "@/zustand/conferenceStore";
 import layoutStore from "@/zustand/layoutStore";
 import { useEffect, useState } from "react";
-import useVideoSource from "./useVideoSource";
 
 export default function useLayout() {
-  const { consumers } = useVideoSource();
+  const consumers = useConferenceStore.use.consumers();
   const {
     layoutPlayerId,
     layoutClose,
