@@ -1,7 +1,4 @@
-import {
-  isAlreadyConsume,
-  isEmptyTracks,
-} from "@/components/video-conference/libs/util";
+import { isEmptyTracks } from "@/components/video-conference/libs/util";
 import useDevice from "@/hooks/conference/useDevice";
 import useLayout from "@/hooks/conference/useLayout";
 import useRecvTransport from "@/hooks/conference/useRecvTransport";
@@ -22,10 +19,11 @@ import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
-import { videoParams } from "./constants/constants";
+import { MAX_SHARE_SCREEN_SIZE, videoParams } from "./constants/constants";
 import {
   AppData,
   MediaConsumeParams,
+  Producer,
   ProducerForConsume,
   RtpCapabilities,
   ShareType,
@@ -34,7 +32,7 @@ import {
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 
 export default function VideoConference() {
-  const { socket, disconnect, connect } = useSocket({
+  const { socket, connect } = useSocket({
     namespace: "/conference",
   });
 
@@ -42,18 +40,21 @@ export default function VideoConference() {
   const {
     user: { id: currentPlayerId },
   } = useAuth();
+
   const { isOpen } = useLayout();
 
   const {
-    consumers,
-    addConsumer,
-    addProducer,
-    removeConsumer,
-    removeProducer,
-    isCanShare,
-    findProducerByShareType,
+    handleProducerClose,
+    handleProducerRemoval,
+    handleRemoveConsumer,
     filterProducersByShareType,
+    isAlreadyConsume,
+    addProducer,
+    addConsumer,
+    removeProducer,
   } = useVideoSource();
+  const screenCount = filterProducersByShareType("screen").length;
+  const isCanShare = screenCount < MAX_SHARE_SCREEN_SIZE;
 
   const {
     loadDevice,
@@ -89,7 +90,7 @@ export default function VideoConference() {
 
     socket.on("producer-closed", handleProducerClose);
 
-    socket.on("closed-consumer", removeConsumer);
+    socket.on("consumer-closed", handleRemoveConsumer);
 
     return () => {
       socket.emit("transport-close", currentPlayerId);
@@ -119,7 +120,7 @@ export default function VideoConference() {
     producerId: string,
     appData: AppData
   ) {
-    if (isAlreadyConsume(consumers, producerId)) {
+    if (isAlreadyConsume(producerId)) {
       console.log("이미 consume 중인 producerId");
       return;
     }
@@ -154,10 +155,6 @@ export default function VideoConference() {
     producersForConsume.forEach(({ id, appData }) =>
       handleConsumeNewProducer(id, appData)
     );
-  }
-
-  function handleProducerClose(streamId: string) {
-    removeConsumer(streamId);
   }
 
   async function handleShare(stream: MediaStream, type: ShareType) {
@@ -197,19 +194,12 @@ export default function VideoConference() {
     }
   }
 
-  async function handleStopShare(type: ShareType) {
-    const producer = findProducerByShareType(type);
+  const handleStopShare = (type: ShareType) => {
+    handleProducerRemoval(type, (producer: Producer) => {
+      socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
+    });
+  };
 
-    if (!producer) {
-      console.error("no producer...");
-      return;
-    }
-
-    removeProducer(producer);
-
-    socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
-  }
-  const screenCount = filterProducersByShareType("screen").length;
   return (
     <>
       {currentPlayer && (

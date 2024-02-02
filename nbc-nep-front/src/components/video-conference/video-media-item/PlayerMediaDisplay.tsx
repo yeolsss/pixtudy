@@ -3,7 +3,7 @@ import MicOn from "@/assets/dock-icons/mic-on.svg";
 import { Player } from "@/components/metaverse/types/metaverse";
 import Image from "next/image";
 import ShareMediaItem from "../ShareMediaItem";
-import { findVideoSourceByType } from "../libs/util";
+import { findVideoSourcesByType } from "../libs/util";
 import { VideoSource } from "../types/ScreenShare.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 
@@ -18,11 +18,11 @@ export default function PlayerMediaDisplay({
   player,
   isCurrentPlayer,
 }: Props) {
-  const audioVideoSource = findVideoSourceByType(
+  const audioVideoSource = findVideoSourcesByType(
     camAndAudioVideoSources,
     "audio"
   );
-  const webCamVideoSource = findVideoSourceByType(
+  const webCamVideoSource = findVideoSourcesByType(
     camAndAudioVideoSources,
     "webcam"
   );

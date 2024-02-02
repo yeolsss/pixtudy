@@ -1,8 +1,11 @@
+import { filterVideoSourcesByPlayerId } from "@/components/video-conference/libs/util";
 import {
   Consumer,
   Producer,
+  ShareType,
 } from "@/components/video-conference/types/ScreenShare.types";
 import { create } from "zustand";
+import createSelectors from "./createSelector";
 
 interface ConferenceState {
   consumers: Consumer[];
@@ -11,9 +14,13 @@ interface ConferenceState {
   removeConsumer: (streamId: string) => void;
   addProducer: (producer: Producer) => void;
   removeProducer: (producer: Producer) => void;
+  findProducerByShareType: (type: ShareType) => Producer | undefined;
+  filterProducersByShareType: (type: ShareType) => Producer[];
+  filterConsumersById: (playerId: string) => Consumer[];
+  isAlreadyConsume: (removeProducerId: string) => boolean;
 }
 
-const conferenceStore = create<ConferenceState>()((set) => ({
+const conferenceStore = create<ConferenceState>()((set, get) => ({
   consumers: [],
   producers: [],
   addConsumer: (consumer: Consumer) =>
@@ -27,7 +34,6 @@ const conferenceStore = create<ConferenceState>()((set) => ({
         }
         return true;
       });
-
       return { consumers: updatedConsumers };
     }),
   addProducer: (producer: Producer) =>
@@ -60,6 +66,31 @@ const conferenceStore = create<ConferenceState>()((set) => ({
 
       return { producers: state.producers };
     }),
+
+  findProducerByShareType: (shareType: ShareType) => {
+    const producers = get().producers;
+    return producers.find(
+      (producer) => producer.appData.shareType === shareType
+    );
+  },
+
+  filterProducersByShareType: (shareType: ShareType) => {
+    const producers = get().producers;
+    return producers.filter(
+      (producer) => producer.appData.shareType === shareType
+    );
+  },
+
+  isAlreadyConsume: (remoteProducerId: string) => {
+    const consumers = get().consumers;
+    return consumers.some((consumer) => consumer.id === remoteProducerId);
+  },
+  filterConsumersById: (playerId: string) => {
+    const consumers = get().consumers;
+    return filterVideoSourcesByPlayerId(consumers, playerId) as Consumer[];
+  },
 }));
 
-export default conferenceStore;
+const useConferenceStore = createSelectors(conferenceStore);
+
+export default useConferenceStore;
