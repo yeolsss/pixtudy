@@ -34,7 +34,7 @@ const initialChatAlarm = {
   isPlay: false,
 };
 
-const useChatAlarmStoreBase = create<ChartAlarmStore>()((set) => ({
+const chatAlarmStore = create<ChartAlarmStore>()((set) => ({
   ...initialChatAlarm,
   setChatAlarmState: ({
     globalChatState,
@@ -57,5 +57,5 @@ const useChatAlarmStoreBase = create<ChartAlarmStore>()((set) => ({
   },
 }));
 
-const useChatAlarmStore = createSelectors(useChatAlarmStoreBase);
+const useChatAlarmStore = createSelectors(chatAlarmStore);
 export default useChatAlarmStore;

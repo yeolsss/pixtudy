@@ -17,7 +17,7 @@ const initialState: ChatTypeState = {
   chatType: "GLOBAL",
 };
 
-const useChatTypeBase = create<ChatTypeStoreState>()((set) => ({
+const chatType = create<ChatTypeStoreState>()((set) => ({
   ...initialState,
   closeChat: () => set(() => ({ ...initialState })),
   openChat: (chatType: ChatType) =>
@@ -27,5 +27,5 @@ const useChatTypeBase = create<ChatTypeStoreState>()((set) => ({
     })),
 }));
 
-const useChatType = createSelector(useChatTypeBase);
+const useChatType = createSelector(chatType);
 export default useChatType;

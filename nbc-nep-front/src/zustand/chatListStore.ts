@@ -6,11 +6,11 @@ type ChatListStore = {
   chatList: Chat[];
   setChatList: (chat: Chat) => void;
 };
-const useChatListStoreBase = create<ChatListStore>((set) => ({
+const chatListStore = create<ChatListStore>((set) => ({
   chatList: [],
   setChatList: (chat: Chat) =>
     set((state) => ({ chatList: [...state.chatList, chat] })),
 }));
 
-const useChatListStore = createSelectors(useChatListStoreBase);
+const useChatListStore = createSelectors(chatListStore);
 export default useChatListStore;

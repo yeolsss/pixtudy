@@ -18,7 +18,7 @@ const initialUser = {
   id: "",
 };
 
-const useAuthStoreBase = create<AuthState>()((set) => ({
+const authStore = create<AuthState>()((set) => ({
   isLogin: false,
   user: initialUser,
   isSaveLoginInfo: false,
@@ -32,5 +32,5 @@ const useAuthStoreBase = create<AuthState>()((set) => ({
     set(() => ({ isSaveLoginInfo: isRememberLoginInfo })),
 }));
 
-const useAuthStore = createSelectors(useAuthStoreBase);
+const useAuthStore = createSelectors(authStore);
 export default useAuthStore;
