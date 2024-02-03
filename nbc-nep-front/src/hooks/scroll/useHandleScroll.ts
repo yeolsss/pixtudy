@@ -1,21 +1,32 @@
 import { throttle } from "lodash";
-import { RefObject, useEffect } from "react";
+import { RefObject, useEffect, useState } from "react";
 import useScroll from "./useScroll";
 
-const SCROLL_THRESHOLDS = [3260, 4260, 5260, 6260];
+const SCROLL_GAP = 1000;
+const SCROLL_ANIMATION_COUNT = 4;
 
 export default function useHandleScroll(refs: RefObject<HTMLDivElement>[]) {
   const { setSection, setScrollIndex } = useScroll();
+  const [scrollThresholds, setScrollThresholds] = useState<number[]>(
+    Array(SCROLL_ANIMATION_COUNT).fill(Infinity)
+  );
 
-  const handleScroll = throttle(() => {
-    if (window.scrollY < SCROLL_THRESHOLDS[0]) {
-      setScrollIndex(-1);
-      return;
-    }
-    SCROLL_THRESHOLDS.forEach((v, i) => {
-      if (window.scrollY > v) setScrollIndex(i);
-    });
-  }, 300);
+  useEffect(() => {
+    const calculateScrollThresholds = () => {
+      const newThresholds = refs.at(-1)!.current?.offsetTop || 0;
+      setScrollThresholds(
+        Array.from({ length: SCROLL_ANIMATION_COUNT }).map(
+          (_, i) => newThresholds + SCROLL_GAP * i
+        )
+      );
+    };
+    calculateScrollThresholds();
+    window.addEventListener("resize", calculateScrollThresholds);
+
+    return () => {
+      window.removeEventListener("resize", calculateScrollThresholds);
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -49,6 +60,16 @@ export default function useHandleScroll(refs: RefObject<HTMLDivElement>[]) {
   }, []);
 
   useEffect(() => {
+    const handleScroll = throttle(() => {
+      if (window.scrollY < scrollThresholds[0]) {
+        setScrollIndex(-1);
+        return;
+      }
+      scrollThresholds.forEach((v, i) => {
+        if (window.scrollY > v) setScrollIndex(i);
+      });
+    }, 300);
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
