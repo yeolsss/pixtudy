@@ -1,6 +1,6 @@
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
 import useAuthStore from "@/zustand/authStore";
-import useSpaceSearch from "@/zustand/spaceListStore";
+import useSpaceSearchStore from "@/zustand/spaceListStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import styled from "styled-components";
@@ -19,7 +19,9 @@ export default function SpaceList({
   showTemporaryComponent,
 }: Props) {
   const getUserSpaces = useGetUserSpaces(currentUserId);
-  const { spaces, filteredSpaces, setSpaces } = useSpaceSearch();
+  const spaces = useSpaceSearchStore.use.spaces();
+  const setSpaces = useSpaceSearchStore.use.setSpaces();
+  const filteredSpaces = useSpaceSearchStore.use.filteredSpaces();
   const router = useRouter();
   const user = useAuthStore.use.user();
 
