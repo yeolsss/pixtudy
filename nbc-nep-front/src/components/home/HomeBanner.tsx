@@ -94,19 +94,24 @@ const StHeroBannerDescription = styled.p`
 `;
 
 const StLink = styled(StCTALink)`
-  text-decoration: none;
+  display: inline-block;
+
+  padding: ${(props) =>
+    `${props.theme.spacing[16]} ${props.theme.spacing[32]}`};
+
+  font-size: ${(props) => props.theme.body.md.regular.fontSize};
   font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
   font-family: var(--default-font);
 
-  border-radius: ${(props) => props.theme.border.radius[8]};
-
-  display: inline-block;
+  text-decoration: none;
   text-align: center;
 
-  padding: ${(props) =>
-    `${props.theme.spacing[16]} ${props.theme.spacing["32"]}`};
+  border-radius: ${(props) => props.theme.border.radius[8]};
 
-  font-size: ${(props) => props.theme.body.md.medium.fontSize};
+  @media screen and (max-width: 768px) {
+    padding: ${(props) =>
+      `${props.theme.spacing[16]} ${props.theme.spacing[24]}`};
+  }
 `;
 
 export default HomeBanner;
