@@ -6,7 +6,7 @@ import kanbanIcon from "@/assets/icons/kanbanIcon.svg";
 import { GOOGLE_FORM_LINK } from "@/components/layout/Header";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useChatType from "@/zustand/chatTypeStore";
-import useDm from "@/zustand/dmStore";
+import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
@@ -18,7 +18,7 @@ import usePhaserInput from "@/hooks/phaser/usePhaserInput";
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
     useGlobalNavBar();
-  const { closeDm } = useDm();
+  const closeDm = useDmStore.use.closeDm();
   const openChat = useChatType.use.openChat();
   const closeChat = useChatType.use.closeChat();
   const { openConfigModal } = useModal();

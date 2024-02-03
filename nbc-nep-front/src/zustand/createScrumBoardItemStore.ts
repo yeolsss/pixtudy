@@ -36,25 +36,29 @@ const initialState: ScrumBoardItemBackDropState = {
   setIsOpenCategoryBackDrop: () => {},
   setKanbanDescription: () => {},
 };
-const scrumBoardItemBackDrop = create<ScrumBoardItemBackDropState>()((set) => ({
-  ...initialState,
-  setIsOpen: (category, kanbanItem = null, backDropType) =>
-    set({ isOpen: true, category, kanbanItem, backDropType }),
-  setIsOpenCategoryBackDrop: (isOpenCategoryBackDrop) =>
-    set({ isOpenCategoryBackDrop }),
-  setCategory: (category) => set({ category }),
-  setBackDropType: (backDropType) => set({ backDropType }),
-  setKanbanDescription: (description: string) =>
-    set((state) => ({
-      kanbanItem: state.kanbanItem && { ...state.kanbanItem, description },
-    })),
-  closeBackDrop: () =>
-    set({
-      isOpen: false,
-      category: {} as Kanban_categories,
-      kanbanItem: null,
-    }),
-}));
+const scrumBoardItemBackDropStore = create<ScrumBoardItemBackDropState>()(
+  (set) => ({
+    ...initialState,
+    setIsOpen: (category, kanbanItem = null, backDropType) =>
+      set({ isOpen: true, category, kanbanItem, backDropType }),
+    setIsOpenCategoryBackDrop: (isOpenCategoryBackDrop) =>
+      set({ isOpenCategoryBackDrop }),
+    setCategory: (category) => set({ category }),
+    setBackDropType: (backDropType) => set({ backDropType }),
+    setKanbanDescription: (description: string) =>
+      set((state) => ({
+        kanbanItem: state.kanbanItem && { ...state.kanbanItem, description },
+      })),
+    closeBackDrop: () =>
+      set({
+        isOpen: false,
+        category: {} as Kanban_categories,
+        kanbanItem: null,
+      }),
+  })
+);
 
-const useScrumBoardItemBackDropStore = createSelectors(scrumBoardItemBackDrop);
+const useScrumBoardItemBackDropStore = createSelectors(
+  scrumBoardItemBackDropStore
+);
 export default useScrumBoardItemBackDropStore;

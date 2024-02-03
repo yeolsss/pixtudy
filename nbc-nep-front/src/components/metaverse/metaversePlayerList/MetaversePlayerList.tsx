@@ -1,7 +1,7 @@
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
 import useChatType from "@/zustand/chatTypeStore";
-import useDm from "@/zustand/dmStore";
+import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBar, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
@@ -20,7 +20,7 @@ export default function MetaversePlayerList() {
 
   const { playerList } = useMetaversePlayer();
   const { spaceId } = useMetaversePlayer();
-  const { openDm } = useDm();
+  const openDm = useDmStore.use.openDm();
   const openChat = useChatType.use.openChat();
 
   // dm 채팅방 열기

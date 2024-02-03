@@ -3,10 +3,10 @@ import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
 import { useSendMessage } from "@/hooks/query/useSupabase";
 import useInput from "@/hooks/useInput";
 import { Tables } from "@/supabase/types/supabase";
-import useDm from "@/zustand/dmStore";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";
+import useDmStore from "@/zustand/dmStore";
 
 interface Props {
   currentDmChannel: string | null | undefined;
@@ -25,7 +25,8 @@ export default function MetaverseDmForm({
   connectChannel,
   currentUser,
 }: Props) {
-  const { otherUserId, spaceId } = useDm();
+  const otherUserId = useDmStore.use.otherUserId();
+  const spaceId = useDmStore.use.spaceId();
   const sendMessage = useSendMessage();
 
   const inputRef = useFocusOutInput();
