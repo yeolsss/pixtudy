@@ -1,5 +1,4 @@
 import useLayout from "@/hooks/conference/useLayout";
-import usePlayerList from "@/zustand/metaversePlayerStore";
 import styled from "styled-components";
 import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
@@ -15,9 +14,11 @@ import {
   ScreenOn,
 } from "./styles/icons";
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
+import usePlayerListStore from "@/zustand/metaversePlayerStore";
 
 export default function VideoConference() {
   const { isOpen } = useLayout();
+
   const {
     handleStopShare,
     handleShare,
@@ -26,7 +27,7 @@ export default function VideoConference() {
     currentPlayer,
   } = useVideoConference();
 
-  const playerList = usePlayerList((state) => state.playerList);
+  const playerList = usePlayerListStore.use.playerList();
 
   return (
     <>

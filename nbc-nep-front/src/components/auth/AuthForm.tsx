@@ -4,7 +4,7 @@ import {
   useSignUpUser,
   useUpdateUserPw,
 } from "@/hooks/query/useSupabase";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -31,7 +31,8 @@ export default function AuthForm({ formType }: Props) {
 
   const [isUpdatePw, setIsUpdatePw] = useState<boolean>(false);
 
-  const { isSaveLoginInfo, setSaveLoginInfo } = useAuth();
+  const isSaveLoginInfo = useAuthStore.use.isSaveLoginInfo();
+  const setSaveLoginInfo = useAuthStore.use.setSaveLoginInfo();
 
   const {
     handleSubmit,

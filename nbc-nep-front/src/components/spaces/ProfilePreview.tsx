@@ -1,5 +1,5 @@
-import useAuth from "@/zustand/authStore";
-import useSpace from "@/zustand/spaceStore";
+import useAuthStore from "@/zustand/authStore";
+import useSpaceStore from "@/zustand/spaceStore";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import { StAvatar } from "./AvatarInput";
@@ -11,11 +11,9 @@ interface Props {
 }
 
 export default function ProfilePreview({ setProcedure }: Props) {
-  const { user } = useAuth();
-  const {
-    userProfile: { avatar, display_name },
-    setUserProfile,
-  } = useSpace();
+  const user = useAuthStore.use.user();
+  const { avatar, display_name } = useSpaceStore.use.userProfile();
+  const setUserProfile = useSpaceStore.use.setUserProfile();
 
   const getAvatarResource = () => {
     return SRC_BASE + avatar + ".png";

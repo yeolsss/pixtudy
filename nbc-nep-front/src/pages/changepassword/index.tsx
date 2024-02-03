@@ -5,12 +5,12 @@ import AuthFormContainer from "@/components/auth/AuthFormContainer";
 import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
 import * as St from "@/components/auth/styles/authCommon.styles";
 import { useLogoutUser } from "@/hooks/query/useSupabase";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import Link from "next/link";
 import { useEffect } from "react";
 
 export default function ChangePassword() {
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const logout = useLogoutUser();
 
   useEffect(() => {

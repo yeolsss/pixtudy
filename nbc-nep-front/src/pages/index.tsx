@@ -7,13 +7,13 @@ import Layout from "@/components/layout/Layout";
 import useHandleScroll from "@/hooks/scroll/useHandleScroll";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { ReactElement, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { NextPageWithLayout } from "./_app";
 
 const Home: NextPageWithLayout = () => {
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const bannerRef = useRef<HTMLDivElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);

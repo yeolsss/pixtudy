@@ -1,7 +1,7 @@
-import { Socket, io } from "socket.io-client";
-import createSelectors from "./createSelector";
+import { io, Socket } from "socket.io-client";
 
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface ConferenceSocketStoreProps {
   socket: Socket;

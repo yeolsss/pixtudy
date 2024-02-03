@@ -1,6 +1,6 @@
 import useSocket from "@/hooks/socket/useSocket";
 import { slideDown, slideUp } from "@/styles/animations";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import styled from "styled-components";
 import { PlayerState } from "../metaverse/types/metaverse";
 
@@ -13,7 +13,7 @@ export default function PlayerStateSelector({
   isRender,
   handleAnimatedEnd,
 }: Props) {
-  const { id } = useAuth((state) => state.user);
+  const { id } = useAuthStore.use.user();
   const { changePlayerState } = useSocket({ namespace: "/metaverse" });
 
   const handleChangeState = (state: PlayerState) => () => {

@@ -19,7 +19,7 @@ import { StCreateInputWrapper } from "@/components/spaces/styles/spaceCommon.sty
 import useModal from "@/hooks/modal/useModal";
 import { useJoinSpace } from "@/hooks/query/useSupabase";
 import { validateNickname } from "@/utils/spaceValidate";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -35,7 +35,7 @@ export default function AvatarModalContainer() {
   } = useForm({ mode: "onSubmit" });
 
   const { joinSpace, joinSuccess, joinError } = useJoinSpace();
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const { replace } = useRouter();
 
   const { closeModal, space, clearSpace } = useModal();

@@ -5,7 +5,7 @@ import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
 } from "@/supabase/types/supabase.tables.type";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import React from "react";
 import styled from "styled-components";
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 function ScrumBoardItem({ category, item }: Props) {
-  const { setIsOpen } = useScrumBoardItemBackDrop();
+  const setIsOpen = useScrumBoardItemBackDropStore.use.setIsOpen();
   const handleOpenItemDetail = (item: GetKanbanItemsByAssignees) => {
     setIsOpen(category, item, BACK_DROP_TYPE_DETAIL);
   };

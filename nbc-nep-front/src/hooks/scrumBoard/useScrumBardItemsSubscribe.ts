@@ -10,14 +10,14 @@ import {
 } from "@/supabase/types/supabase.tables.type";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
 import { supabase } from "@/supabase/supabase";
-import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import { useGetSpaceMembers } from "@/hooks/query/useSupabase";
 
 export default function useScrumBardItemsSubscribe(
   spaceId: string,
   categories: Kanban_categories[]
 ) {
-  const { setSpaceMembers } = useScrumBoardMemberSearch();
+  const setSpaceMembers = useScrumBoardMemberSearchStore.use.setSpaceMembers();
   const queryClient = useQueryClient();
   const spaceMembers = useGetSpaceMembers(spaceId);
 

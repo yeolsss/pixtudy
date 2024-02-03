@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 export interface ConfirmTextState {
   title: string;
@@ -54,4 +55,5 @@ const confirmStore = create<ConfirmType>()((set) => ({
     })),
 }));
 
-export default confirmStore;
+const useConfirmStore = createSelectors(confirmStore);
+export default useConfirmStore;

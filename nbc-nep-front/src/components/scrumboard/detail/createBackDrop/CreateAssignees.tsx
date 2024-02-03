@@ -2,13 +2,18 @@ import AssigneesBackDrop from "@/components/scrumboard/detail/createBackDrop/Ass
 import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
 import SelectAssigneesList from "@/components/scrumboard/detail/createBackDrop/SelectAssigneesList";
 import useDebounceSpaceMemberSearch from "@/hooks/scrumBoard/useDebounceSpaceMemberSearch";
-import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import { useRef } from "react";
 import styled from "styled-components";
 
 export default function CreateAssignees() {
-  const { searchValue, changeSearchValue, setBackDropIsOpen, assignees } =
-    useScrumBoardMemberSearch();
+  const searchValue = useScrumBoardMemberSearchStore.use.searchValue();
+  const changeSearchValue =
+    useScrumBoardMemberSearchStore.use.changeSearchValue();
+  const setBackDropIsOpen =
+    useScrumBoardMemberSearchStore.use.setBackDropIsOpen();
+  const assignees = useScrumBoardMemberSearchStore.use.assignees();
+
   const debounce = useDebounceSpaceMemberSearch(500);
   const inputRef = useRef<HTMLInputElement>(null);
 

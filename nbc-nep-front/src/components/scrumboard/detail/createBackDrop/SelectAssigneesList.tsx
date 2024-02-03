@@ -1,5 +1,5 @@
 import closeIcon from "@/assets/boards/assingee-delete.svg";
-import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import Image from "next/image";
 import styled from "styled-components";
 
@@ -7,7 +7,8 @@ interface Props {
   tagType: "assignees" | "labels";
 }
 export default function SelectAssigneesList({ tagType }: Props) {
-  const { assignees, deleteAssignees } = useScrumBoardMemberSearch();
+  const assignees = useScrumBoardMemberSearchStore.use.assignees();
+  const deleteAssignees = useScrumBoardMemberSearchStore.use.deleteAssignees();
 
   const handleDeleteAssignees = (id: string) => {
     deleteAssignees(id);

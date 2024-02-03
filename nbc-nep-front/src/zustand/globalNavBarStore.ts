@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface SectionsVisibility {
   isChatSectionOn: boolean;
@@ -17,7 +18,7 @@ interface GlobalNavBarState extends SectionsVisibility {
   resetAllSections: () => void;
 }
 
-const useGlobalNavBar = create<GlobalNavBarState>()((set) => ({
+const globalNavBarStore = create<GlobalNavBarState>()((set) => ({
   isChatSectionOn: false,
   isPlayerListOn: false,
   isSettingsSectionOn: false,
@@ -43,4 +44,5 @@ export function changeSectionVisibility(
   };
 }
 
-export default useGlobalNavBar;
+const useGlobalNavBarStore = createSelectors(globalNavBarStore);
+export default useGlobalNavBarStore;

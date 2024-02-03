@@ -1,13 +1,14 @@
 import { getUserSessionHandler } from "@/api/supabase/auth";
 import { supabase } from "@/supabase/supabase";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { Session } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
 export default function CheckUserSession() {
-  const { logout, login } = useAuth();
+  const logout = useAuthStore.use.logout();
+  const login = useAuthStore.use.login();
   const sessionRef = useRef<Session | null>(null);
   const router = useRouter();
 

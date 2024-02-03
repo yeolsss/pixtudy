@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 type Section = "banner" | "intro" | "feature";
 
@@ -27,4 +28,5 @@ const scrollStore = create<ScrollState>((set) => ({
   setScrollIndex: (index) => set(() => ({ scrollIndex: index })),
 }));
 
-export default scrollStore;
+const useScrollStore = createSelectors(scrollStore);
+export default useScrollStore;

@@ -1,5 +1,6 @@
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface SpaceListStoreState {
   spaces: (Space_members | null)[];
@@ -10,7 +11,7 @@ interface SpaceListStoreState {
   setSpaces: (spaces: (Space_members | null)[]) => void;
 }
 
-const useSpaceSearch = create<SpaceListStoreState>()((set) => ({
+const spaceSearchStore = create<SpaceListStoreState>()((set) => ({
   spaces: [],
   filteredSpaces: [],
   searchValue: "",
@@ -29,13 +30,5 @@ const useSpaceSearch = create<SpaceListStoreState>()((set) => ({
     set(() => ({ spaces, filteredSpaces: spaces })),
 }));
 
-interface props {
-  users: Space_members[];
-  filteredUsers: Space_members[];
-  searchValue: string;
-  changeSearchValue: (searchValue: string) => void;
-  filterUsers: () => void;
-  setUsers: (spaces: Space_members[]) => void;
-}
-
-export default useSpaceSearch;
+const useSpaceSearchStore = createSelectors(spaceSearchStore);
+export default useSpaceSearchStore;

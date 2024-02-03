@@ -1,4 +1,4 @@
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import SpaceList from "./SpaceList";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function Spaces({ setRunState, showTemporaryComponent }: Props) {
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const currentUserId = user.id;
 
   return (

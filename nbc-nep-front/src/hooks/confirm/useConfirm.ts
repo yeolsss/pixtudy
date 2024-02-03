@@ -1,17 +1,15 @@
-import confirmStore, { ConfirmTextState } from "@/zustand/confirmStore";
+import useConfirmStore, { ConfirmTextState } from "@/zustand/confirmStore";
 
 export default function useConfirm() {
-  const {
-    closeConfirm,
-    isOpen,
-    message,
-    openConfirm,
-    result,
-    resultConfirm,
-    title,
-    confirmButtonText,
-    denyButtonText,
-  } = confirmStore();
+  const closeConfirm = useConfirmStore.use.closeConfirm();
+  const isOpen = useConfirmStore.use.isOpen();
+  const message = useConfirmStore.use.message();
+  const openConfirm = useConfirmStore.use.openConfirm();
+  const result = useConfirmStore.use.result();
+  const resultConfirm = useConfirmStore.use.resultConfirm();
+  const title = useConfirmStore.use.title();
+  const confirmButtonText = useConfirmStore.use.confirmButtonText!();
+  const denyButtonText = useConfirmStore.use.denyButtonText!();
 
   const closeConfirmHandler = () => {
     // 닫기 이벤트
@@ -21,7 +19,7 @@ export default function useConfirm() {
   const openConfirmHandler = (alertInfo: ConfirmTextState) => {
     return new Promise((res) => {
       openConfirm(alertInfo);
-      const unsubscribe = confirmStore.subscribe((state) => {
+      const unsubscribe = useConfirmStore.subscribe((state) => {
         const result = state.result;
         res(result);
         unsubscribe();
