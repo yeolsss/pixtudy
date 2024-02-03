@@ -48,6 +48,14 @@ const StSectionWrapper = styled.div`
   height: 200vh;
   margin: 0 auto;
   z-index: 1;
+
+  @media screen and (max-width: 768px) {
+    padding: ${(props) => props.theme.spacing[16]};
+    img {
+      width: 350px;
+      height: 250px;
+    }
+  }
 `;
 
 const StSection = styled(motion.section)`
@@ -83,6 +91,8 @@ export const StSectionContents = styled.div`
     letter-spacing: ${(props) =>
       props.theme.heading.desktop["3xl"].letterSpacing};
     line-height: ${(props) => props.theme.heading.desktop["4xl"].lineHeight};
+
+    word-break: keep-all;
   }
 
   & > h2 {
