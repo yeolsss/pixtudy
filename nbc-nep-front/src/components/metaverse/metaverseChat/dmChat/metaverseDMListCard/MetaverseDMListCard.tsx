@@ -118,7 +118,7 @@ const StUnreadCount = styled.div`
 
   > span {
     font-size: ${({ theme }) => theme.body.sm.regular.fontSize};
-    color: ${({ theme }) => theme.color.text.primary};
-    font-weight: ${({ theme }) => theme.body.sm.medium.fontWeight};
+    color: ${({ theme }) => theme.color.text.primary} !important;
+    font-weight: bold;
   }
 `;
