@@ -1,4 +1,4 @@
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
 import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
 import { useMutation } from "@tanstack/react-query";
@@ -37,14 +37,14 @@ export default function useCreateScrumButtons(): ReturnType {
   } = useScrumBoardItem();
   const { assignees, resetBackDrop, setAssignees, resetAssignees } =
     useScrumBoardMemberSearch();
-  const {
-    category,
-    kanbanItem,
-    backDropType,
-    closeBackDrop,
-    setBackDropType,
-    setKanbanDescription,
-  } = useScrumBoardItemBackDrop();
+
+  const category = useScrumBoardItemBackDropStore.use.category();
+  const kanbanItem = useScrumBoardItemBackDropStore.use.kanbanItem();
+  const backDropType = useScrumBoardItemBackDropStore.use.backDropType();
+  const closeBackDrop = useScrumBoardItemBackDropStore.use.closeBackDrop();
+  const setBackDropType = useScrumBoardItemBackDropStore.use.setBackDropType();
+  const setKanbanDescription =
+    useScrumBoardItemBackDropStore.use.setKanbanDescription();
 
   const createMutate = useMutation({
     mutationFn: postScrumBoardItem,

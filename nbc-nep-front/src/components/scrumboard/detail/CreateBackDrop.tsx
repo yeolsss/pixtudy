@@ -8,11 +8,11 @@ import CreateDescription from "@/components/scrumboard/detail/createBackDrop/Cre
 import CreateInput from "@/components/scrumboard/detail/createBackDrop/CreateInput";
 import BackDropTypeButtonGroup from "@/components/scrumboard/libs/BackDropType";
 import useFocusInput from "@/hooks/metaverse/useFocusInput";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import styled from "styled-components";
 
 export default function CreateBackDrop() {
-  const { backDropType } = useScrumBoardItemBackDrop();
+  const backDropType = useScrumBoardItemBackDropStore.use.backDropType();
 
   const [handleFocus, handleBlur] = useFocusInput();
 

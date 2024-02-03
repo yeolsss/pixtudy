@@ -2,7 +2,7 @@ import { updateCategoryItem } from "@/api/supabase/scrumBoard";
 import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import styled from "styled-components";
@@ -12,13 +12,13 @@ interface Props {
 }
 export default function CreateCategoryBackDrop({ isOpen }: Props) {
   const { categories } = useScrumBoard();
-  const {
-    category: selectedCategory,
-    setCategory,
-    setIsOpenCategoryBackDrop,
-    kanbanItem,
-    backDropType,
-  } = useScrumBoardItemBackDrop();
+
+  const selectedCategory = useScrumBoardItemBackDropStore.use.category();
+  const setCategory = useScrumBoardItemBackDropStore.use.setCategory();
+  const setIsOpenCategoryBackDrop =
+    useScrumBoardItemBackDropStore.use.setIsOpenCategoryBackDrop();
+  const kanbanItem = useScrumBoardItemBackDropStore.use.kanbanItem();
+  const backDropType = useScrumBoardItemBackDropStore.use.backDropType();
 
   const updateCategoryMutate = useMutation({
     mutationFn: updateCategoryItem,

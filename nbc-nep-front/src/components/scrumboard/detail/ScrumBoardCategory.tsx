@@ -4,7 +4,7 @@ import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constan
 import { useGetCategoryItems } from "@/hooks/query/useSupabase";
 import useDropItem from "@/hooks/scrumBoard/useDropItem";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { WheelEvent } from "react";
 import styled from "styled-components";
 import CategoryHeader from "./CategoryHeader";
@@ -16,7 +16,7 @@ interface Props {
 
 export default function ScrumBoardCategory({ category }: Props) {
   const { id: categoryId, name, color } = category;
-  const { setIsOpen } = useScrumBoardItemBackDrop();
+  const setIsOpen = useScrumBoardItemBackDropStore.use.setIsOpen();
   const handleAddItem = () => {
     setIsOpen(category, null, BACK_DROP_TYPE_CREATE);
   };

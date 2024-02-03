@@ -9,9 +9,9 @@ import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { useParams } from "next/navigation";
-import { WheelEvent, useEffect } from "react";
+import { useEffect, WheelEvent } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
 import ScrumBoardHeader from "./ScrumBoardHeader";
@@ -22,7 +22,7 @@ export default function ScrumBoard() {
   const { openCreateCategoryModal, isCreateCategoryModalOpen } = useModal();
   const { setCategories } = useScrumBoard();
   const categories = useGetCategories(spaceId);
-  const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
+  const isCreateBackDropOpen = useScrumBoardItemBackDropStore.use.isOpen();
   const spaceData = useGetSpaceQuery(spaceId);
 
   useCategorySubscribe(spaceId);

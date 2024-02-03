@@ -4,6 +4,7 @@ import {
   Kanban_categories,
 } from "@/supabase/types/supabase.tables.type";
 import { BackDropType } from "@/components/scrumboard/types/scrumTypes";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface ScrumBoardItemBackDropState {
   isOpen: boolean;
@@ -35,26 +36,25 @@ const initialState: ScrumBoardItemBackDropState = {
   setIsOpenCategoryBackDrop: () => {},
   setKanbanDescription: () => {},
 };
-const useScrumBoardItemBackDrop = create<ScrumBoardItemBackDropState>()(
-  (set) => ({
-    ...initialState,
-    setIsOpen: (category, kanbanItem = null, backDropType) =>
-      set({ isOpen: true, category, kanbanItem, backDropType }),
-    setIsOpenCategoryBackDrop: (isOpenCategoryBackDrop) =>
-      set({ isOpenCategoryBackDrop }),
-    setCategory: (category) => set({ category }),
-    setBackDropType: (backDropType) => set({ backDropType }),
-    setKanbanDescription: (description: string) =>
-      set((state) => ({
-        kanbanItem: state.kanbanItem && { ...state.kanbanItem, description },
-      })),
-    closeBackDrop: () =>
-      set({
-        isOpen: false,
-        category: {} as Kanban_categories,
-        kanbanItem: null,
-      }),
-  })
-);
+const scrumBoardItemBackDrop = create<ScrumBoardItemBackDropState>()((set) => ({
+  ...initialState,
+  setIsOpen: (category, kanbanItem = null, backDropType) =>
+    set({ isOpen: true, category, kanbanItem, backDropType }),
+  setIsOpenCategoryBackDrop: (isOpenCategoryBackDrop) =>
+    set({ isOpenCategoryBackDrop }),
+  setCategory: (category) => set({ category }),
+  setBackDropType: (backDropType) => set({ backDropType }),
+  setKanbanDescription: (description: string) =>
+    set((state) => ({
+      kanbanItem: state.kanbanItem && { ...state.kanbanItem, description },
+    })),
+  closeBackDrop: () =>
+    set({
+      isOpen: false,
+      category: {} as Kanban_categories,
+      kanbanItem: null,
+    }),
+}));
 
-export default useScrumBoardItemBackDrop;
+const useScrumBoardItemBackDropStore = createSelectors(scrumBoardItemBackDrop);
+export default useScrumBoardItemBackDropStore;
