@@ -13,7 +13,9 @@ export default function useHandleScroll(refs: RefObject<HTMLDivElement>[]) {
 
   useEffect(() => {
     const calculateScrollThresholds = () => {
-      const newThresholds = refs.at(-1)!.current?.offsetTop || 0;
+      const featuresRef = refs.at(-1);
+      const newThresholds = featuresRef!.current?.offsetTop || 0;
+
       setScrollThresholds(
         Array.from({ length: SCROLL_ANIMATION_COUNT }).map(
           (_, i) => newThresholds + SCROLL_GAP * i

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export const StScrollSection = styled.section`
-  width: 100vw;
+  width: 100%;
   height: 5000px;
 
   display: flex;
