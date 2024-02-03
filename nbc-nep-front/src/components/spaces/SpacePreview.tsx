@@ -5,9 +5,6 @@ import styled from "styled-components";
 
 /**
  * useGetOtherUserInfo, useGetUserSpaces,
- *
- * @param param0
- * @returns
  */
 export default function SpacePreview() {
   const joinSpaceInfo = useSpaceStore.use.joinSpaceInfo();

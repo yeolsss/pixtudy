@@ -23,7 +23,7 @@ function AvatarInput({ register, errors, watch }: Props) {
 
   return (
     <StInputContainer>
-      {characterOptions.map((option, index) => (
+      {characterOptions.map((option) => (
         <StInputWrapper
           key={option.value}
           $isSelected={watch("avatar") === option.value}
