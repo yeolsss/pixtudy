@@ -126,17 +126,17 @@ const StLogo = styled(Link)`
 const StNavLink = styled(Link)`
   display: block;
 
-  border: none !important;
-  padding: 0 !important;
-  font-family: var(--sub-font) !important;
-  font-size: ${(props) => props.theme.body.lg.regular.fontSize} !important;
-  font-weight: ${(props) => props.theme.body.lg.regular.fontWeight} !important;
-  color: ${(props) => props.theme.color.text.disabled} !important;
+  border: none;
+  padding: 0;
+  font-family: var(--sub-font);
+  font-size: ${(props) => props.theme.body.lg.regular.fontSize};
+  font-weight: ${(props) => props.theme.body.lg.regular.fontWeight};
+  color: ${(props) => props.theme.color.text.disabled};
 
   &:hover {
-    background-color: ${(props) => props.theme.color.bg.primary} !important;
+    background-color: ${(props) => props.theme.color.bg.primary};
     color: ${(props) =>
-      props.theme.color.text.interactive["secondary-pressed"]} !important;
+      props.theme.color.text.interactive["secondary-pressed"]};
   }
 `;
 const StNavButton = styled.button`
