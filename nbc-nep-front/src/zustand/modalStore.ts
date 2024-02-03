@@ -1,5 +1,6 @@
 import { Spaces } from "@/supabase/types/supabase.tables.type";
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface ModalState {
   isJoinSpaceModalOpen: boolean;
@@ -42,4 +43,5 @@ const modalStore = create<ModalStoreState>()((set) => ({
   clearSpace: () => set(() => ({ space: null })),
 }));
 
-export default modalStore;
+const useModalStore = createSelectors(modalStore);
+export default useModalStore;
