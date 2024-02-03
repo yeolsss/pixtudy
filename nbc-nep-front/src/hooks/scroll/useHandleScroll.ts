@@ -72,7 +72,7 @@ export default function useHandleScroll(refs: RefObject<HTMLDivElement>[]) {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [scrollThresholds]);
 }
 
 const mapSection = (index: number) => {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const StScrollSection = styled.section`
   width: 100vw;
-  height: 600vh;
+  height: 5000px;
 
   display: flex;
   flex-direction: row;
