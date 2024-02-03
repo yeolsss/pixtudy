@@ -9,7 +9,7 @@ import useConfirm from "@/hooks/confirm/useConfirm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useSocket from "@/hooks/socket/useSocket";
 import usePlayerListStore from "@/zustand/metaversePlayerStore";
-import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
+import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
 import Phaser from "phaser";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
@@ -30,7 +30,7 @@ const MetaverseComponent = () => {
   const { spaceId, playerSpaceInfoData, id, display_name, setPlayerList } =
     useMetaversePlayer();
   const changePlayerState = usePlayerListStore.use.changePlayerState();
-  const { isOpen: IsScrumOpen } = useMetaverseScrumIsOpen();
+  const isScrumOpen = useMetaverseScrumIsOpenStore.use.isOpen();
   const gameRef = useRef<Game | null>();
   const { socket, connect } = useSocket({ namespace: "/metaverse" });
 
@@ -119,7 +119,7 @@ const MetaverseComponent = () => {
       <VideoConference />
       <MetaverseConfigModal />
       {isOpen && <ConfirmModal />}
-      {IsScrumOpen && <MetaverseScrumBoard />}
+      {isScrumOpen && <MetaverseScrumBoard />}
     </StMetaverseWrapper>
   );
 };

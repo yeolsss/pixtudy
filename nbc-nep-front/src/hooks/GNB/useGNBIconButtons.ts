@@ -10,7 +10,7 @@ import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBarStore, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
-import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
+import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
 import useModal from "../modal/useModal";
 import { useEffect } from "react";
 import usePhaserInput from "@/hooks/phaser/usePhaserInput";
@@ -23,13 +23,13 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   const openChat = useChatType.use.openChat();
   const closeChat = useChatType.use.closeChat();
   const { openConfigModal } = useModal();
-  const {
-    isOpen: isScrumOpen,
-    openMetaverseScrum,
-    closeMetaverseScrum,
-  } = useMetaverseScrumIsOpen();
 
-  //
+  const isScrumOpen = useMetaverseScrumIsOpenStore.use.isOpen();
+  const openMetaverseScrum =
+    useMetaverseScrumIsOpenStore.use.openMetaverseScrum();
+  const closeMetaverseScrum =
+    useMetaverseScrumIsOpenStore.use.closeMetaverseScrum();
+
   const { enableInput, disableInput } = usePhaserInput();
   useEffect(() => {
     if (isScrumOpen) disableInput();
