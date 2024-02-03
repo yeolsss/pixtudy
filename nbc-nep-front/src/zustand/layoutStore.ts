@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface LayoutState {
   isOpen: boolean;
@@ -31,4 +32,5 @@ const layoutStore = create<LayoutState>()((set) => ({
   layoutClose: () => set(() => ({ ...initialLayoutState })),
 }));
 
-export default layoutStore;
+const useLayoutStore = createSelectors(layoutStore);
+export default useLayoutStore;

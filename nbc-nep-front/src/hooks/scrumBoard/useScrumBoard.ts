@@ -6,8 +6,8 @@ interface ReturnType {
   setCategories: (categories: any[]) => void;
 }
 export default function useScrumBoard(): ReturnType {
-  const categories = useScrumBoardStore((state) => state.categories);
-  const setCategories = useScrumBoardStore((state) => state.setCategories);
+  const categories = useScrumBoardStore.use.categories();
+  const setCategories = useScrumBoardStore.use.setCategories();
 
   return { categories, setCategories };
 }

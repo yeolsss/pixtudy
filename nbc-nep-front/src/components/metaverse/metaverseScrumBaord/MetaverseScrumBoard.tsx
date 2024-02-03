@@ -1,10 +1,11 @@
 import ScrumBoard from "@/components/scrumboard/detail/ScrumBoard";
 import styled from "styled-components";
 import { StVideosLayoutContainer } from "@/components/video-conference/ShareScreenContainer";
-import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
+import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
 
 export default function MetaverseScrumBoard() {
-  const { closeMetaverseScrum } = useMetaverseScrumIsOpen();
+  const closeMetaverseScrum =
+    useMetaverseScrumIsOpenStore.use.closeMetaverseScrum();
   const handleOnClickClose = () => {
     closeMetaverseScrum();
   };

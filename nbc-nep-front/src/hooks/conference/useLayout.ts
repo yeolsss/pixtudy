@@ -1,18 +1,18 @@
 import { splitVideoSource } from "@/components/video-conference/libs/util";
 import { LayoutConsumersType } from "@/components/video-conference/types/ScreenShare.types";
 import useConferenceStore from "@/zustand/conferenceStore";
-import layoutStore from "@/zustand/layoutStore";
+import useLayoutStore from "@/zustand/layoutStore";
 import { useEffect, useState } from "react";
 
 export default function useLayout() {
   const consumers = useConferenceStore.use.consumers();
-  const {
-    layoutPlayerId,
-    layoutClose,
-    layoutPlayerNickName,
-    layoutOpen,
-    isOpen,
-  } = layoutStore();
+
+  const layoutPlayerId = useLayoutStore.use.layoutPlayerId();
+  const layoutClose = useLayoutStore.use.layoutClose();
+  const layoutPlayerNickName = useLayoutStore.use.layoutPlayerNickName();
+  const layoutOpen = useLayoutStore.use.layoutOpen();
+  const isOpen = useLayoutStore.use.isOpen();
+
   const [videos, setVideos] = useState<LayoutConsumersType[]>([]);
 
   useEffect(() => {

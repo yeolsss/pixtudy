@@ -98,3 +98,21 @@ export const updateSpace = async (
 
   return data;
 };
+
+export const leavingSpace = async ({
+  spaceId,
+  userId,
+}: {
+  spaceId: string;
+  userId: string;
+}) => {
+  const { error } = await supabase
+    .from("space_members")
+    .delete()
+    .eq("user_id", userId)
+    .eq("space_id", spaceId);
+
+  if (error) return Promise.reject(error);
+
+  return true;
+};

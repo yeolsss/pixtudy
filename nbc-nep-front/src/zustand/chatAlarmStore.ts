@@ -1,5 +1,6 @@
 import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface initialChatAlarmState {
   globalChatState: boolean;
@@ -56,4 +57,5 @@ const chatAlarmStore = create<ChartAlarmStore>()((set) => ({
   },
 }));
 
-export default chatAlarmStore;
+const useChatAlarmStore = createSelectors(chatAlarmStore);
+export default useChatAlarmStore;

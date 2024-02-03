@@ -1,11 +1,11 @@
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import CreateDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader";
 import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
 import SelectAssigneesList from "@/components/scrumboard/detail/createBackDrop/SelectAssigneesList";
 import styled from "styled-components";
 
 export default function ScrumItemDetail() {
-  const { kanbanItem } = useScrumBoardItemBackDrop();
+  const kanbanItem = useScrumBoardItemBackDropStore.use.kanbanItem();
 
   return (
     <StScrumItemDetailWrapper>

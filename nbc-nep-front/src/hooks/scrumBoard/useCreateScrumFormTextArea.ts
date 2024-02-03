@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { textMaxLength } from "@/components/scrumboard/libs/util";
-import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
+import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
 
 interface Props {
   text: string;
@@ -18,7 +18,7 @@ export default function useCreateScrumFormTextArea({
   setText,
   maxLength,
 }: Props): ReturnType {
-  const { setValidBoardText } = useScrumBoardItem();
+  const setValidBoardText = useScrumBoardItemStore.use.setValidBoardText();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {

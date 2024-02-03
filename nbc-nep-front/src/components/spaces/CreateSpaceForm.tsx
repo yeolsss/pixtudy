@@ -5,7 +5,7 @@ import {
 } from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
 import { Tables } from "@/supabase/types/supabase";
-import useSpace from "@/zustand/spaceStore";
+import useSpaceStore from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import {
@@ -39,7 +39,8 @@ export default function CreateSpaceForm({
   isValid,
 }: Props) {
   const router = useRouter();
-  const { userProfile, setCreateSpaceInfo } = useSpace();
+  const userProfile = useSpaceStore.use.userProfile();
+  const setCreateSpaceInfo = useSpaceStore.use.setCreateSpaceInfo();
   const { createSpace, createSuccess } = useCreateSpace(
     (data: Tables<"spaces">) => {
       handleToSpace(data.id);

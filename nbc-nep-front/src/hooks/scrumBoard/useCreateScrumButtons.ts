@@ -1,6 +1,6 @@
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
-import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
-import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
@@ -10,7 +10,7 @@ import {
   postScrumBoardItem,
 } from "@/api/supabase/scrumBoard";
 import { useParams } from "next/navigation";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import {
   BACK_DROP_TYPE_CREATE,
   BACK_DROP_TYPE_DETAIL,
@@ -28,23 +28,23 @@ interface ReturnType {
 }
 export default function useCreateScrumButtons(): ReturnType {
   const { space_id } = useParams();
-  const { user } = useAuth();
-  const {
-    scrumBoardText,
-    resetScrumBoardItem,
-    setValidBoardText,
-    setScrumBoardText,
-  } = useScrumBoardItem();
-  const { assignees, resetBackDrop, setAssignees, resetAssignees } =
-    useScrumBoardMemberSearch();
-  const {
-    category,
-    kanbanItem,
-    backDropType,
-    closeBackDrop,
-    setBackDropType,
-    setKanbanDescription,
-  } = useScrumBoardItemBackDrop();
+  const user = useAuthStore.use.user();
+  const scrumBoardText = useScrumBoardItemStore.use.scrumBoardText();
+  const resetScrumBoardItem = useScrumBoardItemStore.use.resetScrumBoardItem();
+  const setValidBoardText = useScrumBoardItemStore.use.setValidBoardText();
+  const setScrumBoardText = useScrumBoardItemStore.use.setScrumBoardText();
+  const assignees = useScrumBoardMemberSearchStore.use.assignees();
+  const resetBackDrop = useScrumBoardMemberSearchStore.use.resetBackDrop();
+  const setAssignees = useScrumBoardMemberSearchStore.use.setAssignees();
+  const resetAssignees = useScrumBoardMemberSearchStore.use.resetAssignees();
+
+  const category = useScrumBoardItemBackDropStore.use.category();
+  const kanbanItem = useScrumBoardItemBackDropStore.use.kanbanItem();
+  const backDropType = useScrumBoardItemBackDropStore.use.backDropType();
+  const closeBackDrop = useScrumBoardItemBackDropStore.use.closeBackDrop();
+  const setBackDropType = useScrumBoardItemBackDropStore.use.setBackDropType();
+  const setKanbanDescription =
+    useScrumBoardItemBackDropStore.use.setKanbanDescription();
 
   const createMutate = useMutation({
     mutationFn: postScrumBoardItem,

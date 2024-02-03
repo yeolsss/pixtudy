@@ -5,7 +5,7 @@ import ProfilePreview from "@/components/spaces/ProfilePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { Procedure } from "@/components/spaces/types/space.types";
 import useModal from "@/hooks/modal/useModal";
-import useSpace from "@/zustand/spaceStore";
+import useSpaceStore from "@/zustand/spaceStore";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -15,7 +15,7 @@ import {
 
 export default function CreateSpaceModalMainContainer() {
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
-  const { resetCreateSpaceInfo } = useSpace();
+  const resetCreateSpaceInfo = useSpaceStore.use.resetCreateSpaceInfo();
   const { closeModal } = useModal();
 
   const {

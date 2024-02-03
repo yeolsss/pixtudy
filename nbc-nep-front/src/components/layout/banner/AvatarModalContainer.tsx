@@ -19,7 +19,7 @@ import { StCreateInputWrapper } from "@/components/spaces/styles/spaceCommon.sty
 import useModal from "@/hooks/modal/useModal";
 import { useJoinSpace } from "@/hooks/query/useSupabase";
 import { validateNickname } from "@/utils/spaceValidate";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -35,12 +35,14 @@ export default function AvatarModalContainer() {
   } = useForm({ mode: "onSubmit" });
 
   const { joinSpace, joinSuccess, joinError } = useJoinSpace();
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const { replace } = useRouter();
 
   const { closeModal, space, clearSpace } = useModal();
 
-  const { onChange, ...restParam } = register("avatar");
+  const { onChange, ...restParam } = register("avatar", {
+    required: "스페이스 아바타를 선택해주세요",
+  });
 
   const handleCloseModal = () => {
     closeModal();
@@ -126,6 +128,7 @@ export default function AvatarModalContainer() {
                 </StInputWrapper>
               ))}
             </StInputContainer>
+            {errors.avatar && <span>{errors.avatar.message as string}</span>}
             <StButtonWrapper>
               <button type="submit">확인</button>
             </StButtonWrapper>

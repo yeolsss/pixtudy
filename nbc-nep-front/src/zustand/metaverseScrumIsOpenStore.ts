@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface MetaverseScrumIsOpenState {
   isOpen: boolean;
@@ -6,10 +7,11 @@ interface MetaverseScrumIsOpenState {
   closeMetaverseScrum: () => void;
 }
 
-const useMetaverseScrumIsOpen = create<MetaverseScrumIsOpenState>((set) => ({
+const metaverseScrumIsOpenStore = create<MetaverseScrumIsOpenState>((set) => ({
   isOpen: false,
   openMetaverseScrum: () => set(() => ({ isOpen: true })),
   closeMetaverseScrum: () => set(() => ({ isOpen: false })),
 }));
 
-export default useMetaverseScrumIsOpen;
+const useMetaverseScrumIsOpenStore = createSelectors(metaverseScrumIsOpenStore);
+export default useMetaverseScrumIsOpenStore;

@@ -1,9 +1,9 @@
-import useSpaceSearch from "@/zustand/spaceListStore";
+import useSpaceSearchStore from "@/zustand/spaceListStore";
 import { useCallback, useEffect } from "react";
 
 export default function useDebounceSpaceSearch(timeout: number = 1000) {
   let timerId: NodeJS.Timeout | null = null;
-  const { filterSpaces } = useSpaceSearch();
+  const filterSpaces = useSpaceSearchStore.use.filterSpaces();
 
   useEffect(() => {
     return () => {

@@ -1,13 +1,15 @@
 import down from "@/assets/boards/input-down.svg";
 import CreateCategoryBackDrop from "@/components/scrumboard/detail/createBackDrop/CreateCategoryBackDrop";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import Image from "next/image";
 import styled from "styled-components";
 
 export default function CreateCategoryInputBox() {
-  const { category, isOpenCategoryBackDrop, setIsOpenCategoryBackDrop } =
-    useScrumBoardItemBackDrop();
-  const { name } = category;
+  const { name } = useScrumBoardItemBackDropStore.use.category();
+  const isOpenCategoryBackDrop =
+    useScrumBoardItemBackDropStore.use.isOpenCategoryBackDrop();
+  const setIsOpenCategoryBackDrop =
+    useScrumBoardItemBackDropStore.use.setIsOpenCategoryBackDrop();
 
   const handleOnClickBackDropToggle = () => {
     setIsOpenCategoryBackDrop(!isOpenCategoryBackDrop);
