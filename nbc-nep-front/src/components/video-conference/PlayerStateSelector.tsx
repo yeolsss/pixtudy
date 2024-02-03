@@ -17,6 +17,7 @@ export default function PlayerStateSelector({
   const { changePlayerState } = useSocket({ namespace: "/metaverse" });
 
   const handleChangeState = (state: PlayerState) => () => {
+    console.log("handleChangeState", state);
     changePlayerState(id, state);
   };
 
