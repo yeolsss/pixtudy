@@ -73,11 +73,11 @@ export const StStickyItem = styled.div`
     max-width: initial;
 
     h1 {
-      font-weight: ${(props) => props.theme.heading.desktop["lg"].fontWeight};
-      font-size: ${(props) => props.theme.heading.desktop["lg"].fontSize};
+      font-weight: ${(props) => props.theme.heading.desktop["2xl"].fontWeight};
+      font-size: ${(props) => props.theme.heading.desktop["2xl"].fontSize};
       letter-spacing: ${(props) =>
-        props.theme.heading.desktop["lg"].letterSpacing};
-      line-height: ${(props) => props.theme.heading.desktop["lg"].lineHeight};
+        props.theme.heading.desktop["2xl"].letterSpacing};
+      line-height: ${(props) => props.theme.heading.desktop["2xl"].lineHeight};
     }
     p {
       font-size: ${(props) => props.theme.body.md.medium.fontSize};
@@ -98,8 +98,9 @@ export const StScrollItemWrapper = styled(motion.div)<{
   width: 34rem;
   height: 30rem;
 
-  display: flex;
   padding: ${(props) => props.theme.spacing[24]};
+
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: ${(props) => props.theme.spacing[16]};
@@ -148,7 +149,11 @@ export const StScrollItemWrapper = styled(motion.div)<{
 
   @media screen and (max-width: 786px) {
     margin: auto;
-    top: calc(50% - 10rem);
-    left: calc(50% - 17.5rem);
+    top: calc(50% - 23rem);
+    left: calc(50% - 25rem);
+
+    width: 50rem;
+    height: 46rem;
+    gap: ${(props) => props.theme.spacing[64]};
   }
 `;
