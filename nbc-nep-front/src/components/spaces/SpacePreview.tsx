@@ -1,5 +1,5 @@
 import { useGetOtherUserInfo } from "@/hooks/query/useSupabase";
-import useSpace from "@/zustand/spaceStore";
+import useSpaceStore from "@/zustand/spaceStore";
 import Image from "next/image";
 import styled from "styled-components";
 
@@ -10,7 +10,7 @@ import styled from "styled-components";
  * @returns
  */
 export default function SpacePreview() {
-  const { joinSpaceInfo } = useSpace();
+  const joinSpaceInfo = useSpaceStore.use.joinSpaceInfo();
   const ownerInfo = useGetOtherUserInfo(joinSpaceInfo?.owner);
 
   return (

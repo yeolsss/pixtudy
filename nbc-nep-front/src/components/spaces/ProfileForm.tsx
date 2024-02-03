@@ -11,7 +11,7 @@ import {
 
 import { FORM_SPACE, SRC_BASE } from "@/components/spaces/constants/constants";
 import useAuthStore from "@/zustand/authStore";
-import useSpace from "@/zustand/spaceStore";
+import useSpaceStore from "@/zustand/spaceStore";
 import styled from "styled-components";
 import {
   StFormCTAButton,
@@ -40,7 +40,7 @@ export default function ProfileForm({
   mode,
   isValid,
 }: ProfileFormProps) {
-  const { setUserProfile } = useSpace();
+  const setUserProfile = useSpaceStore.use.setUserProfile();
   const user = useAuthStore.use.user();
 
   const handleToPrevious = () => {

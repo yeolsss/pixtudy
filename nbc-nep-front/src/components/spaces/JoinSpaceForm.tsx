@@ -6,7 +6,7 @@ import {
   useJoinSpace,
 } from "@/hooks/query/useSupabase";
 import useAuthStore from "@/zustand/authStore";
-import useSpace from "@/zustand/spaceStore";
+import useSpaceStore from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import {
@@ -39,8 +39,11 @@ export default function InvitationCodeForm({
   const user = useAuthStore.use.user();
   const userId = user.id;
 
-  const { userProfile, joinSpaceInfo, resetJoinSpaceInfo, setJoinSpaceInfo } =
-    useSpace();
+  const userProfile = useSpaceStore.use.userProfile();
+  const joinSpaceInfo = useSpaceStore.use.joinSpaceInfo();
+  const resetJoinSpaceInfo = useSpaceStore.use.resetJoinSpaceInfo();
+  const setJoinSpaceInfo = useSpaceStore.use.setJoinSpaceInfo();
+
   const { joinSpace, joinSuccess } = useJoinSpace();
   const userJoinedSpaces = useGetUserSpaces(userId);
   const { closeModal } = useModal();

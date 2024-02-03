@@ -1,5 +1,4 @@
 import { characterOptions } from "@/components/spaces/constants/constants";
-import useSpace from "@/zustand/spaceStore";
 import { ChangeEvent } from "react";
 import {
   FieldValues,
@@ -16,10 +15,6 @@ interface Props {
 }
 
 function AvatarInput({ register, errors, watch }: Props) {
-  const {
-    userProfile: { avatar },
-  } = useSpace();
-
   const { onChange, ...restParam } = register("avatar");
 
   const handleCustomChange = (e: ChangeEvent<HTMLInputElement>) => {

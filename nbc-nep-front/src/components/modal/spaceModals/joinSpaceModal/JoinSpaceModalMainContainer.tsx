@@ -6,14 +6,14 @@ import { FORM_SPACE } from "@/components/spaces/constants/constants";
 import { StFlexColumn } from "@/components/spaces/styles/spaceCommon.styles";
 import { Procedure } from "@/components/spaces/types/space.types";
 import useModal from "@/hooks/modal/useModal";
-import useSpace from "@/zustand/spaceStore";
+import useSpaceStore from "@/zustand/spaceStore";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 export default function JoinSpaceModalMainContainer() {
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
-  const { resetJoinSpaceInfo } = useSpace();
+  const resetJoinSpaceInfo = useSpaceStore.use.resetJoinSpaceInfo();
   const { closeModal } = useModal();
 
   const {
