@@ -55,7 +55,9 @@ export default function Header() {
     <StNavWrapper>
       <StNavContainer>
         <div>
-          <Link href="/">Pixtudy</Link>
+          <StLogo href="/">
+            <h1>Pixtudy</h1>
+          </StLogo>
           <StNavLink href="/">서비스 소개</StNavLink>
           <StNavLink as="a" href={GOOGLE_FORM_LINK}>
             고객지원
@@ -85,22 +87,16 @@ const StNavContainer = styled.div`
   display: flex;
   max-width: 1200px;
   width: 100%;
+
   margin: 0 auto;
   height: ${(props) => props.theme.unit[96]};
   padding: ${(props) => props.theme.spacing[24]};
+
   justify-content: space-between;
   align-items: center;
   font-family: var(--sub-font);
   position: relative;
   z-index: 100;
-
-  a {
-    display: block;
-    color: ${(props) => props.theme.color.text.interactive.primary};
-    font-family: var(--point-font);
-    font-size: ${(props) => props.theme.heading.desktop.lg.fontSize};
-    font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
-  }
 
   div {
     display: flex;
@@ -117,13 +113,26 @@ const StNavContainer = styled.div`
   }
 `;
 
+const StLogo = styled(Link)`
+  display: block;
+  h1 {
+    color: ${(props) => props.theme.color.text.interactive.primary};
+    font-family: var(--point-font);
+    font-size: ${(props) => props.theme.heading.desktop.lg.fontSize};
+    font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
+  }
+`;
+
 const StNavLink = styled(Link)`
+  display: block;
+
   border: none !important;
   padding: 0 !important;
   font-family: var(--sub-font) !important;
   font-size: ${(props) => props.theme.body.lg.regular.fontSize} !important;
   font-weight: ${(props) => props.theme.body.lg.regular.fontWeight} !important;
   color: ${(props) => props.theme.color.text.disabled} !important;
+
   &:hover {
     background-color: ${(props) => props.theme.color.bg.primary} !important;
     color: ${(props) =>
@@ -137,6 +146,7 @@ const StNavButton = styled.button`
   font-size: ${(props) => props.theme.body.lg.regular.fontSize};
   font-weight: ${(props) => props.theme.body.lg.regular.fontWeight};
   color: ${(props) => props.theme.color.text.disabled};
+
   &:hover {
     background-color: ${(props) => props.theme.color.bg.primary};
     color: ${(props) =>
