@@ -1,12 +1,12 @@
-import scrollStore from "@/zustand/scrollStore";
+import useScrollStore from "@/zustand/scrollStore";
 
 export default function useScroll() {
-  const section = scrollStore.use.section();
-  const isInSection = scrollStore.use.isInSection();
-  const scrollIndex = scrollStore.use.scrollIndex();
-  const setSection = scrollStore.use.setSection();
-  const setIsInSection = scrollStore.use.setIsInSection();
-  const setScrollIndex = scrollStore.use.setScrollIndex();
+  const section = useScrollStore.use.section();
+  const isInSection = useScrollStore.use.isInSection();
+  const scrollIndex = useScrollStore.use.scrollIndex();
+  const setSection = useScrollStore.use.setSection();
+  const setIsInSection = useScrollStore.use.setIsInSection();
+  const setScrollIndex = useScrollStore.use.setScrollIndex();
 
   return {
     section,
