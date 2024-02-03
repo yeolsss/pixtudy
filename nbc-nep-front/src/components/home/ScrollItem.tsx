@@ -27,12 +27,6 @@ export default function ScrollItem({ index }: Props) {
           height={270}
           width={300}
         />
-        {/* <Image
-          src={imgSrc}
-          width={80}
-          height={81}
-          alt={"contents scroll item image"}
-        /> */}
         <h2>{title}</h2>
       </div>
       <p>{description}</p>
