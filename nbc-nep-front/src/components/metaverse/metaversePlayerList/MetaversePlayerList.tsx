@@ -2,7 +2,7 @@ import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseC
 import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
 import useChatType from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
-import useGlobalNavBar, {
+import useGlobalNavBarStore, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
 import styled from "styled-components";
@@ -15,8 +15,9 @@ export interface HandleOpenDmContainerPrams {
 }
 
 export default function MetaversePlayerList() {
-  const { isPlayerListOn, setSectionVisibility, resetAllSections } =
-    useGlobalNavBar();
+  const isPlayerListOn = useGlobalNavBarStore.use.isPlayerListOn();
+  const setSectionVisibility = useGlobalNavBarStore.use.setSectionVisibility();
+  const resetAllSections = useGlobalNavBarStore.use.resetAllSections();
 
   const { playerList } = useMetaversePlayer();
   const { spaceId } = useMetaversePlayer();

@@ -4,7 +4,7 @@ import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseC
 import { Database } from "@/supabase/types/supabase";
 import useChatType from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
-import useGlobalNavBar from "@/zustand/globalNavBarStore";
+import useGlobalNavBarStore from "@/zustand/globalNavBarStore";
 import styled from "styled-components";
 
 interface Props {
@@ -21,7 +21,7 @@ export default function MetaverseDmList({ dmList, isOpen }: Props) {
   const otherUserName = useDmStore.use.otherUserName();
   const closeDm = useDmStore.use.closeDm();
 
-  const { resetAllSections } = useGlobalNavBar();
+  const resetAllSections = useGlobalNavBarStore.use.resetAllSections();
 
   const handleOnClickCloseChat = () => {
     resetAllSections();

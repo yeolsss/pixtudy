@@ -7,7 +7,7 @@ import { GOOGLE_FORM_LINK } from "@/components/layout/Header";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useChatType from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
-import useGlobalNavBar, {
+import useGlobalNavBarStore, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
 import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
@@ -16,8 +16,9 @@ import { useEffect } from "react";
 import usePhaserInput from "@/hooks/phaser/usePhaserInput";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
-  const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
-    useGlobalNavBar();
+  const isChatSectionOn = useGlobalNavBarStore.use.isChatSectionOn();
+  const isPlayerListOn = useGlobalNavBarStore.use.isPlayerListOn();
+  const setSectionVisibility = useGlobalNavBarStore.use.setSectionVisibility();
   const closeDm = useDmStore.use.closeDm();
   const openChat = useChatType.use.openChat();
   const closeChat = useChatType.use.closeChat();

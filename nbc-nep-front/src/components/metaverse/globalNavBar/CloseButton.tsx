@@ -2,11 +2,11 @@ import CloseIcon from "@/assets/icons/Close.svg";
 import IconButton from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButton";
 import useChatType from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
-import useGlobalNavBar from "@/zustand/globalNavBarStore";
+import useGlobalNavBarStore from "@/zustand/globalNavBarStore";
 import styled from "styled-components";
 
 export default function CloseButton() {
-  const { resetAllSections } = useGlobalNavBar();
+  const resetAllSections = useGlobalNavBarStore.use.resetAllSections();
   const closeDm = useDmStore.use.closeDm();
   const closeChat = useChatType.use.closeChat();
 
