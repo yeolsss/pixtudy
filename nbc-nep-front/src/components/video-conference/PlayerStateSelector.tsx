@@ -13,7 +13,7 @@ export default function PlayerStateSelector({
   isRender,
   handleAnimatedEnd,
 }: Props) {
-  const { id } = useAuthStore((state) => state.user);
+  const { id } = useAuthStore.use.user();
   const { changePlayerState } = useSocket({ namespace: "/metaverse" });
 
   const handleChangeState = (state: PlayerState) => () => {

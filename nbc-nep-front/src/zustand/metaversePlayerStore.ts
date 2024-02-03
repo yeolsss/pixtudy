@@ -1,5 +1,6 @@
 import { Player, PlayerState } from "@/components/metaverse/types/metaverse";
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface PlayerListState {
   playerList: Player[];
@@ -7,7 +8,7 @@ interface PlayerListState {
   changePlayerState: (playerId: string, state: PlayerState) => void;
 }
 
-const usePlayerList = create<PlayerListState>()((set) => ({
+const playerListStore = create<PlayerListState>()((set) => ({
   playerList: [],
   setPlayerList: (players) => set(() => ({ playerList: players })),
   changePlayerState: (playerId: string, playerState: PlayerState) =>
@@ -20,4 +21,5 @@ const usePlayerList = create<PlayerListState>()((set) => ({
     })),
 }));
 
-export default usePlayerList;
+const usePlayerListStore = createSelectors(playerListStore);
+export default usePlayerListStore;
