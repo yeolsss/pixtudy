@@ -5,13 +5,13 @@ import {
 import BackDropTextArea from "@/components/scrumboard/detail/BackDropTextArea";
 import CreateDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader";
 import useCreateScrumFormTextArea from "@/hooks/scrumBoard/useCreateScrumFormTextArea";
-import useScrumBoardItem from "@/zustand/scrumBoardItemStore";
+import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
 import styled from "styled-components";
 
 export default function CreateDescription() {
-  // update 할때 고려해볼려고
-  const { scrumBoardText, setScrumBoardText, validBoardText } =
-    useScrumBoardItem();
+  const scrumBoardText = useScrumBoardItemStore.use.scrumBoardText();
+  const setScrumBoardText = useScrumBoardItemStore.use.setScrumBoardText();
+  const validBoardText = useScrumBoardItemStore.use.validBoardText();
   const [text, textAreaRef, handleOnChange] = useCreateScrumFormTextArea({
     text: scrumBoardText,
     setText: setScrumBoardText,
