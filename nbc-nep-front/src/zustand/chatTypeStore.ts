@@ -27,5 +27,5 @@ const chatType = create<ChatTypeStoreState>()((set) => ({
     })),
 }));
 
-const useChatType = createSelector(chatType);
-export default useChatType;
+const useChatTypeStore = createSelector(chatType);
+export default useChatTypeStore;

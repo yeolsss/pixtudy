@@ -2,7 +2,7 @@ import MetaverseDMListCard from "@/components/metaverse/metaverseChat/dmChat/met
 import MetaverseDmContainer from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmContainer";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import { Database } from "@/supabase/types/supabase";
-import useChatType from "@/zustand/chatTypeStore";
+import useChatTypeStore from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBarStore from "@/zustand/globalNavBarStore";
 import styled from "styled-components";
@@ -15,8 +15,8 @@ interface Props {
 }
 
 export default function MetaverseDmList({ dmList, isOpen }: Props) {
-  const isOpenChat = useChatType.use.isOpenChat();
-  const closeChat = useChatType.use.closeChat();
+  const isOpenChat = useChatTypeStore.use.isOpenChat();
+  const closeChat = useChatTypeStore.use.closeChat();
   const isOpenDm = useDmStore.use.isOpen();
   const otherUserName = useDmStore.use.otherUserName();
   const closeDm = useDmStore.use.closeDm();

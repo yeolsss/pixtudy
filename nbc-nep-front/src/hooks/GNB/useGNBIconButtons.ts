@@ -5,7 +5,7 @@ import usersIcon from "@/assets/icons/Users.svg";
 import kanbanIcon from "@/assets/icons/kanbanIcon.svg";
 import { GOOGLE_FORM_LINK } from "@/components/layout/Header";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
-import useChatType from "@/zustand/chatTypeStore";
+import useChatTypeStore from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBarStore, {
   changeSectionVisibility,
@@ -20,8 +20,8 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   const isPlayerListOn = useGlobalNavBarStore.use.isPlayerListOn();
   const setSectionVisibility = useGlobalNavBarStore.use.setSectionVisibility();
   const closeDm = useDmStore.use.closeDm();
-  const openChat = useChatType.use.openChat();
-  const closeChat = useChatType.use.closeChat();
+  const openChat = useChatTypeStore.use.openChat();
+  const closeChat = useChatTypeStore.use.closeChat();
   const { openConfigModal } = useModal();
 
   const isScrumOpen = useMetaverseScrumIsOpenStore.use.isOpen();

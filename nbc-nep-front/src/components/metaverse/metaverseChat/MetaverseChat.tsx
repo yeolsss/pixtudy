@@ -7,14 +7,14 @@ import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useGetLastDMList } from "@/hooks/query/useSupabase";
 import { supabase } from "@/supabase/supabase";
-import useChatType from "@/zustand/chatTypeStore";
+import useChatTypeStore from "@/zustand/chatTypeStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 export default function MetaverseChat() {
-  const isOpenChat = useChatType.use.isOpenChat();
-  const chatType = useChatType.use.chatType();
+  const isOpenChat = useChatTypeStore.use.isOpenChat();
+  const chatType = useChatTypeStore.use.chatType();
   const { id, spaceId } = useMetaversePlayer();
   const { handleSetDmChatAlarmState, setAlarmPlayStatus } = useChatAlarm();
   const dmList = useGetLastDMList(spaceId, id);
