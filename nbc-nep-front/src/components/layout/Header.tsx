@@ -102,6 +102,10 @@ const StNavContainer = styled.div`
     display: flex;
     align-items: center;
     gap: ${(props) => props.theme.spacing[32]};
+
+    @media screen and (max-width: 768px) {
+      gap: ${(props) => props.theme.spacing[16]};
+    }
   }
 
   p {
@@ -138,6 +142,11 @@ const StNavLink = styled(Link)`
     color: ${(props) =>
       props.theme.color.text.interactive["secondary-pressed"]};
   }
+  @media screen and (max-width: 768px) {
+    font-size: ${(props) => props.theme.body.md.regular.fontSize};
+    font-weight: ${(props) => props.theme.body.md.regular.fontWeight};
+    color: ${(props) => props.theme.color.text.disabled};
+  }
 `;
 const StNavButton = styled.button`
   border: none;
@@ -151,5 +160,11 @@ const StNavButton = styled.button`
     background-color: ${(props) => props.theme.color.bg.primary};
     color: ${(props) =>
       props.theme.color.text.interactive["secondary-pressed"]};
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: ${(props) => props.theme.body.md.regular.fontSize};
+    font-weight: ${(props) => props.theme.body.md.regular.fontWeight};
+    color: ${(props) => props.theme.color.text.disabled};
   }
 `;
