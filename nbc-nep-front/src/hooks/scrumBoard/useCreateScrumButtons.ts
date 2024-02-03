@@ -1,6 +1,6 @@
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
-import useScrumBoardMemberSearch from "@/zustand/scrumBoardMemberStore";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
@@ -33,8 +33,10 @@ export default function useCreateScrumButtons(): ReturnType {
   const resetScrumBoardItem = useScrumBoardItemStore.use.resetScrumBoardItem();
   const setValidBoardText = useScrumBoardItemStore.use.setValidBoardText();
   const setScrumBoardText = useScrumBoardItemStore.use.setScrumBoardText();
-  const { assignees, resetBackDrop, setAssignees, resetAssignees } =
-    useScrumBoardMemberSearch();
+  const assignees = useScrumBoardMemberSearchStore.use.assignees();
+  const resetBackDrop = useScrumBoardMemberSearchStore.use.resetBackDrop();
+  const setAssignees = useScrumBoardMemberSearchStore.use.setAssignees();
+  const resetAssignees = useScrumBoardMemberSearchStore.use.resetAssignees();
 
   const category = useScrumBoardItemBackDropStore.use.category();
   const kanbanItem = useScrumBoardItemBackDropStore.use.kanbanItem();
