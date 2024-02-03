@@ -1,7 +1,5 @@
 import useVideoSource from "@/hooks/conference/useVideoSource";
-import useSocket from "@/hooks/socket/useSocket";
 import useAuth from "@/zustand/authStore";
-import { useEffect } from "react";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/effect-cards";
@@ -15,6 +13,7 @@ import {
 } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ShareMediaItem from "../ShareMediaItem";
+import useSocket from "../hooks/useSocket";
 import { StVideoWrapper } from "../styles/videoConference.styles";
 import { Producer } from "../types/ScreenShare.types";
 
@@ -27,9 +26,7 @@ export default function PlayerProducerContainer({
   producers,
   nickname,
 }: Props) {
-  const { socket, disconnect, connect } = useSocket({
-    namespace: "/conference",
-  });
+  const { closeProducer } = useSocket();
 
   const {
     user: { id: currentPlayerId },
@@ -37,17 +34,9 @@ export default function PlayerProducerContainer({
 
   const { removeProducer } = useVideoSource();
 
-  useEffect(() => {
-    connect();
-    return () => {
-      disconnect();
-    };
-  }, []);
-
   function handleShareStop(producer: Producer) {
     removeProducer(producer);
-
-    socket.emit("producer-close", currentPlayerId, producer.appData.streamId);
+    closeProducer(currentPlayerId, producer.appData.streamId);
   }
 
   return (
