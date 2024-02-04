@@ -1,11 +1,4 @@
-import { Placement } from "react-joyride";
-
-export type TooltipType = {
-  target: string;
-  content: string;
-  placement: Placement;
-  disableBeacon: boolean;
-};
+import { TooltipType } from "@/types/util.types";
 
 export const DASHBOARD_TOUR_TOOLTIP: TooltipType[] = [
   {
