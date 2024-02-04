@@ -1,20 +1,20 @@
 import { supabase } from '@/supabase'
-import { TablesInsert, TablesUpdate } from '@/types/supabase.types'
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
+  KanbanCategories,
   Space_members
 } from '@/types/supabase.tables.types'
+import { TablesInsert, TablesUpdate } from '@/types/supabase.types'
 
 export const getCategories = async (
   spaceId: string
-): Promise<Kanban_categories[]> => {
+): Promise<KanbanCategories[]> => {
   const { data, error } = await supabase
     .from('kanban_categories')
     .select('*')
     .eq('spaceId', spaceId)
     .order('order', { ascending: true })
-    .returns<Kanban_categories[]>()
+    .returns<KanbanCategories[]>()
   if (error) throw error
   return data
 }

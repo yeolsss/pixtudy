@@ -1,8 +1,8 @@
-type textMaxLengthReturn = string
+type TextMaxLengthReturn = string
 export const textMaxLength = (
   text: string,
   maxLength: number
-): textMaxLengthReturn => {
+): TextMaxLengthReturn => {
   const textLength = text.length
   if (textLength > maxLength) {
     return text.slice(0, maxLength)

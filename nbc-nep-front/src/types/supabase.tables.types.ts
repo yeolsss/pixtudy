@@ -15,7 +15,7 @@ export interface Spaces {
   space_thumb: string | null
 }
 
-export interface Kanban_categories {
+export interface KanbanCategories {
   id: string /* primary key */
   spaceId: string /* foreign key to spaces.id */
   name: string
@@ -41,7 +41,7 @@ export interface Kanban_items {
   deadline?: string
   type: string
   categoryId: string /* foreign key to kanban_categories.id */
-  kanban_categories?: Kanban_categories
+  kanban_categories?: KanbanCategories
   kanban_assignees?: Kanban_assignees[]
 }
 

@@ -1,14 +1,14 @@
-export type Assign = {
+export interface Assign {
   id: string
   displayName: string
   avatar: string
 }
 
-export type DropItem = {
+export interface DropItem {
   categoryId: string
 }
 
-export type AnimationInfo = {
+export interface AnimationInfo {
   initial: { opacity: number; y?: number }
   animate: { opacity: number; y?: number }
   exit: { opacity: number; y?: number }

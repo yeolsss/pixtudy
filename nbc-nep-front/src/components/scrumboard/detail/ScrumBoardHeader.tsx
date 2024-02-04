@@ -1,16 +1,5 @@
 import styled from 'styled-components'
 
-interface Props {
-  title: string
-}
-export default function ScrumBoardHeader({ title }: Props) {
-  return (
-    <StScrumBoardHeader>
-      <h1>{`${title}'s Scrum board`}</h1>
-    </StScrumBoardHeader>
-  )
-}
-
 const StScrumBoardHeader = styled.div`
   max-width: 1200px;
   width: 100%;
@@ -33,3 +22,13 @@ const StScrumBoardHeader = styled.div`
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
   }
 `
+interface Props {
+  title: string
+}
+export default function ScrumBoardHeader({ title }: Props) {
+  return (
+    <StScrumBoardHeader>
+      <h1>{`${title}'s Scrum board`}</h1>
+    </StScrumBoardHeader>
+  )
+}

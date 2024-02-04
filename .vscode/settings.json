@@ -1,10 +1,16 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "prettier.configPath": ".prettierrc.js",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
   "commentTranslate.targetLanguage": "en",
-  "cSpell.words": ["ideaboards", "Metaverse", "scrumboards", "supabase"]
+  "cSpell.words": [
+    "ideaboards",
+    "Metaverse",
+    "scrumboards",
+    "supabase"
+  ],
+  "eslint.format.enable": true
 }

@@ -38,13 +38,13 @@ import {
   updateSpace as updateSpaceSupabase
 } from '@/api/supabase/space'
 import { useCustomQuery } from '@/hooks/tanstackQuery/useCustomQuery'
-import { Database, Tables } from '@/types/supabase.types'
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
+  KanbanCategories,
   Space_members,
   Spaces
 } from '@/types/supabase.tables.types'
+import { Database, Tables } from '@/types/supabase.types'
 import { authValidation } from '@/utils/authValidate'
 import useAuthStore from '@/zustand/authStore'
 import { Session } from '@supabase/supabase-js'
@@ -322,7 +322,7 @@ export function useGetCategories(spaceId: string) {
     options: { staleTime: Infinity }
   }
 
-  return useCustomQuery<Kanban_categories[], Error>(queryOptions)
+  return useCustomQuery<KanbanCategories[], Error>(queryOptions)
 }
 
 export function useGetCategoryItems(categoryId: string) {

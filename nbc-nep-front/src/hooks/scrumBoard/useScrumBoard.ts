@@ -1,8 +1,8 @@
+import { KanbanCategories } from '@/types/supabase.tables.types'
 import useScrumBoardStore from '@/zustand/scrumBoardStore'
-import { Kanban_categories } from '@/types/supabase.tables.types'
 
 interface ReturnType {
-  categories: Kanban_categories[]
+  categories: KanbanCategories[]
   setCategories: (categories: any[]) => void
 }
 export default function useScrumBoard(): ReturnType {

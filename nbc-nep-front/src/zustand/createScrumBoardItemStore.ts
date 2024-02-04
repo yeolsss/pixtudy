@@ -1,23 +1,23 @@
-import { create } from 'zustand'
+import { BackDropType } from '@/types/scrum.types'
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories
+  KanbanCategories
 } from '@/types/supabase.tables.types'
-import { BackDropType } from '@/types/scrum.types'
 import createSelectors from '@/zustand/config/createSelector'
+import { create } from 'zustand'
 
 interface ScrumBoardItemBackDropState {
   isOpen: boolean
   isOpenCategoryBackDrop: boolean
-  category: Kanban_categories
+  category: KanbanCategories
   kanbanItem: GetKanbanItemsByAssignees | null
   backDropType: BackDropType
   setIsOpen: (
-    categoryId: Kanban_categories,
+    categoryId: KanbanCategories,
     kanbanItem: GetKanbanItemsByAssignees | null,
     backDropType: BackDropType
   ) => void
-  setCategory: (categoryId: Kanban_categories) => void
+  setCategory: (categoryId: KanbanCategories) => void
   closeBackDrop: () => void
   setBackDropType: (backDropType: BackDropType) => void
   setIsOpenCategoryBackDrop: (isOpenCategoryBackDrop: boolean) => void
@@ -26,7 +26,7 @@ interface ScrumBoardItemBackDropState {
 const initialState: ScrumBoardItemBackDropState = {
   isOpen: false,
   isOpenCategoryBackDrop: false,
-  category: {} as Kanban_categories,
+  category: {} as KanbanCategories,
   kanbanItem: null,
   backDropType: 'create',
   setIsOpen: () => {},
@@ -52,7 +52,7 @@ const scrumBoardItemBackDropStore = create<ScrumBoardItemBackDropState>()(
     closeBackDrop: () =>
       set({
         isOpen: false,
-        category: {} as Kanban_categories,
+        category: {} as KanbanCategories,
         kanbanItem: null
       })
   })

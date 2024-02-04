@@ -23,11 +23,11 @@ export default function EditCategoryForm({
   color: currentColor,
   setIsEdit
 }: Props) {
-  const { space_id } = useParams()
-  const spaceId = space_id as string
+  const params = useParams()
+  const spaceId = params.space_id as string
   const categories = useGetCategories(spaceId)
   const [isOpen, setIsOpen] = useState(false)
-  const { update, isSuccess, isError } = useUpdateCategory(spaceId)
+  const { update } = useUpdateCategory(spaceId)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const {
@@ -39,7 +39,7 @@ export default function EditCategoryForm({
     formState: { errors }
   } = useForm({ mode: 'onChange' })
 
-  const selectedOption = watch<'color'>('color', currentColor)
+  const selectedOption = watch<'color'>('color', currentColor) as string
 
   useEffect(() => {
     setFocus('name')
@@ -76,9 +76,12 @@ export default function EditCategoryForm({
   }
 
   const validateCategoryName = (name: string) => {
-    if (name === currentName) return true
-    if (categories?.some((category) => category.name === name))
+    if (name === currentName) {
+      return true
+    }
+    if (categories?.some((category) => category.name === name)) {
       return '이미 존재하는 카테고리입니다.'
+    }
     return true
   }
 
