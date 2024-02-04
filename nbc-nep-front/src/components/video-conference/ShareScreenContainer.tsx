@@ -7,11 +7,10 @@ import useLayout from "@/hooks/conference/useLayout";
 import { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
+import { GridStatusType, GuideStatusType } from "../../types/conference.types";
 import ShareMediaItem from "./ShareMediaItem";
 import ShareScreenDragItem from "./ShareScreenDragItem";
-import { GridStatusType, GuideStatusType } from "../../types/conference.types";
-
-const EDGE_AREA_RATE = 220;
+import { EDGE_AREA_RATE } from "./constants/constants";
 
 export default function ShareScreenContainer() {
   const {
