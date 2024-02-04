@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const AuthOuterContainer = styled.div`
+export const StAuthOuterContainer = styled.div`
   display: flex;
   height: auto;
   min-height: 100%;
   min-width: 38rem;
 `;
 
-export const ChangeAuthPage = styled.span`
+export const StChangeAuthPage = styled.span`
   position: absolute;
   top: ${(props) => props.theme.spacing["40"]};
   right: ${(props) => props.theme.spacing["48"]};

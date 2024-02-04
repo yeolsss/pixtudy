@@ -1,21 +1,22 @@
 import { good } from "@/assets/auth";
+import { AuthFormType } from "@/types/auth.types";
 import Image from "next/image";
 import styled from "styled-components";
-import { generateRandomIndex, tipsArray } from "./utils/authUtils";
-import { AuthFormType } from "@/types/auth.types";
+import { TIPS_ARRAY } from "./constants/constants";
+import { generateRandomIndex } from "./utils/authUtils";
 
 interface Props {
   formType: AuthFormType;
 }
 export default function AuthHeroNotice({ formType }: Props) {
-  const randomIndex = generateRandomIndex(tipsArray.length);
+  const randomIndex = generateRandomIndex(TIPS_ARRAY.length);
   return (
     <StNoticeContainer $formType={formType}>
       <section>
         <Image alt="good" src={good} />
         <span>Tip !</span>
       </section>
-      <p>{tipsArray[randomIndex]}</p>
+      <p>{TIPS_ARRAY[randomIndex]}</p>
     </StNoticeContainer>
   );
 }
