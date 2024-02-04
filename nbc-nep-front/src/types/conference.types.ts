@@ -1,27 +1,28 @@
 import { types } from 'mediasoup-client'
 import { RtpParameters } from 'mediasoup-client/lib/RtpParameters'
+
 import { Player } from '@/types/metaverse.types'
 
 export type RtpCapabilities = types.RtpCapabilities
 
-export type DtlsParameters = {
+export interface DtlsParameters {
   dtlsParameters: types.DtlsParameters
 }
 
-export type ProduceParameter = {
+export interface ProduceParameter {
   kind: types.MediaKind
   rtpParameters: types.RtpParameters
   appData: types.AppData
 }
 
-export type TransPortParams = {
+export interface TransPortParams {
   id: string
   iceParameters: types.IceParameters
   iceCandidates: types.IceCandidate[]
   dtlsParameters: types.DtlsParameters
 }
 
-export type NewProducerParameter = {
+export interface NewProducerParameter {
   producerId: string
   socketId: string
   socketName: string
@@ -66,29 +67,29 @@ export type GridStatusType =
 
 export type VideoSource = Producer | Consumer
 
-export type MediaStreamWithId = {
+export interface MediaStreamWithId {
   stream: MediaStream
   id: string
 }
 
 export type TrackKind = 'video' | 'audio'
 
-export type ProducerForConsume = { id: string; appData: AppData }
+export interface ProducerForConsume { id: string; appData: AppData }
 
 export type UserWithVideoSource = {
   producers: Producer[]
   consumers: Consumer[]
 } & Player
 
-export type UserVideoSourceMap = {
+export interface UserVideoSourceMap {
   [key: string]: UserWithVideoSource
 }
 
 export type SplitVideoSource = [VideoSource[], VideoSource[]]
 
-export type LayoutConsumersType = { consumer: VideoSource; isActive: number }
+export interface LayoutConsumersType { consumer: VideoSource; isActive: number }
 
-export type MediaConsumeParams = {
+export interface MediaConsumeParams {
   id: string
   producerId: string
   kind: 'audio' | 'video'
@@ -96,18 +97,18 @@ export type MediaConsumeParams = {
   appData: AppData
 }
 
-export type MediaConsumeParamsForEmit = {
+export interface MediaConsumeParamsForEmit {
   rtpCapabilities: RtpCapabilities
   playerId: string
   appData: AppData
   producerId: string
 }
 
-export type DeviceInputs = {
+export interface DeviceInputs {
   deviceId: string
 }
 
-export type LocalStorageDeviceInputs = {
+export interface LocalStorageDeviceInputs {
   audio: MediaTrackConstraints
   video: MediaTrackConstraints
 }

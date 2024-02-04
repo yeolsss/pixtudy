@@ -34,3 +34,9 @@ export const PLAYER_STATE_VALUE = [
 ]
 
 export const PLAYER_STATE_TEXT = ['온라인', '식사중', '자리비움', '방해금지']
+
+export const SPACING = 10
+
+export const VIDEO_SIZE = 175
+
+export const GAP = 20

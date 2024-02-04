@@ -1,10 +1,10 @@
 import { PropsWithChildren } from 'react'
-import styled from 'styled-components'
+
 import MetaAvatar from '../../metaverse/avatar/MetaAvatar'
 import {
-  StShareMediaItem,
   StShareMediaNickname
 } from '../styles/videoConference.styles'
+import { StDefaultShareMediaItemWrapper } from '../styles/videoMedia.styles'
 
 interface Props {
   avatar?: string
@@ -25,12 +25,3 @@ export default function DefaultShareMediaItem({
   )
 }
 
-const StDefaultShareMediaItemWrapper = styled(StShareMediaItem)`
-  display: flex;
-
-  & > span {
-    margin: auto;
-  }
-
-  position: relative;
-`
