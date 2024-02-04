@@ -1,11 +1,9 @@
 import NoContents from "@/components/common/NoContents";
 import { StCTAButton } from "@/components/common/button/button.styles";
-import {
-  BACK_DROP_TYPE_CREATE,
-  fadeInOut,
-} from "@/components/scrumboard/constants/constants";
+import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 import { useGetCategoryItems } from "@/hooks/query/useSupabase";
 import useDropItem from "@/hooks/scrumBoard/useDropItem";
+import { fadeInOut } from "@/styles/animations";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { AnimatePresence, motion } from "framer-motion";
@@ -48,7 +46,7 @@ export default function ScrumBoardCategory({ category }: Props) {
           <AnimatePresence>
             {items?.map((item, index) => {
               return (
-                <motion.div key={index} {...fadeInOut(5)}>
+                <motion.div key={index} {...fadeInOut({ y: 5 })}>
                   <ScrumBoardItem key={index} item={item} category={category} />
                 </motion.div>
               );

@@ -1,4 +1,4 @@
-import { fadeInOut } from "@/components/scrumboard/constants/constants";
+import { fadeInOut } from "@/styles/animations";
 import { motion } from "framer-motion";
 import CreateCategoryModalMainContainer from "./CreateCategoryModalMainContainer";
 
