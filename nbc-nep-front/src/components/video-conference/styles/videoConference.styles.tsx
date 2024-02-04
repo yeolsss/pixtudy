@@ -1,9 +1,11 @@
-import { StPositionRelative } from '@/components/common/button/button.styles'
-import styled from 'styled-components'
+import styledComponent from 'styled-components';
 
-export const StShareMediaItem = styled(StPositionRelative)<{
-  $isAudio: boolean
-}>`
+
+import { StPositionRelative } from '@/components/common/button/button.styles';
+
+const styled = styledComponent;
+
+export const StShareMediaItem = styled(StPositionRelative)<{$isAudio: boolean}>`
   width: ${(props) => (props.$isAudio ? 0 : props.theme.video.width)};
   height: ${(props) => (props.$isAudio ? 0 : props.theme.video.height)};
 
@@ -105,6 +107,31 @@ export const StStackItem = styled.div<{
   position:absolute;
 `
 
-export const SPACING = 10
-export const VIDEO_SIZE = 175
-export const GAP = 20
+export const StDockContainer = styled.div<{ $isOpen: boolean }>`
+  position: absolute;
+
+  left: 50%;
+  bottom: ${(props) => props.theme.spacing[32]};
+  transform: translateX(-50%);
+  z-index: 3;
+
+  background-color: ${(props) => props.theme.color.metaverse.primary};
+
+  padding: ${(props) => props.theme.spacing[16]};
+
+  border-radius: ${(props) => props.theme.border.radius.circle};
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  gap: ${(props) => props.theme.unit[15]};
+  width: 465px;
+
+  transition: opacity 0.2s ease-in-out;
+
+  ${(props) => props.$isOpen && 'opacity: 0.3'};
+  &:hover {
+    ${(props) => props.$isOpen && 'opacity: 1'};
+  }
+`
