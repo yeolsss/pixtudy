@@ -1,13 +1,16 @@
-import { theme } from '@/styles/Globalstyle'
 import Image from 'next/image'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
-import { DEVICE_STORAGE_KEY } from './constants/constants'
+
+import { theme } from '@/styles/Globalstyle'
+
 import {
   LocalStorageDeviceInputs,
   ShareType
 } from '../../types/conference.types'
+
+import { DEVICE_STORAGE_KEY } from './constants'
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void
@@ -36,7 +39,7 @@ export default function ShareButton({
   const isScreenShareType = type === 'screen'
 
   useEffect(() => {
-    if (isCanShare === undefined) return
+    if (isCanShare === undefined) {return}
     setIsShare(!isCanShare)
   }, [isCanShare])
 
@@ -96,7 +99,7 @@ export default function ShareButton({
         src={isShare ? shareSvg : stopShareSvg}
         width={24}
         height={24}
-        alt={'dock icon'}
+        alt="dock icon"
       />
       {isShare ? stopSharingButtonText : shareButtonText}
       {children}
@@ -158,7 +161,7 @@ const getUserAudio = async () => {
 }
 
 const getVideoDevice = async () => {
-  let deviceInputs = JSON.parse(
+  const deviceInputs = JSON.parse(
     localStorage.getItem(DEVICE_STORAGE_KEY) as string
   ) as LocalStorageDeviceInputs
 
@@ -166,18 +169,18 @@ const getVideoDevice = async () => {
     return true
   }
 
-  return deviceInputs['video']
+  return deviceInputs.video
 }
 
 const getAudioDevice = async () => {
-  let deviceInputs = JSON.parse(
+  const deviceInputs = JSON.parse(
     localStorage.getItem(DEVICE_STORAGE_KEY) as string
   ) as LocalStorageDeviceInputs
 
   if (!deviceInputs) {
     return true
   }
-  return deviceInputs['audio']
+  return deviceInputs.audio
 }
 
 const callToastDockError = (message: string) => {

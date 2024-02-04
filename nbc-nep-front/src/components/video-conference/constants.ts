@@ -25,3 +25,12 @@ export const videoParams = {
 export const MAX_SHARE_SCREEN_SIZE = 4
 
 export const DEVICE_STORAGE_KEY = 'deviceInputs'
+
+export const PLAYER_STATE_VALUE = [
+  'var(--state-online)',
+  'var(--state-eating)',
+  'var(--state-left-seat)',
+  'var(--state-disturb)'
+]
+
+export const PLAYER_STATE_TEXT = ['온라인', '식사중', '자리비움', '방해금지']

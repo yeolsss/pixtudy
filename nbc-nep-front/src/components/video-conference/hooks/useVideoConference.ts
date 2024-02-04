@@ -7,7 +7,6 @@ import useAuth from '@/zustand/authStore'
 import { isEmpty } from 'lodash'
 import { RtpCapabilities } from 'mediasoup-client/lib/RtpParameters'
 import { useEffect } from 'react'
-import { MAX_SHARE_SCREEN_SIZE, videoParams } from '../constants/constants'
 import {
   AppData,
   Producer,
@@ -15,6 +14,7 @@ import {
   ShareType,
   TransPortParams
 } from '../../../types/conference.types'
+import { MAX_SHARE_SCREEN_SIZE, videoParams } from '../constants'
 import useSocket from './useSocket'
 
 export default function useVideoConference() {
