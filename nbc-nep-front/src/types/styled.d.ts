@@ -1,5 +1,5 @@
-import { Root } from "./theme.types";
+import { Root } from './theme.types'
 
-declare module "styled-components" {
+declare module 'styled-components' {
   export interface DefaultTheme extends Root {}
 }

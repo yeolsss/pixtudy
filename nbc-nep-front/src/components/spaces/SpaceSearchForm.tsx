@@ -1,11 +1,11 @@
-import useDebounceSpaceSearch from "@/hooks/useDebounceSpaceSearch";
-import useSpaceSearchStore from "@/zustand/spaceListStore";
-import styled from "styled-components";
+import useDebounceSpaceSearch from '@/hooks/useDebounceSpaceSearch'
+import useSpaceSearchStore from '@/zustand/spaceListStore'
+import styled from 'styled-components'
 
 export default function SpaceSearchForm() {
-  const searchValue = useSpaceSearchStore.use.searchValue();
-  const changeSearchValue = useSpaceSearchStore.use.changeSearchValue();
-  const debounce = useDebounceSpaceSearch(500);
+  const searchValue = useSpaceSearchStore.use.searchValue()
+  const changeSearchValue = useSpaceSearchStore.use.changeSearchValue()
+  const debounce = useDebounceSpaceSearch(500)
 
   return (
     <StSearchInput
@@ -13,11 +13,11 @@ export default function SpaceSearchForm() {
       placeholder="스페이스를 검색해보세요"
       value={searchValue}
       onChange={(e) => {
-        changeSearchValue(e.target.value);
-        debounce();
+        changeSearchValue(e.target.value)
+        debounce()
       }}
     />
-  );
+  )
 }
 
 const StSearchInput = styled.input`
@@ -30,4 +30,4 @@ const StSearchInput = styled.input`
   &:focus {
     border: 1px solid ${(props) => props.theme.color.border.focusRing};
   }
-`;
+`

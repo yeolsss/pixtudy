@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 interface ReturnType {
-  isCreateBackDropOpen: boolean;
-  handleToggleCreate: (createBackDropStatus: boolean) => void;
+  isCreateBackDropOpen: boolean
+  handleToggleCreate: (createBackDropStatus: boolean) => void
 }
 
 export default function useCreateScrum(): ReturnType {
   const [isCreateBackDropOpen, setIsCreateBackDropOpen] =
-    useState<boolean>(false);
+    useState<boolean>(false)
 
   const handleToggleCreate = (createBackDropStatus: boolean) => {
-    setIsCreateBackDropOpen((prev) => !prev);
-  };
+    setIsCreateBackDropOpen((prev) => !prev)
+  }
 
-  return { isCreateBackDropOpen, handleToggleCreate };
+  return { isCreateBackDropOpen, handleToggleCreate }
 }

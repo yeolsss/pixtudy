@@ -1,20 +1,20 @@
-import { PropsWithChildren } from "react";
-import styled from "styled-components";
-import MetaAvatar from "../../metaverse/avatar/MetaAvatar";
+import { PropsWithChildren } from 'react'
+import styled from 'styled-components'
+import MetaAvatar from '../../metaverse/avatar/MetaAvatar'
 import {
   StShareMediaItem,
-  StShareMediaNickname,
-} from "../styles/videoConference.styles";
+  StShareMediaNickname
+} from '../styles/videoConference.styles'
 
 interface Props {
-  avatar?: string;
-  nickname?: string;
+  avatar?: string
+  nickname?: string
 }
 
 export default function DefaultShareMediaItem({
   nickname,
   avatar,
-  children,
+  children
 }: PropsWithChildren<Props>) {
   return (
     <StDefaultShareMediaItemWrapper $isAudio={false}>
@@ -22,7 +22,7 @@ export default function DefaultShareMediaItem({
       <StShareMediaNickname>{nickname}</StShareMediaNickname>
       {children}
     </StDefaultShareMediaItemWrapper>
-  );
+  )
 }
 
 const StDefaultShareMediaItemWrapper = styled(StShareMediaItem)`
@@ -33,4 +33,4 @@ const StDefaultShareMediaItemWrapper = styled(StShareMediaItem)`
   }
 
   position: relative;
-`;
+`

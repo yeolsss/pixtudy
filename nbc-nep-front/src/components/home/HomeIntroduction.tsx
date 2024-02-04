@@ -1,16 +1,16 @@
-import useScroll from "@/hooks/scroll/useScroll";
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
-import { forwardRef } from "react";
-import styled from "styled-components";
+import useScroll from '@/hooks/scroll/useScroll'
+import { AnimatePresence, motion } from 'framer-motion'
+import Image from 'next/image'
+import { forwardRef } from 'react'
+import styled from 'styled-components'
 
 const HomeIntroduction = forwardRef<HTMLDivElement>(
   function HomeSection(props, ref) {
-    const { section } = useScroll();
+    const { section } = useScroll()
     return (
       <StSectionWrapper ref={ref}>
         <AnimatePresence>
-          {section === "intro" && (
+          {section === 'intro' && (
             <StSection
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -36,9 +36,9 @@ const HomeIntroduction = forwardRef<HTMLDivElement>(
           )}
         </AnimatePresence>
       </StSectionWrapper>
-    );
+    )
   }
-);
+)
 
 const StSectionWrapper = styled.div`
   display: flex;
@@ -48,7 +48,7 @@ const StSectionWrapper = styled.div`
   height: 200vh;
   margin: 0 auto;
   z-index: 1;
-`;
+`
 
 const StSection = styled(motion.section)`
   position: sticky;
@@ -70,7 +70,7 @@ const StSection = styled(motion.section)`
     border-radius: var(--border-radius-36);
     box-shadow: ${(props) => props.theme.elevation.Light.shadow8};
   }
-`;
+`
 
 export const StSectionContents = styled.div`
   display: flex;
@@ -78,11 +78,11 @@ export const StSectionContents = styled.div`
   gap: ${(props) => props.theme.spacing[24]};
   & > h1 {
     font-family: var(--point-font);
-    font-weight: ${(props) => props.theme.heading.desktop["3xl"].fontWeight};
-    font-size: ${(props) => props.theme.heading.desktop["3xl"].fontSize};
+    font-weight: ${(props) => props.theme.heading.desktop['3xl'].fontWeight};
+    font-size: ${(props) => props.theme.heading.desktop['3xl'].fontSize};
     letter-spacing: ${(props) =>
-      props.theme.heading.desktop["3xl"].letterSpacing};
-    line-height: ${(props) => props.theme.heading.desktop["4xl"].lineHeight};
+      props.theme.heading.desktop['3xl'].letterSpacing};
+    line-height: ${(props) => props.theme.heading.desktop['4xl'].lineHeight};
   }
 
   & > h2 {
@@ -99,6 +99,6 @@ export const StSectionContents = styled.div`
       font-weight: bold;
     }
   }
-`;
+`
 
-export default HomeIntroduction;
+export default HomeIntroduction

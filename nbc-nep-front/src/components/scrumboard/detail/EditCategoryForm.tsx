@@ -1,34 +1,34 @@
-import DefaultSpanText from "@/components/common/text/DefaultSpanText";
-import { useGetCategories, useUpdateCategory } from "@/hooks/query/useSupabase";
-import { useParams } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { Controller, FieldValues, useForm } from "react-hook-form";
-import styled from "styled-components";
-import { options } from "../constants/constants";
+import DefaultSpanText from '@/components/common/text/DefaultSpanText'
+import { useGetCategories, useUpdateCategory } from '@/hooks/query/useSupabase'
+import { useParams } from 'next/navigation'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
+import styled from 'styled-components'
+import { options } from '../constants/constants'
 
 /**
  * TODO:
  * Delete
  */
 interface Props {
-  name: string;
-  color: string;
-  id: string;
-  setIsEdit: Dispatch<SetStateAction<boolean>>;
+  name: string
+  color: string
+  id: string
+  setIsEdit: Dispatch<SetStateAction<boolean>>
 }
 
 export default function EditCategoryForm({
   name: currentName,
   id: currentId,
   color: currentColor,
-  setIsEdit,
+  setIsEdit
 }: Props) {
-  const { space_id } = useParams();
-  const spaceId = space_id as string;
-  const categories = useGetCategories(spaceId);
-  const [isOpen, setIsOpen] = useState(false);
-  const { update, isSuccess, isError } = useUpdateCategory(spaceId);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { space_id } = useParams()
+  const spaceId = space_id as string
+  const categories = useGetCategories(spaceId)
+  const [isOpen, setIsOpen] = useState(false)
+  const { update, isSuccess, isError } = useUpdateCategory(spaceId)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const {
     control,
@@ -36,14 +36,14 @@ export default function EditCategoryForm({
     register,
     watch,
     setFocus,
-    formState: { errors },
-  } = useForm({ mode: "onChange" });
+    formState: { errors }
+  } = useForm({ mode: 'onChange' })
 
-  const selectedOption = watch<"color">("color", currentColor);
+  const selectedOption = watch<'color'>('color', currentColor)
 
   useEffect(() => {
-    setFocus("name");
-  }, [setFocus]);
+    setFocus('name')
+  }, [setFocus])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,36 +51,36 @@ export default function EditCategoryForm({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false);
+        setIsOpen(false)
       }
-    };
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const handleEditSubmit = (data: FieldValues) => {
     if (data.name === currentName && data.color === currentColor) {
-      setIsEdit(false);
-      return;
+      setIsEdit(false)
+      return
     }
     const updateData = {
       id: currentId,
       name: data.name,
-      color: data.color,
-    };
-    update(updateData);
-    setIsEdit(false);
-  };
+      color: data.color
+    }
+    update(updateData)
+    setIsEdit(false)
+  }
 
   const validateCategoryName = (name: string) => {
-    if (name === currentName) return true;
+    if (name === currentName) return true
     if (categories?.some((category) => category.name === name))
-      return "이미 존재하는 카테고리입니다.";
-    return true;
-  };
+      return '이미 존재하는 카테고리입니다.'
+    return true
+  }
 
   return (
     <StCategoryForm onSubmit={handleSubmit(handleEditSubmit)}>
@@ -106,13 +106,13 @@ export default function EditCategoryForm({
                       $color={option}
                       $isSelected={selectedOption === option}
                       onClick={() => {
-                        onChange(option);
-                        setIsOpen(false);
+                        onChange(option)
+                        setIsOpen(false)
                       }}
                     >
                       <span key={idx} />
                     </StColorOption>
-                  );
+                  )
                 })}
               </StDropdownWrapper>
             )}
@@ -122,9 +122,9 @@ export default function EditCategoryForm({
       <input
         type="text"
         defaultValue={currentName}
-        {...register("name", {
-          required: "카테고리 이름이 필요합니다",
-          validate: validateCategoryName,
+        {...register('name', {
+          required: '카테고리 이름이 필요합니다',
+          validate: validateCategoryName
         })}
       />
       {errors.name && (
@@ -132,7 +132,7 @@ export default function EditCategoryForm({
       )}
       <StEditSubmitButton type="submit">저장</StEditSubmitButton>
     </StCategoryForm>
-  );
+  )
 }
 
 const StCategoryForm = styled.form`
@@ -159,7 +159,7 @@ const StCategoryForm = styled.form`
     outline: none;
     border-bottom: 1px solid ${(props) => props.theme.color.border.focusRing};
   }
-`;
+`
 
 const StDropdownWrapper = styled.div`
   position: absolute;
@@ -170,7 +170,7 @@ const StDropdownWrapper = styled.div`
   left: -${(props) => props.theme.unit[4]};
   box-shadow: ${(props) => props.theme.elevation.Light.shadow2};
   border-radius: ${(props) => props.theme.border.radius[8]};
-`;
+`
 
 const StDropdownButton = styled.div<{ $isOpen: boolean }>`
   width: fit-content;
@@ -184,11 +184,11 @@ const StDropdownButton = styled.div<{ $isOpen: boolean }>`
     font-size: 0;
     width: ${(props) => props.theme.unit[14]};
     height: ${(props) => props.theme.unit[16]};
-    background-image: url("/assets/dropdownArrow.svg");
+    background-image: url('/assets/dropdownArrow.svg');
     transform: ${(props) =>
-      props.$isOpen ? "rotateX(0deg)" : "rotateX(180deg)"};
+      props.$isOpen ? 'rotateX(0deg)' : 'rotateX(180deg)'};
   }
-`;
+`
 
 const StSelectedColor = styled.div<{ $color: string }>`
   background-color: ${(props) => props.$color};
@@ -196,7 +196,7 @@ const StSelectedColor = styled.div<{ $color: string }>`
   height: ${(props) => props.theme.unit[12]};
   border-radius: ${(props) => props.theme.border.radius.circle};
   font-size: 0;
-`;
+`
 
 const StColorOption = styled.div<{ $color: string; $isSelected: boolean }>`
   display: flex;
@@ -217,7 +217,7 @@ const StColorOption = styled.div<{ $color: string; $isSelected: boolean }>`
     font-size: 0;
     background-color: ${(props) => props.$color};
     background-image: ${(props) =>
-      props.$isSelected ? `url('/assets/selected.svg')` : "none"};
+      props.$isSelected ? `url('/assets/selected.svg')` : 'none'};
     background-size: 12px;
     background-repeat: no-repeat;
     background-position: center 60%;
@@ -232,7 +232,7 @@ const StColorOption = styled.div<{ $color: string; $isSelected: boolean }>`
     border-bottom-left-radius: ${(props) => props.theme.border.radius[8]};
     border-bottom-right-radius: ${(props) => props.theme.border.radius[8]};
   }
-`;
+`
 
 const StEditSubmitButton = styled.button`
   width: ${(props) => props.theme.unit[96]};
@@ -243,15 +243,15 @@ const StEditSubmitButton = styled.button`
   border: 0;
   &:hover {
     background-color: ${(props) =>
-      props.theme.color.bg.interactive["primary-hovered"]};
+      props.theme.color.bg.interactive['primary-hovered']};
   }
   &:active {
     background-color: ${(props) =>
-      props.theme.color.bg.interactive["primary-pressed"]};
+      props.theme.color.bg.interactive['primary-pressed']};
   }
-`;
+`
 
 const StEditErrorMessage = styled(DefaultSpanText)`
   top: ${(props) => props.theme.unit[24]};
   left: ${(props) => props.theme.unit[40]};
-`;
+`

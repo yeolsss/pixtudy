@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import { configModes } from "../constants/config.constant";
-import { Config } from "@/types/metaverse.types";
+import styled from 'styled-components'
+import { configModes } from '../constants/config.constant'
+import { Config } from '@/types/metaverse.types'
 
 interface Props {
-  currentConfigMode: Config;
-  handleSelectConfigMode: (configMode: Config) => void;
+  currentConfigMode: Config
+  handleSelectConfigMode: (configMode: Config) => void
 }
 
 export default function ConfigAside({
   currentConfigMode,
-  handleSelectConfigMode,
+  handleSelectConfigMode
 }: Props) {
   return (
     <StAside>
@@ -27,24 +27,24 @@ export default function ConfigAside({
         </StUl>
       </nav>
     </StAside>
-  );
+  )
 }
 
 const StAside = styled.aside`
-  grid-area: "aside";
+  grid-area: 'aside';
   nav {
     height: 100%;
   }
   background-color: ${(props) => props.theme.color.bg.secondary};
 
   padding: ${(props) => props.theme.spacing[16]} !important;
-`;
+`
 
 const StUl = styled.ul`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[6]};
-`;
+`
 
 const StLi = styled.li<{ $isSelected: boolean }>`
   padding: ${(props) => props.theme.spacing[6]};
@@ -52,10 +52,10 @@ const StLi = styled.li<{ $isSelected: boolean }>`
 
   ${(props) =>
     props.$isSelected &&
-    `background-color: ${props.theme.color.bg["info-subtle"]}`};
-  ${(props) => props.$isSelected && `color: ${props.theme.color.bg["brand"]}`};
+    `background-color: ${props.theme.color.bg['info-subtle']}`};
+  ${(props) => props.$isSelected && `color: ${props.theme.color.bg['brand']}`};
 
   font-family: var(--default-font);
   border-radius: ${(props) => props.theme.border.radius[8]};
   font-size: 1.125rem;
-`;
+`

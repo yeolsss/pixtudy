@@ -1,16 +1,16 @@
-import Image from "next/image";
-import styled from "styled-components";
-import { times } from "@/assets/GNB";
+import Image from 'next/image'
+import styled from 'styled-components'
+import { times } from '@/assets/GNB'
 
 interface Props {
-  title: string;
-  subtitle?: string;
-  handler: () => void;
+  title: string
+  subtitle?: string
+  handler: () => void
 }
 export default function MetaverseChatHeader({
   title,
   subtitle,
-  handler,
+  handler
 }: Props) {
   return (
     <StMetaverseDmHeader>
@@ -20,7 +20,7 @@ export default function MetaverseChatHeader({
         <Image src={times} alt="close" width={12} height={12} />
       </button>
     </StMetaverseDmHeader>
-  );
+  )
 }
 
 const StMetaverseDmHeader = styled.div`
@@ -28,22 +28,22 @@ const StMetaverseDmHeader = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-  margin-bottom: ${(props) => props.theme.spacing["20"]};
+  margin-bottom: ${(props) => props.theme.spacing['20']};
   > h1 {
-    font-size: ${(props) => props.theme.unit["20"]};
+    font-size: ${(props) => props.theme.unit['20']};
     font-family: var(--point-font);
     font-weight: bold;
     color: ${({ theme }) => theme.color.text.interactive.inverse};
     white-space: nowrap;
   }
   > h2 {
-    margin-top: ${(props) => props.theme.spacing["24"]};
-    font-size: ${(props) => props.theme.unit["16"]};
+    margin-top: ${(props) => props.theme.spacing['24']};
+    font-size: ${(props) => props.theme.unit['16']};
     font-family: var(--main-font);
     font-weight: bold;
     color: ${({ theme }) => theme.color.text.interactive.inverse};
     white-space: nowrap;
-    padding-bottom: ${(props) => props.theme.spacing["12"]};
+    padding-bottom: ${(props) => props.theme.spacing['12']};
     border-bottom: 1px solid white;
   }
   > button {
@@ -56,4 +56,4 @@ const StMetaverseDmHeader = styled.div`
     border: none;
     padding: unset;
   }
-`;
+`

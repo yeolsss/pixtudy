@@ -23,9 +23,6 @@ export default function GlobalNavBar() {
 
   useEffect(() => {
     const play = async (audio: HTMLAudioElement) => {
-      if (audio.ended) {
-        audio.removeEventListener("ended", handleAudioEnd);
-      }
       await audio.play();
       audio.addEventListener("ended", handleAudioEnd);
     };
@@ -41,7 +38,7 @@ export default function GlobalNavBar() {
         audio.removeEventListener("ended", handleAudioEnd);
       }
     };
-  }, [isPlay, handleAudioEnd, sound]);
+  }, [isPlay, handleAudioEnd]);
 
   return (
     <StGlobalNavBar>

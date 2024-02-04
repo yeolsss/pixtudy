@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import styled from "styled-components";
+import { motion } from 'framer-motion'
+import styled from 'styled-components'
 
 export const StScrollSection = styled.section`
   width: 100vw;
@@ -8,7 +8,7 @@ export const StScrollSection = styled.section`
   display: flex;
   flex-direction: row;
   z-index: 1;
-`;
+`
 
 export const StStickyWrapper = styled.div`
   position: sticky;
@@ -17,10 +17,10 @@ export const StStickyWrapper = styled.div`
   top: ${(props) => props.theme.spacing[16]};
   height: 100vh;
 
-  background: url("/assets/home/sticky-bg.png") no-repeat 0 35% / contain;
+  background: url('/assets/home/sticky-bg.png') no-repeat 0 35% / contain;
   padding: ${(props) =>
     `${props.theme.spacing[16]} ${props.theme.spacing[32]}`};
-`;
+`
 
 export const StStickyItem = styled.div`
   position: relative;
@@ -41,11 +41,11 @@ export const StStickyItem = styled.div`
 
   h1 {
     font-family: var(--point-font);
-    font-weight: ${(props) => props.theme.heading.desktop["3xl"].fontWeight};
-    font-size: ${(props) => props.theme.heading.desktop["3xl"].fontSize};
+    font-weight: ${(props) => props.theme.heading.desktop['3xl'].fontWeight};
+    font-size: ${(props) => props.theme.heading.desktop['3xl'].fontSize};
     letter-spacing: ${(props) =>
-      props.theme.heading.desktop["3xl"].letterSpacing};
-    line-height: ${(props) => props.theme.heading.desktop["4xl"].lineHeight};
+      props.theme.heading.desktop['3xl'].letterSpacing};
+    line-height: ${(props) => props.theme.heading.desktop['4xl'].lineHeight};
   }
 
   p {
@@ -54,11 +54,11 @@ export const StStickyItem = styled.div`
     letter-spacing: ${(props) => props.theme.body.lg.medium.letterSpacing};
     line-height: ${(props) => props.theme.heading.desktop.lg.lineHeight};
   }
-`;
+`
 
 export const StScrollItemWrapper = styled(motion.div)<{
-  $top: string;
-  $left: string;
+  $top: string
+  $left: string
 }>`
   position: absolute;
   top: ${(props) => props.$top};
@@ -95,12 +95,12 @@ export const StScrollItemWrapper = styled(motion.div)<{
 
     h2 {
       max-width: 100%;
-      font-size: ${(props) => props.theme.heading.desktop["sm"].fontSize};
+      font-size: ${(props) => props.theme.heading.desktop['sm'].fontSize};
       letter-spacing: ${(props) =>
-        props.theme.heading.desktop["sm"].letterSpacing};
-      line-height: ${(props) => props.theme.heading.desktop["sm"].lineHeight};
+        props.theme.heading.desktop['sm'].letterSpacing};
+      line-height: ${(props) => props.theme.heading.desktop['sm'].lineHeight};
       font-family: var(--sub-font);
-      font-weight: ${(props) => props.theme.heading.desktop["sm"].fontWeight};
+      font-weight: ${(props) => props.theme.heading.desktop['sm'].fontWeight};
       text-align: center;
       word-break: keep-all;
     }
@@ -114,4 +114,4 @@ export const StScrollItemWrapper = styled(motion.div)<{
     text-align: center;
     word-break: keep-all;
   }
-`;
+`

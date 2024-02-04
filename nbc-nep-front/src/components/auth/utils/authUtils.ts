@@ -1,74 +1,74 @@
-import { AuthFormType } from "@/types/auth.types";
+import { AuthFormType } from '@/types/auth.types'
 import {
   handleValidateEmail,
   handleValidateNickname,
   handleValidatePassword,
-  handleValidatePasswordMatch,
-} from "@/utils/authValidate";
+  handleValidatePasswordMatch
+} from '@/utils/authValidate'
 
 export const generateRandomIndex = (num: number) => {
-  return Math.floor(Math.random() * num);
-};
+  return Math.floor(Math.random() * num)
+}
 
 export const getInputs = (formType: AuthFormType) => {
-  if (formType === "signIn") {
+  if (formType === 'signIn') {
     return [
       {
-        id: "signIn_id",
-        placeholder: "이메일을 입력해주세요.",
-        type: "email",
-        validate: handleValidateEmail,
+        id: 'signIn_id',
+        placeholder: '이메일을 입력해주세요.',
+        type: 'email',
+        validate: handleValidateEmail
       },
       {
-        id: "signIn_pw",
-        placeholder: "비밀번호를 입력해주세요.",
-        type: "password",
-        validate: handleValidatePassword,
-      },
-    ];
+        id: 'signIn_pw',
+        placeholder: '비밀번호를 입력해주세요.',
+        type: 'password',
+        validate: handleValidatePassword
+      }
+    ]
   }
-  if (formType === "signUp") {
+  if (formType === 'signUp') {
     return [
       {
-        id: "signUp_id",
-        placeholder: "이메일을 입력해주세요",
-        type: "email",
-        validate: handleValidateEmail,
+        id: 'signUp_id',
+        placeholder: '이메일을 입력해주세요',
+        type: 'email',
+        validate: handleValidateEmail
       },
       {
-        id: "signUp_pw",
-        placeholder: "비밀번호를 입력해주세요",
-        type: "password",
-        validate: handleValidatePassword,
+        id: 'signUp_pw',
+        placeholder: '비밀번호를 입력해주세요',
+        type: 'password',
+        validate: handleValidatePassword
       },
       {
-        id: "signUp_check_pw",
-        placeholder: "비밀번호를 다시 입력해주세요",
-        type: "password",
-        validate: handleValidatePasswordMatch,
+        id: 'signUp_check_pw',
+        placeholder: '비밀번호를 다시 입력해주세요',
+        type: 'password',
+        validate: handleValidatePasswordMatch
       },
       {
-        id: "signUp_nickname",
-        placeholder: "닉네임을 입력해주세요",
-        type: "text",
-        validate: handleValidateNickname,
-      },
-    ];
+        id: 'signUp_nickname',
+        placeholder: '닉네임을 입력해주세요',
+        type: 'text',
+        validate: handleValidateNickname
+      }
+    ]
   }
-  if (formType === "changePassword") {
+  if (formType === 'changePassword') {
     return [
       {
-        id: "findPw_pw",
-        placeholder: "새로운 비밀번호를 입력하세요.",
-        type: "password",
-        validate: handleValidatePassword,
+        id: 'findPw_pw',
+        placeholder: '새로운 비밀번호를 입력하세요.',
+        type: 'password',
+        validate: handleValidatePassword
       },
       {
-        id: "findPw_check_pw",
-        placeholder: "비밀번호를 다시 입력해주세요.",
-        type: "password",
-        validate: handleValidatePasswordMatch,
-      },
-    ];
+        id: 'findPw_check_pw',
+        placeholder: '비밀번호를 다시 입력해주세요.',
+        type: 'password',
+        validate: handleValidatePasswordMatch
+      }
+    ]
   }
-};
+}

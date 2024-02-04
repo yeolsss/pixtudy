@@ -1,47 +1,47 @@
-import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
-import Image from "next/image";
-import styled from "styled-components";
-import { closeIcon } from "@/assets/boards";
+import useScrumBoardMemberSearchStore from '@/zustand/scrumBoardMemberStore'
+import Image from 'next/image'
+import styled from 'styled-components'
+import { closeIcon } from '@/assets/boards'
 
 interface Props {
-  tagType: "assignees" | "labels";
+  tagType: 'assignees' | 'labels'
 }
 export default function SelectAssigneesList({ tagType }: Props) {
-  const assignees = useScrumBoardMemberSearchStore.use.assignees();
-  const deleteAssignees = useScrumBoardMemberSearchStore.use.deleteAssignees();
+  const assignees = useScrumBoardMemberSearchStore.use.assignees()
+  const deleteAssignees = useScrumBoardMemberSearchStore.use.deleteAssignees()
 
   const handleDeleteAssignees = (id: string) => {
-    deleteAssignees(id);
-  };
+    deleteAssignees(id)
+  }
   return (
-    <StSelectAssigneesListWrapper $tagType={tagType === "assignees"}>
+    <StSelectAssigneesListWrapper $tagType={tagType === 'assignees'}>
       {assignees.map((assignee, index) => (
         <StSelectAssigneesCard key={index}>
           <span>{assignee.space_display_name}</span>
-          {tagType === "assignees" && (
+          {tagType === 'assignees' && (
             <StDeleteButton
               onClick={() => handleDeleteAssignees(assignee.user_id!)}
             >
-              <Image src={closeIcon} alt={"삭제"} width={12} height={12} />
+              <Image src={closeIcon} alt={'삭제'} width={12} height={12} />
             </StDeleteButton>
           )}
         </StSelectAssigneesCard>
       ))}
     </StSelectAssigneesListWrapper>
-  );
+  )
 }
 
 const StSelectAssigneesListWrapper = styled.div<{ $tagType: boolean }>`
   width: 100%;
   border: 1px solid;
   border-radius: ${(props) => props.theme.border.radius[8]};
-  border: ${({ $tagType }) => ($tagType ? "1px" : "0")} solid
+  border: ${({ $tagType }) => ($tagType ? '1px' : '0')} solid
     ${(props) => props.theme.color.border.secondary};
   padding: ${(props) => props.theme.spacing[8]};
   display: flex;
   gap: ${(props) => props.theme.spacing[8]};
   flex-wrap: wrap;
-`;
+`
 
 const StSelectAssigneesCard = styled.div`
   display: flex;
@@ -51,11 +51,11 @@ const StSelectAssigneesCard = styled.div`
   justify-content: center;
   align-items: center;
   gap: ${(props) => props.theme.spacing[4]};
-  border-radius: ${(props) => props.theme.border.radius["circle"]};
+  border-radius: ${(props) => props.theme.border.radius['circle']};
   background: rgba(239, 246, 255, 0.8);
 
   > span {
-    color: ${(props) => props.theme.color.blue["600"]};
+    color: ${(props) => props.theme.color.blue['600']};
     text-overflow: ellipsis;
     font-family: var(--sub-font);
     font-size: ${(props) => props.theme.unit[14]};
@@ -65,7 +65,7 @@ const StSelectAssigneesCard = styled.div`
     letter-spacing: 0.28px;
     text-transform: uppercase;
   }
-`;
+`
 
 const StDeleteButton = styled.button`
   border: none;
@@ -76,4 +76,4 @@ const StDeleteButton = styled.button`
   &:hover {
     background-color: unset;
   }
-`;
+`

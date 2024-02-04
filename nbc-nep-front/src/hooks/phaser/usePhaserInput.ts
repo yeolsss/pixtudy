@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import PhaserSceneManager from "@/components/metaverse/libs/phaserSceneManager";
+import { useEffect, useState } from 'react'
+import PhaserSceneManager from '@/components/metaverse/libs/phaserSceneManager'
 
 type PhaserInputHook = {
-  enableInput: () => void;
-  disableInput: () => void;
-};
+  enableInput: () => void
+  disableInput: () => void
+}
 export default function usePhaserInput(): PhaserInputHook {
-  const [inputEnabled, setInputEnabled] = useState<boolean>(true);
+  const [inputEnabled, setInputEnabled] = useState<boolean>(true)
 
-  const enableInput = () => setInputEnabled(true);
-  const disableInput = () => setInputEnabled(false);
+  const enableInput = () => setInputEnabled(true)
+  const disableInput = () => setInputEnabled(false)
 
   useEffect(() => {
-    if (inputEnabled) PhaserSceneManager.enableInput();
-    else PhaserSceneManager.disableInput();
-  }, [inputEnabled]);
+    if (inputEnabled) PhaserSceneManager.enableInput()
+    else PhaserSceneManager.disableInput()
+  }, [inputEnabled])
 
-  return { enableInput, disableInput };
+  return { enableInput, disableInput }
 }

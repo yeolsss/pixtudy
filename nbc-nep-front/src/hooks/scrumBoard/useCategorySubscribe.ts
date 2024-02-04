@@ -1,15 +1,15 @@
-import { supabase } from "@/supabase";
-import { Kanban_categories } from "@/types/supabase.tables.types";
+import { supabase } from '@/supabase'
+import { Kanban_categories } from '@/types/supabase.tables.types'
 import {
   RealtimePostgresChangesPayload,
   RealtimePostgresDeletePayload,
-  RealtimePostgresInsertPayload,
-} from "@supabase/supabase-js";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+  RealtimePostgresInsertPayload
+} from '@supabase/supabase-js'
+import { useQueryClient } from '@tanstack/react-query'
+import { useEffect } from 'react'
 
 export default function useCategorySubscribe(spaceId: string) {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   useEffect(() => {
     const handleChangeObserver = (
       payload:
@@ -17,38 +17,38 @@ export default function useCategorySubscribe(spaceId: string) {
         | RealtimePostgresInsertPayload<Kanban_categories>
         | RealtimePostgresDeletePayload<Kanban_categories>
     ) => {
-      if ("space_id" in payload.new) {
+      if ('space_id' in payload.new) {
         if (payload.new?.space_id === spaceId) {
           queryClient.invalidateQueries({
-            queryKey: ["categoryList", spaceId],
-          });
+            queryKey: ['categoryList', spaceId]
+          })
         }
       } else {
-        queryClient.invalidateQueries({ queryKey: ["categoryList", spaceId] });
+        queryClient.invalidateQueries({ queryKey: ['categoryList', spaceId] })
       }
-    };
+    }
 
     const subscription = supabase
-      .channel("kanban_categories")
+      .channel('kanban_categories')
       .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "kanban_categories" },
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'kanban_categories' },
         handleChangeObserver
       )
       .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "kanban_categories" },
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'kanban_categories' },
         handleChangeObserver
       )
       .on(
-        "postgres_changes",
-        { event: "DELETE", schema: "public", table: "kanban_categories" },
+        'postgres_changes',
+        { event: 'DELETE', schema: 'public', table: 'kanban_categories' },
         handleChangeObserver
       )
-      .subscribe();
+      .subscribe()
 
     return () => {
-      subscription.unsubscribe();
-    };
-  }, [spaceId]);
+      subscription.unsubscribe()
+    }
+  }, [spaceId])
 }

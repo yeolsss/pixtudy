@@ -1,6 +1,6 @@
-import { StLine } from "@/components/spaces/SpaceListHeader";
-import styled from "styled-components";
-import SpaceSearchForm from "@/components/spaces/SpaceSearchForm";
+import { StLine } from '@/components/spaces/SpaceListHeader'
+import styled from 'styled-components'
+import SpaceSearchForm from '@/components/spaces/SpaceSearchForm'
 
 export default function ScrumBoardHeader() {
   return (
@@ -12,8 +12,8 @@ export default function ScrumBoardHeader() {
       </StSortTitleContainer>
       <SpaceSearchForm />
     </StHeaderWrapper>
-  );
+  )
 }
 
-const StHeaderWrapper = styled.div``;
-const StSortTitleContainer = styled.div``;
+const StHeaderWrapper = styled.div``
+const StSortTitleContainer = styled.div``

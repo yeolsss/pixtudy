@@ -1,65 +1,65 @@
-import CustomHead from "@/SEO/CustomHead";
-import Layout from "@/components/layout/Layout";
-import AvatarModalContainer from "@/components/layout/banner/AvatarModalContainer";
-import Banner from "@/components/layout/banner/Banner";
-import ModalPortal from "@/components/modal/ModalPortal";
-import Spaces from "@/components/spaces/Spaces";
-import useModal from "@/hooks/modal/useModal";
-import useTourTooltip from "@/hooks/tooltip/useTourTooltip";
-import { Database, Tables } from "@/types/supabase.types";
-import { getCookie } from "@/utils/middlewareCookie";
-import { pathValidation } from "@/utils/middlewareValidate";
-import { createClient } from "@supabase/supabase-js";
-import type { NextPage } from "next";
-import dynamic from "next/dynamic";
-import { StaticImageData } from "next/image";
-import { ReactElement, useEffect } from "react";
-import styled from "styled-components";
-import "swiper/css";
-import "swiper/css/autoplay";
-import "swiper/css/pagination";
-import { Autoplay, Mousewheel, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { BannerBg1, BannerBg2, BannerBg3, BannerBg4 } from "@/assets/banner";
-import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltip";
+import CustomHead from '@/SEO/CustomHead'
+import Layout from '@/components/layout/Layout'
+import AvatarModalContainer from '@/components/layout/banner/AvatarModalContainer'
+import Banner from '@/components/layout/banner/Banner'
+import ModalPortal from '@/components/modal/ModalPortal'
+import Spaces from '@/components/spaces/Spaces'
+import useModal from '@/hooks/modal/useModal'
+import useTourTooltip from '@/hooks/tooltip/useTourTooltip'
+import { Database, Tables } from '@/types/supabase.types'
+import { getCookie } from '@/utils/middlewareCookie'
+import { pathValidation } from '@/utils/middlewareValidate'
+import { createClient } from '@supabase/supabase-js'
+import type { NextPage } from 'next'
+import dynamic from 'next/dynamic'
+import { StaticImageData } from 'next/image'
+import { ReactElement, useEffect } from 'react'
+import styled from 'styled-components'
+import 'swiper/css'
+import 'swiper/css/autoplay'
+import 'swiper/css/pagination'
+import { Autoplay, Mousewheel, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { BannerBg1, BannerBg2, BannerBg3, BannerBg4 } from '@/assets/banner'
+import { DASHBOARD_TOUR_TOOLTIP } from '@/utils/tooltip'
 
 interface Props {
-  spaces: (Tables<"spaces"> & { bgSrc: StaticImageData })[];
+  spaces: (Tables<'spaces'> & { bgSrc: StaticImageData })[]
 }
 
-const NoSSRJoyride = dynamic(() => import("react-joyride"), { ssr: false });
+const NoSSRJoyride = dynamic(() => import('react-joyride'), { ssr: false })
 
 const Dashboard: NextPage<Props> & {
-  getLayout?: (page: ReactElement) => ReactElement;
+  getLayout?: (page: ReactElement) => ReactElement
 } = ({ spaces }) => {
   useEffect(() => {
-    const message = getCookie("message");
-    const localMessage = localStorage.getItem("message");
+    const message = getCookie('message')
+    const localMessage = localStorage.getItem('message')
 
     if (message || localMessage) {
       // 메시지로 이벤트 처리
-      pathValidation(message || localMessage!);
+      pathValidation(message || localMessage!)
       // 쿠키 삭제
       document.cookie =
-        "message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        'message=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
     }
 
-    localStorage.removeItem("message");
-  }, []);
+    localStorage.removeItem('message')
+  }, [])
 
-  const { isAvatarModalOpen } = useModal();
+  const { isAvatarModalOpen } = useModal()
 
   const {
     run,
     setRunState,
     steps,
     handleJoyrideCallback,
-    showTemporaryComponent,
-  } = useTourTooltip(DASHBOARD_TOUR_TOOLTIP);
+    showTemporaryComponent
+  } = useTourTooltip(DASHBOARD_TOUR_TOOLTIP)
 
   return (
     <>
-      <CustomHead title={"Dashboard"} description={"Dashboard 페이지입니다."} />
+      <CustomHead title={'Dashboard'} description={'Dashboard 페이지입니다.'} />
       <StSwiperWrapper>
         <Swiper
           className="dashboard-banner"
@@ -102,54 +102,54 @@ const Dashboard: NextPage<Props> & {
         hideCloseButton
         styles={{
           options: { zIndex: 10000 },
-          tooltipContent: { fontSize: "1.5rem", fontWeight: "bold" },
+          tooltipContent: { fontSize: '1.5rem', fontWeight: 'bold' },
           buttonNext: {
-            backgroundColor: "#2563eb",
-            fontSize: "1.3rem",
-            borderRadius: "5px",
+            backgroundColor: '#2563eb',
+            fontSize: '1.3rem',
+            borderRadius: '5px'
           },
           buttonBack: {
-            color: "#2563eb",
-          },
+            color: '#2563eb'
+          }
         }}
       />
     </>
-  );
-};
+  )
+}
 
 Dashboard.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}
 
 export const getStaticProps = async () => {
   const supabase = createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  )
 
   const spaceIds = [
-    "5e198976-d0cf-440d-abd5-aeb45ba87d48",
-    "0ba99a00-bce4-47b4-8490-79eaaf81429a",
-    "e824a12d-7959-4d56-8e5e-0f73da9732ce",
-    "8c57ed8a-43fb-4f04-98bb-3de5e60176a4",
-  ];
+    '5e198976-d0cf-440d-abd5-aeb45ba87d48',
+    '0ba99a00-bce4-47b4-8490-79eaaf81429a',
+    'e824a12d-7959-4d56-8e5e-0f73da9732ce',
+    '8c57ed8a-43fb-4f04-98bb-3de5e60176a4'
+  ]
 
   const { data, error } = await supabase
-    .from("spaces")
-    .select("*")
-    .in("id", spaceIds);
+    .from('spaces')
+    .select('*')
+    .in('id', spaceIds)
 
-  if (!data || error) return { props: {} };
+  if (!data || error) return { props: {} }
 
-  const bgs = [BannerBg1, BannerBg2, BannerBg3, BannerBg4];
+  const bgs = [BannerBg1, BannerBg2, BannerBg3, BannerBg4]
 
   const spaces = data.map((space, index) => ({
     ...space,
-    bgSrc: bgs[index],
-  }));
+    bgSrc: bgs[index]
+  }))
 
-  return { props: { spaces } };
-};
+  return { props: { spaces } }
+}
 
 const StSwiperWrapper = styled.div`
   max-width: 128rem;
@@ -170,6 +170,6 @@ const StSwiperWrapper = styled.div`
       height: 1.2rem;
     }
   }
-`;
+`
 
-export default Dashboard;
+export default Dashboard

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import ForgetPasswordModalForm from "./ForgetPasswordModalForm";
+import styled from 'styled-components'
+import ForgetPasswordModalForm from './ForgetPasswordModalForm'
 
 export default function ForgetPasswordModalMainContainer() {
   return (
@@ -8,7 +8,7 @@ export default function ForgetPasswordModalMainContainer() {
       <span>이메일을 인증을 통해 비밀번호를 재설정 하세요.</span>
       <ForgetPasswordModalForm />
     </StModalContainer>
-  );
+  )
 }
 export const StModalContainer = styled.div`
   position: fixed;
@@ -24,21 +24,21 @@ export const StModalContainer = styled.div`
   border-radius: ${(props) => props.theme.border.radius[8]};
 
   & > h2 {
-    font-size: ${(props) => props.theme.unit["32"]};
-    margin-bottom: ${(props) => props.theme.spacing["12"]};
+    font-size: ${(props) => props.theme.unit['32']};
+    margin-bottom: ${(props) => props.theme.spacing['12']};
     font-family: var(--point-font);
     font-weight: bold;
   }
 
   & > span {
-    font-size: ${(props) => props.theme.unit["12"]};
-    margin-bottom: ${(props) => props.theme.spacing["24"]};
+    font-size: ${(props) => props.theme.unit['12']};
+    margin-bottom: ${(props) => props.theme.spacing['24']};
   }
 
   @media screen and (max-width: 500px) {
-    padding: ${(props) => props.theme.spacing["24"]};
+    padding: ${(props) => props.theme.spacing['24']};
     & > h2 {
-      font-size: ${(props) => props.theme.unit["24"]};
+      font-size: ${(props) => props.theme.unit['24']};
     }
   }
-`;
+`

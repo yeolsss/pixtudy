@@ -1,22 +1,22 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { useEffect } from 'react'
 
 export function useCustomQuery<T, TError extends Error = Error>(
   queryOptions: UseQueryOptions<T, TError>
 ): T | undefined {
-  let { isLoading, isError, error, data } = useQuery<T, TError>(queryOptions);
+  let { isLoading, isError, error, data } = useQuery<T, TError>(queryOptions)
 
   useEffect(() => {
     if (isLoading) {
-      console.log("loading");
+      console.log('loading')
     }
-  }, [isLoading]);
+  }, [isLoading])
 
   useEffect(() => {
     if (isError) {
-      console.log(error);
+      console.log(error)
     }
-  }, [isError, error]);
+  }, [isError, error])
 
-  return data;
+  return data
 }

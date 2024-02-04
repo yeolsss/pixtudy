@@ -1,22 +1,22 @@
-import { blind, info, unblind } from "@/assets/auth";
-import Image from "next/image";
-import { useState } from "react";
+import { blind, info, unblind } from '@/assets/auth'
+import Image from 'next/image'
+import { useState } from 'react'
 import {
   FieldErrors,
   FieldValues,
   UseFormRegister,
-  UseFormWatch,
-} from "react-hook-form";
-import styled from "styled-components";
+  UseFormWatch
+} from 'react-hook-form'
+import styled from 'styled-components'
 
 interface Props {
-  placeholder: string;
-  id: string;
-  type: string;
-  register: UseFormRegister<FieldValues>;
-  error: FieldErrors<FieldValues>;
-  watch: UseFormWatch<FieldValues>;
-  validate: (value: string, watchValue?: string) => boolean | string;
+  placeholder: string
+  id: string
+  type: string
+  register: UseFormRegister<FieldValues>
+  error: FieldErrors<FieldValues>
+  watch: UseFormWatch<FieldValues>
+  validate: (value: string, watchValue?: string) => boolean | string
 }
 
 export default function AuthInput({
@@ -26,39 +26,39 @@ export default function AuthInput({
   register,
   error,
   watch,
-  validate,
+  validate
 }: Props) {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
+    setIsPasswordVisible(!isPasswordVisible)
+  }
 
   const pwCheckValidation = () => {
     switch (id) {
-      case "signUp_check_pw":
-        return watch("signUp_pw");
-      case "findPw_check_pw":
-        return watch("findPw_pw");
+      case 'signUp_check_pw':
+        return watch('signUp_pw')
+      case 'findPw_check_pw':
+        return watch('findPw_pw')
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <StAuthInputSection $isError={!!error[id]?.message}>
       <div>
         <input
           id={id}
-          type={isPasswordVisible ? "text" : type}
+          type={isPasswordVisible ? 'text' : type}
           placeholder={placeholder}
           {...register(id, {
             required: true,
-            validate: (value) => validate(value, pwCheckValidation()),
+            validate: (value) => validate(value, pwCheckValidation())
           })}
         />
 
-        {type === "password" && (
+        {type === 'password' && (
           <button
             type="button"
             onClick={togglePasswordVisibility}
@@ -76,7 +76,7 @@ export default function AuthInput({
         </span>
       )}
     </StAuthInputSection>
-  );
+  )
 }
 
 const StAuthInputSection = styled.div<{ $isError: boolean }>`
@@ -88,8 +88,8 @@ const StAuthInputSection = styled.div<{ $isError: boolean }>`
 
     & input {
       width: 100%;
-      height: ${(props) => props.theme.unit["48"]};
-      font-size: ${(props) => props.theme.unit["14"]};
+      height: ${(props) => props.theme.unit['48']};
+      font-size: ${(props) => props.theme.unit['14']};
       font-family: inherit;
       outline-color: ${(props) =>
         props.$isError
@@ -113,10 +113,10 @@ const StAuthInputSection = styled.div<{ $isError: boolean }>`
   & span {
     display: flex;
     align-items: center;
-    font-size: ${(props) => props.theme.unit["12"]};
-    margin-top: ${(props) => props.theme.spacing["8"]};
+    font-size: ${(props) => props.theme.unit['12']};
+    margin-top: ${(props) => props.theme.spacing['8']};
     & img {
       margin: 0 ${(props) => props.theme.spacing[8]};
     }
   }
-`;
+`

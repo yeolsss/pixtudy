@@ -1,12 +1,12 @@
-import { contents } from "./home.constant";
-import { StScrollItemWrapper } from "./styles/home.styles";
+import { contents } from './home.constant'
+import { StScrollItemWrapper } from './styles/home.styles'
 
 interface Props {
-  index: number;
+  index: number
 }
 
 export default function ScrollItem({ index }: Props) {
-  const { title, description, videoSrc, initialY, top, left } = contents[index];
+  const { title, description, videoSrc, initialY, top, left } = contents[index]
 
   return (
     <StScrollItemWrapper
@@ -37,5 +37,5 @@ export default function ScrollItem({ index }: Props) {
       </div>
       <p>{description}</p>
     </StScrollItemWrapper>
-  );
+  )
 }

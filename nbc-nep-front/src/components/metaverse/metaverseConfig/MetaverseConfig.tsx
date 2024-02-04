@@ -1,27 +1,27 @@
-import ModalPortal from "@/components/modal/ModalPortal";
-import useModal from "@/hooks/modal/useModal";
-import { elasticPop } from "@/styles/animations";
-import { useState } from "react";
-import styled from "styled-components";
+import ModalPortal from '@/components/modal/ModalPortal'
+import useModal from '@/hooks/modal/useModal'
+import { elasticPop } from '@/styles/animations'
+import { useState } from 'react'
+import styled from 'styled-components'
 import {
   CHAT_CONFIG,
   SPACE_CONFIG,
-  VIDEO_CONFIG,
-} from "../constants/config.constant";
-import ConfigAside from "./ConfigAside";
-import ConfigSpace from "./ConfigSpace";
-import ConfigSpaceChat from "./ConfigSpaceChat";
-import ConfigVideo from "./ConfigVideo";
-import { Config } from "@/types/metaverse.types";
+  VIDEO_CONFIG
+} from '../constants/config.constant'
+import ConfigAside from './ConfigAside'
+import ConfigSpace from './ConfigSpace'
+import ConfigSpaceChat from './ConfigSpaceChat'
+import ConfigVideo from './ConfigVideo'
+import { Config } from '@/types/metaverse.types'
 
 export default function MetaverseConfigModal() {
-  const [currentConfigMode, setConfigMode] = useState<Config>(SPACE_CONFIG);
+  const [currentConfigMode, setConfigMode] = useState<Config>(SPACE_CONFIG)
 
   const handleSelectConfigMode = (configMode: Config) => {
-    setConfigMode(configMode);
-  };
+    setConfigMode(configMode)
+  }
 
-  const { isConfigModalOpen, closeModal } = useModal();
+  const { isConfigModalOpen, closeModal } = useModal()
 
   return (
     <>
@@ -44,7 +44,7 @@ export default function MetaverseConfigModal() {
         </ModalPortal>
       )}
     </>
-  );
+  )
 }
 
 const StConfigModalWrapper = styled.div`
@@ -68,12 +68,12 @@ const StConfigModalWrapper = styled.div`
   grid-template-rows: 50px auto;
   grid-template-columns: 150px auto;
   grid-template-areas:
-    "header header"
-    "aside main";
+    'header header'
+    'aside main';
   overflow: hidden;
 
   animation: ${elasticPop} 0.25s ease-out;
-`;
+`
 
 const StConfigHeader = styled.header`
   width: 100%;
@@ -95,11 +95,11 @@ const StConfigHeader = styled.header`
     height: ${(props) => props.theme.unit[20]};
     border: none;
     padding: 0;
-    background: url("/assets/close.svg") no-repeat center;
+    background: url('/assets/close.svg') no-repeat center;
     &:hover {
       background-color: transparent;
     }
     text-indent: -9999px;
   }
   border-bottom: 1px solid ${(props) => props.theme.color.bg.secondary};
-`;
+`

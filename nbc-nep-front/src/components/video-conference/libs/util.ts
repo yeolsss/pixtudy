@@ -1,34 +1,34 @@
-import { filter, find } from "lodash";
+import { filter, find } from 'lodash'
 import {
   AppData,
   ShareType,
   SplitVideoSource,
-  VideoSource,
-} from "../../../types/conference.types";
+  VideoSource
+} from '../../../types/conference.types'
 
 export function isEmptyTracks(tracks: MediaStreamTrack[]) {
-  return tracks.length === 0;
+  return tracks.length === 0
 }
 
 export function isVideoTrack(track: MediaStreamTrack) {
-  return track.kind === "video";
+  return track.kind === 'video'
 }
 
 export function splitVideoSource(videoSources: VideoSource[]) {
-  const CAM_AND_AUDIO_VIDEO_SOURCE = 0;
-  const SCREEN_VIDEO_SOURCE = 1;
+  const CAM_AND_AUDIO_VIDEO_SOURCE = 0
+  const SCREEN_VIDEO_SOURCE = 1
 
   return videoSources.reduce<SplitVideoSource>(
     (acc, cur) => {
-      if (cur.appData.shareType === "screen") {
-        acc[SCREEN_VIDEO_SOURCE].push(cur);
+      if (cur.appData.shareType === 'screen') {
+        acc[SCREEN_VIDEO_SOURCE].push(cur)
       } else {
-        acc[CAM_AND_AUDIO_VIDEO_SOURCE].push(cur);
+        acc[CAM_AND_AUDIO_VIDEO_SOURCE].push(cur)
       }
-      return acc;
+      return acc
     },
     [[], []]
-  );
+  )
 }
 
 function findVideoSourceBy<Key extends keyof AppData>(
@@ -38,7 +38,7 @@ function findVideoSourceBy<Key extends keyof AppData>(
 ) {
   return find(videoSources, (videoSource) =>
     predicate(videoSource.appData[key])
-  );
+  )
 }
 
 export function findVideoSourcesByType(
@@ -47,9 +47,9 @@ export function findVideoSourcesByType(
 ) {
   return findVideoSourceBy(
     videoSources,
-    "shareType",
+    'shareType',
     (videoSourceType) => videoSourceType === type
-  );
+  )
 }
 
 function filterVideoSourcesBy<Key extends keyof AppData>(
@@ -59,7 +59,7 @@ function filterVideoSourcesBy<Key extends keyof AppData>(
 ) {
   return filter(videoSources, (videoSource) =>
     predicate(videoSource.appData[key])
-  );
+  )
 }
 
 export function filterVideoSourcesByPlayerId(
@@ -68,7 +68,7 @@ export function filterVideoSourcesByPlayerId(
 ) {
   return filterVideoSourcesBy(
     videoSources,
-    "playerId",
+    'playerId',
     (videoSourcePlayerId) => videoSourcePlayerId === playerId
-  );
+  )
 }

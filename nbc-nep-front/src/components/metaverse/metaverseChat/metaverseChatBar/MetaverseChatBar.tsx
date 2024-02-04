@@ -1,17 +1,17 @@
-import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
-import useChatTypeStore from "@/zustand/chatTypeStore";
-import useGlobalNavBarStore from "@/zustand/globalNavBarStore";
-import styled from "styled-components";
-import { ChatType } from "@/types/metaverse.types";
+import MetaverseChat from '@/components/metaverse/metaverseChat/MetaverseChat'
+import useChatTypeStore from '@/zustand/chatTypeStore'
+import useGlobalNavBarStore from '@/zustand/globalNavBarStore'
+import styled from 'styled-components'
+import { ChatType } from '@/types/metaverse.types'
 
 export default function MetaverseChatBar() {
-  const isChatSectionOn = useGlobalNavBarStore.use.isChatSectionOn();
-  const openChat = useChatTypeStore.use.openChat();
-  const chatType = useChatTypeStore.use.chatType();
+  const isChatSectionOn = useGlobalNavBarStore.use.isChatSectionOn()
+  const openChat = useChatTypeStore.use.openChat()
+  const chatType = useChatTypeStore.use.chatType()
 
   const handleChatTypeOpen = (chatType: ChatType) => {
-    openChat(chatType);
-  };
+    openChat(chatType)
+  }
 
   return (
     <>
@@ -23,30 +23,30 @@ export default function MetaverseChatBar() {
           <h1>Chat</h1>
         </StChatWrapperTitle>
         <StChatButton
-          onClick={() => handleChatTypeOpen("GLOBAL")}
-          $isActive={chatType === "GLOBAL"}
+          onClick={() => handleChatTypeOpen('GLOBAL')}
+          $isActive={chatType === 'GLOBAL'}
         >
           Space
         </StChatButton>
         <StChatButton
-          onClick={() => handleChatTypeOpen("DM")}
-          $isActive={chatType === "DM"}
+          onClick={() => handleChatTypeOpen('DM')}
+          $isActive={chatType === 'DM'}
         >
           DM
         </StChatButton>
       </StMetaverseChatBar>
       <MetaverseChat />
     </>
-  );
+  )
 }
 
 const StMetaverseChatBar = styled.div<{
-  $isOpenChatSection: boolean;
-  $chatType: ChatType;
+  $isOpenChatSection: boolean
+  $chatType: ChatType
 }>`
-  width: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "93px" : "0")};
+  width: ${({ $isOpenChatSection }) => ($isOpenChatSection ? '93px' : '0')};
   border-right: ${({ $isOpenChatSection }) =>
-      $isOpenChatSection ? "1px" : "0"}
+      $isOpenChatSection ? '1px' : '0'}
     solid rgba(0, 0, 0, 0.5);
   overflow: hidden;
   background-color: #1f2542;
@@ -58,41 +58,41 @@ const StMetaverseChatBar = styled.div<{
     width 0.3s ease-in-out,
     transform 0.3s ease-in-out;
 
-  z-index: ${({ $isOpenChatSection }) => ($isOpenChatSection ? "100" : "-1")};
-  padding: ${({ theme }) => theme.spacing["16"]} 0;
+  z-index: ${({ $isOpenChatSection }) => ($isOpenChatSection ? '100' : '-1')};
+  padding: ${({ theme }) => theme.spacing['16']} 0;
 
   * {
     color: ${(props) =>
-      props.$isOpenChatSection ? "white" : "rgba(0,0,0,0)"} !important;
+      props.$isOpenChatSection ? 'white' : 'rgba(0,0,0,0)'} !important;
   }
-`;
+`
 const StChatWrapperTitle = styled.div`
   font-weight: bold;
   color: #fff;
-  padding-bottom: ${(props) => props.theme.spacing["20"]};
-  margin-bottom: ${(props) => props.theme.spacing["8"]};
+  padding-bottom: ${(props) => props.theme.spacing['20']};
+  margin-bottom: ${(props) => props.theme.spacing['8']};
   width: 80%;
   text-align: center;
-  border-bottom: 1px solid ${(props) => props.theme.color.border["sub-line"]};
+  border-bottom: 1px solid ${(props) => props.theme.color.border['sub-line']};
   & > h1 {
-    font-size: ${(props) => props.theme.unit["20"]};
+    font-size: ${(props) => props.theme.unit['20']};
     font-family: var(--point-font);
   }
-`;
+`
 
 const StChatButton = styled.button<{ $isActive: boolean }>`
   background: ${(props) =>
-    props.$isActive ? props.theme.color.metaverse.secondary : "none"};
+    props.$isActive ? props.theme.color.metaverse.secondary : 'none'};
   color: ${(props) => props.theme.color.base.white};
   border: none;
-  font-size: ${(props) => props.theme.unit["12"]};
-  font-weight: ${(props) => (props.$isActive ? "bold" : "normal")};
+  font-size: ${(props) => props.theme.unit['12']};
+  font-weight: ${(props) => (props.$isActive ? 'bold' : 'normal')};
   font-family: var(--main-font);
   padding: 0;
   width: 100%;
   border-radius: 0;
-  padding: ${(props) => props.theme.spacing["8"]};
+  padding: ${(props) => props.theme.spacing['8']};
   &:hover {
     background: #111424;
   }
-`;
+`

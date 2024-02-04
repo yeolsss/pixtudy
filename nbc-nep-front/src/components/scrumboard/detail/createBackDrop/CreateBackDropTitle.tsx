@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 interface Props {
-  title: string;
+  title: string
 }
 
 export default function CreateBackDropTitle({ title }: Props) {
-  return <StCreateBackDropTitle>{title}</StCreateBackDropTitle>;
+  return <StCreateBackDropTitle>{title}</StCreateBackDropTitle>
 }
 
 const StCreateBackDropTitle = styled.h2`
@@ -15,4 +15,4 @@ const StCreateBackDropTitle = styled.h2`
   font-style: normal;
   font-weight: 400;
   line-height: 100%;
-`;
+`

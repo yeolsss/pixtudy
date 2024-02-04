@@ -1,6 +1,6 @@
-import useConfirm from "@/hooks/confirm/useConfirm";
-import Image from "next/image";
-import styled from "styled-components";
+import useConfirm from '@/hooks/confirm/useConfirm'
+import Image from 'next/image'
+import styled from 'styled-components'
 
 export default function ConfirmModalContainer() {
   const {
@@ -9,8 +9,8 @@ export default function ConfirmModalContainer() {
     confirmButtonText,
     denyButtonText,
     closeConfirmHandler,
-    setResult,
-  } = useConfirm();
+    setResult
+  } = useConfirm()
   return (
     <StConfirmContainer>
       <StConfirmTitleArea>
@@ -31,7 +31,7 @@ export default function ConfirmModalContainer() {
         </div>
       </StConfirmMessageContainer>
     </StConfirmContainer>
-  );
+  )
 }
 
 const StConfirmContainer = styled.div`
@@ -39,49 +39,49 @@ const StConfirmContainer = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border-radius: ${(props) => props.theme.border.radius["8"]};
+  border-radius: ${(props) => props.theme.border.radius['8']};
 
   display: flex;
   flex-direction: column;
   z-index: 2020;
 
-  min-width: ${(props) => props.theme.unit["412"]};
+  min-width: ${(props) => props.theme.unit['412']};
 
   background: ${(props) => props.theme.color.base.white};
-`;
+`
 
 const StConfirmTitleArea = styled.div`
   position: relative;
   color: ${(props) => props.theme.color.base.white};
   & span {
     position: absolute;
-    left: ${(props) => props.theme.spacing["12"]};
+    left: ${(props) => props.theme.spacing['12']};
     top: 50%;
     transform: translateY(-50%);
     font-family: var(--point-font);
     font-weight: bold;
-    font-size: ${(props) => props.theme.unit["12"]};
+    font-size: ${(props) => props.theme.unit['12']};
   }
   & h2 {
     text-align: center;
-    padding: ${(props) => `${props.theme.spacing["12"]} 0`};
-    font-size: ${(props) => props.theme.unit["20"]};
+    padding: ${(props) => `${props.theme.spacing['12']} 0`};
+    font-size: ${(props) => props.theme.unit['20']};
     font-weight: bold;
     background: ${(props) => props.theme.color.bg.brand};
     border-radius: ${(props) =>
-      `${props.theme.border.radius["8"]} ${props.theme.border.radius["8"]} 0 0`};
+      `${props.theme.border.radius['8']} ${props.theme.border.radius['8']} 0 0`};
   }
-`;
+`
 
 const StConfirmMessageContainer = styled.div`
   padding: ${(props) =>
-    `${props.theme.spacing["32"]} ${props.theme.spacing["16"]}`};
+    `${props.theme.spacing['32']} ${props.theme.spacing['16']}`};
   display: flex;
   flex-direction: column;
   align-items: center;
   font-weight: bold;
   justify-content: center;
-  font-size: ${(props) => props.theme.unit["16"]};
+  font-size: ${(props) => props.theme.unit['16']};
   p {
     font-family: var(--default-font);
     font-weight: normal;
@@ -90,20 +90,20 @@ const StConfirmMessageContainer = styled.div`
     margin: ${(props) => props.theme.spacing[12]} auto;
   }
   & > div {
-    margin-top: ${(props) => props.theme.spacing["24"]};
+    margin-top: ${(props) => props.theme.spacing['24']};
     display: flex;
     & > button + button {
-      margin-left: ${(props) => props.theme.spacing["16"]};
+      margin-left: ${(props) => props.theme.spacing['16']};
     }
     & > button {
-      border-radius: ${(props) => props.theme.border.radius["4"]};
-      border-color: ${(props) => props.theme.color.border["sub-line"]};
+      border-radius: ${(props) => props.theme.border.radius['4']};
+      border-color: ${(props) => props.theme.color.border['sub-line']};
     }
 
     & > button:first-child {
       &:hover {
         color: ${(props) => props.theme.color.base.white};
-        background-color: ${(props) => props.theme.color.bg["danger-bold"]};
+        background-color: ${(props) => props.theme.color.bg['danger-bold']};
       }
     }
 
@@ -112,4 +112,4 @@ const StConfirmMessageContainer = styled.div`
       background-color: ${(props) => props.theme.color.bg.brand};
     }
   }
-`;
+`
