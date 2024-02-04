@@ -1,4 +1,4 @@
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 import { TablesInsert, TablesUpdate } from "@/types/supabase.types";
 import {
   GetKanbanItemsByAssignees,

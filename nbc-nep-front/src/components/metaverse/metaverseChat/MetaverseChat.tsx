@@ -4,7 +4,7 @@ import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseCha
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useGetLastDMList } from "@/hooks/query/useSupabase";
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 import useChatTypeStore from "@/zustand/chatTypeStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";

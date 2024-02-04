@@ -1,5 +1,5 @@
 import { getUserSessionHandler } from "@/api/supabase/auth";
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 import useAuthStore from "@/zustand/authStore";
 import { Session } from "@supabase/supabase-js";
 import { useRouter } from "next/router";

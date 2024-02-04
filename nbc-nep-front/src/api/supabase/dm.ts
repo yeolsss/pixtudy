@@ -1,4 +1,4 @@
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 import { Database, Tables } from "@/types/supabase.types";
 import { Space_members } from "@/types/supabase.tables.types";
 

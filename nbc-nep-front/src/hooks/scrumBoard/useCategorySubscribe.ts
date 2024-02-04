@@ -1,4 +1,4 @@
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 import { Kanban_categories } from "@/types/supabase.tables.types";
 import {
   RealtimePostgresChangesPayload,

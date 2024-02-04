@@ -1,5 +1,5 @@
 import { CreateSpaceInfo } from "@/types/space.types";
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase.types";
 import { Spaces } from "@/types/supabase.tables.types";
 
