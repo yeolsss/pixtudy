@@ -1,10 +1,8 @@
 import { Player } from "@/components/metaverse/types/metaverse";
-import {
-  isArrayEmpty,
-  splitVideoSource,
-} from "@/components/video-conference/libs/util";
+import { splitVideoSource } from "@/components/video-conference/libs/util";
 import useLayout from "@/hooks/conference/useLayout";
-import useVideoSource from "@/hooks/conference/useVideoSource";
+import useConferenceStore from "@/zustand/conferenceStore";
+import { isEmpty } from "lodash";
 import ShareMediaItem from "../ShareMediaItem";
 import {
   SPACING,
@@ -22,18 +20,16 @@ export default function OtherPlayerShareMediaItem({
   player,
   currentPlayerId,
 }: Props) {
-  const { filterConsumersById } = useVideoSource();
-
   const { handleOpenLayout } = useLayout();
 
   if (currentPlayerId === player.playerId) return null;
-
-  const filteredConsumers = filterConsumersById(player.playerId);
+  const filterConsumerById = useConferenceStore.use.filterConsumersById();
+  const filteredConsumers = filterConsumerById(player.playerId);
 
   const [camAndAudioConsumers, screenConsumers] =
     splitVideoSource(filteredConsumers);
 
-  const isEmptyScreenConsumers = isArrayEmpty(screenConsumers);
+  const isEmptyScreenConsumers = isEmpty(screenConsumers);
 
   const handleToggleVideosLayout = () => {
     handleOpenLayout({

@@ -1,19 +1,17 @@
 import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
-import chatAlarmStore from "@/zustand/chatAlarmStore";
+import useChatAlarmStore from "@/zustand/chatAlarmStore";
 
 export default function useChatAlarm() {
   // chat alarm state
-  const {
-    dmChatStates,
-    globalChatState,
-    setChatAlarmState,
-    setAlarmSound,
-    setAlarmVolume,
-    setAlarmPlayStatus,
-    isPlay,
-    sound,
-    volume,
-  } = chatAlarmStore();
+  const dmChatStates = useChatAlarmStore.use.dmChatStates();
+  const globalChatState = useChatAlarmStore.use.globalChatState();
+  const setChatAlarmState = useChatAlarmStore.use.setChatAlarmState();
+  const setAlarmSound = useChatAlarmStore.use.setAlarmSound();
+  const setAlarmVolume = useChatAlarmStore.use.setAlarmVolume();
+  const setAlarmPlayStatus = useChatAlarmStore.use.setAlarmPlayStatus();
+  const isPlay = useChatAlarmStore.use.isPlay();
+  const sound = useChatAlarmStore.use.sound();
+  const volume = useChatAlarmStore.use.volume();
 
   // 전체 채팅 알람
   const handleSetGlobalChatAlarmState = (state: boolean) => {

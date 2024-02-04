@@ -10,8 +10,8 @@ import {
 } from "react-hook-form";
 
 import { FORM_SPACE, SRC_BASE } from "@/components/spaces/constants/constants";
-import useAuth from "@/zustand/authStore";
-import useSpace from "@/zustand/spaceStore";
+import useAuthStore from "@/zustand/authStore";
+import useSpaceStore from "@/zustand/spaceStore";
 import styled from "styled-components";
 import {
   StFormCTAButton,
@@ -40,8 +40,8 @@ export default function ProfileForm({
   mode,
   isValid,
 }: ProfileFormProps) {
-  const { setUserProfile } = useSpace();
-  const { user } = useAuth();
+  const setUserProfile = useSpaceStore.use.setUserProfile();
+  const user = useAuthStore.use.user();
 
   const handleToPrevious = () => {
     setProcedure(FORM_SPACE);

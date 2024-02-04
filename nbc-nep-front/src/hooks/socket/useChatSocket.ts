@@ -1,6 +1,6 @@
 import { Chat } from "@/components/metaverse/types/metaverse";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import useChatListStore from "@/zustand/chatListStore";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
@@ -15,9 +15,9 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
     })
   );
   const { spaceId } = useMetaversePlayer();
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
-  const setChatList = useChatListStore((state) => state.setChatList);
+  const setChatList = useChatListStore.use.setChatList();
 
   const handleConnect = () => {
     socket.current!.emit("joinRoom", spaceId);

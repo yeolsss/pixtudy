@@ -4,7 +4,7 @@
 import useModal from "@/hooks/modal/useModal";
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
 import { Spaces } from "@/supabase/types/supabase.tables.type";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import { StaticImageData } from "next/image";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function Banner({ title, description, bgSrc, space }: Props) {
-  const { user } = useAuth();
+  const user = useAuthStore.use.user();
   const spaceMembers = useGetUserSpaces(user.id);
   const { openAvatarModal, setSpace } = useModal();
   const { push } = useRouter();

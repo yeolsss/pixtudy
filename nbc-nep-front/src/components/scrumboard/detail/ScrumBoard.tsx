@@ -9,7 +9,8 @@ import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
 import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
-import useScrumBoardItemBackDrop from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
+import { AnimatePresence } from "framer-motion";
 import { useParams } from "next/navigation";
 import { WheelEvent, useEffect } from "react";
 import styled from "styled-components";
@@ -22,7 +23,7 @@ export default function ScrumBoard() {
   const { openCreateCategoryModal, isCreateCategoryModalOpen } = useModal();
   const { setCategories } = useScrumBoard();
   const categories = useGetCategories(spaceId);
-  const { isOpen: isCreateBackDropOpen } = useScrumBoardItemBackDrop();
+  const isCreateBackDropOpen = useScrumBoardItemBackDropStore.use.isOpen();
   const spaceData = useGetSpaceQuery(spaceId);
 
   useCategorySubscribe(spaceId);
@@ -48,24 +49,28 @@ export default function ScrumBoard() {
   return (
     <StScrumBoardWrapper>
       <ScrumBoardHeader title={spaceData?.title!} />
-      <StScrumBoardContainer onWheel={handleWheel}>
-        <div onFocus={handleFocus} onBlur={handleBlur}>
-          {categories?.map((category) => {
-            return <ScrumBoardCategory key={category.id} category={category} />;
-          })}
-          <div>
-            <StAddCategoryBtn onClick={handleAddCategory}>
-              add category
-            </StAddCategoryBtn>
+      <AnimatePresence>
+        <StScrumBoardContainer onWheel={handleWheel}>
+          <div onFocus={handleFocus} onBlur={handleBlur}>
+            {categories?.map((category) => {
+              return (
+                <ScrumBoardCategory key={category.id} category={category} />
+              );
+            })}
+            <div>
+              <StAddCategoryBtn onClick={handleAddCategory}>
+                add category
+              </StAddCategoryBtn>
+            </div>
           </div>
-        </div>
-      </StScrumBoardContainer>
-      {isCreateCategoryModalOpen && (
-        <ModalPortal>
-          <CreateCategoryModal />
-        </ModalPortal>
-      )}
-      {isCreateBackDropOpen && <CreateBackDrop />}
+        </StScrumBoardContainer>
+        {isCreateCategoryModalOpen && (
+          <ModalPortal>
+            <CreateCategoryModal />
+          </ModalPortal>
+        )}
+        {isCreateBackDropOpen && <CreateBackDrop />}
+      </AnimatePresence>
     </StScrumBoardWrapper>
   );
 }

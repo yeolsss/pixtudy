@@ -1,10 +1,8 @@
 import { Player } from "@/components/metaverse/types/metaverse";
-import {
-  isArrayEmpty,
-  splitVideoSource,
-} from "@/components/video-conference/libs/util";
+import { splitVideoSource } from "@/components/video-conference/libs/util";
 import useLayout from "@/hooks/conference/useLayout";
-import useVideoSource from "@/hooks/conference/useVideoSource";
+import useConferenceStore from "@/zustand/conferenceStore";
+import { isEmpty } from "lodash";
 import styled from "styled-components";
 import ShareScreenContainer from "../ShareScreenContainer";
 import { Producer } from "../types/ScreenShare.types";
@@ -22,10 +20,10 @@ export default function VideoSourceDisplayContainer({
   currentPlayer,
 }: Props) {
   const { isOpen } = useLayout();
-  const { producers } = useVideoSource();
+  const producers = useConferenceStore.use.producers();
 
   const [camAndAudioProducers, screenProducers] = splitVideoSource(producers);
-  const isEmptyScreenProducers = isArrayEmpty(screenProducers);
+  const isEmptyScreenProducers = isEmpty(screenProducers);
 
   return (
     <StContainer>

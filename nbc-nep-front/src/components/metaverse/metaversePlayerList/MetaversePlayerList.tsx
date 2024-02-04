@@ -1,8 +1,8 @@
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
 import MetaversePlayerCard from "@/components/metaverse/metaversePlayerList/MetaversePlayerCard";
-import useChatType from "@/zustand/chatTypeStore";
-import useDm from "@/zustand/dmStore";
-import useGlobalNavBar, {
+import useChatTypeStore from "@/zustand/chatTypeStore";
+import useDmStore from "@/zustand/dmStore";
+import useGlobalNavBarStore, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
 import styled from "styled-components";
@@ -15,13 +15,14 @@ export interface HandleOpenDmContainerPrams {
 }
 
 export default function MetaversePlayerList() {
-  const { isPlayerListOn, setSectionVisibility, resetAllSections } =
-    useGlobalNavBar();
+  const isPlayerListOn = useGlobalNavBarStore.use.isPlayerListOn();
+  const setSectionVisibility = useGlobalNavBarStore.use.setSectionVisibility();
+  const resetAllSections = useGlobalNavBarStore.use.resetAllSections();
 
   const { playerList } = useMetaversePlayer();
   const { spaceId } = useMetaversePlayer();
-  const { openDm } = useDm();
-  const { openChat } = useChatType();
+  const openDm = useDmStore.use.openDm();
+  const openChat = useChatTypeStore.use.openChat();
 
   // dm 채팅방 열기
   const handleOpenDmContainer = ({

@@ -4,6 +4,7 @@ import {
   UserProfile,
 } from "@/components/spaces/types/space.types";
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface SpaceState {
   createSpaceInfo: CreateSpaceInfo;
@@ -37,7 +38,7 @@ const initialState = {
   avatar: "NPC1",
 };
 
-const useSpace = create<SpaceState>()((set) => ({
+const spaceStore = create<SpaceState>()((set) => ({
   ...initialState,
   setAvatar: (avatar: string) => set({ avatar }),
   setCreateSpaceInfo: (spaceInfo: CreateSpaceInfo) =>
@@ -61,4 +62,5 @@ const useSpace = create<SpaceState>()((set) => ({
     }),
 }));
 
-export default useSpace;
+const useSpaceStore = createSelectors(spaceStore);
+export default useSpaceStore;

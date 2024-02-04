@@ -5,29 +5,31 @@ import usersIcon from "@/assets/icons/Users.svg";
 import kanbanIcon from "@/assets/icons/kanbanIcon.svg";
 import { GOOGLE_FORM_LINK } from "@/components/layout/Header";
 import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
-import useChatType from "@/zustand/chatTypeStore";
-import useDm from "@/zustand/dmStore";
-import useGlobalNavBar, {
+import useChatTypeStore from "@/zustand/chatTypeStore";
+import useDmStore from "@/zustand/dmStore";
+import useGlobalNavBarStore, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
-import useMetaverseScrumIsOpen from "@/zustand/metaverseScrumIsOpenStore";
+import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
 import useModal from "../modal/useModal";
 import { useEffect } from "react";
 import usePhaserInput from "@/hooks/phaser/usePhaserInput";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
-  const { isChatSectionOn, isPlayerListOn, setSectionVisibility } =
-    useGlobalNavBar();
-  const { closeDm } = useDm();
-  const { openChat, closeChat } = useChatType();
+  const isChatSectionOn = useGlobalNavBarStore.use.isChatSectionOn();
+  const isPlayerListOn = useGlobalNavBarStore.use.isPlayerListOn();
+  const setSectionVisibility = useGlobalNavBarStore.use.setSectionVisibility();
+  const closeDm = useDmStore.use.closeDm();
+  const openChat = useChatTypeStore.use.openChat();
+  const closeChat = useChatTypeStore.use.closeChat();
   const { openConfigModal } = useModal();
-  const {
-    isOpen: isScrumOpen,
-    openMetaverseScrum,
-    closeMetaverseScrum,
-  } = useMetaverseScrumIsOpen();
 
-  //
+  const isScrumOpen = useMetaverseScrumIsOpenStore.use.isOpen();
+  const openMetaverseScrum =
+    useMetaverseScrumIsOpenStore.use.openMetaverseScrum();
+  const closeMetaverseScrum =
+    useMetaverseScrumIsOpenStore.use.closeMetaverseScrum();
+
   const { enableInput, disableInput } = usePhaserInput();
   useEffect(() => {
     if (isScrumOpen) disableInput();

@@ -5,16 +5,17 @@ import useDmMessage from "@/hooks/dm/useDmMessage";
 import useEndOfChat from "@/hooks/metaverse/useEndOfChat";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { Tables } from "@/supabase/types/supabase";
-import useAuth from "@/zustand/authStore";
-import useDm from "@/zustand/dmStore";
+import useAuthStore from "@/zustand/authStore";
+import useDmStore from "@/zustand/dmStore";
 import { useState } from "react";
 import styled from "styled-components";
 import MetaverseChatCard from "../../metaverseChatBar/MetaverseChatCard";
 
 export default function MetaverseDmContainer() {
-  const { otherUserId, otherUserName } = useDm();
+  const otherUserId = useDmStore.use.otherUserId();
+  const otherUserName = useDmStore.use.otherUserName();
   // 현재 세션의 유저정보
-  const { user: sessionUser } = useAuth();
+  const sessionUser = useAuthStore.use.user();
   const { findPlayerById } = useMetaversePlayer();
   const currentPlayer = findPlayerById(sessionUser.id);
   let currentUser = { ...sessionUser };

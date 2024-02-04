@@ -3,7 +3,7 @@ import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
 import { HandleOpenDmContainerPrams } from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
 import { Player } from "@/components/metaverse/types/metaverse";
 import { getPlayerStateValue } from "@/components/video-conference/DockPlayer";
-import useAuth from "@/zustand/authStore";
+import useAuthStore from "@/zustand/authStore";
 import styled from "styled-components";
 
 interface Props {
@@ -19,9 +19,7 @@ export default function MetaversePlayerCard({
   player,
   handleOpenDmContainer,
 }: Props) {
-  const {
-    user: { id },
-  } = useAuth();
+  const { id } = useAuthStore.use.user();
 
   const {
     playerId: otherUserId,

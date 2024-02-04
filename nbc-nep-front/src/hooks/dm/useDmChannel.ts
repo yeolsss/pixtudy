@@ -2,7 +2,7 @@ import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { useGetDmChannel } from "@/hooks/query/useSupabase";
 import { supabase } from "@/supabase/supabase";
 import { Tables } from "@/supabase/types/supabase";
-import useDm from "@/zustand/dmStore";
+import useDmStore from "@/zustand/dmStore";
 import {
   RealtimeChannel,
   RealtimePostgresInsertPayload,
@@ -27,7 +27,9 @@ export default function useDmChannel({
   setMessages,
   currentUser,
 }: useDmChannelPrams): useDmChannelReturns {
-  const { otherUserId, spaceId, otherUserName } = useDm();
+  const otherUserId = useDmStore.use.otherUserId();
+  const spaceId = useDmStore.use.spaceId();
+  const otherUserName = useDmStore.use.otherUserName();
   // 현재 구독중인 채널 정보
   const currentSubscribeChannel = useRef<RealtimeChannel | null>(null);
 

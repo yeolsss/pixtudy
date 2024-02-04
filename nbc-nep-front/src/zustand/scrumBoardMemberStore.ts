@@ -1,5 +1,6 @@
 import { Space_members } from "@/supabase/types/supabase.tables.type";
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface SpaceListStoreState {
   spaceMembers: Space_members[];
@@ -17,7 +18,7 @@ interface SpaceListStoreState {
   resetBackDrop: () => void;
 }
 
-const useScrumBoardMemberSearch = create<SpaceListStoreState>()((set) => ({
+const scrumBoardMemberSearchStore = create<SpaceListStoreState>()((set) => ({
   spaceMembers: [],
   filteredSpaceMembers: [],
   searchValue: "",
@@ -58,4 +59,7 @@ const useScrumBoardMemberSearch = create<SpaceListStoreState>()((set) => ({
     })),
 }));
 
-export default useScrumBoardMemberSearch;
+const useScrumBoardMemberSearchStore = createSelectors(
+  scrumBoardMemberSearchStore
+);
+export default useScrumBoardMemberSearchStore;

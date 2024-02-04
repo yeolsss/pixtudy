@@ -1,9 +1,10 @@
 import useDebounceSpaceSearch from "@/hooks/useDebounceSpaceSearch";
-import useSpaceSearch from "@/zustand/spaceListStore";
+import useSpaceSearchStore from "@/zustand/spaceListStore";
 import styled from "styled-components";
 
 export default function SpaceSearchForm() {
-  const { searchValue, changeSearchValue } = useSpaceSearch();
+  const searchValue = useSpaceSearchStore.use.searchValue();
+  const changeSearchValue = useSpaceSearchStore.use.changeSearchValue();
   const debounce = useDebounceSpaceSearch(500);
 
   return (

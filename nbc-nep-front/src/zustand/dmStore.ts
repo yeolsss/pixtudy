@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface DMState {
   isOpen: boolean;
@@ -23,10 +24,11 @@ const initialState: DMState = {
   otherUserAvatar: "",
 };
 
-const useDm = create<DMStoreState>()((set) => ({
+const dmStore = create<DMStoreState>()((set) => ({
   ...initialState,
   openDm: (dmState: DMState) => set({ ...dmState }),
   closeDm: () => set({ ...initialState }),
 }));
 
-export default useDm;
+const useDmStore = createSelectors(dmStore);
+export default useDmStore;
