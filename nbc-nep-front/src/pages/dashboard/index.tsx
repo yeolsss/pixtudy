@@ -21,7 +21,7 @@ import "swiper/css/pagination";
 import { Autoplay, Mousewheel, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { BannerBg1, BannerBg2, BannerBg3, BannerBg4 } from "@/assets/banner";
-import { DASHBOARD_TOUR_TOOLTIP } from "@/pages/dashboard/constants";
+import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltip";
 
 interface Props {
   spaces: (Tables<"spaces"> & { bgSrc: StaticImageData })[];
