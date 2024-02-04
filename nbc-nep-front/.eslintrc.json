@@ -3,6 +3,7 @@
     "@titicaca/eslint-config-triple",
     "@titicaca/eslint-config-triple/requiring-type-checking",
     "@titicaca/eslint-config-triple/frontend",
-    "@titicaca/eslint-config-triple/prettier"
+    "@titicaca/eslint-config-triple/prettier",
+    "eslint-plugin-styled-components"
   ]
 }
