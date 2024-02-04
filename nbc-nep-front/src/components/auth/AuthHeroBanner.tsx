@@ -1,19 +1,20 @@
+import { AuthFormType } from "@/types/auth.types";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 import AuthHeroNotice from "./AuthHeroNotice";
-import { generateRandomIndex, imageArray } from "./utils/authUtils";
-import { AuthFormType } from "@/types/auth.types";
+import { IMAGE_ARRAY } from "./constants/constants";
+import { generateRandomIndex } from "./utils/authUtils";
 
 interface Props {
   formType: AuthFormType;
 }
 export default function AuthHeroBanner({ formType }: Props) {
-  const randomIndex = generateRandomIndex(imageArray.length);
+  const randomIndex = generateRandomIndex(IMAGE_ARRAY.length);
   return (
     <StHeroBanner $formType={formType}>
       <Link href={"/"}>pixtudy</Link>
-      <Image alt="auth-hero" src={imageArray[randomIndex]} />
+      <Image alt="auth-hero" src={IMAGE_ARRAY[randomIndex]} />
       <AuthHeroNotice formType={formType} />
     </StHeroBanner>
   );

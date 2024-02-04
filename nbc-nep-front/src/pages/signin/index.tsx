@@ -5,7 +5,10 @@ import AuthForm from "@/components/auth/AuthForm";
 import AuthFormContainer from "@/components/auth/AuthFormContainer";
 import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
 import SocialLogin from "@/components/auth/SocialLogin";
-import * as St from "@/components/auth/styles/authCommon.styles";
+import {
+  StAuthOuterContainer,
+  StChangeAuthPage,
+} from "@/components/auth/styles/authCommon.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
 import ForgetPasswordModal from "@/components/modal/forgetPasswordModal/ForgetPasswordModal";
 import useModal from "@/hooks/modal/useModal";
@@ -30,13 +33,13 @@ export function SignIn() {
   return (
     <>
       <CustomHead title={"로그인"} description={"로그인 페이지입니다."} />
-      <St.AuthOuterContainer>
+      <StAuthOuterContainer>
         <AuthHeroBanner formType="signIn" />
         <AuthFormContainer>
-          <St.ChangeAuthPage>
+          <StChangeAuthPage>
             아직 계정을 만들기 전인가요?
             <Link href={"/signup"}>지금 가입하기</Link>
-          </St.ChangeAuthPage>
+          </StChangeAuthPage>
           <h1>어서오세요 :)</h1>
           <SocialLogin subText="SNS 로그인" />
           <AuthDivider />
@@ -48,7 +51,7 @@ export function SignIn() {
             <ForgetPasswordModal />
           </ModalPortal>
         )}
-      </St.AuthOuterContainer>
+      </StAuthOuterContainer>
     </>
   );
 }
