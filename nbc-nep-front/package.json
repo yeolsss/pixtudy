@@ -37,12 +37,14 @@
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.17.21",
+    "@titicaca/eslint-config-triple": "^5.1.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/socket.io-client": "^3.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "eslint-plugin-n": "^16.6.2",
     "prettier": "^3.1.1",
     "typescript": "^5"
   }
