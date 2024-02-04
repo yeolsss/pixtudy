@@ -1,5 +1,5 @@
 import useConfirmStore from "@/zustand/confirmStore";
-import { ConfirmTextState } from "@/utils/zustand.types";
+import { ConfirmTextState } from "@/types/zustand.types";
 
 export default function useConfirm() {
   const closeConfirm = useConfirmStore.use.closeConfirm();

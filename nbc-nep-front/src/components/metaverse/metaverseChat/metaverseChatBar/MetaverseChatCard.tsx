@@ -1,7 +1,7 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useGetSpaceMember } from "@/hooks/query/useSupabase";
-import { formatDate } from "@/utils/commonUtils";
+import { formatDate } from "@/utils/dateFormat";
 import styled from "styled-components";
 import MetaAvatar from "../../avatar/MetaAvatar";
 import { Chat, ChatType } from "@/types/metaverse.types";

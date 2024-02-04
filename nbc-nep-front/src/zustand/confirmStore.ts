@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
-import { ConfirmTextState } from "@/utils/zustand.types";
+import { ConfirmTextState } from "@/types/zustand.types";
 
 interface ConfirmType extends ConfirmTextState {
   result: boolean;

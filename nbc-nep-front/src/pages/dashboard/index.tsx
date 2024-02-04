@@ -1,8 +1,4 @@
 import CustomHead from "@/SEO/CustomHead";
-import BannerBg1 from "@/assets/banner/banner1.png";
-import BannerBg2 from "@/assets/banner/banner2.png";
-import BannerBg3 from "@/assets/banner/banner3.png";
-import BannerBg4 from "@/assets/banner/banner4.png";
 import Layout from "@/components/layout/Layout";
 import AvatarModalContainer from "@/components/layout/banner/AvatarModalContainer";
 import Banner from "@/components/layout/banner/Banner";
@@ -25,6 +21,7 @@ import "swiper/css/autoplay";
 import "swiper/css/pagination";
 import { Autoplay, Mousewheel, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { BannerBg1, BannerBg2, BannerBg3, BannerBg4 } from "@/assets/banner";
 
 interface Props {
   spaces: (Tables<"spaces"> & { bgSrc: StaticImageData })[];

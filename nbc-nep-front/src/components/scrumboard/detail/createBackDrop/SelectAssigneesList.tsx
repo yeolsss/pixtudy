@@ -1,7 +1,7 @@
-import closeIcon from "@/assets/boards/assingee-delete.svg";
 import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import Image from "next/image";
 import styled from "styled-components";
+import { closeIcon } from "@/assets/boards";
 
 interface Props {
   tagType: "assignees" | "labels";

@@ -77,7 +77,7 @@ export type ButtonType =
   | "kanban";
 
 export type IconButtonProperty = {
-  buttonImage: StaticImageData;
+  buttonImage: StaticImageData | string;
   description: string;
   type: ButtonType;
   handleOnClick: () => void;
