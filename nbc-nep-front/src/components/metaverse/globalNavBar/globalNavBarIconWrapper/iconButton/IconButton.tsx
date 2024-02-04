@@ -1,9 +1,9 @@
 import StBadge from "@/components/common/badge/Badge";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import { IconButtonProperty } from "@/types/metaverse.types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { IconButtonProperty } from "@/types/metaverse.types";
 
 export default function IconButton({
   buttonImage,
@@ -55,7 +55,7 @@ const StButton = styled.button<{ $isClose: boolean }>`
 
   &:hover {
     & > span {
-      height: 100%;
+      height: fit-content;
     }
     background-color: unset;
   }

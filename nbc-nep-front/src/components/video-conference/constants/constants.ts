@@ -25,3 +25,5 @@ export const videoParams = {
 export const MAX_SHARE_SCREEN_SIZE = 4;
 
 export const DEVICE_STORAGE_KEY = "deviceInputs";
+
+export const EDGE_AREA_RATE = 280;

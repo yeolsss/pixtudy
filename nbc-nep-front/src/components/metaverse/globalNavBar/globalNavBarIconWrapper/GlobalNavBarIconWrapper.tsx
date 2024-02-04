@@ -1,8 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import IconButtonWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButtonWrapper";
 import IconButtonByPlayerList from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButtonByPlayerList";
+import IconButtonWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButtonWrapper";
 import useGNBIconButtons from "@/hooks/GNB/useGNBIconButtons";
+import styled from "styled-components";
 
 export default function GlobalNavBarIconWrapper() {
   const buttons = useGNBIconButtons();
