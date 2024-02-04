@@ -1,4 +1,4 @@
-import { Tables } from "@/supabase/types/supabase";
+import { Tables } from "@/types/supabase.types";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
 

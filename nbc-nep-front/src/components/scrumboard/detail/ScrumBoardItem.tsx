@@ -4,7 +4,7 @@ import useDragItem from "@/hooks/scrumBoard/useDragItem";
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
-} from "@/supabase/types/supabase.tables.type";
+} from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import React from "react";
 import styled from "styled-components";

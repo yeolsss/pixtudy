@@ -2,7 +2,7 @@ import { create } from "zustand";
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
-} from "@/supabase/types/supabase.tables.type";
+} from "@/types/supabase.tables.types";
 import { BackDropType } from "@/types/scrum.types";
 import createSelectors from "@/zustand/config/createSelector";
 

@@ -10,7 +10,7 @@ import ModalPortal from "@/components/modal/ModalPortal";
 import Spaces from "@/components/spaces/Spaces";
 import useModal from "@/hooks/modal/useModal";
 import useTourTooltip from "@/hooks/tooltip/useTourTooltip";
-import { Database, Tables } from "@/supabase/types/supabase";
+import { Database, Tables } from "@/types/supabase.types";
 import { getCookie } from "@/utils/middlewareUtils";
 import { pathValidation } from "@/utils/middlewareValidate";
 import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltipUtils";

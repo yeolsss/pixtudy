@@ -10,7 +10,7 @@ import { pathValidation } from "@/utils/middlewareValidate";
 import useAuthStore from "@/zustand/authStore";
 import { ReactElement, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { NextPageWithLayout } from "./_app";
+import { NextPageWithLayout } from "@/types/app.types";
 
 const Home: NextPageWithLayout = () => {
   const user = useAuthStore.use.user();

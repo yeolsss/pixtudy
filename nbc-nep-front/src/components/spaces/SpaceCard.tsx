@@ -1,6 +1,6 @@
 import CopyIcon from "@/assets/icons/CopyIcon.svg";
 import useGetUsersCount from "@/hooks/query/useGetUsersCount";
-import { Space_members } from "@/supabase/types/supabase.tables.type";
+import { Space_members } from "@/types/supabase.tables.types";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";

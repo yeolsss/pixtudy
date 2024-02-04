@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/supabase";
-import { Tables } from "@/supabase/types/supabase";
+import { Tables } from "@/types/supabase.types";
 import { Session } from "@supabase/supabase-js";
 import { ForgetPasswordMessageType } from "@/types/auth.types";
 

@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/supabase";
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import { Kanban_categories } from "@/types/supabase.tables.types";
 import {
   RealtimePostgresChangesPayload,
   RealtimePostgresDeletePayload,

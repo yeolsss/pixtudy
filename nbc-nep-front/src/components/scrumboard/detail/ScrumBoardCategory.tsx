@@ -3,7 +3,7 @@ import { StCTAButton } from "@/components/common/button/button.styles";
 import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 import { useGetCategoryItems } from "@/hooks/query/useSupabase";
 import useDropItem from "@/hooks/scrumBoard/useDropItem";
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import { Kanban_categories } from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { WheelEvent } from "react";
 import styled from "styled-components";

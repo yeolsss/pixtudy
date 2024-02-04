@@ -1,7 +1,7 @@
 import MetaverseDMListCard from "@/components/metaverse/metaverseChat/dmChat/metaverseDMListCard/MetaverseDMListCard";
 import MetaverseDmContainer from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmContainer";
 import MetaverseChatHeader from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader";
-import { Database } from "@/supabase/types/supabase";
+import { Database } from "@/types/supabase.types";
 import useChatTypeStore from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBarStore from "@/zustand/globalNavBarStore";

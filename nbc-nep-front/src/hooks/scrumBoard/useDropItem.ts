@@ -1,5 +1,5 @@
 import { updateCategoryItem } from "@/api/supabase/scrumBoard";
-import { GetKanbanItemsByAssignees } from "@/supabase/types/supabase.tables.type";
+import { GetKanbanItemsByAssignees } from "@/types/supabase.tables.types";
 import { useMutation } from "@tanstack/react-query";
 import { DropTargetMonitor, useDrop } from "react-dnd";
 import { toast } from "react-toastify";

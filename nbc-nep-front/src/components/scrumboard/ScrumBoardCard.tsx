@@ -1,4 +1,4 @@
-import { Space_members } from "@/supabase/types/supabase.tables.type";
+import { Space_members } from "@/types/supabase.tables.types";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { StButtonContainer } from "@/components/spaces/SpaceListHeader";

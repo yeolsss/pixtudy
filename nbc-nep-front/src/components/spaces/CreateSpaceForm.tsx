@@ -4,7 +4,7 @@ import {
   SPACE_NAME_MAX_LENGTH,
 } from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
-import { Tables } from "@/supabase/types/supabase";
+import { Tables } from "@/types/supabase.types";
 import useSpaceStore from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
