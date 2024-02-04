@@ -1,7 +1,5 @@
-import Link from 'next/link'
-import styledComponents from 'styled-components'
-
-const styled = styledComponents
+import Link from 'next/link';
+import styled from 'styled-components';
 
 export default function Footer() {
   return (

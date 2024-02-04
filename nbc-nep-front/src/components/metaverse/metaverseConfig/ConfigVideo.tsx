@@ -1,4 +1,4 @@
-import { DEVICE_STORAGE_KEY } from '@/components/video-conference/constants/constants'
+import { DEVICE_STORAGE_KEY } from '@/components/video-conference/constants'
 import { LocalStorageDeviceInputs } from '@/types/conference.types'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'

@@ -1,6 +1,5 @@
-import styledComponents from 'styled-components'
+import styled from 'styled-components';
 
-const styled = styledComponents
 const StAuthDivider = styled.span`
   display: flex;
   align-items: center;

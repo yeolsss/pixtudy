@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { io, Socket } from 'socket.io-client'
+import { Socket, io } from 'socket.io-client'
+
 import { PlayerState } from '@/types/metaverse.types'
 
 interface Props {
@@ -15,7 +16,6 @@ export default function useSocket({ namespace }: Props) {
   )
 
   const handleConnect = () => {
-    console.log('connect socket in userSocket')
   }
 
   useEffect(() => {
@@ -29,12 +29,11 @@ export default function useSocket({ namespace }: Props) {
   }, [])
 
   const disconnect = () => {
-    console.log('socket disconnect')
     socketRef.current?.disconnect()
   }
 
   const connect = () => {
-    if (socketRef.current.connected) return
+    if (socketRef.current.connected) {return}
     socketRef.current.connect()
   }
 

@@ -50,7 +50,7 @@ Home.getLayout = function getLayout(page: ReactElement) {
 export default Home
 
 const StWrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   position: relative;
   flex-direction: column;
