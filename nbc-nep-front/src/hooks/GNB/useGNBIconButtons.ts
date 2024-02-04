@@ -4,7 +4,6 @@ import reportIcon from "@/assets/icons/User Headset.svg";
 import usersIcon from "@/assets/icons/Users.svg";
 import kanbanIcon from "@/assets/icons/kanbanIcon.svg";
 import { GOOGLE_FORM_LINK } from "@/components/layout/Header";
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useChatTypeStore from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBarStore, {
@@ -14,6 +13,7 @@ import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
 import useModal from "../modal/useModal";
 import { useEffect } from "react";
 import usePhaserInput from "@/hooks/phaser/usePhaserInput";
+import { IconButtonProperty } from "@/types/metaverse.types";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const isChatSectionOn = useGlobalNavBarStore.use.isChatSectionOn();
