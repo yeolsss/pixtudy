@@ -1,7 +1,4 @@
-import {
-  RtpCapabilities,
-  TransPortParams,
-} from "@/components/video-conference/types/ScreenShare.types";
+import { RtpCapabilities, TransPortParams } from "@/types/conference.types";
 import { Device } from "mediasoup-client";
 import { useCallback, useEffect, useRef } from "react";
 

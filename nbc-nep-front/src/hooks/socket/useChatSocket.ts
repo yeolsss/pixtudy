@@ -1,4 +1,3 @@
-import { Chat } from "@/components/metaverse/types/metaverse";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import useAuthStore from "@/zustand/authStore";
 import useChatListStore from "@/zustand/chatListStore";
@@ -6,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import io, { Socket } from "socket.io-client";
 import useMetaversePlayer from "../metaverse/useMetaversePlayer";
+import { Chat } from "@/types/metaverse.types";
 
 export default function useChatSocket(playerDisplayName: string | null = "") {
   const socket = useRef<Socket>(

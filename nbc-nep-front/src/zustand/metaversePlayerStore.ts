@@ -1,6 +1,6 @@
-import { Player, PlayerState } from "@/components/metaverse/types/metaverse";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
+import { Player, PlayerState } from "@/types/metaverse.types";
 
 interface PlayerListState {
   playerList: Player[];

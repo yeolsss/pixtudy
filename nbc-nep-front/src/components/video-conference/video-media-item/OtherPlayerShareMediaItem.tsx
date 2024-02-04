@@ -1,4 +1,3 @@
-import { Player } from "@/components/metaverse/types/metaverse";
 import { splitVideoSource } from "@/components/video-conference/libs/util";
 import useLayout from "@/hooks/conference/useLayout";
 import useConferenceStore from "@/zustand/conferenceStore";
@@ -10,6 +9,7 @@ import {
   StVideoWrapper,
 } from "../styles/videoConference.styles";
 import PlayerMediaDisplay from "./PlayerMediaDisplay";
+import { Player } from "@/types/metaverse.types";
 
 interface Props {
   currentPlayerId: string;

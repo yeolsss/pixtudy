@@ -1,6 +1,6 @@
-import { PlayerState } from "@/components/metaverse/types/metaverse";
 import { useEffect, useRef } from "react";
-import { Socket, io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
+import { PlayerState } from "@/types/metaverse.types";
 
 interface Props {
   namespace: string;

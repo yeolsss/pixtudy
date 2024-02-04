@@ -1,5 +1,5 @@
 import { splitVideoSource } from "@/components/video-conference/libs/util";
-import { LayoutConsumersType } from "@/components/video-conference/types/ScreenShare.types";
+import { LayoutConsumersType } from "@/types/conference.types";
 import useConferenceStore from "@/zustand/conferenceStore";
 import useLayoutStore from "@/zustand/layoutStore";
 import { useEffect, useState } from "react";

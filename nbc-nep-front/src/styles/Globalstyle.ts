@@ -1,5 +1,5 @@
 import themeData from "@/styles/theme.json";
-import { Root } from "@/types/theme";
+import { Root } from "@/types/theme.types";
 import { createGlobalStyle } from "styled-components";
 
 const styled = { createGlobalStyle };

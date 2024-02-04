@@ -9,7 +9,7 @@ import { useDrop } from "react-dnd";
 import styled from "styled-components";
 import ShareMediaItem from "./ShareMediaItem";
 import ShareScreenDragItem from "./ShareScreenDragItem";
-import { GridStatusType, GuideStatusType } from "./types/ScreenShare.types";
+import { GridStatusType, GuideStatusType } from "../../types/conference.types";
 
 const EDGE_AREA_RATE = 220;
 

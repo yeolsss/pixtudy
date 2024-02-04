@@ -13,6 +13,7 @@ import {
   authHero6,
   authHero7,
 } from "@/assets/auth";
+import { AuthFormType } from "@/types/auth.types";
 
 export const imageArray = [
   authHero1,
@@ -36,20 +37,6 @@ export const tipsArray = [
 export const generateRandomIndex = (num: number) => {
   return Math.floor(Math.random() * num);
 };
-
-export type AuthFormType = "signUp" | "signIn" | "changePassword";
-
-export interface FormValues {
-  signIn_id?: string;
-  signIn_pw?: string;
-  signUp_id?: string;
-  signUp_pw?: string;
-  signUp_nickname?: string;
-  signUp_check_pw?: string;
-  forget_password_email?: string;
-}
-
-export type ForgetPasswordMessageType = "success" | "fail";
 
 export const getInputs = (formType: AuthFormType) => {
   if (formType === "signIn") {

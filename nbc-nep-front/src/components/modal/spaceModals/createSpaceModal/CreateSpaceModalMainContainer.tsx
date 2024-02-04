@@ -3,7 +3,7 @@ import CreateSpaceForm from "@/components/spaces/CreateSpaceForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
 import ProfilePreview from "@/components/spaces/ProfilePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
-import { Procedure } from "@/components/spaces/types/space.types";
+import { Procedure } from "@/types/space.types";
 import useModal from "@/hooks/modal/useModal";
 import useSpaceStore from "@/zustand/spaceStore";
 import { useState } from "react";

@@ -1,9 +1,5 @@
 import { filterVideoSourcesByPlayerId } from "@/components/video-conference/libs/util";
-import {
-  Consumer,
-  Producer,
-  ShareType,
-} from "@/components/video-conference/types/ScreenShare.types";
+import { Consumer, Producer, ShareType } from "@/types/conference.types";
 import { create } from "zustand";
 import createSelectors from "./config/createSelector";
 

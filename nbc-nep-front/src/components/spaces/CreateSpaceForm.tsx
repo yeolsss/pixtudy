@@ -21,7 +21,7 @@ import { StFormCTAButton } from "../common/button/button.styles";
 import DefaultSpanText from "../common/text/DefaultSpanText";
 import { StContentsContainer, StErrorMessage } from "./JoinSpaceForm";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { CreateSpaceInfo } from "./types/space.types";
+import { CreateSpaceInfo } from "../../types/space.types";
 
 interface Props {
   handleSubmit: UseFormHandleSubmit<FieldValues>;

@@ -1,4 +1,4 @@
-import { DropItem } from "@/components/scrumboard/types/scrumTypes";
+import { DropItem } from "@/types/scrum.types";
 import { GetKanbanItemsByAssignees } from "@/supabase/types/supabase.tables.type";
 import { DragSourceMonitor, useDrag } from "react-dnd";
 

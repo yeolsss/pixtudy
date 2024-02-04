@@ -2,7 +2,7 @@ import useSocket from "@/hooks/socket/useSocket";
 import { slideDown, slideUp } from "@/styles/animations";
 import useAuthStore from "@/zustand/authStore";
 import styled from "styled-components";
-import { PlayerState } from "../metaverse/types/metaverse";
+import { PlayerState } from "@/types/metaverse.types";
 
 interface Props {
   isRender: boolean;

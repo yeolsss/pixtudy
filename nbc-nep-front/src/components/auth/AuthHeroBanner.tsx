@@ -2,11 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 import AuthHeroNotice from "./AuthHeroNotice";
-import {
-  AuthFormType,
-  generateRandomIndex,
-  imageArray,
-} from "./utils/authUtils";
+import { generateRandomIndex, imageArray } from "./utils/authUtils";
+import { AuthFormType } from "@/types/auth.types";
+
 interface Props {
   formType: AuthFormType;
 }

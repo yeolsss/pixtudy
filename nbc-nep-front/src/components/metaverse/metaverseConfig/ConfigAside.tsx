@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { configModes } from "../constants/config.constant";
-import { Config } from "../types/config.types";
+import { Config } from "@/types/metaverse.types";
 
 interface Props {
   currentConfigMode: Config;

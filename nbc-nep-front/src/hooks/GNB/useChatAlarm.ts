@@ -1,5 +1,5 @@
-import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
 import useChatAlarmStore from "@/zustand/chatAlarmStore";
+import { dmChatAlarmState } from "@/types/metaverse.types";
 
 export default function useChatAlarm() {
   // chat alarm state

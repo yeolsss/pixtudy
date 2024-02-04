@@ -5,7 +5,7 @@ import {
   StShareMediaNickname,
   StVideo,
 } from "./styles/videoConference.styles";
-import { VideoSource } from "./types/ScreenShare.types";
+import { VideoSource } from "../../types/conference.types";
 
 interface Props {
   videoSource: VideoSource;

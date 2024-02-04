@@ -6,7 +6,7 @@ import {
   MediaConsumeParamsForEmit,
   ProducerForConsume,
   TransPortParams,
-} from "../types/ScreenShare.types";
+} from "../../../types/conference.types";
 
 export default function useSocket() {
   const socket = useConferenceSocketStore.use.socket();

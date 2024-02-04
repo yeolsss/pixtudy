@@ -1,4 +1,4 @@
-import { CreateSpaceInfo } from "@/components/spaces/types/space.types";
+import { CreateSpaceInfo } from "@/types/space.types";
 import { supabase } from "@/supabase/supabase";
 import { Tables, TablesInsert, TablesUpdate } from "@/supabase/types/supabase";
 import { Spaces } from "@/supabase/types/supabase.tables.type";

@@ -23,7 +23,7 @@ import {
   VERTICAL_BORDER_OFFSET,
 } from "./constants/constant";
 import MetaverseConfigModal from "./metaverseConfig/MetaverseConfig";
-import { Game, Player, PlayerState } from "./types/metaverse";
+import { Game, Player, PlayerState } from "@/types/metaverse.types";
 
 const MetaverseComponent = () => {
   const { isOpen } = useConfirm();

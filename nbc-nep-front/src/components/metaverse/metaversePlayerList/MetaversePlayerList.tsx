@@ -7,12 +7,7 @@ import useGlobalNavBarStore, {
 } from "@/zustand/globalNavBarStore";
 import styled from "styled-components";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
-
-export interface HandleOpenDmContainerPrams {
-  otherUserId: string;
-  otherUserName: string;
-  otherUserAvatar: string;
-}
+import { HandleOpenDmContainerPrams } from "@/types/metaverse.types";
 
 export default function MetaversePlayerList() {
   const isPlayerListOn = useGlobalNavBarStore.use.isPlayerListOn();

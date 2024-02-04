@@ -1,8 +1,8 @@
 import MetaverseChat from "@/components/metaverse/metaverseChat/MetaverseChat";
-import { ChatType } from "@/components/metaverse/types/ChatType";
 import useChatTypeStore from "@/zustand/chatTypeStore";
 import useGlobalNavBarStore from "@/zustand/globalNavBarStore";
 import styled from "styled-components";
+import { ChatType } from "@/types/metaverse.types";
 
 export default function MetaverseChatBar() {
   const isChatSectionOn = useGlobalNavBarStore.use.isChatSectionOn();

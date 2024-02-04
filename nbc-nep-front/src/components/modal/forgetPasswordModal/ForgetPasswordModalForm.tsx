@@ -1,15 +1,12 @@
 import { info, success } from "@/assets/auth";
 import AuthInput from "@/components/auth/AuthInput";
-import {
-  ForgetPasswordMessageType,
-  FormValues,
-} from "@/components/auth/utils/authUtils";
 import { useForgetPassword } from "@/hooks/query/useSupabase";
 import { authValidation, handleValidateEmail } from "@/utils/authValidate";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
+import { ForgetPasswordMessageType, FormValues } from "@/types/auth.types";
 
 export default function ForgetPasswordModalForm({}) {
   const {

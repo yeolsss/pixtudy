@@ -1,5 +1,5 @@
 import { DEVICE_STORAGE_KEY } from "@/components/video-conference/constants/constants";
-import { LocalStorageDeviceInputs } from "@/components/video-conference/types/ScreenShare.types";
+import { LocalStorageDeviceInputs } from "@/types/conference.types";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
