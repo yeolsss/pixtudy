@@ -1,21 +1,21 @@
-import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
-import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
-import { useSendMessage } from "@/hooks/query/useSupabase";
-import useInput from "@/hooks/useInput";
-import { Tables } from "@/types/supabase.types";
-import { useQueryClient } from "@tanstack/react-query";
-import React from "react";
-import styled from "styled-components";
-import useDmStore from "@/zustand/dmStore";
+import { getDmChannelMessagesReturns } from '@/api/supabase/dm'
+import useFocusOutInput from '@/hooks/phaser/useFocusOutInput'
+import { useSendMessage } from '@/hooks/query/useSupabase'
+import useInput from '@/hooks/useInput'
+import { Tables } from '@/types/supabase.types'
+import { useQueryClient } from '@tanstack/react-query'
+import React from 'react'
+import styled from 'styled-components'
+import useDmStore from '@/zustand/dmStore'
 
 interface Props {
-  currentDmChannel: string | null | undefined;
+  currentDmChannel: string | null | undefined
   setMessages: React.Dispatch<
     React.SetStateAction<getDmChannelMessagesReturns[]>
-  >;
-  otherUserInfo: Partial<Tables<"users">> | null | undefined;
-  connectChannel: (currentChannelId: string) => void;
-  currentUser: Tables<"users">;
+  >
+  otherUserInfo: Partial<Tables<'users'>> | null | undefined
+  connectChannel: (currentChannelId: string) => void
+  currentUser: Tables<'users'>
 }
 
 export default function MetaverseDmForm({
@@ -23,62 +23,62 @@ export default function MetaverseDmForm({
   setMessages,
   otherUserInfo,
   connectChannel,
-  currentUser,
+  currentUser
 }: Props) {
-  const otherUserId = useDmStore.use.otherUserId();
-  const spaceId = useDmStore.use.spaceId();
-  const sendMessage = useSendMessage();
+  const otherUserId = useDmStore.use.otherUserId()
+  const spaceId = useDmStore.use.spaceId()
+  const sendMessage = useSendMessage()
 
-  const inputRef = useFocusOutInput();
-  const queryClient = useQueryClient();
+  const inputRef = useFocusOutInput()
+  const queryClient = useQueryClient()
   // form 내 iuput 에 관한 custom hook
   const [DMMessage, setDMMessage, onChange, handleFocus, handleBlur] =
-    useInput<string>("");
+    useInput<string>('')
   // input 외 다른 곳 click 시 input blur custom hook
 
   // 메시지를 보내는 함수
   const handleOnSubmitDM = async (e: React.FormEvent<HTMLElement>) => {
-    e.preventDefault();
-    const message = DMMessage;
+    e.preventDefault()
+    const message = DMMessage
 
-    if (!message) return;
+    if (!message) return
 
     sendMessage(
       {
         currentDmChannel: currentDmChannel!,
         message,
         receiverId: otherUserId,
-        spaceId,
+        spaceId
       },
       {
         onSuccess: (createdChannel) => {
           if (createdChannel) {
             queryClient.invalidateQueries({
-              queryKey: ["dmChannel", otherUserId],
-            });
+              queryKey: ['dmChannel', otherUserId]
+            })
             // 최초 보낸 메시지 state에 추가
             setMessages([
               {
                 created_at: new Date().toISOString(),
                 dm_id: createdChannel.id,
-                id: "first_send",
+                id: 'first_send',
                 message,
                 sender_id: currentUser.id,
                 sender_display_name: currentUser.display_name!,
                 receiver_display_name: otherUserInfo!.display_name!,
                 receiver_id: otherUserInfo!.id,
                 sender: currentUser,
-                receiver: otherUserInfo!,
-              },
-            ]);
+                receiver: otherUserInfo!
+              }
+            ])
             // dm 채널 연결
-            connectChannel(createdChannel.id);
+            connectChannel(createdChannel.id)
           }
-        },
+        }
       }
-    );
-    setDMMessage("");
-  };
+    )
+    setDMMessage('')
+  }
 
   return (
     <form onSubmit={handleOnSubmitDM}>
@@ -93,7 +93,7 @@ export default function MetaverseDmForm({
         onBlur={handleBlur}
       />
     </form>
-  );
+  )
 }
 const StChatInput = styled.input`
   width: 100%;
@@ -105,4 +105,4 @@ const StChatInput = styled.input`
   color: white;
   line-height: 24px;
   letter-spacing: -0.32px;
-`;
+`

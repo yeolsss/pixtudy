@@ -1,12 +1,12 @@
-import Head from "next/head";
+import Head from 'next/head'
 
 interface Props {
-  title: string;
-  description: string;
+  title: string
+  description: string
 }
 export default function CustomHead({ title, description }: Props) {
   const imageUrl =
-    "https://lrklhpcxbdiunpubmvio.supabase.co/storage/v1/object/public/openGraph_image/authHero5.png";
+    'https://lrklhpcxbdiunpubmvio.supabase.co/storage/v1/object/public/openGraph_image/authHero5.png'
 
   return (
     <Head>
@@ -34,5 +34,5 @@ export default function CustomHead({ title, description }: Props) {
         rel="stylesheet"
       />
     </Head>
-  );
+  )
 }

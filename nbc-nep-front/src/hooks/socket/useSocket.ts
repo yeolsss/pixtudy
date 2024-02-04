@@ -1,51 +1,51 @@
-import { useEffect, useRef } from "react";
-import { io, Socket } from "socket.io-client";
-import { PlayerState } from "@/types/metaverse.types";
+import { useEffect, useRef } from 'react'
+import { io, Socket } from 'socket.io-client'
+import { PlayerState } from '@/types/metaverse.types'
 
 interface Props {
-  namespace: string;
+  namespace: string
 }
 
 export default function useSocket({ namespace }: Props) {
   const socketRef = useRef<Socket>(
     io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}${namespace}`, {
       withCredentials: true,
-      autoConnect: false,
+      autoConnect: false
     })
-  );
+  )
 
   const handleConnect = () => {
-    console.log("connect socket in userSocket");
-  };
+    console.log('connect socket in userSocket')
+  }
 
   useEffect(() => {
-    const socket = socketRef.current;
+    const socket = socketRef.current
 
-    socket.on("connect", handleConnect);
+    socket.on('connect', handleConnect)
 
     return () => {
-      socket.off("connect", handleConnect);
-    };
-  }, []);
+      socket.off('connect', handleConnect)
+    }
+  }, [])
 
   const disconnect = () => {
-    console.log("socket disconnect");
-    socketRef.current?.disconnect();
-  };
+    console.log('socket disconnect')
+    socketRef.current?.disconnect()
+  }
 
   const connect = () => {
-    if (socketRef.current.connected) return;
-    socketRef.current.connect();
-  };
+    if (socketRef.current.connected) return
+    socketRef.current.connect()
+  }
 
   const changePlayerState = (playerId: string, state: PlayerState) => {
-    socketRef.current?.emit("change-player-state", playerId, state);
-  };
+    socketRef.current?.emit('change-player-state', playerId, state)
+  }
 
   return {
     socket: socketRef.current,
     disconnect,
     connect,
-    changePlayerState,
-  };
+    changePlayerState
+  }
 }

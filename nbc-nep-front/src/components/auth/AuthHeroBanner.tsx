@@ -1,28 +1,29 @@
-import Image from "next/image";
-import Link from "next/link";
-import styled from "styled-components";
-import AuthHeroNotice from "./AuthHeroNotice";
-import { generateRandomIndex, imageArray } from "./utils/authUtils";
-import { AuthFormType } from "@/types/auth.types";
+import { AuthFormType } from '@/types/auth.types'
+import Image from 'next/image'
+import Link from 'next/link'
+import styled from 'styled-components'
+import AuthHeroNotice from './AuthHeroNotice'
+import { IMAGE_ARRAY } from './constants/constants'
+import { generateRandomIndex } from './utils/authUtils'
 
 interface Props {
-  formType: AuthFormType;
+  formType: AuthFormType
 }
 export default function AuthHeroBanner({ formType }: Props) {
-  const randomIndex = generateRandomIndex(imageArray.length);
+  const randomIndex = generateRandomIndex(IMAGE_ARRAY.length)
   return (
     <StHeroBanner $formType={formType}>
-      <Link href={"/"}>pixtudy</Link>
-      <Image alt="auth-hero" src={imageArray[randomIndex]} />
+      <Link href={'/'}>pixtudy</Link>
+      <Image alt="auth-hero" src={IMAGE_ARRAY[randomIndex]} />
       <AuthHeroNotice formType={formType} />
     </StHeroBanner>
-  );
+  )
 }
 const StHeroBanner = styled.div<{ $formType: AuthFormType }>`
   background-color: ${(props) =>
-    props.$formType === "signUp"
+    props.$formType === 'signUp'
       ? props.theme.color.bg.interactive.primary
-      : "transparent"};
+      : 'transparent'};
   width: 50%;
   position: relative;
   display: flex;
@@ -34,13 +35,13 @@ const StHeroBanner = styled.div<{ $formType: AuthFormType }>`
     cursor: pointer;
     display: inline-block;
     position: absolute;
-    top: ${(props) => props.theme.spacing["48"]};
+    top: ${(props) => props.theme.spacing['48']};
     left: ${(props) =>
-      props.$formType === "signUp" ? "unset" : props.theme.spacing["48"]};
+      props.$formType === 'signUp' ? 'unset' : props.theme.spacing['48']};
     right: ${(props) =>
-      props.$formType === "signUp" ? props.theme.spacing["48"] : "unset"};
+      props.$formType === 'signUp' ? props.theme.spacing['48'] : 'unset'};
     color: ${(props) =>
-      props.$formType === "signUp"
+      props.$formType === 'signUp'
         ? props.theme.color.text.interactive.inverse
         : props.theme.color.text.interactive.primary};
     font-family: var(--point-font);
@@ -51,10 +52,10 @@ const StHeroBanner = styled.div<{ $formType: AuthFormType }>`
   & > img {
     width: 70%;
     height: auto;
-    padding-bottom: ${(props) => props.theme.spacing["80"]};
+    padding-bottom: ${(props) => props.theme.spacing['80']};
   }
 
   @media screen and (max-width: 1000px) {
     display: none;
   }
-`;
+`

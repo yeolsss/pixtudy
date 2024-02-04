@@ -1,6 +1,6 @@
-import { supabase } from "@/supabase";
-import { Database, Tables } from "@/types/supabase.types";
-import { Space_members } from "@/types/supabase.tables.types";
+import { supabase } from '@/supabase'
+import { Database, Tables } from '@/types/supabase.types'
+import { Space_members } from '@/types/supabase.tables.types'
 
 /**
  * 유저의 space 정보를 가져오는 함수
@@ -11,13 +11,13 @@ export const getUserSpaces = async (
   currentUserId: string
 ): Promise<Space_members[]> => {
   const { data: userSpaces, error } = await supabase
-    .from("space_members")
+    .from('space_members')
     .select(`*,spaces(*)`)
-    .eq("user_id", currentUserId)
-    .returns<Space_members[]>();
-  if (error) throw error;
-  return userSpaces;
-};
+    .eq('user_id', currentUserId)
+    .returns<Space_members[]>()
+  if (error) throw error
+  return userSpaces
+}
 
 /**
  * 상대 유저와 DM 채널 확인
@@ -27,36 +27,36 @@ export const getUserSpaces = async (
  * @returns 이미 dm 채널이 있다면 해당 dm채널의 아이디 / 없다면 null
  */
 export interface checkDmChannelArgs {
-  receiverId: string;
-  currentUserId: string;
-  spaceId: string;
+  receiverId: string
+  currentUserId: string
+  spaceId: string
 }
 
 export const checkDmChannel = async ({
   receiverId,
   currentUserId,
-  spaceId,
+  spaceId
 }: checkDmChannelArgs) => {
-  const dm_channel = await supabase.rpc("get_dm_channels", {
+  const dm_channel = await supabase.rpc('get_dm_channels', {
     p_space_id: spaceId,
     p_user_id: currentUserId,
-    p_receiver_id: receiverId,
-  });
+    p_receiver_id: receiverId
+  })
 
-  return dm_channel.data?.length ? dm_channel.data[0].id : null;
-};
+  return dm_channel.data?.length ? dm_channel.data[0].id : null
+}
 
 export interface getDmChannelMessagesReturns {
-  id: string;
-  created_at: string;
-  dm_id: string;
-  message: string;
-  sender?: Partial<Tables<"users">>;
-  receiver?: Partial<Tables<"users">>;
-  sender_id?: string;
-  sender_display_name?: string;
-  receiver_id?: string;
-  receiver_display_name?: string;
+  id: string
+  created_at: string
+  dm_id: string
+  message: string
+  sender?: Partial<Tables<'users'>>
+  receiver?: Partial<Tables<'users'>>
+  sender_id?: string
+  sender_display_name?: string
+  receiver_id?: string
+  receiver_display_name?: string
 }
 
 /**
@@ -68,19 +68,19 @@ export const getDmChannelMessages = async (
   dmChannel: string | null
 ): Promise<getDmChannelMessagesReturns[]> => {
   // 채팅방이 없을 때는 빈배열 반환
-  if (!dmChannel) return [];
+  if (!dmChannel) return []
   const channelMessages = await supabase
-    .rpc("get_dm_channel_messages_test", {
-      p_dm_channel: dmChannel,
+    .rpc('get_dm_channel_messages_test', {
+      p_dm_channel: dmChannel
     })
-    .returns<getDmChannelMessagesReturns[]>();
-  return channelMessages.data as getDmChannelMessagesReturns[];
-};
+    .returns<getDmChannelMessagesReturns[]>()
+  return channelMessages.data as getDmChannelMessagesReturns[]
+}
 
 interface createDmChannelArgs {
-  spaceId: string;
-  currentUserId: string;
-  receiverId: string;
+  spaceId: string
+  currentUserId: string
+  receiverId: string
 }
 
 /**
@@ -93,28 +93,28 @@ interface createDmChannelArgs {
 const createDmChannel = async ({
   spaceId,
   currentUserId,
-  receiverId,
+  receiverId
 }: createDmChannelArgs) => {
   const { data: newDmChannel, error } = await supabase
-    .from("dm_channels")
+    .from('dm_channels')
     .insert({
       space_id: spaceId,
       user: currentUserId,
-      other_user: receiverId,
+      other_user: receiverId
     })
     .select(`*`)
-    .single();
+    .single()
 
-  if (error) throw error;
-  return newDmChannel;
-};
+  if (error) throw error
+  return newDmChannel
+}
 
 export interface sendMessageArgs {
-  currentDmChannel: string | null;
-  message: string;
-  receiverId: string;
-  spaceId: string;
-  currentUserId: string;
+  currentDmChannel: string | null
+  message: string
+  receiverId: string
+  spaceId: string
+  currentUserId: string
 }
 
 /**
@@ -136,17 +136,17 @@ export const sendMessage = async ({
   message,
   receiverId,
   spaceId,
-  currentUserId,
+  currentUserId
 }: sendMessageArgs) => {
   // send logic
   const send = async (channel: string) => {
-    await supabase.from("dm_messages").insert({
+    await supabase.from('dm_messages').insert({
       dm_id: channel,
       message,
       receiver_id: receiverId,
-      sender_id: currentUserId,
-    });
-  };
+      sender_id: currentUserId
+    })
+  }
   // 조건부 처리
   // (1)채팅방이 기존에 없는 경우
   if (!currentDmChannel) {
@@ -154,69 +154,69 @@ export const sendMessage = async ({
     const newDmChannel = await createDmChannel({
       currentUserId,
       receiverId,
-      spaceId,
-    });
+      spaceId
+    })
     // (1-2) 메시지 보내기
     if (newDmChannel) {
-      await send(newDmChannel.id);
+      await send(newDmChannel.id)
     }
-    return newDmChannel;
+    return newDmChannel
   } else {
     // (2) 채팅방이 기존에 있는 경우
     // 해당 채팅방으로 메시지 바로 전송
-    await send(currentDmChannel);
+    await send(currentDmChannel)
   }
-};
+}
 
 export const getLastDmMessageList = async (
   spaceId: string,
   userId: string
 ): Promise<
-  | Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
+  | Database['public']['Functions']['get_last_dm_message_list']['Returns']
   | undefined
 > => {
   const { data, error } = await supabase
-    .rpc("get_last_dm_message_list", {
+    .rpc('get_last_dm_message_list', {
       input_space_id: spaceId,
-      input_user_id: userId,
+      input_user_id: userId
     })
     .returns<
-      Database["public"]["Functions"]["get_last_dm_message_list"]["Returns"]
-    >();
+      Database['public']['Functions']['get_last_dm_message_list']['Returns']
+    >()
 
-  if (error) console.error("Error fetching messages:", error);
-  else return data;
-};
+  if (error) console.error('Error fetching messages:', error)
+  else return data
+}
 
 interface ReadDmMessage {
-  roomId: string;
-  receiverId: string;
+  roomId: string
+  receiverId: string
 }
 
 export const readDmMessage = async ({ roomId, receiverId }: ReadDmMessage) => {
   const { error } = await supabase
-    .from("dm_messages")
-    .update({ checked: "R" })
-    .eq("dm_id", roomId)
-    .eq("receiver_id", receiverId)
-    .select();
-  if (error) throw new Error(error.message);
-};
+    .from('dm_messages')
+    .update({ checked: 'R' })
+    .eq('dm_id', roomId)
+    .eq('receiver_id', receiverId)
+    .select()
+  if (error) throw new Error(error.message)
+}
 
 export const getSpaceMemberInfo = async ({
   spaceId,
-  userId,
+  userId
 }: {
-  spaceId: string;
-  userId: string;
+  spaceId: string
+  userId: string
 }) => {
   const { data, error } = await supabase
-    .from("space_members")
-    .select("*")
-    .eq("space_id", spaceId)
-    .eq("user_id", userId)
-    .single();
+    .from('space_members')
+    .select('*')
+    .eq('space_id', spaceId)
+    .eq('user_id', userId)
+    .single()
 
-  if (error) throw error;
-  return data;
-};
+  if (error) throw error
+  return data
+}

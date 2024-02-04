@@ -1,26 +1,26 @@
-import { FocusEvent } from "react";
-import usePhaserInput from "../phaser/usePhaserInput";
+import { FocusEvent } from 'react'
+import usePhaserInput from '../phaser/usePhaserInput'
 
 export default function useFocusInput() {
-  const { enableInput, disableInput } = usePhaserInput();
+  const { enableInput, disableInput } = usePhaserInput()
 
   const handleBlur = (e: FocusEvent) => {
     if (
       e.target instanceof HTMLInputElement ||
       e.target instanceof HTMLTextAreaElement
     ) {
-      enableInput();
+      enableInput()
     }
-  };
+  }
 
   const handleFocus = (e: FocusEvent<HTMLDivElement>) => {
     if (
       e.target instanceof HTMLInputElement ||
       e.target instanceof HTMLTextAreaElement
     ) {
-      disableInput();
+      disableInput()
     }
-  };
+  }
 
-  return [handleFocus, handleBlur];
+  return [handleFocus, handleBlur]
 }

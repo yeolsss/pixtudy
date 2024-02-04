@@ -1,19 +1,19 @@
-import useConferenceSocketStore from "@/zustand/conferenceSocketStore";
-import { AppData, RtpCapabilities } from "mediasoup-client/lib/types";
+import useConferenceSocketStore from '@/zustand/conferenceSocketStore'
+import { AppData, RtpCapabilities } from 'mediasoup-client/lib/types'
 import {
   Consumer,
   MediaConsumeParams,
   MediaConsumeParamsForEmit,
   ProducerForConsume,
-  TransPortParams,
-} from "../../../types/conference.types";
+  TransPortParams
+} from '../../../types/conference.types'
 
 export default function useSocket() {
-  const socket = useConferenceSocketStore.use.socket();
+  const socket = useConferenceSocketStore.use.socket()
 
   const joinRoom = (spaceId: string, currentPlayerId: string) => {
-    socket.emit("join-room", spaceId, currentPlayerId);
-  };
+    socket.emit('join-room', spaceId, currentPlayerId)
+  }
 
   const createTransport = (
     currentPlayerId: string,
@@ -23,8 +23,8 @@ export default function useSocket() {
       recvTransportParams: TransPortParams
     ) => void
   ) => {
-    socket.emit("create-transport", currentPlayerId, onCreatedTransport);
-  };
+    socket.emit('create-transport', currentPlayerId, onCreatedTransport)
+  }
 
   const transportRecvConsume = (
     paramsForEmit: MediaConsumeParamsForEmit,
@@ -32,38 +32,38 @@ export default function useSocket() {
       params: MediaConsumeParams & { appData: AppData }
     ) => Promise<Consumer | null>
   ) => {
-    const { appData, playerId } = paramsForEmit;
+    const { appData, playerId } = paramsForEmit
     socket.emit(
-      "transport-recv-consume",
+      'transport-recv-consume',
       paramsForEmit,
       async (params: MediaConsumeParams) => {
-        const consumer = await onConsume({ ...params, appData });
+        const consumer = await onConsume({ ...params, appData })
 
-        if (!consumer) throw new Error("no consumer");
+        if (!consumer) throw new Error('no consumer')
 
-        socket.emit("consumer-resume", {
+        socket.emit('consumer-resume', {
           consumerId: consumer.id,
-          playerId,
-        });
+          playerId
+        })
       }
-    );
-  };
+    )
+  }
 
   const closeProducer = (currentPlayerId: string, streamId: string) => {
-    socket.emit("producer-close", currentPlayerId, streamId);
-  };
+    socket.emit('producer-close', currentPlayerId, streamId)
+  }
 
   const getProducers = (
     spaceId: string,
     currentPlayerId: string,
     onConsumeProducers: (producerForConsume: ProducerForConsume[]) => void
   ) => {
-    socket.emit("get-producers", spaceId, currentPlayerId, onConsumeProducers);
-  };
+    socket.emit('get-producers', spaceId, currentPlayerId, onConsumeProducers)
+  }
 
   const closeTransport = (currentPlayerId: string) => {
-    socket.emit("transport-close", currentPlayerId);
-  };
+    socket.emit('transport-close', currentPlayerId)
+  }
 
   return {
     socket,
@@ -72,6 +72,6 @@ export default function useSocket() {
     getProducers,
     transportRecvConsume,
     createTransport,
-    closeTransport,
-  };
+    closeTransport
+  }
 }

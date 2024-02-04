@@ -1,35 +1,35 @@
-import ModalHeader from "@/components/common/modal/ModalHeader";
-import CreateSpaceForm from "@/components/spaces/CreateSpaceForm";
-import ProfileForm from "@/components/spaces/ProfileForm";
-import ProfilePreview from "@/components/spaces/ProfilePreview";
-import { FORM_SPACE } from "@/components/spaces/constants/constants";
-import { Procedure } from "@/types/space.types";
-import useModal from "@/hooks/modal/useModal";
-import useSpaceStore from "@/zustand/spaceStore";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import ModalHeader from '@/components/common/modal/ModalHeader'
+import CreateSpaceForm from '@/components/spaces/CreateSpaceForm'
+import ProfileForm from '@/components/spaces/ProfileForm'
+import ProfilePreview from '@/components/spaces/ProfilePreview'
+import { FORM_SPACE } from '@/components/spaces/constants/constants'
+import { Procedure } from '@/types/space.types'
+import useModal from '@/hooks/modal/useModal'
+import useSpaceStore from '@/zustand/spaceStore'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import {
   StModalContainer,
-  StModalContents,
-} from "../joinSpaceModal/JoinSpaceModalMainContainer";
+  StModalContents
+} from '../joinSpaceModal/JoinSpaceModalMainContainer'
 
 export default function CreateSpaceModalMainContainer() {
-  const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
-  const resetCreateSpaceInfo = useSpaceStore.use.resetCreateSpaceInfo();
-  const { closeModal } = useModal();
+  const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE)
+  const resetCreateSpaceInfo = useSpaceStore.use.resetCreateSpaceInfo()
+  const { closeModal } = useModal()
 
   const {
     handleSubmit,
     register,
     getValues,
     watch,
-    formState: { errors, isValid },
-  } = useForm({ mode: "onChange" });
+    formState: { errors, isValid }
+  } = useForm({ mode: 'onChange' })
 
   const handleCloseModal = () => {
-    closeModal();
-    resetCreateSpaceInfo();
-  };
+    closeModal()
+    resetCreateSpaceInfo()
+  }
 
   return (
     <StModalContainer>
@@ -59,5 +59,5 @@ export default function CreateSpaceModalMainContainer() {
         )}
       </StModalContents>
     </StModalContainer>
-  );
+  )
 }

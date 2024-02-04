@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const StHiddenInput = styled.input`
   position: absolute;
   visibility: hidden;
-`;
+`
 
 export const StSectionMain = styled.section`
   grid-area: main;
@@ -37,7 +37,7 @@ export const StSectionMain = styled.section`
   div img {
     align-self: center;
   }
-`;
+`
 
 export const StSectionChatConfig = styled.section`
   grid-area: main;
@@ -65,26 +65,26 @@ export const StSectionChatConfig = styled.section`
     display: flex;
     align-items: center;
     & > select {
-      width: ${(props) => props.theme.unit["112"]};
-      height: ${(props) => props.theme.unit["24"]};
+      width: ${(props) => props.theme.unit['112']};
+      height: ${(props) => props.theme.unit['24']};
     }
 
-    input[type="range"] {
+    input[type='range'] {
       width: 100%;
       background: transparent;
       border: none;
       padding: 0;
       height: fit-content;
     }
-    input[type="number"] {
+    input[type='number'] {
       text-align: center;
       width: auto;
-      height: ${(props) => props.theme.unit["40"]};
+      height: ${(props) => props.theme.unit['40']};
       outline: none;
       padding: 0;
       /* border: none; */
-      font-size: ${(props) => props.theme.unit["16"]};
-      margin-left: ${(props) => props.theme.spacing["12"]};
+      font-size: ${(props) => props.theme.unit['16']};
+      margin-left: ${(props) => props.theme.spacing['12']};
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
         -webkit-appearance: none;
@@ -98,11 +98,11 @@ export const StSectionChatConfig = styled.section`
     border-top: 1px solid ${(props) => props.theme.color.bg.secondary};
   }
   & button {
-    width: ${(props) => props.theme.unit["112"]};
-    margin-top: ${(props) => props.theme.spacing["40"]};
+    width: ${(props) => props.theme.unit['112']};
+    margin-top: ${(props) => props.theme.spacing['40']};
   }
 
   h2 {
     font-size: 1.25rem;
   }
-`;
+`

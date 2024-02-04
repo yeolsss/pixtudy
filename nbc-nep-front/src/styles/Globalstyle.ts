@@ -1,10 +1,10 @@
-import themeData from "@/styles/theme.json";
-import { Root } from "@/types/theme.types";
-import { createGlobalStyle } from "styled-components";
+import themeData from '@/styles/theme.json'
+import { Root } from '@/types/theme.types'
+import { createGlobalStyle } from 'styled-components'
 
-const styled = { createGlobalStyle };
+const styled = { createGlobalStyle }
 
-export const theme: Root = themeData as Root;
+export const theme: Root = themeData as Root
 
 const GlobalStyle = styled.createGlobalStyle`
   html,
@@ -126,7 +126,7 @@ const GlobalStyle = styled.createGlobalStyle`
   blockquote:after,
   q:before,
   q:after {
-    content: "";
+    content: '';
     content: none;
   }
   table {
@@ -458,14 +458,14 @@ const GlobalStyle = styled.createGlobalStyle`
     --border-radius-12: var(--size-12);
     --border-radius-16: var(--size-16);
     --border-radius-36: var(--size-36);
-    --border-radius-circle: "9999px";
+    --border-radius-circle: '9999px';
     --color-border-interactive-secondary: var(--color-neutral-600);
     --color-border-interactive-secondary-hovered: var(--color-neutral-700);
     --color-border-interactive-secondary-pressed: var(--color-neutral-800);
 
-    --main-font: "Galmuri14", sans-serif;
-    --point-font: "Galmuri11", sans-serif;
-    --sub-font: "NeoDunggeunmo", sans-serif;
+    --main-font: 'Galmuri14', sans-serif;
+    --point-font: 'Galmuri11', sans-serif;
+    --sub-font: 'NeoDunggeunmo', sans-serif;
 
     --button-opacity: rgba(0, 0, 0, 0.5);
     --default-font: sans-serif;
@@ -540,7 +540,7 @@ const GlobalStyle = styled.createGlobalStyle`
       ${(props) => props.theme.color.border.interactive.secondary};
     border-radius: ${(props) => props.theme.border.radius[8]};
     color: ${(props) =>
-      props.theme.color.text.interactive["secondary-pressed"]};
+      props.theme.color.text.interactive['secondary-pressed']};
     background-color: ${(props) => props.theme.color.base.white};
     font-family: var(--sub-font);
     font-weight: ${(props) => props.theme.body.lg.semibold.fontWeight};
@@ -548,13 +548,13 @@ const GlobalStyle = styled.createGlobalStyle`
 
     &:hover {
       background-color: ${(props) =>
-        props.theme.color.bg.interactive["primary-hovered"]};
+        props.theme.color.bg.interactive['primary-hovered']};
       color: ${(props) => props.theme.color.base.white};
     }
   }
   #__next {
     height: 100vh;
   }
-`;
+`
 
-export default GlobalStyle;
+export default GlobalStyle

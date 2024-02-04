@@ -1,25 +1,25 @@
-import useSocket from "@/hooks/socket/useSocket";
-import { slideDown, slideUp } from "@/styles/animations";
-import useAuthStore from "@/zustand/authStore";
-import styled from "styled-components";
-import { PlayerState } from "@/types/metaverse.types";
+import useSocket from '@/hooks/socket/useSocket'
+import { slideDown, slideUp } from '@/styles/animations'
+import useAuthStore from '@/zustand/authStore'
+import styled from 'styled-components'
+import { PlayerState } from '@/types/metaverse.types'
 
 interface Props {
-  isRender: boolean;
-  handleAnimatedEnd: () => void;
+  isRender: boolean
+  handleAnimatedEnd: () => void
 }
 
 export default function PlayerStateSelector({
   isRender,
-  handleAnimatedEnd,
+  handleAnimatedEnd
 }: Props) {
-  const { id } = useAuthStore.use.user();
-  const { changePlayerState } = useSocket({ namespace: "/metaverse" });
+  const { id } = useAuthStore.use.user()
+  const { changePlayerState } = useSocket({ namespace: '/metaverse' })
 
   const handleChangeState = (state: PlayerState) => () => {
-    console.log("handleChangeState", state);
-    changePlayerState(id, state);
-  };
+    console.log('handleChangeState', state)
+    changePlayerState(id, state)
+  }
 
   return (
     <StUlWrapper $isRender={isRender} onAnimationEnd={handleAnimatedEnd}>
@@ -40,7 +40,7 @@ export default function PlayerStateSelector({
         <span>방해금지</span>
       </StItem>
     </StUlWrapper>
-  );
+  )
 }
 
 const StUlWrapper = styled.ul<{ $isRender: boolean }>`
@@ -63,7 +63,7 @@ const StUlWrapper = styled.ul<{ $isRender: boolean }>`
   bottom: calc(100% + ${(props) => props.theme.spacing[24]});
 
   animation: ${(props) => (props.$isRender ? slideUp : slideDown)} 0.3s forwards;
-`;
+`
 const StItem = styled.li`
   color: ${(props) => props.theme.color.text.disabled};
   display: flex;
@@ -98,4 +98,4 @@ const StItem = styled.li`
   &:hover span:last-child {
     color: ${(props) => props.theme.color.text.interactive.inverse};
   }
-`;
+`

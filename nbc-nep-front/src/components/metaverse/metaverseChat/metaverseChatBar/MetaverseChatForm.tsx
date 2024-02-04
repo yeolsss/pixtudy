@@ -1,6 +1,6 @@
-import useChat from "@/hooks/chat/useChat";
-import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
-import styled from "styled-components";
+import useChat from '@/hooks/chat/useChat'
+import useFocusOutInput from '@/hooks/phaser/useFocusOutInput'
+import styled from 'styled-components'
 
 export default function MetaverseChatForm() {
   const {
@@ -8,9 +8,9 @@ export default function MetaverseChatForm() {
     handleOnChangeChat,
     chatInput,
     handleFocus,
-    handleBlur,
-  } = useChat();
-  const inputRef = useFocusOutInput();
+    handleBlur
+  } = useChat()
+  const inputRef = useFocusOutInput()
 
   return (
     <>
@@ -26,7 +26,7 @@ export default function MetaverseChatForm() {
         />
       </form>
     </>
-  );
+  )
 }
 const StChatInput = styled.input`
   width: 100%;
@@ -38,4 +38,4 @@ const StChatInput = styled.input`
   color: white;
   line-height: 24px;
   letter-spacing: -0.32px;
-`;
+`

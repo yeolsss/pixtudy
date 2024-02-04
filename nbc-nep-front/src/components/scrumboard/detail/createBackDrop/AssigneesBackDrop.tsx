@@ -1,9 +1,9 @@
-import useCreateAssigneesBackDrop from "@/hooks/scrumBoard/useCreateAssigneesBackDrop";
-import styled from "styled-components";
+import useCreateAssigneesBackDrop from '@/hooks/scrumBoard/useCreateAssigneesBackDrop'
+import styled from 'styled-components'
 
 export default function AssigneesBackDrop() {
   const { filteredSpaceMembers, backDropIsOpen, handleBackDropClickItem } =
-    useCreateAssigneesBackDrop();
+    useCreateAssigneesBackDrop()
 
   return (
     <StAssigneesBackDropWrapper $isOpen={backDropIsOpen}>
@@ -25,11 +25,11 @@ export default function AssigneesBackDrop() {
         </StAssigneesBackDropItemNoSearch>
       )}
     </StAssigneesBackDropWrapper>
-  );
+  )
 }
 
 const StAssigneesBackDropWrapper = styled.ul<{ $isOpen: boolean }>`
-  display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
+  display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
   flex-direction: column;
   position: absolute;
   bottom: 0;
@@ -40,7 +40,7 @@ const StAssigneesBackDropWrapper = styled.ul<{ $isOpen: boolean }>`
   background-color: ${(props) => props.theme.color.bg.primary};
   box-shadow: ${(props) => props.theme.elevation.Light.shadow8};
   border-radius: ${(props) => props.theme.border.radius[8]};
-`;
+`
 export const StAssigneesBackDropItemNoSearch = styled.li`
   width: 100%;
   height: ${(props) => props.theme.spacing[32]};
@@ -56,7 +56,7 @@ export const StAssigneesBackDropItemNoSearch = styled.li`
     line-height: 100%; /* 11px */
     letter-spacing: -0.11px;
   }
-`;
+`
 export const StAssigneesBackDropItem = styled(StAssigneesBackDropItemNoSearch)`
   cursor: pointer;
   //prettier-ignore
@@ -66,4 +66,4 @@ export const StAssigneesBackDropItem = styled(StAssigneesBackDropItemNoSearch)`
   &:hover {
     box-shadow: ${(props) => props.theme.elevation.Light.shadow16};
   }
-`;
+`

@@ -1,5 +1,5 @@
-import BackDrop from "../../BackDrop";
-import JoinSpaceModalMainContainer from "./JoinSpaceModalMainContainer";
+import BackDrop from '../../BackDrop'
+import JoinSpaceModalMainContainer from './JoinSpaceModalMainContainer'
 
 export default function JoinSpaceModal() {
   return (
@@ -7,5 +7,5 @@ export default function JoinSpaceModal() {
       <BackDrop />
       <JoinSpaceModalMainContainer />
     </>
-  );
+  )
 }

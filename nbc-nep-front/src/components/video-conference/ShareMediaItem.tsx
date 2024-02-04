@@ -1,45 +1,45 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren } from 'react'
 import {
   StAudio,
   StShareMediaItem,
   StShareMediaNickname,
-  StVideo,
-} from "./styles/videoConference.styles";
-import { VideoSource } from "../../types/conference.types";
+  StVideo
+} from './styles/videoConference.styles'
+import { VideoSource } from '../../types/conference.types'
 
 interface Props {
-  videoSource: VideoSource;
-  nickname: string;
-  isCurrentPlayer?: boolean;
+  videoSource: VideoSource
+  nickname: string
+  isCurrentPlayer?: boolean
 }
 
 export default function ShareMediaItem({
   videoSource,
   nickname,
   isCurrentPlayer,
-  children,
+  children
 }: PropsWithChildren<Props>) {
-  const { track } = videoSource;
+  const { track } = videoSource
 
-  if (!track) return null;
+  if (!track) return null
 
-  const stream = new MediaStream([track]);
-  const type = track.kind;
+  const stream = new MediaStream([track])
+  const type = track.kind
 
-  const isAudio = type === "audio";
+  const isAudio = type === 'audio'
 
   return (
     <StShareMediaItem $isAudio={isAudio}>
       {!isAudio && <StShareMediaNickname>{nickname}</StShareMediaNickname>}
-      {type === "video" ? (
+      {type === 'video' ? (
         <StVideo
           playsInline
           autoPlay
           ref={(videoRef) => {
             if (!videoRef) {
-              return;
+              return
             }
-            videoRef.srcObject = stream;
+            videoRef.srcObject = stream
           }}
         />
       ) : (
@@ -49,13 +49,13 @@ export default function ShareMediaItem({
           muted={isCurrentPlayer}
           ref={(audioRef) => {
             if (!audioRef) {
-              return;
+              return
             }
-            audioRef.srcObject = stream;
+            audioRef.srcObject = stream
           }}
         />
       )}
       {children}
     </StShareMediaItem>
-  );
+  )
 }

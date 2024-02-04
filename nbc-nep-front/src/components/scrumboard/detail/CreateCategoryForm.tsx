@@ -1,50 +1,50 @@
-import { StFormCTAButton } from "@/components/common/button/button.styles";
-import DefaultSpanText from "@/components/common/text/DefaultSpanText";
-import { StErrorMessage } from "@/components/spaces/JoinSpaceForm";
-import useModal from "@/hooks/modal/useModal";
-import { useCreateCategory, useGetCategories } from "@/hooks/query/useSupabase";
-import { useParams } from "next/navigation";
-import { ChangeEvent, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
-import styled from "styled-components";
-import { options } from "../constants/constants";
+import { StFormCTAButton } from '@/components/common/button/button.styles'
+import DefaultSpanText from '@/components/common/text/DefaultSpanText'
+import { StErrorMessage } from '@/components/spaces/JoinSpaceForm'
+import useModal from '@/hooks/modal/useModal'
+import { useCreateCategory, useGetCategories } from '@/hooks/query/useSupabase'
+import { useParams } from 'next/navigation'
+import { ChangeEvent, useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+import styled from 'styled-components'
+import { options } from '../constants/constants'
 
 export default function CreateCategoryForm() {
-  const { space_id } = useParams();
-  const spaceId = space_id as string;
-  const categories = useGetCategories(spaceId);
-  const categoryNames = categories?.map((category) => category.name);
-  const { create, isError, isSuccess } = useCreateCategory(spaceId);
-  const [selectedColor, setSelectedColor] = useState<string>("");
-  const { closeModal } = useModal();
+  const { space_id } = useParams()
+  const spaceId = space_id as string
+  const categories = useGetCategories(spaceId)
+  const categoryNames = categories?.map((category) => category.name)
+  const { create, isError, isSuccess } = useCreateCategory(spaceId)
+  const [selectedColor, setSelectedColor] = useState<string>('')
+  const { closeModal } = useModal()
 
   const {
     control,
     handleSubmit,
     register,
     watch,
-    formState: { errors, isValid },
-  } = useForm<FieldValues>({ mode: "onChange" });
+    formState: { errors, isValid }
+  } = useForm<FieldValues>({ mode: 'onChange' })
 
   const validateCategoryName = (name: string) => {
     return categoryNames?.some((category) => category === name)
-      ? "이미 존재하는 카테고리입니다."
-      : true;
-  };
+      ? '이미 존재하는 카테고리입니다.'
+      : true
+  }
 
   const handleCategorySelect = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedColor(e.target.value);
-  };
+    setSelectedColor(e.target.value)
+  }
 
   const handleCreateCategory = (data: FieldValues) => {
     const newCategory = {
       spaceId,
       name: data.name,
-      color: data.color,
-    };
-    create(newCategory);
-    closeModal();
-  };
+      color: data.color
+    }
+    create(newCategory)
+    closeModal()
+  }
 
   return (
     <StCreateCategoryForm onSubmit={handleSubmit(handleCreateCategory)}>
@@ -53,9 +53,9 @@ export default function CreateCategoryForm() {
         <input
           type="text"
           placeholder="카테고리 이름"
-          {...register("name", {
-            required: "카테고리 이름을 입력해주세요.",
-            validate: validateCategoryName,
+          {...register('name', {
+            required: '카테고리 이름을 입력해주세요.',
+            validate: validateCategoryName
           })}
         />
         {errors.name && (
@@ -81,15 +81,15 @@ export default function CreateCategoryForm() {
                       type="radio"
                       id={option}
                       value={option}
-                      {...register("color", {
-                        required: "카테고리 색상을 선택해주세요.",
-                        onChange: handleCategorySelect,
+                      {...register('color', {
+                        required: '카테고리 색상을 선택해주세요.',
+                        onChange: handleCategorySelect
                       })}
                     />
                   </label>
                 </StCategoryColor>
               </StCategoryItemWrapper>
-            );
+            )
           })}
         </div>
         {errors.color && (
@@ -100,7 +100,7 @@ export default function CreateCategoryForm() {
         확인
       </StFormCTAButton>
     </StCreateCategoryForm>
-  );
+  )
 }
 
 const StCreateCategoryForm = styled.form`
@@ -123,7 +123,7 @@ const StCreateCategoryForm = styled.form`
     font-family: var(--sub-font);
     font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
   }
-`;
+`
 
 const StCategoryItemWrapper = styled.div<{ $isSelected: boolean }>`
   opacity: ${(props) => (props.$isSelected ? 1 : 0.2)};
@@ -133,7 +133,7 @@ const StCategoryItemWrapper = styled.div<{ $isSelected: boolean }>`
   input {
     display: none;
   }
-`;
+`
 
 const StCategoryColor = styled.div<{ $color: string; $isSelected: boolean }>`
   padding: ${(props) => props.theme.spacing[6]};
@@ -153,17 +153,17 @@ const StCategoryColor = styled.div<{ $color: string; $isSelected: boolean }>`
     padding: 12px;
     background-color: ${(props) => props.$color};
     background-image: ${(props) =>
-      props.$isSelected ? `url('/assets/selected.svg')` : "none"};
+      props.$isSelected ? `url('/assets/selected.svg')` : 'none'};
     background-size: 12px;
     background-repeat: no-repeat;
     background-position: center 60%;
   }
-`;
+`
 
 const StSubmitBtn = styled(StFormCTAButton)`
   &:disabled {
     background-color: ${(props) =>
-      props.theme.color.bg.interactive["selected-press"]};
+      props.theme.color.bg.interactive['selected-press']};
     cursor: auto;
   }
-`;
+`
