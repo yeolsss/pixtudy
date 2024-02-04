@@ -1,6 +1,4 @@
-import styledComponent from 'styled-components';
-
-const styled = styledComponent;
+import styled from 'styled-components';
 
 export const StDockPlayerWrapper = styled.div`
   display: flex;

@@ -1,9 +1,7 @@
-import styledComponent from 'styled-components';
-
+import styled from 'styled-components';
 
 import { StPositionRelative } from '@/components/common/button/button.styles';
 
-const styled = styledComponent;
 
 export const StShareMediaItem = styled(StPositionRelative)<{$isAudio: boolean}>`
   width: ${(props) => (props.$isAudio ? 0 : props.theme.video.width)};

@@ -1,8 +1,7 @@
-import styledComponent from 'styled-components';
+import styled from 'styled-components';
 
 import { slideDown, slideUp } from '@/styles/animations';
 
-const  styled = styledComponent;
 
 export const  StUlWrapper = styled.ul<{ $isRender: boolean }>`
   position: absolute;

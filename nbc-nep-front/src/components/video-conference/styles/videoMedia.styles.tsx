@@ -1,8 +1,6 @@
-import styledComponent from 'styled-components'
+import styled from 'styled-components';
 
-import { StShareMediaItem, StVideoWrapper } from './videoConference.styles'
-
-const styled = styledComponent
+import { StShareMediaItem, StVideoWrapper } from './videoConference.styles';
 
 export const StDefaultShareMediaItemWrapper = styled(StShareMediaItem)`
   display: flex;

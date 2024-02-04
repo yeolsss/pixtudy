@@ -1,8 +1,8 @@
-import styledComponent from 'styled-components';
+import styled from 'styled-components';
 
 import { GridStatusType, GuideStatusType } from '@/types/conference.types';
 
-const styled = styledComponent
+
 
 export const StVideosLayoutContainer = styled.div`
   display: flex;
