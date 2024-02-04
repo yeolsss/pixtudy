@@ -1,14 +1,14 @@
-import Link from "next/link";
-import { PropsWithChildren } from "react";
-import styled from "styled-components";
+import Link from 'next/link'
+import { PropsWithChildren } from 'react'
+import styled from 'styled-components'
 
 export default function AuthFormContainer({ children }: PropsWithChildren) {
   return (
     <StFormContainer>
-      <Link href={"/"}>pixtudy</Link>
+      <Link href={'/'}>pixtudy</Link>
       <div>{children}</div>
     </StFormContainer>
-  );
+  )
 }
 export const StFormContainer = styled.div`
   display: flex;
@@ -23,29 +23,29 @@ export const StFormContainer = styled.div`
     display: none;
     cursor: pointer;
     position: absolute;
-    top: ${(props) => props.theme.spacing["36"]};
-    left: ${(props) => props.theme.spacing["48"]};
+    top: ${(props) => props.theme.spacing['36']};
+    left: ${(props) => props.theme.spacing['48']};
     color: ${(props) => props.theme.color.text.interactive.primary};
     font-family: var(--point-font);
-    font-size: ${(props) => props.theme.unit["16"]};
+    font-size: ${(props) => props.theme.unit['16']};
     font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
   }
 
   & > div {
-    padding-top: ${(props) => props.theme.spacing["118"]};
-    width: ${(props) => props.theme.unit["412"]};
+    padding-top: ${(props) => props.theme.spacing['118']};
+    width: ${(props) => props.theme.unit['412']};
     display: flex;
     flex-direction: column;
     align-items: center;
     & > h1 {
       font-weight: bold;
-      font-size: ${(props) => props.theme.unit["36"]};
+      font-size: ${(props) => props.theme.unit['36']};
       line-height: ${(props) => props.theme.spacing[44]};
       font-family: var(--point-font);
       margin-bottom: ${(props) => props.theme.spacing[32]};
     }
     & > h2 {
-      font-size: ${(props) => props.theme.unit["16"]};
+      font-size: ${(props) => props.theme.unit['16']};
       margin-bottom: ${(props) => props.theme.spacing[32]};
 
       & > span {
@@ -56,8 +56,8 @@ export const StFormContainer = styled.div`
     }
 
     @media screen and (max-width: 1000px) {
-      padding: ${(props) => props.theme.spacing["32"]};
-      padding-top: ${(props) => props.theme.spacing["118"]};
+      padding: ${(props) => props.theme.spacing['32']};
+      padding-top: ${(props) => props.theme.spacing['118']};
       width: 80%;
       height: 100%;
     }
@@ -71,4 +71,4 @@ export const StFormContainer = styled.div`
       display: inline-block;
     }
   }
-`;
+`

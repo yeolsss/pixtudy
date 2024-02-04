@@ -1,9 +1,9 @@
 interface Props {
-  isActive: boolean;
+  isActive: boolean
 }
 
-const INACTIVE = "#1F2937";
-const ACTIVE = "#1F2937";
+const INACTIVE = '#1F2937'
+const ACTIVE = '#1F2937'
 
 export default function ModifyIcon({ isActive }: Props) {
   return (
@@ -23,5 +23,5 @@ export default function ModifyIcon({ isActive }: Props) {
         fill={isActive ? ACTIVE : INACTIVE}
       />
     </svg>
-  );
+  )
 }

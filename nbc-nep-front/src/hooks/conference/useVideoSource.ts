@@ -1,45 +1,45 @@
-import { Producer, ShareType } from "@/types/conference.types";
-import useConferenceStore from "@/zustand/conferenceStore";
-import { toast } from "react-toastify";
+import { Producer, ShareType } from '@/types/conference.types'
+import useConferenceStore from '@/zustand/conferenceStore'
+import { toast } from 'react-toastify'
 
 const useVideoSource = () => {
-  const removeConsumer = useConferenceStore.use.removeConsumer();
-  const removeProducer = useConferenceStore.use.removeProducer();
+  const removeConsumer = useConferenceStore.use.removeConsumer()
+  const removeProducer = useConferenceStore.use.removeProducer()
   const findProducerByShareType =
-    useConferenceStore.use.findProducerByShareType();
+    useConferenceStore.use.findProducerByShareType()
   const filterProducersByShareType =
-    useConferenceStore.use.filterProducersByShareType();
-  const isAlreadyConsume = useConferenceStore.use.isAlreadyConsume();
-  const addProducer = useConferenceStore.use.addProducer();
-  const addConsumer = useConferenceStore.use.addConsumer();
+    useConferenceStore.use.filterProducersByShareType()
+  const isAlreadyConsume = useConferenceStore.use.isAlreadyConsume()
+  const addProducer = useConferenceStore.use.addProducer()
+  const addConsumer = useConferenceStore.use.addConsumer()
 
   const handleProducerClose = (streamId: string) => {
-    removeConsumer(streamId);
-  };
+    removeConsumer(streamId)
+  }
 
   const handleProducerRemoval = (
     type: ShareType,
     onStopShare: (producer: Producer) => void
   ) => {
-    const producer = findProducerByShareType(type);
+    const producer = findProducerByShareType(type)
 
     if (!producer) {
-      console.error("producer가 존재하지 않습니다.");
+      console.error('producer가 존재하지 않습니다.')
       toast.error(
-        "producer가 존재하고 있지 않습니다. 새로고침을 시도해주시길 바랍니다.",
-        { position: "top-center" }
-      );
-      return;
+        'producer가 존재하고 있지 않습니다. 새로고침을 시도해주시길 바랍니다.',
+        { position: 'top-center' }
+      )
+      return
     }
 
-    removeProducer(producer);
+    removeProducer(producer)
 
     try {
-      onStopShare(producer);
+      onStopShare(producer)
     } catch (error) {
-      console.error("onStopShare 실행 중 오류 발생", error);
+      console.error('onStopShare 실행 중 오류 발생', error)
     }
-  };
+  }
 
   return {
     handleProducerClose,
@@ -49,8 +49,8 @@ const useVideoSource = () => {
     isAlreadyConsume,
     removeProducer,
     addProducer,
-    addConsumer,
-  };
-};
+    addConsumer
+  }
+}
 
-export default useVideoSource;
+export default useVideoSource

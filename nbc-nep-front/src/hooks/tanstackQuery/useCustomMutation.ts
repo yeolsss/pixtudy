@@ -1,12 +1,7 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useMutation, UseMutationOptions } from '@tanstack/react-query'
+import { useEffect } from 'react'
 
-export type TMutationOptions<T> = UseMutationOptions<
-  unknown,
-  Error,
-  T,
-  unknown
->;
+export type TMutationOptions<T> = UseMutationOptions<unknown, Error, T, unknown>
 
 export const useCustomMutation = <T>(mutationOptions: TMutationOptions<T>) => {
   const { isPending, isError, error, mutate } = useMutation<
@@ -14,14 +9,14 @@ export const useCustomMutation = <T>(mutationOptions: TMutationOptions<T>) => {
     Error,
     T,
     unknown
-  >(mutationOptions);
+  >(mutationOptions)
 
-  useEffect(() => {}, [isPending]);
+  useEffect(() => {}, [isPending])
 
   useEffect(() => {
     if (isError) {
     }
-  }, [isError, error]);
+  }, [isError, error])
 
-  return mutate;
-};
+  return mutate
+}

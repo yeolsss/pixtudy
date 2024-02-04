@@ -1,30 +1,30 @@
-import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
-import CreateDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader";
-import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
-import SelectAssigneesList from "@/components/scrumboard/detail/createBackDrop/SelectAssigneesList";
-import styled from "styled-components";
+import useScrumBoardItemBackDropStore from '@/zustand/createScrumBoardItemStore'
+import CreateDescriptionHeader from '@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader'
+import CreateBackDropTitle from '@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle'
+import SelectAssigneesList from '@/components/scrumboard/detail/createBackDrop/SelectAssigneesList'
+import styled from 'styled-components'
 
 export default function ScrumItemDetail() {
-  const kanbanItem = useScrumBoardItemBackDropStore.use.kanbanItem();
+  const kanbanItem = useScrumBoardItemBackDropStore.use.kanbanItem()
 
   return (
     <StScrumItemDetailWrapper>
       <StCreateDisplayName>
-        <CreateBackDropTitle title={"작성자"} />
+        <CreateBackDropTitle title={'작성자'} />
         <span>{kanbanItem?.item_creator_space_display_name}</span>
       </StCreateDisplayName>
       <div>
-        <CreateDescriptionHeader countType={"R"} />
+        <CreateDescriptionHeader countType={'R'} />
         <StDescription>{kanbanItem?.description}</StDescription>
       </div>
       {kanbanItem?.assignees[0].userId !== null && (
         <div>
-          <CreateBackDropTitle title={"담당자"} />
-          <SelectAssigneesList tagType={"labels"} />
+          <CreateBackDropTitle title={'담당자'} />
+          <SelectAssigneesList tagType={'labels'} />
         </div>
       )}
     </StScrumItemDetailWrapper>
-  );
+  )
 }
 const StScrumItemDetailWrapper = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ const StScrumItemDetailWrapper = styled.div`
     flex-direction: column;
     gap: ${(props) => props.theme.spacing[8]};
   }
-`;
+`
 const StDescription = styled.p`
   color: ${(props) => props.theme.color.text.secondary};
   text-overflow: ellipsis;
@@ -45,7 +45,7 @@ const StDescription = styled.p`
   line-height: 150%; /* 19.5px */
   letter-spacing: -0.26px;
   font-family: var(--main-font);
-`;
+`
 
 const StCreateDisplayName = styled.div`
   width: 100%;
@@ -54,4 +54,4 @@ const StCreateDisplayName = styled.div`
   > span {
     font-size: ${(props) => props.theme.unit[14]};
   }
-`;
+`

@@ -1,11 +1,11 @@
-import { updateCategoryItem } from "@/api/supabase/scrumBoard";
-import { GetKanbanItemsByAssignees } from "@/types/supabase.tables.types";
-import { useMutation } from "@tanstack/react-query";
-import { DropTargetMonitor, useDrop } from "react-dnd";
-import { toast } from "react-toastify";
+import { updateCategoryItem } from '@/api/supabase/scrumBoard'
+import { GetKanbanItemsByAssignees } from '@/types/supabase.tables.types'
+import { useMutation } from '@tanstack/react-query'
+import { DropTargetMonitor, useDrop } from 'react-dnd'
+import { toast } from 'react-toastify'
 
 export default function useDropItem(categoryId: string) {
-  const updateMutate = useMutation({ mutationFn: updateCategoryItem });
+  const updateMutate = useMutation({ mutationFn: updateCategoryItem })
 
   /**
    * TODO:
@@ -17,36 +17,36 @@ export default function useDropItem(categoryId: string) {
   ) => {
     updateMutate.mutate({
       id: item.id,
-      updateCategoryId: targetCategoryId,
+      updateCategoryId: targetCategoryId
     }),
       {
         onSuccess: async () => {
-          toast.success("카테고리가 변경되었습니다.");
-        },
-      };
-  };
+          toast.success('카테고리가 변경되었습니다.')
+        }
+      }
+  }
 
   const dropSpec = {
-    accept: "kanbanItem",
+    accept: 'kanbanItem',
     drop: (item: GetKanbanItemsByAssignees, monitor: DropTargetMonitor) => {
-      handleDrop(item, categoryId);
-      return item;
+      handleDrop(item, categoryId)
+      return item
     },
     collect: (monitor: DropTargetMonitor) => ({
       isOver: monitor.isOver(),
       canDrop: !!monitor.canDrop(),
       didDrop: !!monitor.didDrop(),
-      dropResult: monitor.getDropResult(),
-    }),
-  };
+      dropResult: monitor.getDropResult()
+    })
+  }
 
-  const [{ canDrop, isOver, didDrop, dropResult }, drop] = useDrop(dropSpec);
+  const [{ canDrop, isOver, didDrop, dropResult }, drop] = useDrop(dropSpec)
 
   return {
     canDrop,
     isOver,
     didDrop,
     dropResult,
-    drop,
-  };
+    drop
+  }
 }

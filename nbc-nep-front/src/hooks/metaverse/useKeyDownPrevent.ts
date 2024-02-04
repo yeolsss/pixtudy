@@ -1,18 +1,18 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react'
 
 export default function useKeyDownPrevent<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
+  const ref = useRef<T>(null)
 
   useEffect(() => {
     const handleKeyDownPrevent = (e: globalThis.KeyboardEvent) => {
-      e.stopPropagation();
-    };
-    ref.current?.addEventListener("keydown", handleKeyDownPrevent);
+      e.stopPropagation()
+    }
+    ref.current?.addEventListener('keydown', handleKeyDownPrevent)
 
     return () => {
-      ref.current?.removeEventListener("keydown", handleKeyDownPrevent);
-    };
-  }, []);
+      ref.current?.removeEventListener('keydown', handleKeyDownPrevent)
+    }
+  }, [])
 
-  return ref;
+  return ref
 }

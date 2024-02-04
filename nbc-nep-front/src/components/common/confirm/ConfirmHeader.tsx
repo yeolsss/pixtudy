@@ -1,7 +1,7 @@
 interface Props {
-  title?: string;
+  title?: string
 }
 
-export default function ConfirmHeader({ title = "확인" }: Props) {
-  return <div>{title}</div>;
+export default function ConfirmHeader({ title = '확인' }: Props) {
+  return <div>{title}</div>
 }

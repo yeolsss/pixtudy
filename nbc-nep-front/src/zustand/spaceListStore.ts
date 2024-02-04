@@ -1,20 +1,20 @@
-import { Space_members } from "@/types/supabase.tables.types";
-import { create } from "zustand";
-import createSelectors from "@/zustand/config/createSelector";
+import { Space_members } from '@/types/supabase.tables.types'
+import { create } from 'zustand'
+import createSelectors from '@/zustand/config/createSelector'
 
 interface SpaceListStoreState {
-  spaces: (Space_members | null)[];
-  filteredSpaces: (Space_members | null)[];
-  searchValue: string;
-  changeSearchValue: (searchValue: string) => void;
-  filterSpaces: () => void;
-  setSpaces: (spaces: (Space_members | null)[]) => void;
+  spaces: (Space_members | null)[]
+  filteredSpaces: (Space_members | null)[]
+  searchValue: string
+  changeSearchValue: (searchValue: string) => void
+  filterSpaces: () => void
+  setSpaces: (spaces: (Space_members | null)[]) => void
 }
 
 const spaceSearchStore = create<SpaceListStoreState>()((set) => ({
   spaces: [],
   filteredSpaces: [],
-  searchValue: "",
+  searchValue: '',
   changeSearchValue: (searchValue: string) => set(() => ({ searchValue })),
   filterSpaces: () =>
     set((state) => ({
@@ -22,13 +22,13 @@ const spaceSearchStore = create<SpaceListStoreState>()((set) => ({
         if (space) {
           return space
             .spaces!.title.toLowerCase()
-            .includes(state.searchValue.toLowerCase());
+            .includes(state.searchValue.toLowerCase())
         }
-      }),
+      })
     })),
   setSpaces: (spaces: (Space_members | null)[]) =>
-    set(() => ({ spaces, filteredSpaces: spaces })),
-}));
+    set(() => ({ spaces, filteredSpaces: spaces }))
+}))
 
-const useSpaceSearchStore = createSelectors(spaceSearchStore);
-export default useSpaceSearchStore;
+const useSpaceSearchStore = createSelectors(spaceSearchStore)
+export default useSpaceSearchStore

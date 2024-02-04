@@ -1,29 +1,29 @@
-import { splitVideoSource } from "@/components/video-conference/libs/util";
-import useLayout from "@/hooks/conference/useLayout";
-import useConferenceStore from "@/zustand/conferenceStore";
-import { isEmpty } from "lodash";
-import styled from "styled-components";
-import ShareScreenContainer from "../ShareScreenContainer";
-import { Producer } from "../../../types/conference.types";
-import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
-import PlayerMediaDisplay from "./PlayerMediaDisplay";
-import PlayerProducerContainer from "./PlayerProducerContainer";
-import { Player } from "@/types/metaverse.types";
+import { splitVideoSource } from '@/components/video-conference/libs/util'
+import useLayout from '@/hooks/conference/useLayout'
+import useConferenceStore from '@/zustand/conferenceStore'
+import { isEmpty } from 'lodash'
+import styled from 'styled-components'
+import ShareScreenContainer from '../ShareScreenContainer'
+import { Producer } from '../../../types/conference.types'
+import OtherPlayerShareMediaItem from './OtherPlayerShareMediaItem'
+import PlayerMediaDisplay from './PlayerMediaDisplay'
+import PlayerProducerContainer from './PlayerProducerContainer'
+import { Player } from '@/types/metaverse.types'
 
 interface Props {
-  playerList: Player[];
-  currentPlayer: Player;
+  playerList: Player[]
+  currentPlayer: Player
 }
 
 export default function VideoSourceDisplayContainer({
   playerList,
-  currentPlayer,
+  currentPlayer
 }: Props) {
-  const { isOpen } = useLayout();
-  const producers = useConferenceStore.use.producers();
+  const { isOpen } = useLayout()
+  const producers = useConferenceStore.use.producers()
 
-  const [camAndAudioProducers, screenProducers] = splitVideoSource(producers);
-  const isEmptyScreenProducers = isEmpty(screenProducers);
+  const [camAndAudioProducers, screenProducers] = splitVideoSource(producers)
+  const isEmptyScreenProducers = isEmpty(screenProducers)
 
   return (
     <StContainer>
@@ -34,7 +34,7 @@ export default function VideoSourceDisplayContainer({
       />
       {!isEmptyScreenProducers && (
         <PlayerProducerContainer
-          nickname={currentPlayer?.nickname || ""}
+          nickname={currentPlayer?.nickname || ''}
           producers={screenProducers as Producer[]}
         />
       )}
@@ -47,7 +47,7 @@ export default function VideoSourceDisplayContainer({
       ))}
       {isOpen && <ShareScreenContainer />}
     </StContainer>
-  );
+  )
 }
 
 const StContainer = styled.div`
@@ -77,4 +77,4 @@ const StContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`

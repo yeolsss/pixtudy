@@ -1,21 +1,21 @@
-import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
-import Image from "next/image";
-import styled from "styled-components";
-import { IconButtonProperty } from "@/types/metaverse.types";
+import useMetaversePlayer from '@/hooks/metaverse/useMetaversePlayer'
+import Image from 'next/image'
+import styled from 'styled-components'
+import { IconButtonProperty } from '@/types/metaverse.types'
 
 interface Props {
-  button: IconButtonProperty;
+  button: IconButtonProperty
 }
 export default function IconButtonByPlayerList({ button }: Props) {
-  const { buttonImage, description, type, handleOnClick } = button;
+  const { buttonImage, description, type, handleOnClick } = button
   // const { playerList } = usePlayerContext();
-  const { playerList } = useMetaversePlayer();
+  const { playerList } = useMetaversePlayer()
   return (
     <StIconButtonByPlayerListWrapper onClick={handleOnClick}>
-      <Image src={buttonImage} alt={description} width={"16"} height={"16"} />
+      <Image src={buttonImage} alt={description} width={'16'} height={'16'} />
       <span>{playerList.length}</span>
     </StIconButtonByPlayerListWrapper>
-  );
+  )
 }
 
 const StIconButtonByPlayerListWrapper = styled.div`
@@ -23,11 +23,11 @@ const StIconButtonByPlayerListWrapper = styled.div`
   width: 44px;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing["4"]};
+  gap: ${({ theme }) => theme.spacing['4']};
   background-color: rgba(255, 255, 255, 0.1);
   align-items: center;
   justify-content: center;
-  border-radius: ${({ theme }) => theme.border.radius["16"]};
+  border-radius: ${({ theme }) => theme.border.radius['16']};
   cursor: pointer;
   > span {
     display: inline-block;
@@ -36,4 +36,4 @@ const StIconButtonByPlayerListWrapper = styled.div`
     font-family: NeoDunggeunmo;
     letter-spacing: -0.12px;
   }
-`;
+`

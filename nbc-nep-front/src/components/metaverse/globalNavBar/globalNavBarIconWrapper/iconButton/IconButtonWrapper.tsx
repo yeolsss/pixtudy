@@ -1,12 +1,12 @@
-import IconButton from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButton";
-import styled from "styled-components";
-import { IconButtonProperty } from "@/types/metaverse.types";
+import IconButton from '@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButton'
+import styled from 'styled-components'
+import { IconButtonProperty } from '@/types/metaverse.types'
 
 interface Props {
-  button: IconButtonProperty;
+  button: IconButtonProperty
 }
 export default function IconButtonWrapper({ button }: Props) {
-  const { buttonImage, description, type, handleOnClick } = button;
+  const { buttonImage, description, type, handleOnClick } = button
 
   return (
     <StIconButtonWrapper>
@@ -17,7 +17,7 @@ export default function IconButtonWrapper({ button }: Props) {
         handleOnClick={handleOnClick}
       />
     </StIconButtonWrapper>
-  );
+  )
 }
 
 const StIconButtonWrapper = styled.div`
@@ -36,4 +36,4 @@ const StIconButtonWrapper = styled.div`
     color: #fff;
     text-align: center;
   }
-`;
+`

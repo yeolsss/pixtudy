@@ -1,25 +1,25 @@
-import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
-import { BACK_DROP_TYPE_DETAIL } from "@/components/scrumboard/constants/constants";
-import useDragItem from "@/hooks/scrumBoard/useDragItem";
+import MetaAvatar from '@/components/metaverse/avatar/MetaAvatar'
+import { BACK_DROP_TYPE_DETAIL } from '@/components/scrumboard/constants/constants'
+import useDragItem from '@/hooks/scrumBoard/useDragItem'
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
-} from "@/types/supabase.tables.types";
-import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
-import React from "react";
-import styled from "styled-components";
+  Kanban_categories
+} from '@/types/supabase.tables.types'
+import useScrumBoardItemBackDropStore from '@/zustand/createScrumBoardItemStore'
+import React from 'react'
+import styled from 'styled-components'
 
 interface Props {
-  item: GetKanbanItemsByAssignees;
-  category: Kanban_categories;
+  item: GetKanbanItemsByAssignees
+  category: Kanban_categories
 }
 
 function ScrumBoardItem({ category, item }: Props) {
-  const setIsOpen = useScrumBoardItemBackDropStore.use.setIsOpen();
+  const setIsOpen = useScrumBoardItemBackDropStore.use.setIsOpen()
   const handleOpenItemDetail = (item: GetKanbanItemsByAssignees) => {
-    setIsOpen(category, item, BACK_DROP_TYPE_DETAIL);
-  };
-  const { drag, didDrop, targetCategoryId, isDragging } = useDragItem(item);
+    setIsOpen(category, item, BACK_DROP_TYPE_DETAIL)
+  }
+  const { drag, didDrop, targetCategoryId, isDragging } = useDragItem(item)
 
   return (
     <StListItem
@@ -45,13 +45,13 @@ function ScrumBoardItem({ category, item }: Props) {
                     x={-5}
                   />
                 </StMetaAvatarWrapper>
-              );
+              )
             })}
           </StAssigneesWrapper>
         )}
       </StUserInfoWrapper>
     </StListItem>
-  );
+  )
 }
 
 const StListItem = styled.li<{ $isDragging: boolean }>`
@@ -82,7 +82,7 @@ const StListItem = styled.li<{ $isDragging: boolean }>`
     letter-spacing: -0.26px;
     font-family: var(--main-font);
   }
-`;
+`
 
 const StUserInfoWrapper = styled.div`
   width: 100%;
@@ -98,24 +98,24 @@ const StUserInfoWrapper = styled.div`
       flex: 1;
     }
   }
-`;
+`
 
 const StAvatar = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-`;
+`
 
 const StAssigneesWrapper = styled(StAvatar)`
   position: relative;
   height: 3rem;
   flex: 1;
-`;
+`
 
 const StMetaAvatarWrapper = styled.div<{ $index: number }>`
   position: absolute;
   right: ${(props) => props.$index * 15}px;
   z-index: ${(props) => 1000 - props.$index};
-`;
+`
 
-export default React.memo(ScrumBoardItem);
+export default React.memo(ScrumBoardItem)

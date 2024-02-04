@@ -1,34 +1,34 @@
 import {
   fieldValues,
   SPACE_DESCRIPTION_MAX_LENGTH,
-  SPACE_NAME_MAX_LENGTH,
-} from "@/components/spaces/constants/constants";
-import { useCreateSpace } from "@/hooks/query/useSupabase";
-import { Tables } from "@/types/supabase.types";
-import useSpaceStore from "@/zustand/spaceStore";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+  SPACE_NAME_MAX_LENGTH
+} from '@/components/spaces/constants/constants'
+import { useCreateSpace } from '@/hooks/query/useSupabase'
+import { Tables } from '@/types/supabase.types'
+import useSpaceStore from '@/zustand/spaceStore'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import {
   FieldValues,
   FormState,
   SubmitHandler,
   UseFormGetValues,
   UseFormHandleSubmit,
-  UseFormRegister,
-} from "react-hook-form";
-import styled from "styled-components";
-import { StFormCTAButton } from "../common/button/button.styles";
-import DefaultSpanText from "../common/text/DefaultSpanText";
-import { StContentsContainer, StErrorMessage } from "./JoinSpaceForm";
-import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { CreateSpaceInfo } from "../../types/space.types";
+  UseFormRegister
+} from 'react-hook-form'
+import styled from 'styled-components'
+import { StFormCTAButton } from '../common/button/button.styles'
+import DefaultSpanText from '../common/text/DefaultSpanText'
+import { StContentsContainer, StErrorMessage } from './JoinSpaceForm'
+import { StCreateInputWrapper } from './styles/spaceCommon.styles'
+import { CreateSpaceInfo } from '../../types/space.types'
 
 interface Props {
-  handleSubmit: UseFormHandleSubmit<FieldValues>;
-  register: UseFormRegister<FieldValues>;
-  errors: FormState<FieldValues>["errors"];
-  getValues: UseFormGetValues<FieldValues>;
-  isValid: boolean;
+  handleSubmit: UseFormHandleSubmit<FieldValues>
+  register: UseFormRegister<FieldValues>
+  errors: FormState<FieldValues>['errors']
+  getValues: UseFormGetValues<FieldValues>
+  isValid: boolean
 }
 
 export default function CreateSpaceForm({
@@ -36,50 +36,50 @@ export default function CreateSpaceForm({
   handleSubmit,
   errors,
   getValues,
-  isValid,
+  isValid
 }: Props) {
-  const router = useRouter();
-  const userProfile = useSpaceStore.use.userProfile();
-  const setCreateSpaceInfo = useSpaceStore.use.setCreateSpaceInfo();
+  const router = useRouter()
+  const userProfile = useSpaceStore.use.userProfile()
+  const setCreateSpaceInfo = useSpaceStore.use.setCreateSpaceInfo()
   const { createSpace, createSuccess } = useCreateSpace(
-    (data: Tables<"spaces">) => {
-      handleToSpace(data.id);
+    (data: Tables<'spaces'>) => {
+      handleToSpace(data.id)
     }
-  );
+  )
 
   useEffect(() => {
     if (createSuccess) {
-      return;
+      return
     }
-  }, [createSuccess]);
+  }, [createSuccess])
 
   const handleToSpace = async (space_id: string) => {
-    await router.replace(`/metaverse/${space_id!}`);
-  };
+    await router.replace(`/metaverse/${space_id!}`)
+  }
 
   const handleCreateSpaceSubmit: SubmitHandler<FieldValues> = (data) => {
     const spaceInfo: CreateSpaceInfo = {
       title: data.spaceName,
-      description: data.spaceDescription,
-    };
+      description: data.spaceDescription
+    }
 
-    setCreateSpaceInfo({ ...spaceInfo, ...userProfile });
+    setCreateSpaceInfo({ ...spaceInfo, ...userProfile })
     createSpace({
       description: spaceInfo.description,
       owner: userProfile.owner,
       title: spaceInfo.title,
       space_avatar: userProfile.avatar,
       space_display_name: userProfile.display_name,
-      user_id: userProfile.owner,
-    });
-  };
+      user_id: userProfile.owner
+    })
+  }
 
   return (
     <StCreateSpaceForm onSubmit={handleSubmit(handleCreateSpaceSubmit)}>
       <StCreateContentsContainer>
         <div>
           {fieldValues.map((fieldValue) =>
-            fieldValue.type === "text" ? (
+            fieldValue.type === 'text' ? (
               <div key={fieldValue.name}>
                 <StCreateInputWrapper
                   key={fieldValue.name}
@@ -129,7 +129,7 @@ export default function CreateSpaceForm({
         </StFormCTAButton>
       </div>
     </StCreateSpaceForm>
-  );
+  )
 }
 
 const StCreateSpaceForm = styled.form`
@@ -138,7 +138,7 @@ const StCreateSpaceForm = styled.form`
   align-items: center;
   width: 100%;
   height: fit-content;
-`;
+`
 
 const StCreateContentsContainer = styled(StContentsContainer)`
   width: 100%;
@@ -152,4 +152,4 @@ const StCreateContentsContainer = styled(StContentsContainer)`
   & + div {
     width: 100%;
   }
-`;
+`

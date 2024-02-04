@@ -1,28 +1,28 @@
-import { PropsWithChildren } from "react";
-import { useDrag } from "react-dnd";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import styled from "styled-components";
+import { PropsWithChildren } from 'react'
+import { useDrag } from 'react-dnd'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import styled from 'styled-components'
 
 interface Props {
-  id: string;
-  active: boolean;
-  handleInactive?: (id: string) => void;
+  id: string
+  active: boolean
+  handleInactive?: (id: string) => void
 }
 
 export default function ShareScreenDragItem({
   id,
   active,
   handleInactive,
-  children,
+  children
 }: PropsWithChildren<Props>) {
   const [{ isDragging }, drag, preview] = useDrag(() => ({
-    type: "VIDEO",
+    type: 'VIDEO',
     item: { id },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      isDragging: monitor.isDragging()
     }),
-    canDrag: active ? false : true,
-  }));
+    canDrag: active ? false : true
+  }))
 
   return (
     <StShareScreenDragItemContainer>
@@ -31,29 +31,29 @@ export default function ShareScreenDragItem({
         {active && (
           <button
             onClick={() => {
-              handleInactive && handleInactive(id);
+              handleInactive && handleInactive(id)
             }}
           >
             레이아웃 제거
           </button>
         )}
         <TransformWrapper
-          wheel={{ activationKeys: ["Control", "Meta"] }}
+          wheel={{ activationKeys: ['Control', 'Meta'] }}
           panning={{
-            activationKeys: ["Control", "Meta"],
-            disabled: active ? false : true,
+            activationKeys: ['Control', 'Meta'],
+            disabled: active ? false : true
           }}
         >
           <TransformComponent>{children}</TransformComponent>
         </TransformWrapper>
       </StDragContainer>
     </StShareScreenDragItemContainer>
-  );
+  )
 }
 
 const StShareScreenDragItemContainer = styled.div`
   position: relative;
-`;
+`
 const StDrag = styled.div`
   position: absolute;
   left: 0;
@@ -62,21 +62,21 @@ const StDrag = styled.div`
   height: 100%;
   z-index: 10;
   background: transparent;
-`;
+`
 
 const StDragContainer = styled.div<{ $active: boolean; $isDragging: boolean }>`
   opacity: ${(props) => (props.$isDragging ? 0.2 : 1)};
   width: 100%;
   height: 100%;
-  margin: ${(props) => (props.$active ? "0" : "0 1rem")};
+  margin: ${(props) => (props.$active ? '0' : '0 1rem')};
   cursor: pointer;
   & div {
-    width: ${(props) => props.$active && "100%"};
-    height: ${(props) => props.$active && "100%"};
+    width: ${(props) => props.$active && '100%'};
+    height: ${(props) => props.$active && '100%'};
 
     & video {
-      width: ${(props) => props.$active && "100%"};
-      height: ${(props) => props.$active && "100%"};
+      width: ${(props) => props.$active && '100%'};
+      height: ${(props) => props.$active && '100%'};
       object-fit: contain;
     }
   }
@@ -90,7 +90,7 @@ const StDragContainer = styled.div<{ $active: boolean; $isDragging: boolean }>`
     border: none;
     &:hover {
       background: ${(props) =>
-        props.theme.color.bg.interactive["danger-hovered"]};
+        props.theme.color.bg.interactive['danger-hovered']};
     }
   }
-`;
+`

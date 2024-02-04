@@ -1,14 +1,14 @@
-import { getUsersCount } from "@/api/gameServer/space";
-import { useQuery } from "@tanstack/react-query";
+import { getUsersCount } from '@/api/gameServer/space'
+import { useQuery } from '@tanstack/react-query'
 
 export default function useGetUsersCount(spaceId: string) {
   const { data, error, isLoading } = useQuery({
-    queryKey: ["usersCount", spaceId],
+    queryKey: ['usersCount', spaceId],
     queryFn: () => getUsersCount(spaceId),
-    refetchInterval: 20 * 1000,
-  });
+    refetchInterval: 20 * 1000
+  })
   if (error) {
-    console.error(error);
+    console.error(error)
   }
-  return { data, isLoading };
+  return { data, isLoading }
 }

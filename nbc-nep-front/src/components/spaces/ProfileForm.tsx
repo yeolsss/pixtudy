@@ -1,34 +1,34 @@
-import { validateNickname } from "@/utils/spaceValidate";
-import { Dispatch, SetStateAction } from "react";
+import { validateNickname } from '@/utils/spaceValidate'
+import { Dispatch, SetStateAction } from 'react'
 import {
   FieldValues,
   FormState,
   SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister,
-  UseFormWatch,
-} from "react-hook-form";
+  UseFormWatch
+} from 'react-hook-form'
 
-import { FORM_SPACE, SRC_BASE } from "@/components/spaces/constants/constants";
-import useAuthStore from "@/zustand/authStore";
-import useSpaceStore from "@/zustand/spaceStore";
-import styled from "styled-components";
+import { FORM_SPACE, SRC_BASE } from '@/components/spaces/constants/constants'
+import useAuthStore from '@/zustand/authStore'
+import useSpaceStore from '@/zustand/spaceStore'
+import styled from 'styled-components'
 import {
   StFormCTAButton,
-  StToPreviousButton,
-} from "../common/button/button.styles";
-import AvatarInput, { StAvatar } from "./AvatarInput";
-import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { Procedure, UserProfile } from "../../types/space.types";
+  StToPreviousButton
+} from '../common/button/button.styles'
+import AvatarInput, { StAvatar } from './AvatarInput'
+import { StCreateInputWrapper } from './styles/spaceCommon.styles'
+import { Procedure, UserProfile } from '../../types/space.types'
 
 interface ProfileFormProps {
-  setProcedure: Dispatch<SetStateAction<Procedure>>;
-  handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
-  register: UseFormRegister<FieldValues>;
-  watch: UseFormWatch<FieldValues>;
-  errors: FormState<FieldValues>["errors"];
-  mode: "createSpace" | "joinSpace";
-  isValid: boolean;
+  setProcedure: Dispatch<SetStateAction<Procedure>>
+  handleSubmit: UseFormHandleSubmit<FieldValues, undefined>
+  register: UseFormRegister<FieldValues>
+  watch: UseFormWatch<FieldValues>
+  errors: FormState<FieldValues>['errors']
+  mode: 'createSpace' | 'joinSpace'
+  isValid: boolean
 }
 
 export default function ProfileForm({
@@ -38,31 +38,31 @@ export default function ProfileForm({
   register,
   errors,
   mode,
-  isValid,
+  isValid
 }: ProfileFormProps) {
-  const setUserProfile = useSpaceStore.use.setUserProfile();
-  const user = useAuthStore.use.user();
+  const setUserProfile = useSpaceStore.use.setUserProfile()
+  const user = useAuthStore.use.user()
 
   const handleToPrevious = () => {
-    setProcedure(FORM_SPACE);
-  };
+    setProcedure(FORM_SPACE)
+  }
 
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     const newUserProfile: UserProfile = {
       avatar: data.avatar,
       display_name: data.nickname,
-      owner: user.id,
-    };
-    setUserProfile(newUserProfile);
-    setProcedure(FORM_SPACE);
-  };
+      owner: user.id
+    }
+    setUserProfile(newUserProfile)
+    setProcedure(FORM_SPACE)
+  }
   return (
     <StProfileForm onSubmit={handleSubmit(handleProfileSubmit)}>
       <StCurrentProfile>
         <StAvatarWrapper>
           <StAvatar
-            style={{ cursor: "auto" }}
-            resource={`${SRC_BASE + (watch("avatar") || "NPC1")}.png`}
+            style={{ cursor: 'auto' }}
+            resource={`${SRC_BASE + (watch('avatar') || 'NPC1')}.png`}
           />
         </StAvatarWrapper>
         <StCreateInputWrapper $isError={!!errors?.nickname}>
@@ -72,9 +72,9 @@ export default function ProfileForm({
             defaultValue={user.display_name!}
             type="text"
             placeholder="닉네임"
-            {...register("nickname", {
-              required: "닉네임을 입력해주십시오.",
-              validate: validateNickname,
+            {...register('nickname', {
+              required: '닉네임을 입력해주십시오.',
+              validate: validateNickname
             })}
           />
           {errors.nickname && <span>{errors.nickname.message as string}</span>}
@@ -91,7 +91,7 @@ export default function ProfileForm({
         </StToPreviousButton>
       </StButtonWrapper>
     </StProfileForm>
-  );
+  )
 }
 
 export const StProfileForm = styled.form`
@@ -99,7 +99,7 @@ export const StProfileForm = styled.form`
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[32]};
   align-items: stretch;
-`;
+`
 
 export const StCurrentProfile = styled.div`
   display: flex;
@@ -109,7 +109,7 @@ export const StCurrentProfile = styled.div`
     font-family: var(--sub-font);
     font-size: ${(props) => props.theme.body.sm.regular.fontSize};
   }
-`;
+`
 
 export const StAvatarWrapper = styled.div`
   display: flex;
@@ -120,11 +120,11 @@ export const StAvatarWrapper = styled.div`
   padding: ${(props) => props.theme.spacing[16]} ${(props) =>
     props.theme.spacing[64]};
   border-radius: ${(props) => props.theme.border.radius[12]};
-`;
+`
 
 export const StButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: ${(props) => props.theme.spacing[8]};
   justify-content: center;
-`;
+`

@@ -1,14 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 interface Props {
-  title: string;
+  title: string
 }
 export default function ScrumBoardHeader({ title }: Props) {
   return (
     <StScrumBoardHeader>
       <h1>{`${title}'s Scrum board`}</h1>
     </StScrumBoardHeader>
-  );
+  )
 }
 
 const StScrumBoardHeader = styled.div`
@@ -24,7 +24,7 @@ const StScrumBoardHeader = styled.div`
   h1 {
     font-family: var(--point-font);
     font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
-    font-size: ${(props) => props.theme.heading.desktop["2xl"].fontSize};
+    font-size: ${(props) => props.theme.heading.desktop['2xl'].fontSize};
     color: ${(props) => props.theme.color.text.brand};
   }
   p {
@@ -32,4 +32,4 @@ const StScrumBoardHeader = styled.div`
     font-weight: ${(props) => props.theme.body.lg.regular.fontWeight};
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
   }
-`;
+`

@@ -1,8 +1,8 @@
 export default class PhaserSceneManager {
-  private static gameInstance: Phaser.Game | null = null;
+  private static gameInstance: Phaser.Game | null = null
 
   public static setGameInstance(instance: Phaser.Game): void {
-    PhaserSceneManager.gameInstance = instance;
+    PhaserSceneManager.gameInstance = instance
   }
 
   public static disableInput(): void {
@@ -10,7 +10,7 @@ export default class PhaserSceneManager {
       PhaserSceneManager.gameInstance &&
       PhaserSceneManager.gameInstance.input.keyboard
     ) {
-      PhaserSceneManager.gameInstance.input.keyboard.enabled = false;
+      PhaserSceneManager.gameInstance.input.keyboard.enabled = false
     }
   }
 
@@ -19,7 +19,7 @@ export default class PhaserSceneManager {
       PhaserSceneManager.gameInstance &&
       PhaserSceneManager.gameInstance.input.keyboard
     ) {
-      PhaserSceneManager.gameInstance.input.keyboard.enabled = true;
+      PhaserSceneManager.gameInstance.input.keyboard.enabled = true
     }
   }
 }
