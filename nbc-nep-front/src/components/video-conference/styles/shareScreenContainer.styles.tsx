@@ -116,3 +116,48 @@ export const StLayoutGuide = styled.div<{ $guide: GuideStatusType | null }>`
     }
   }}
 `
+
+export const StShareScreenDragItemContainer = styled.div`
+  position: relative;
+`
+export const StDrag = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: transparent;
+`
+
+export const StDragContainer = styled.div<{ $active: boolean; $isDragging: boolean }>`
+  opacity: ${(props) => (props.$isDragging ? 0.2 : 1)};
+  width: 100%;
+  height: 100%;
+  margin: ${(props) => (props.$active ? '0' : '0 1rem')};
+  cursor: pointer;
+  & div {
+    width: ${(props) => props.$active && '100%'};
+    height: ${(props) => props.$active && '100%'};
+
+    & video {
+      width: ${(props) => props.$active && '100%'};
+      height: ${(props) => props.$active && '100%'};
+      object-fit: contain;
+    }
+  }
+  & button {
+    position: absolute;
+    z-index: 20;
+    right: 1rem;
+    top: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    &:hover {
+      background: ${(props) =>
+        props.theme.color.bg.interactive['danger-hovered']};
+    }
+  }
+`
+
