@@ -1,8 +1,7 @@
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import Image from "next/image";
 import styled from "styled-components";
-// import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import { IconButtonProperty } from "@/types/metaverse.types";
 
 interface Props {
   button: IconButtonProperty;

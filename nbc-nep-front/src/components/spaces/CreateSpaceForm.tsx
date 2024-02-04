@@ -4,7 +4,7 @@ import {
   SPACE_NAME_MAX_LENGTH,
 } from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
-import { Tables } from "@/supabase/types/supabase";
+import { Tables } from "@/types/supabase.types";
 import useSpaceStore from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ import { StFormCTAButton } from "../common/button/button.styles";
 import DefaultSpanText from "../common/text/DefaultSpanText";
 import { StContentsContainer, StErrorMessage } from "./JoinSpaceForm";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { CreateSpaceInfo } from "./types/space.types";
+import { CreateSpaceInfo } from "../../types/space.types";
 
 interface Props {
   handleSubmit: UseFormHandleSubmit<FieldValues>;

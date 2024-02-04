@@ -1,16 +1,15 @@
 import MetaverseDmList from "@/components/metaverse/metaverseChat/dmChat/metaverseDMList/MetaverseDMList";
 import MetaverseChatForm from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatForm";
 import MetaverseChatList from "@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatList";
-import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
-import { DMListCard } from "@/components/metaverse/types/metaverse";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useGetLastDMList } from "@/hooks/query/useSupabase";
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 import useChatTypeStore from "@/zustand/chatTypeStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import { dmChatAlarmState, DMListCard } from "@/types/metaverse.types";
 
 export default function MetaverseChat() {
   const isOpenChat = useChatTypeStore.use.isOpenChat();

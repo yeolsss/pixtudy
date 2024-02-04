@@ -14,7 +14,7 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import ShareMediaItem from "../ShareMediaItem";
 import { StVideoWrapper } from "../styles/videoConference.styles";
-import { Producer } from "../types/ScreenShare.types";
+import { Producer } from "../../../types/conference.types";
 import useSocket from "@/components/video-conference/hooks/useSocket";
 
 interface Props {

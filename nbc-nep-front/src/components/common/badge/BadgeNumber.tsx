@@ -1,4 +1,4 @@
-import { Interactive, Interactive2 } from "@/types/theme";
+import { Interactive, Interactive2 } from "@/types/theme.types";
 import styled from "styled-components";
 import StBadge from "./Badge";
 

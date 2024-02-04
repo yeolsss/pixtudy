@@ -19,7 +19,7 @@ export default function CategoryHeader({ name, color, id, itemCount }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { openConfirmHandler, isOpen } = useConfirm();
+  const { openConfirmHandler } = useConfirm();
   const { space_id } = useParams();
   const spaceId = space_id as string;
   const { remove } = useDeleteCategory(spaceId);

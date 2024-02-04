@@ -19,7 +19,7 @@ import {
 } from "../common/button/button.styles";
 import AvatarInput, { StAvatar } from "./AvatarInput";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { Procedure, UserProfile } from "./types/space.types";
+import { Procedure, UserProfile } from "../../types/space.types";
 
 interface ProfileFormProps {
   setProcedure: Dispatch<SetStateAction<Procedure>>;

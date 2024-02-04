@@ -1,4 +1,4 @@
-import { Spaces } from "@/supabase/types/supabase.tables.type";
+import { Spaces } from "@/types/supabase.tables.types";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
 

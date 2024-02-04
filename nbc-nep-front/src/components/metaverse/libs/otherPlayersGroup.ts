@@ -1,6 +1,6 @@
 import { CurrentPlayer } from "@/components/metaverse/libs/currentPlayer";
-import { Player } from "@/components/metaverse/types/metaverse";
 import Phaser from "phaser";
+import { Player } from "@/types/metaverse.types";
 
 const PLAYER_NAME_DEPTH = 2000;
 const PLAYER_BODY_SIZE_X = 32;

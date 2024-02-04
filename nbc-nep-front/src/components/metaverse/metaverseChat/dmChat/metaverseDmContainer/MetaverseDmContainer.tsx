@@ -4,7 +4,7 @@ import useDmChannel from "@/hooks/dm/useDmChannel";
 import useDmMessage from "@/hooks/dm/useDmMessage";
 import useEndOfChat from "@/hooks/metaverse/useEndOfChat";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
-import { Tables } from "@/supabase/types/supabase";
+import { Tables } from "@/types/supabase.types";
 import useAuthStore from "@/zustand/authStore";
 import useDmStore from "@/zustand/dmStore";
 import { useState } from "react";

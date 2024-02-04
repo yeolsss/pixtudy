@@ -4,13 +4,14 @@ import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constan
 import { useGetCategoryItems } from "@/hooks/query/useSupabase";
 import useDropItem from "@/hooks/scrumBoard/useDropItem";
 import { fadeInOut } from "@/styles/animations";
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import { Kanban_categories } from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { WheelEvent } from "react";
 import styled from "styled-components";
 import CategoryHeader from "./CategoryHeader";
 import ScrumBoardItem from "./ScrumBoardItem";
+
 interface Props {
   category: Kanban_categories;
 }
@@ -68,7 +69,6 @@ export default function ScrumBoardCategory({ category }: Props) {
 
 const StCategoryWrapper = styled(motion.div)<{ $isOver: boolean }>`
   // 임의로 설정한 너비
-
   min-width: 384px;
   height: 100%;
   box-sizing: content-box;

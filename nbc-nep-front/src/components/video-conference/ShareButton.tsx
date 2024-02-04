@@ -4,7 +4,10 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { DEVICE_STORAGE_KEY } from "./constants/constants";
-import { LocalStorageDeviceInputs, ShareType } from "./types/ScreenShare.types";
+import {
+  LocalStorageDeviceInputs,
+  ShareType,
+} from "../../types/conference.types";
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void;

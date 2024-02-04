@@ -36,7 +36,7 @@ export const fadeInOut = ({ x, y }: { x?: number; y?: number } = {}) => {
     options.y = y;
   }
 
-  const animation = {
+  return {
     initial: { opacity: 0.5, ...options },
     animate: { opacity: 1, y: 0, x: 0 },
     exit: {
@@ -47,6 +47,4 @@ export const fadeInOut = ({ x, y }: { x?: number; y?: number } = {}) => {
     },
     transition: { duration: 0.2 },
   };
-
-  return animation;
 };

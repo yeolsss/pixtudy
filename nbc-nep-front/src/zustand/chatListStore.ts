@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { Chat } from "@/components/metaverse/types/metaverse";
 import createSelectors from "@/zustand/config/createSelector";
+import { Chat } from "@/types/metaverse.types";
 
 type ChatListStore = {
   chatList: Chat[];

@@ -3,7 +3,7 @@ const BASE_URL =
   "https://lrklhpcxbdiunpubmvio.supabase.co/storage/v1/object/public/space_thumbnails/";
 const BUCKET_NAME = "space_thumbnails";
 
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 
 export const uploadThumbnail = async (thumbnailFile: Blob | File) => {
   const fileName = URL.createObjectURL(thumbnailFile).split("/").at(-1);

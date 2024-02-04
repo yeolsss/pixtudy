@@ -3,7 +3,7 @@
 
 import useModal from "@/hooks/modal/useModal";
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
-import { Spaces } from "@/supabase/types/supabase.tables.type";
+import { Spaces } from "@/types/supabase.tables.types";
 import useAuthStore from "@/zustand/authStore";
 import { StaticImageData } from "next/image";
 import { useRouter } from "next/router";

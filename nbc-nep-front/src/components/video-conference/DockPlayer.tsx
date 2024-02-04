@@ -1,4 +1,3 @@
-import { Player, PlayerState } from "@/components/metaverse/types/metaverse";
 import useAnimated from "@/hooks/useAnimated";
 import { useState } from "react";
 import styled from "styled-components";
@@ -6,6 +5,7 @@ import StBadge from "../common/badge/Badge";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import MetaAvatar from "../metaverse/avatar/MetaAvatar";
 import PlayerStateSelector from "./PlayerStateSelector";
+import { Player, PlayerState } from "@/types/metaverse.types";
 
 interface Props {
   player?: Player;

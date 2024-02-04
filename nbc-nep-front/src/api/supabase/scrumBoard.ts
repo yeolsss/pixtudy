@@ -1,10 +1,10 @@
-import { supabase } from "@/supabase/supabase";
-import { TablesInsert, TablesUpdate } from "@/supabase/types/supabase";
+import { supabase } from "@/supabase";
+import { TablesInsert, TablesUpdate } from "@/types/supabase.types";
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
   Space_members,
-} from "@/supabase/types/supabase.tables.type";
+} from "@/types/supabase.tables.types";
 
 export const getCategories = async (
   spaceId: string

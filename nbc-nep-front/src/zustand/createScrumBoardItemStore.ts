@@ -2,8 +2,8 @@ import { create } from "zustand";
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
-} from "@/supabase/types/supabase.tables.type";
-import { BackDropType } from "@/components/scrumboard/types/scrumTypes";
+} from "@/types/supabase.tables.types";
+import { BackDropType } from "@/types/scrum.types";
 import createSelectors from "@/zustand/config/createSelector";
 
 interface ScrumBoardItemBackDropState {

@@ -8,7 +8,7 @@ import { useGetCategories, useGetSpaceQuery } from "@/hooks/query/useSupabase";
 import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import { Kanban_categories } from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { AnimatePresence } from "framer-motion";
 import { useParams } from "next/navigation";

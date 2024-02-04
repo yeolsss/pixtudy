@@ -38,13 +38,13 @@ import {
   updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
-import { Database, Tables } from "@/supabase/types/supabase";
+import { Database, Tables } from "@/types/supabase.types";
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
   Space_members,
   Spaces,
-} from "@/supabase/types/supabase.tables.type";
+} from "@/types/supabase.tables.types";
 import { authValidation } from "@/utils/authValidate";
 import useAuthStore from "@/zustand/authStore";
 import { Session } from "@supabase/supabase-js";

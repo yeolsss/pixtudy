@@ -1,14 +1,14 @@
-import { Player } from "@/components/metaverse/types/metaverse";
 import { splitVideoSource } from "@/components/video-conference/libs/util";
 import useLayout from "@/hooks/conference/useLayout";
 import useConferenceStore from "@/zustand/conferenceStore";
 import { isEmpty } from "lodash";
 import styled from "styled-components";
 import ShareScreenContainer from "../ShareScreenContainer";
-import { Producer } from "../types/ScreenShare.types";
+import { Producer } from "../../../types/conference.types";
 import OtherPlayerShareMediaItem from "./OtherPlayerShareMediaItem";
 import PlayerMediaDisplay from "./PlayerMediaDisplay";
 import PlayerProducerContainer from "./PlayerProducerContainer";
+import { Player } from "@/types/metaverse.types";
 
 interface Props {
   playerList: Player[];

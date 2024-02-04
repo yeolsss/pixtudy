@@ -1,4 +1,4 @@
-import { ChatType } from "@/components/metaverse/types/ChatType";
+import { ChatType } from "@/types/metaverse.types";
 
 export const formatDate = (date: Date | string | undefined, type: ChatType) => {
   if (typeof date === "string") date = new Date(date);

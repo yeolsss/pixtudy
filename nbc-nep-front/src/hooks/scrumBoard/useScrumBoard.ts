@@ -1,5 +1,5 @@
 import useScrumBoardStore from "@/zustand/scrumBoardStore";
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import { Kanban_categories } from "@/types/supabase.tables.types";
 
 interface ReturnType {
   categories: Kanban_categories[];

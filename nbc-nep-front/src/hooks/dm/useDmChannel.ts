@@ -1,7 +1,7 @@
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import { useGetDmChannel } from "@/hooks/query/useSupabase";
-import { supabase } from "@/supabase/supabase";
-import { Tables } from "@/supabase/types/supabase";
+import { supabase } from "@/supabase";
+import { Tables } from "@/types/supabase.types";
 import useDmStore from "@/zustand/dmStore";
 import {
   RealtimeChannel,

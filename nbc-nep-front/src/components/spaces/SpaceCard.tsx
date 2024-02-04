@@ -1,12 +1,12 @@
-import CopyIcon from "@/assets/icons/CopyIcon.svg";
 import useGetUsersCount from "@/hooks/query/useGetUsersCount";
-import { Space_members } from "@/supabase/types/supabase.tables.type";
+import { Space_members } from "@/types/supabase.tables.types";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import SpaceThumb from "../common/SpaceThumb";
 import UserIcon from "../common/UserIcon";
+import { copyIcon } from "@/assets/GNB";
 
 interface Props {
   space: Space_members | null;
@@ -42,7 +42,7 @@ export default function SpaceCard({ space }: Props) {
         <h1>
           {space ? space.spaces?.title : "Pixtudy 가이드 방입니다."}
           <Image
-            src={CopyIcon}
+            src={copyIcon}
             width={10}
             height={12}
             alt={"copy code"}

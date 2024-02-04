@@ -1,11 +1,11 @@
 import MicOff from "@/assets/dock-icons/mic-off.svg";
 import MicOn from "@/assets/dock-icons/mic-on.svg";
-import { Player } from "@/components/metaverse/types/metaverse";
 import Image from "next/image";
 import ShareMediaItem from "../ShareMediaItem";
 import { findVideoSourcesByType } from "../libs/util";
-import { VideoSource } from "../types/ScreenShare.types";
+import { VideoSource } from "../../../types/conference.types";
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
+import { Player } from "@/types/metaverse.types";
 
 interface Props {
   camAndAudioVideoSources: VideoSource[];

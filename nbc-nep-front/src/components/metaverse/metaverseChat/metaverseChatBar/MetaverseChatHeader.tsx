@@ -1,6 +1,6 @@
-import CloseIcon from "@/assets/icons/Times.svg";
 import Image from "next/image";
 import styled from "styled-components";
+import { times } from "@/assets/GNB";
 
 interface Props {
   title: string;
@@ -17,7 +17,7 @@ export default function MetaverseChatHeader({
       <h1>{title}</h1>
       {subtitle && <h2>To. {subtitle}</h2>}
       <button onClick={handler}>
-        <Image src={CloseIcon} alt="close" width={12} height={12} />
+        <Image src={times} alt="close" width={12} height={12} />
       </button>
     </StMetaverseDmHeader>
   );

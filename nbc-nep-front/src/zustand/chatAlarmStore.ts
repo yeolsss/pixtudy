@@ -1,6 +1,6 @@
-import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
+import { dmChatAlarmState } from "@/types/metaverse.types";
 
 interface initialChatAlarmState {
   globalChatState: boolean;

@@ -2,7 +2,7 @@ import {
   CreateSpaceInfo,
   JoinSpaceInfo,
   UserProfile,
-} from "@/components/spaces/types/space.types";
+} from "@/types/space.types";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
 
