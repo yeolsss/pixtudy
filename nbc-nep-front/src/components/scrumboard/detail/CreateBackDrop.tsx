@@ -8,7 +8,9 @@ import CreateDescription from "@/components/scrumboard/detail/createBackDrop/Cre
 import CreateInput from "@/components/scrumboard/detail/createBackDrop/CreateInput";
 import BackDropTypeButtonGroup from "@/components/scrumboard/libs/BackDropType";
 import useFocusInput from "@/hooks/metaverse/useFocusInput";
+import { fadeInOut } from "@/styles/animations";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export default function CreateBackDrop() {
@@ -17,7 +19,11 @@ export default function CreateBackDrop() {
   const [handleFocus, handleBlur] = useFocusInput();
 
   return (
-    <StCreateBackDrop onFocus={handleFocus} onBlur={handleBlur}>
+    <StCreateBackDrop
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      {...fadeInOut({ x: -5, y: 5 })}
+    >
       <StCreateBackDropHeader>
         <CreateInput />
         <div>{BackDropTypeButtonGroup(backDropType)}</div>
@@ -35,7 +41,7 @@ export default function CreateBackDrop() {
   );
 }
 
-const StCreateBackDrop = styled.div`
+const StCreateBackDrop = styled(motion.div)`
   display: flex;
   flex-direction: column;
   position: absolute;
