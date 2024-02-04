@@ -5,7 +5,7 @@ import HomeIntroduction from "@/components/home/HomeIntroduction";
 import PixelBackground from "@/components/home/PixelBackground";
 import Layout from "@/components/layout/Layout";
 import useHandleScroll from "@/hooks/scroll/useHandleScroll";
-import { getCookie } from "@/utils/middlewareUtils";
+import { getCookie } from "@/utils/middlewareCookie";
 import { pathValidation } from "@/utils/middlewareValidate";
 import useAuthStore from "@/zustand/authStore";
 import { ReactElement, useEffect, useRef } from "react";

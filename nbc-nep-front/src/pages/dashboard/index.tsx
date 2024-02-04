@@ -7,9 +7,8 @@ import Spaces from "@/components/spaces/Spaces";
 import useModal from "@/hooks/modal/useModal";
 import useTourTooltip from "@/hooks/tooltip/useTourTooltip";
 import { Database, Tables } from "@/types/supabase.types";
-import { getCookie } from "@/utils/middlewareUtils";
+import { getCookie } from "@/utils/middlewareCookie";
 import { pathValidation } from "@/utils/middlewareValidate";
-import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltipUtils";
 import { createClient } from "@supabase/supabase-js";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
@@ -22,6 +21,7 @@ import "swiper/css/pagination";
 import { Autoplay, Mousewheel, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { BannerBg1, BannerBg2, BannerBg3, BannerBg4 } from "@/assets/banner";
+import { DASHBOARD_TOUR_TOOLTIP } from "@/pages/dashboard/constants";
 
 interface Props {
   spaces: (Tables<"spaces"> & { bgSrc: StaticImageData })[];
