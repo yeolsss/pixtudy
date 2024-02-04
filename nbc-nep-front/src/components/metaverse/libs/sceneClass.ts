@@ -1,8 +1,8 @@
 import { CurrentPlayer } from "@/components/metaverse/libs/currentPlayer";
 import { OtherPlayersGroup } from "@/components/metaverse/libs/otherPlayersGroup";
-import { Player } from "@/components/metaverse/types/metaverse";
 import Phaser from "phaser";
 import { Socket } from "socket.io-client";
+import { Player } from "@/types/metaverse.types";
 
 const RUN = 350;
 const WORK = 250;
@@ -85,6 +85,7 @@ export class SceneClass extends Phaser.Scene {
     // current player setting
     this.socket.on("current-players", (players: Player[]) => {
       players.forEach((player) => {
+        console.log("this player", player);
         if (player.playerId === this.playerId) {
           this.addPlayer(player, objLayer!);
         } else {

@@ -1,4 +1,4 @@
-import { KanbanAssignees } from "./supabase.tables.type";
+import { KanbanAssignees } from "./supabase.tables.types";
 
 export type Json =
   | string

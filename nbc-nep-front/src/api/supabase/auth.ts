@@ -1,8 +1,7 @@
-import { ForgetPasswordMessageType } from "@/components/auth/utils/authUtils";
-import { supabase } from "@/supabase/supabase";
-import { Tables } from "@/supabase/types/supabase";
-
+import { supabase } from "@/supabase";
+import { Tables } from "@/types/supabase.types";
 import { Session } from "@supabase/supabase-js";
+import { ForgetPasswordMessageType } from "@/types/auth.types";
 
 /**
  * Supabase 회원가입을 위한 함수

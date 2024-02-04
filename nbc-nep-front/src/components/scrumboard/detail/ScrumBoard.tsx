@@ -8,10 +8,11 @@ import { useGetCategories, useGetSpaceQuery } from "@/hooks/query/useSupabase";
 import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import { Kanban_categories } from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
+import { AnimatePresence } from "framer-motion";
 import { useParams } from "next/navigation";
-import { useEffect, WheelEvent } from "react";
+import { WheelEvent, useEffect } from "react";
 import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
 import ScrumBoardHeader from "./ScrumBoardHeader";
@@ -48,24 +49,28 @@ export default function ScrumBoard() {
   return (
     <StScrumBoardWrapper>
       <ScrumBoardHeader title={spaceData?.title!} />
-      <StScrumBoardContainer onWheel={handleWheel}>
-        <div onFocus={handleFocus} onBlur={handleBlur}>
-          {categories?.map((category) => {
-            return <ScrumBoardCategory key={category.id} category={category} />;
-          })}
-          <div>
-            <StAddCategoryBtn onClick={handleAddCategory}>
-              add category
-            </StAddCategoryBtn>
+      <AnimatePresence>
+        <StScrumBoardContainer onWheel={handleWheel}>
+          <div onFocus={handleFocus} onBlur={handleBlur}>
+            {categories?.map((category) => {
+              return (
+                <ScrumBoardCategory key={category.id} category={category} />
+              );
+            })}
+            <div>
+              <StAddCategoryBtn onClick={handleAddCategory}>
+                add category
+              </StAddCategoryBtn>
+            </div>
           </div>
-        </div>
-      </StScrumBoardContainer>
-      {isCreateCategoryModalOpen && (
-        <ModalPortal>
-          <CreateCategoryModal />
-        </ModalPortal>
-      )}
-      {isCreateBackDropOpen && <CreateBackDrop />}
+        </StScrumBoardContainer>
+        {isCreateCategoryModalOpen && (
+          <ModalPortal>
+            <CreateCategoryModal />
+          </ModalPortal>
+        )}
+        {isCreateBackDropOpen && <CreateBackDrop />}
+      </AnimatePresence>
     </StScrumBoardWrapper>
   );
 }

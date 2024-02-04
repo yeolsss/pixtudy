@@ -1,8 +1,8 @@
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
-import { DMListCard } from "@/components/metaverse/types/metaverse";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useDmStore from "@/zustand/dmStore";
 import styled from "styled-components";
+import { DMListCard } from "@/types/metaverse.types";
 
 interface Props {
   dm: DMListCard;

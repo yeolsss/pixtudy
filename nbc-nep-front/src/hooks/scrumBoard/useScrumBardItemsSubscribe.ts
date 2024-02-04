@@ -7,9 +7,9 @@ import {
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
-} from "@/supabase/types/supabase.tables.type";
+} from "@/types/supabase.tables.types";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import { supabase } from "@/supabase/supabase";
+import { supabase } from "@/supabase";
 import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import { useGetSpaceMembers } from "@/hooks/query/useSupabase";
 

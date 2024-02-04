@@ -1,4 +1,4 @@
-import { BackDropType } from "@/components/scrumboard/types/scrumTypes";
+import { BackDropType } from "@/types/scrum.types";
 import {
   BACK_DROP_TYPE_DETAIL,
   BACK_DROP_TYPE_UPDATE,

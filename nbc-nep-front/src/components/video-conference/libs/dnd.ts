@@ -3,7 +3,7 @@ import {
   GuideStatusType,
   LayoutConsumersType,
   VideoSource,
-} from "../types/ScreenShare.types";
+} from "../../../types/conference.types";
 
 export const getGridStyle = (currentGuide: GuideStatusType): GridStatusType => {
   switch (currentGuide) {

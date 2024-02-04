@@ -1,11 +1,8 @@
 import { good } from "@/assets/auth";
 import Image from "next/image";
 import styled from "styled-components";
-import {
-  AuthFormType,
-  generateRandomIndex,
-  tipsArray,
-} from "./utils/authUtils";
+import { generateRandomIndex, tipsArray } from "./utils/authUtils";
+import { AuthFormType } from "@/types/auth.types";
 
 interface Props {
   formType: AuthFormType;

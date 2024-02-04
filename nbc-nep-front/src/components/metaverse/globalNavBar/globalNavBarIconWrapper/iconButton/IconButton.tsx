@@ -1,9 +1,9 @@
 import StBadge from "@/components/common/badge/Badge";
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { IconButtonProperty } from "@/types/metaverse.types";
 
 export default function IconButton({
   buttonImage,

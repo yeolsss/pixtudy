@@ -12,7 +12,7 @@ import {
   MicOn,
   ScreenOff,
   ScreenOn,
-} from "./styles/icons";
+} from "../../assets/dock-icons";
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 import usePlayerListStore from "@/zustand/metaversePlayerStore";
 

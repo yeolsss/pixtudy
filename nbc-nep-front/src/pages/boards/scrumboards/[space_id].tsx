@@ -1,8 +1,8 @@
 import CustomHead from "@/SEO/CustomHead";
 import Layout from "@/components/layout/Layout";
 import ScrumBoard from "@/components/scrumboard/detail/ScrumBoard";
-import { NextPageWithLayout } from "@/pages/_app";
 import { ReactElement } from "react";
+import { NextPageWithLayout } from "@/types/app.types";
 
 const ScrumBoardPage: NextPageWithLayout = () => {
   return (

@@ -14,7 +14,7 @@ import {
   ProducerForConsume,
   ShareType,
   TransPortParams,
-} from "../types/ScreenShare.types";
+} from "../../../types/conference.types";
 import useSocket from "./useSocket";
 
 export default function useVideoConference() {

@@ -11,7 +11,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
 import AuthInput from "./AuthInput";
 import SignInOptions from "./SignInOptions";
-import { AuthFormType, FormValues, getInputs } from "./utils/authUtils";
+import { AuthFormType, FormValues } from "@/types/auth.types";
+import { getInputs } from "@/components/auth/utils/authUtils";
 
 interface Props {
   formType: AuthFormType;

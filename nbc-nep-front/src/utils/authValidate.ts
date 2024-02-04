@@ -1,5 +1,5 @@
-import { AuthFormType } from "@/components/auth/utils/authUtils";
 import { toast } from "react-toastify";
+import { AuthFormType } from "@/types/auth.types";
 
 // email validation check function
 export function handleValidateEmail(value: string) {

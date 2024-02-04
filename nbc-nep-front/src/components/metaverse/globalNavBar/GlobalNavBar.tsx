@@ -1,10 +1,10 @@
-import HomeIcon from "@/assets/icons/LogoSection.svg";
 import CloseButton from "@/components/metaverse/globalNavBar/CloseButton";
 import GlobalNavBarIconWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/GlobalNavBarIconWrapper";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { logoSection } from "@/assets/GNB";
 
 export default function GlobalNavBar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -44,7 +44,7 @@ export default function GlobalNavBar() {
     <StGlobalNavBar>
       <audio ref={audioRef} src={sound} />
       <StHomeLink href="/dashboard">
-        <Image src={HomeIcon} alt={"홈 버튼"} width={24} height={24} />
+        <Image src={logoSection} alt={"홈 버튼"} width={24} height={24} />
       </StHomeLink>
       <div>
         <GlobalNavBarIconWrapper />

@@ -3,7 +3,7 @@ import {
   MediaConsumeParams,
   RecvTransportType,
   TransPortParams,
-} from "@/components/video-conference/types/ScreenShare.types";
+} from "@/types/conference.types";
 import { useRef } from "react";
 import { Socket } from "socket.io-client";
 

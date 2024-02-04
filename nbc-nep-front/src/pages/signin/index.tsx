@@ -9,10 +9,11 @@ import * as St from "@/components/auth/styles/authCommon.styles";
 import ModalPortal from "@/components/modal/ModalPortal";
 import ForgetPasswordModal from "@/components/modal/forgetPasswordModal/ForgetPasswordModal";
 import useModal from "@/hooks/modal/useModal";
-import { getCookie } from "@/utils/middlewareUtils";
+import { getCookie } from "@/utils/middlewareCookie";
 import { pathValidation } from "@/utils/middlewareValidate";
 import Link from "next/link";
 import { ReactElement, useEffect } from "react";
+
 export function SignIn() {
   const { isForgetPasswordModalOpen } = useModal();
 

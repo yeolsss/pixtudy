@@ -1,3 +1,14 @@
+import { StaticImageData } from "next/image";
+
+export type dmChatAlarmState = {
+  dm_id: string;
+  state: boolean;
+};
+
+export type ChatType = "GLOBAL" | "DM";
+
+export type Config = "SPACE_CONFIG" | "VIDEO_CONFIG" | "CHAT_CONFIG";
+
 export type Player = {
   rotation: number;
   x: number;
@@ -50,3 +61,24 @@ export type DMListCard = {
 };
 
 export type Game = Phaser.Game;
+
+export interface HandleOpenDmContainerPrams {
+  otherUserId: string;
+  otherUserName: string;
+  otherUserAvatar: string;
+}
+
+export type ButtonType =
+  | "chat"
+  | "settings"
+  | "report"
+  | "playerList"
+  | "close"
+  | "kanban";
+
+export type IconButtonProperty = {
+  buttonImage: StaticImageData | string;
+  description: string;
+  type: ButtonType;
+  handleOnClick: () => void;
+};

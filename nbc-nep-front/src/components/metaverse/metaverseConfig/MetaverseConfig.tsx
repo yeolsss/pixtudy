@@ -8,11 +8,11 @@ import {
   SPACE_CONFIG,
   VIDEO_CONFIG,
 } from "../constants/config.constant";
-import { Config } from "../types/config.types";
 import ConfigAside from "./ConfigAside";
 import ConfigSpace from "./ConfigSpace";
 import ConfigSpaceChat from "./ConfigSpaceChat";
 import ConfigVideo from "./ConfigVideo";
+import { Config } from "@/types/metaverse.types";
 
 export default function MetaverseConfigModal() {
   const [currentConfigMode, setConfigMode] = useState<Config>(SPACE_CONFIG);

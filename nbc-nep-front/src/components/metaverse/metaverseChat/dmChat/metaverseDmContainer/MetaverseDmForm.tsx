@@ -2,7 +2,7 @@ import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
 import { useSendMessage } from "@/hooks/query/useSupabase";
 import useInput from "@/hooks/useInput";
-import { Tables } from "@/supabase/types/supabase";
+import { Tables } from "@/types/supabase.types";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";

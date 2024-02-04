@@ -1,12 +1,6 @@
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
-
-export interface ConfirmTextState {
-  title: string;
-  message: string;
-  denyButtonText?: string;
-  confirmButtonText?: string;
-}
+import { ConfirmTextState } from "@/types/zustand.types";
 
 interface ConfirmType extends ConfirmTextState {
   result: boolean;

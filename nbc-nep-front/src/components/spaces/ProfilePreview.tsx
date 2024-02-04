@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import { StAvatar } from "./AvatarInput";
 import { FORM_CHARACTER, SRC_BASE } from "./constants/constants";
-import { Procedure } from "./types/space.types";
+import { Procedure } from "../../types/space.types";
 
 interface Props {
   setProcedure: Dispatch<SetStateAction<Procedure>>;

@@ -1,7 +1,7 @@
 import { updateCategoryItem } from "@/api/supabase/scrumBoard";
 import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import { Kanban_categories } from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";

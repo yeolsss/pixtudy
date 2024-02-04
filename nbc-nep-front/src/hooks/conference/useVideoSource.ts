@@ -1,7 +1,4 @@
-import {
-  Producer,
-  ShareType,
-} from "@/components/video-conference/types/ScreenShare.types";
+import { Producer, ShareType } from "@/types/conference.types";
 import useConferenceStore from "@/zustand/conferenceStore";
 import { toast } from "react-toastify";
 

@@ -1,6 +1,6 @@
 import IconButton from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButton";
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import styled from "styled-components";
+import { IconButtonProperty } from "@/types/metaverse.types";
 
 interface Props {
   button: IconButtonProperty;
