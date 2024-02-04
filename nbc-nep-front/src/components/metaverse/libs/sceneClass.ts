@@ -85,6 +85,7 @@ export class SceneClass extends Phaser.Scene {
     // current player setting
     this.socket.on("current-players", (players: Player[]) => {
       players.forEach((player) => {
+        console.log("this player", player);
         if (player.playerId === this.playerId) {
           this.addPlayer(player, objLayer!);
         } else {
