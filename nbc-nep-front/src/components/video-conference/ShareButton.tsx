@@ -1,16 +1,14 @@
+import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import styled from 'styled-components'
-
-import { theme } from '@/styles/Globalstyle'
 
 import {
-  LocalStorageDeviceInputs,
   ShareType
 } from '../../types/conference.types'
 
-import { DEVICE_STORAGE_KEY } from './constants'
+import { callToastDockError, getMediaStreamByType } from './libs/sharebutton'
+import { StShareButtonWrapper } from './styles/shareButton.styles'
 
 interface Props {
   onShare: (stream: MediaStream, type: ShareType) => void
@@ -19,8 +17,8 @@ interface Props {
   shareButtonText: string
   stopSharingButtonText: string
   isCanShare?: boolean
-  shareSvg: any
-  stopShareSvg: any
+  shareSvg: StaticImport
+  stopShareSvg: StaticImport
 }
 
 export default function ShareButton({
@@ -58,7 +56,6 @@ export default function ShareButton({
       onShare(mediaStream, type)
     } catch (err: unknown) {
       setIsShare(false)
-      console.error('on error when start capture', err)
 
       if (err instanceof Error) {
         if (err.name === 'NotAllowedError') {
@@ -75,9 +72,8 @@ export default function ShareButton({
         }
 
         toast.error(
-          '사용자 웹 캠 정보를 가져오는 과정에서 오류가 발생했습니다. 콘솔 창에 에러 메시지와 함께 개발자에게 문의바랍니다.'
+          '사용자 웹 캠 정보를 가져오는 과정에서 오류가 발생했습니다. 개발자에게 문의 바랍니다.'
         )
-        console.error(err)
       }
     }
   }
@@ -107,85 +103,5 @@ export default function ShareButton({
   )
 }
 
-const StShareButtonWrapper = styled.div<{
-  $isScreenShareType: boolean
-  $isShare: boolean
-}>`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  gap: ${(props) => props.theme.spacing[4]};
-  color: ${(props) => props.theme.color.text.interactive.inverse};
 
-  ${(props) =>
-    props.$isScreenShareType && props.$isShare && 'cursor:not-allowed;'}
-`
 
-const getMediaStreamByType = async (type: ShareType) => {
-  const mediaFunctions = {
-    screen: getDisplayMedia,
-    webcam: getUserMedia,
-    audio: getUserAudio
-  }[type]
-
-  return await mediaFunctions()
-}
-
-const getDisplayMedia = () =>
-  navigator.mediaDevices.getDisplayMedia({
-    video: {
-      displaySurface: 'window'
-    },
-    audio: false
-  })
-
-const getUserMedia = async () => {
-  const videoConstraints = await getVideoDevice()
-
-  return navigator.mediaDevices.getUserMedia({
-    video: videoConstraints,
-    audio: false
-  })
-}
-
-const getUserAudio = async () => {
-  const audioConstraints = await getAudioDevice()
-
-  return navigator.mediaDevices.getUserMedia({
-    audio: audioConstraints,
-    video: false
-  })
-}
-
-const getVideoDevice = async () => {
-  const deviceInputs = JSON.parse(
-    localStorage.getItem(DEVICE_STORAGE_KEY) as string
-  ) as LocalStorageDeviceInputs
-
-  if (!deviceInputs) {
-    return true
-  }
-
-  return deviceInputs.video
-}
-
-const getAudioDevice = async () => {
-  const deviceInputs = JSON.parse(
-    localStorage.getItem(DEVICE_STORAGE_KEY) as string
-  ) as LocalStorageDeviceInputs
-
-  if (!deviceInputs) {
-    return true
-  }
-  return deviceInputs.audio
-}
-
-const callToastDockError = (message: string) => {
-  toast.error(message, {
-    position: 'bottom-center',
-    style: { bottom: theme.spacing[112], fontSize: '1.25rem' }
-  })
-}
