@@ -1,4 +1,4 @@
-import { Space_members } from "@/types/supabase.tables.types";
+import { SpaceMembers } from "@/types/supabase.tables.types";
 import { useRouter } from "next/router";
 import { StContentsContainer } from "../spaces/JoinSpaceForm";
 import {
@@ -7,7 +7,7 @@ import {
 } from "./styles/scrumBoardCard.styles";
 
 interface Props {
-  space: Space_members;
+  space: SpaceMembers;
 }
 
 export default function ScrumBoardCard({ space }: Props) {

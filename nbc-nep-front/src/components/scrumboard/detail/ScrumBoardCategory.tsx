@@ -3,7 +3,7 @@ import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants";
 import { useGetCategoryItems } from "@/hooks/query/useSupabase";
 import useDropItem from "@/hooks/scrumBoard/useDropItem";
 import { fadeInOut } from "@/styles/animations";
-import { Kanban_categories } from "@/types/supabase.tables.types";
+import { KanbanCategories } from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { WheelEvent } from "react";
@@ -16,7 +16,7 @@ import CategoryHeader from "./CategoryHeader";
 import ScrumBoardItem from "./ScrumBoardItem";
 
 interface Props {
-  category: Kanban_categories;
+  category: KanbanCategories;
 }
 
 export default function ScrumBoardCategory({ category }: Props) {
