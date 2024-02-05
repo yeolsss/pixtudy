@@ -29,6 +29,11 @@ export default function MetaverseChat() {
   const countUnRead = useRef<number>(0);
 
   useEffect(() => {
+    console.log("isOpenChat", isOpenChat);
+    console.log("chatType", chatType);
+  }, [isOpenChat, chatType]);
+
+  useEffect(() => {
     const dmChannel = supabase.channel(`dm_channel_${spaceId}`);
     dmChannel
       .on(
