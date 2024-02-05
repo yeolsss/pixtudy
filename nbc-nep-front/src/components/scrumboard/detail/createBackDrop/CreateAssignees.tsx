@@ -4,7 +4,11 @@ import SelectAssigneesList from "@/components/scrumboard/detail/createBackDrop/S
 import useDebounceSpaceMemberSearch from "@/hooks/scrumBoard/useDebounceSpaceMemberSearch";
 import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import { useRef } from "react";
-import styled from "styled-components";
+import {
+  StCreateAssigneesInput,
+  StCreateAssigneesInputWrapper,
+  StCreateAssigneesWrapper,
+} from "../../styles/assignee.styles";
 
 export default function CreateAssignees() {
   const searchValue = useScrumBoardMemberSearchStore.use.searchValue();
@@ -30,11 +34,11 @@ export default function CreateAssignees() {
 
   return (
     <StCreateAssigneesWrapper>
-      <CreateBackDropTitle title={"담당자 등록"} />
+      <CreateBackDropTitle title="담당자 등록" />
       <StCreateAssigneesInputWrapper>
         <StCreateAssigneesInput
           type="text"
-          placeholder={"담당자를 검색해보세요."}
+          placeholder="담당자를 검색해보세요."
           value={searchValue}
           onChange={(e) => {
             changeSearchValue(e.target.value);
@@ -45,34 +49,7 @@ export default function CreateAssignees() {
         />
         <AssigneesBackDrop />
       </StCreateAssigneesInputWrapper>
-      {assignees.length > 0 && <SelectAssigneesList tagType={"assignees"} />}
+      {assignees.length > 0 && <SelectAssigneesList tagType="assignees" />}
     </StCreateAssigneesWrapper>
   );
 }
-
-const StCreateAssigneesWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[8]};
-`;
-
-const StCreateAssigneesInputWrapper = styled.div`
-  position: relative;
-`;
-const StCreateAssigneesInput = styled.input`
-  outline: none;
-  width: 100%;
-  font-family: var(--main-font);
-  font-size: ${(props) => props.theme.unit[14]};
-  border-radius: ${(props) => props.theme.border.radius[8]};
-  border: 1px solid ${(props) => props.theme.color.border.secondary};
-  background: ${(props) => props.theme.color.text.interactive.inverse};
-  color: ${(props) => props.theme.color.text.tertiary};
-  overflow: hidden;
-
-  line-height: 150%;
-  letter-spacing: -0.14px;
-  &:focus {
-    border-color: ${(props) => props.theme.color.border.focusRing};
-  }
-`;

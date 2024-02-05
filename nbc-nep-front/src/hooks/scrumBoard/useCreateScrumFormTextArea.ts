@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import { textMaxLength } from "@/components/scrumboard/libs/util";
+import { cutTextToMaxLength } from "@/components/scrumboard/libs/util";
 import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
+import { useEffect, useRef } from "react";
 
 interface Props {
   text: string;
@@ -21,23 +21,22 @@ export default function useCreateScrumFormTextArea({
   const setValidBoardText = useScrumBoardItemStore.use.setValidBoardText();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    adjustTextAreaHeight();
-  }, [text]);
-
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const text = textMaxLength(e.target.value, maxLength);
-    setValidBoardText(~text.trim().length > 0);
-    setText(text);
+    const cutText = cutTextToMaxLength(e.target.value, maxLength);
+    setValidBoardText(cutText.trim().length > 0);
+    setText(cutText);
   };
 
   const adjustTextAreaHeight = () => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = "auto";
-      textAreaRef.current.style.height =
-        textAreaRef.current.scrollHeight + "px";
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
     }
   };
+
+  useEffect(() => {
+    adjustTextAreaHeight();
+  }, [text]);
 
   return [text, textAreaRef, handleChange];
 }

@@ -21,7 +21,6 @@ export default function CreateSpaceModalMainContainer() {
   const {
     handleSubmit,
     register,
-    getValues,
     watch,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
@@ -41,7 +40,6 @@ export default function CreateSpaceModalMainContainer() {
             <CreateSpaceForm
               handleSubmit={handleSubmit}
               register={register}
-              getValues={getValues}
               isValid={isValid}
               errors={errors}
             />
@@ -53,7 +51,6 @@ export default function CreateSpaceModalMainContainer() {
             handleSubmit={handleSubmit}
             register={register}
             isValid={isValid}
-            mode="createSpace"
             errors={errors}
           />
         )}

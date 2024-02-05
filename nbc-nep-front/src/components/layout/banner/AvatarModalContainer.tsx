@@ -3,18 +3,30 @@ import BackDrop from "@/components/modal/BackDrop";
 import {
   StModalContainer,
   StModalContents,
-} from "@/components/modal/spaceModals/joinSpaceModal/JoinSpaceModalMainContainer";
+} from "@/components/modal/spaceModals/styles/spaceModalCommens.styles";
+// import {
+//   StModalContainer,
+//   StModalContents,
+// } from "@/components/modal/spaceModals/joinSpaceModal/JoinSpaceModalMainContainer";
+// import {
+//   StAvatar,
+//   StInputContainer,
+//   StInputWrapper,
+// } from "@/components/spaces/AvatarInput";
+// import {
+//   StButtonWrapper,
+//   StCurrentProfile,
+//   StProfileForm,
+// } from "@/components/spaces/ProfileForm";
+import { characterOptions } from "@/components/spaces/constants/constants";
 import {
   StAvatar,
-  StInputContainer,
-  StInputWrapper,
-} from "@/components/spaces/AvatarInput";
-import {
   StButtonWrapper,
   StCurrentProfile,
+  StInputContainer,
+  StInputWrapper,
   StProfileForm,
-} from "@/components/spaces/ProfileForm";
-import { characterOptions } from "@/components/spaces/constants/constants";
+} from "@/components/spaces/styles/profileForm.styles";
 import { StCreateInputWrapper } from "@/components/spaces/styles/spaceCommon.styles";
 import useModal from "@/hooks/modal/useModal";
 import { useJoinSpace } from "@/hooks/query/useSupabase";
@@ -89,21 +101,25 @@ export default function AvatarModalContainer() {
     <>
       <StModalContainer>
         <ModalHeader text="스페이스 입장하기" handler={handleCloseModal} />
+        <ModalHeader text="스페이스 입장하기" handler={handleCloseModal} />
         <StModalContents>
           <StProfileForm onSubmit={handleSubmit(handleEnterSpace)}>
             <StCurrentProfile>
               <StCreateInputWrapper $isError={!!errors?.nickname}>
-                <label htmlFor="nickname">닉네임</label>
-                <input
-                  id="nickname"
-                  defaultValue={user.displayName!}
-                  type="text"
-                  placeholder="닉네임"
-                  {...register("nickname", {
-                    required: "닉네임을 입력해주십시오.",
-                    validate: validateNickname,
-                  })}
-                />
+                <label htmlFor="nickname">
+                  닉네임
+                  <input
+                    id="nickname"
+                    defaultValue={user.displayName!}
+                    type="text"
+                    placeholder="닉네임"
+                    aria-labelledby="nicknameLabel"
+                    {...register("nickname", {
+                      required: "닉네임을 입력해주십시오.",
+                      validate: validateNickname,
+                    })}
+                  />
+                </label>
                 {errors.nickname && (
                   <span>{errors.nickname.message as string}</span>
                 )}
@@ -115,14 +131,14 @@ export default function AvatarModalContainer() {
                   key={option.value}
                   $isSelected={watch("avatar") === option.value}
                 >
-                  <input
-                    type="radio"
-                    id={option.value}
-                    value={option.value}
-                    onChange={handleCustomChange}
-                    {...restParam}
-                  />
                   <label htmlFor={option.value} key={option.label}>
+                    <input
+                      type="radio"
+                      id={option.value}
+                      value={option.value}
+                      onChange={handleCustomChange}
+                      {...restParam}
+                    />
                     <StAvatar resource={option.src} />
                   </label>
                 </StInputWrapper>

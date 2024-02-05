@@ -43,6 +43,7 @@ export default function ShareMediaItem({
             if (!videoRef) {
               return;
             }
+            // eslint-disable-next-line
             videoRef.srcObject = stream;
           }}
         />
@@ -55,6 +56,7 @@ export default function ShareMediaItem({
             if (!audioRef) {
               return;
             }
+            // eslint-disable-next-line
             audioRef.srcObject = stream;
           }}
         />
@@ -63,3 +65,6 @@ export default function ShareMediaItem({
     </StShareMediaItem>
   );
 }
+ShareMediaItem.defaultProps = {
+  isCurrentPlayer: false,
+};

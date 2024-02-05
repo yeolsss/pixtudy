@@ -55,7 +55,6 @@ export default function JoinSpaceModalMainContainer() {
             register={register}
             isValid={isValid}
             errors={errors}
-            mode="joinSpace"
           />
         )}
       </StModalJoinSpaceContents>

@@ -1,4 +1,4 @@
-import { contents } from "./home.constant";
+import { contents } from "./constants";
 import { StScrollItemWrapper } from "./styles/home.styles";
 
 interface Props {

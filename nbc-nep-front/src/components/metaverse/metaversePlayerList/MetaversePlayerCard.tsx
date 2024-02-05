@@ -1,12 +1,12 @@
 import StBadge from "@/components/common/badge/Badge";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
-import useAuthStore from "@/zustand/authStore";
-import { HandleOpenDmContainerPrams, Player } from "@/types/metaverse.types";
-import { getPlayerStateValue } from "@/components/video-conference/libs/dock";
 import {
   StBadgeWrapper,
   StMetaversePlayerCard,
 } from "@/components/metaverse/styles/metaverse.styles";
+import { getPlayerStateValue } from "@/components/video-conference/libs/dock";
+import { HandleOpenDmContainerPrams, Player } from "@/types/metaverse.types";
+import useAuthStore from "@/zustand/authStore";
 
 interface Props {
   player: Player;

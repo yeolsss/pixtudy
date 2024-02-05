@@ -35,8 +35,11 @@ export default function ShareScreenDragItem({
       <StDragContainer ref={preview} $active={active} $isDragging={isDragging}>
         {active && (
           <button
+            type="button"
             onClick={() => {
-              handleInactive && handleInactive(id);
+              if (handleInactive) {
+                handleInactive(id);
+              }
             }}
           >
             레이아웃 제거
@@ -48,7 +51,7 @@ export default function ShareScreenDragItem({
             activationKeys: ["Control", "Meta"],
             disabled: !active,
           }}
-          disablePadding={true}
+          disablePadding
         >
           <TransformComponent>{children}</TransformComponent>
         </TransformWrapper>
@@ -56,3 +59,7 @@ export default function ShareScreenDragItem({
     </StShareScreenDragItemContainer>
   );
 }
+
+ShareScreenDragItem.defaultProps = {
+  handleInactive: () => {},
+};

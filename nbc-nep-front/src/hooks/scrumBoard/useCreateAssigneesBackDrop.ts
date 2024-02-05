@@ -1,6 +1,6 @@
+import { Space_members } from "@/types/supabase.tables.types";
 import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import { useEffect } from "react";
-import { Space_members } from "@/types/supabase.tables.types";
 
 interface ReturnType {
   filteredSpaceMembers: Space_members[];
