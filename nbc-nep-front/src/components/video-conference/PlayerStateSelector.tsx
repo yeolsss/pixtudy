@@ -4,17 +4,10 @@ import useSocket from "@/hooks/socket/useSocket";
 import { PlayerState } from "@/types/metaverse.types";
 import useAuthStore from "@/zustand/authStore";
 
+import { motion } from "framer-motion";
 import { StItem, StUlWrapper } from "./styles/playerStateSelector.styles";
 
-interface Props {
-  isRender: boolean;
-  handleAnimatedEnd: () => void;
-}
-
-export default function PlayerStateSelector({
-  isRender,
-  handleAnimatedEnd,
-}: Props) {
+export default function PlayerStateSelector() {
   const { id } = useAuthStore.use.user();
   const { changePlayerState, connect } = useSocket({ namespace: "/metaverse" });
 
@@ -27,23 +20,25 @@ export default function PlayerStateSelector({
   };
 
   return (
-    <StUlWrapper $isRender={isRender} onAnimationEnd={handleAnimatedEnd}>
-      <StItem onClick={handleChangeState(PlayerState.ONLINE)}>
-        <span />
-        <span>온라인</span>
-      </StItem>
-      <StItem onClick={handleChangeState(PlayerState.EATING)}>
-        <span />
-        <span>식사</span>
-      </StItem>
-      <StItem onClick={handleChangeState(PlayerState.LEFT_SEAT)}>
-        <span />
-        <span>자리비움</span>
-      </StItem>
-      <StItem onClick={handleChangeState(PlayerState.DISTURB)}>
-        <span />
-        <span>방해금지</span>
-      </StItem>
-    </StUlWrapper>
+    <motion.div initial={{ y: -20 }} animate={{ y: 0 }} exit={{ y: -20 }}>
+      <StUlWrapper>
+        <StItem onClick={handleChangeState(PlayerState.ONLINE)}>
+          <span />
+          <span>온라인</span>
+        </StItem>
+        <StItem onClick={handleChangeState(PlayerState.EATING)}>
+          <span />
+          <span>식사</span>
+        </StItem>
+        <StItem onClick={handleChangeState(PlayerState.LEFT_SEAT)}>
+          <span />
+          <span>자리비움</span>
+        </StItem>
+        <StItem onClick={handleChangeState(PlayerState.DISTURB)}>
+          <span />
+          <span>방해금지</span>
+        </StItem>
+      </StUlWrapper>
+    </motion.div>
   );
 }

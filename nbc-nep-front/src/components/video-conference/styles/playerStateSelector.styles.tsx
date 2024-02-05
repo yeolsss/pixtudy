@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
-import { slideDown, slideUp } from "@/styles/animations";
-
-export const StUlWrapper = styled.ul<{ $isRender: boolean }>`
+export const StUlWrapper = styled.ul`
   position: absolute;
 
   border-radius: ${(props) => props.theme.border.radius[16]};
@@ -20,9 +18,8 @@ export const StUlWrapper = styled.ul<{ $isRender: boolean }>`
   background-color: ${(props) => props.theme.color.metaverse.primary};
 
   bottom: calc(100% + ${(props) => props.theme.spacing[24]});
-
-  animation: ${(props) => (props.$isRender ? slideUp : slideDown)} 0.3s forwards;
 `;
+
 export const StItem = styled.li`
   color: ${(props) => props.theme.color.text.disabled};
   display: flex;

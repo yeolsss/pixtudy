@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import useAnimated from "@/hooks/useAnimated";
 import { Player } from "@/types/metaverse.types";
 
+import { AnimatePresence } from "framer-motion";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import MetaAvatar from "../metaverse/avatar/MetaAvatar";
 
@@ -28,9 +28,6 @@ export default function DockPlayer({ player }: Props) {
     setPlayerStateSelection(!isPlayerStateSelectionOpen);
   };
 
-  const [shouldRender, handleAnimatedEnd] = useAnimated(
-    isPlayerStateSelectionOpen
-  );
   return (
     <StDockPlayerWrapper>
       <BadgeWrapper>
@@ -52,12 +49,9 @@ export default function DockPlayer({ player }: Props) {
         <StDockPlayerState>
           {getPlayerStateToText(player?.state)}
         </StDockPlayerState>
-        {shouldRender && (
-          <PlayerStateSelector
-            isRender={isPlayerStateSelectionOpen}
-            handleAnimatedEnd={handleAnimatedEnd}
-          />
-        )}
+        <AnimatePresence>
+          {isPlayerStateSelectionOpen && <PlayerStateSelector />}
+        </AnimatePresence>
       </StDockPlayerInfoWrapper>
     </StDockPlayerWrapper>
   );
