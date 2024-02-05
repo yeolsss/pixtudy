@@ -15,20 +15,22 @@ export default function useDropItem(categoryId: string) {
     item: GetKanbanItemsByAssignees,
     targetCategoryId: string
   ) => {
-    updateMutate.mutate({
-      id: item.id,
-      updateCategoryId: targetCategoryId,
-    }),
+    updateMutate.mutate(
+      {
+        id: item.id,
+        updateCategoryId: targetCategoryId,
+      },
       {
         onSuccess: async () => {
           toast.success("카테고리가 변경되었습니다.");
         },
-      };
+      }
+    );
   };
 
   const dropSpec = {
     accept: "kanbanItem",
-    drop: (item: GetKanbanItemsByAssignees, monitor: DropTargetMonitor) => {
+    drop: (item: GetKanbanItemsByAssignees) => {
       handleDrop(item, categoryId);
       return item;
     },

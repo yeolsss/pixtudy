@@ -11,7 +11,7 @@ export default function useDragItem(item: GetKanbanItemsByAssignees) {
       targetCategoryId: monitor.getDropResult<DropItem>(),
       didDrop: !!monitor.didDrop(),
     }),
-    end: (item: GetKanbanItemsByAssignees, monitor: DragSourceMonitor) => {},
+    end: () => {},
   };
 
   const [{ targetCategoryId, isDragging, didDrop }, drag] = useDrag(dragSpec);

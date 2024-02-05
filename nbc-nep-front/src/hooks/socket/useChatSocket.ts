@@ -1,11 +1,11 @@
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import { Chat } from "@/types/metaverse.types";
 import useAuthStore from "@/zustand/authStore";
 import useChatListStore from "@/zustand/chatListStore";
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import io, { Socket } from "socket.io-client";
 import useMetaversePlayer from "../metaverse/useMetaversePlayer";
-import { Chat } from "@/types/metaverse.types";
 
 export default function useChatSocket(playerDisplayName: string | null = "") {
   const socket = useRef<Socket>(
@@ -35,7 +35,7 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
   };
 
   useEffect(() => {
-    if (!spaceId) return;
+    if (!spaceId) return () => {};
     if (socket.current && !socket.current.connected) {
       socket.current.connect();
     }
@@ -49,7 +49,7 @@ export default function useChatSocket(playerDisplayName: string | null = "") {
     return () => {
       socket.current.off("connect", handleConnect);
       socket.current.off("receiveMessage", handleReceiveMessage);
-      socket.current.off("removeRoom", handleRemoveRoom);
+      socket.current.off("removedRoom", handleRemoveRoom);
     };
   }, [spaceId, socket.current?.connected]);
 

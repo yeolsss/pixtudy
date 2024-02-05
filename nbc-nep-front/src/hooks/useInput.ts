@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import usePhaserInput from "@/hooks/phaser/usePhaserInput";
+import React, { useState } from "react";
 
 type UseInput<T> = [
   T,
