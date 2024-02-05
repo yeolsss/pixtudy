@@ -12,6 +12,7 @@ import { GridStatusType, GuideStatusType } from "../../types/conference.types";
 
 import ShareMediaItem from "./ShareMediaItem";
 import ShareScreenDragItem from "./ShareScreenDragItem";
+import { EDGE_AREA_RATE } from "./constants";
 import {
   StLayoutContainer,
   StLayoutGuide,
@@ -19,8 +20,6 @@ import {
   StPreviewContainer,
   StVideosLayoutContainer,
 } from "./styles/shareScreenContainer.styles";
-
-const EDGE_AREA_RATE = 220;
 
 export default function ShareScreenContainer() {
   const {
@@ -131,11 +130,10 @@ export default function ShareScreenContainer() {
         const newVideos = videos.map((video) => {
           if (video.isActive === activeIndex) {
             return { ...video, isActive: 0 };
-          } else {
-            return video.consumer.id === item.id
-              ? { ...video, isActive: activeIndex }
-              : video;
           }
+          return video.consumer.id === item.id
+            ? { ...video, isActive: activeIndex }
+            : video;
         });
         videosChange(newVideos);
       }
@@ -150,7 +148,9 @@ export default function ShareScreenContainer() {
 
   return (
     <StVideosLayoutContainer>
-      <button onClick={handleCloseLayout}>닫기</button>
+      <button type="button" onClick={handleCloseLayout}>
+        닫기
+      </button>
       <StPreviewContainer $isPreviewVideo={!!inActiveVideos.length}>
         {inActiveVideos?.map((video) => {
           return (
@@ -187,9 +187,9 @@ export default function ShareScreenContainer() {
           </StNoActiveLayoutDiv>
         )}
 
-        {activeVideos?.map((video, index) => {
+        {activeVideos?.map((video) => {
           if (!video) {
-            return <div key={index} />;
+            return <div key="non-active video" />;
           }
           return (
             <ShareScreenDragItem

@@ -40,3 +40,5 @@ export const SPACING = 10;
 export const VIDEO_SIZE = 175;
 
 export const GAP = 20;
+
+export const EDGE_AREA_RATE = 220;

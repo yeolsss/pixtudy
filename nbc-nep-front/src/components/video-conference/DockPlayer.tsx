@@ -3,16 +3,21 @@ import { useState } from "react";
 import useAnimated from "@/hooks/useAnimated";
 import { Player } from "@/types/metaverse.types";
 
-import StBadge from '../common/badge/badge.styles';
-import BadgeWrapper from '../common/badge/BadgeWrapper';
-import MetaAvatar from '../metaverse/avatar/MetaAvatar';
+import BadgeWrapper from "../common/badge/BadgeWrapper";
+import MetaAvatar from "../metaverse/avatar/MetaAvatar";
 
-import { getPlayerStateToText, getPlayerStateValue } from './libs/dock';
-import PlayerStateSelector from './PlayerStateSelector';
-import { StDockPlayerInfoWrapper, StDockPlayerNickname, StDockPlayerState, StDockPlayerWrapper } from './styles/dockPlayer.styles';
+import { StBadge } from "../common/badge/badge.styles";
+import PlayerStateSelector from "./PlayerStateSelector";
+import { getPlayerStateToText, getPlayerStateValue } from "./libs/dock";
+import {
+  StDockPlayerInfoWrapper,
+  StDockPlayerNickname,
+  StDockPlayerState,
+  StDockPlayerWrapper,
+} from "./styles/dockPlayer.styles";
 
 interface Props {
-  player?: Player;
+  player: Player;
 }
 
 export default function DockPlayer({ player }: Props) {

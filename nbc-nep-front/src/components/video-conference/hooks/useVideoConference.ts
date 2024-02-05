@@ -69,37 +69,6 @@ export default function useVideoConference() {
 
   const currentPlayer = findPlayerById(currentPlayerId);
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      joinRoom(spaceId, currentPlayerId);
-      createTransport(currentPlayerId, handleCreatedTransport);
-    });
-
-    socket.on("new-producer", handleConsumeNewProducer);
-    socket.on("producer-closed", handleProducerClose);
-    socket.on("consumer-closed", handleRemoveConsumer);
-
-    return () => {
-      transportClose(currentPlayerId);
-      socket.off("new-producer", handleConsumeProducers);
-      socket.off("producer-closed", handleProducerClose);
-      socket.off("consumer-closed", handleRemoveConsumer);
-      socket.disconnect();
-    };
-  }, []);
-
-  async function handleCreatedTransport(
-    rtpCapabilities: RtpCapabilities,
-    sendTransportParams: TransPortParams,
-    recvTransportParams: TransPortParams
-  ) {
-    await loadDevice(rtpCapabilities);
-    createSendTransport(sendTransportParams);
-    createRecvTransport(recvTransportParams);
-
-    getProducers(spaceId, currentPlayerId, handleConsumeProducers);
-  }
-
   function handleConsumeNewProducer(producerId: string, appData: AppData) {
     if (isAlreadyConsume(producerId)) {
       return;
@@ -118,13 +87,26 @@ export default function useVideoConference() {
           return consumer;
         }
       );
-    } catch (error) {}
+    } catch (error) {
+      console.table(error);
+    }
   }
 
   function handleConsumeProducers(producersForConsume: ProducerForConsume[]) {
     producersForConsume.forEach(({ id, appData }) =>
       handleConsumeNewProducer(id, appData)
     );
+  }
+  async function handleCreatedTransport(
+    rtpCapabilities: RtpCapabilities,
+    sendTransportParams: TransPortParams,
+    recvTransportParams: TransPortParams
+  ) {
+    await loadDevice(rtpCapabilities);
+    createSendTransport(sendTransportParams);
+    createRecvTransport(recvTransportParams);
+
+    getProducers(spaceId, currentPlayerId, handleConsumeProducers);
   }
 
   async function handleShare(stream: MediaStream, type: ShareType) {
@@ -159,7 +141,9 @@ export default function useVideoConference() {
       });
 
       addProducer(producer);
-    } catch (error) {}
+    } catch (error) {
+      console.table(error);
+    }
   }
 
   const handleStopShare = (type: ShareType) => {
@@ -167,6 +151,25 @@ export default function useVideoConference() {
       closeProducer(currentPlayerId, producer.appData.streamId);
     });
   };
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      joinRoom(spaceId, currentPlayerId);
+      createTransport(currentPlayerId, handleCreatedTransport);
+    });
+
+    socket.on("new-producer", handleConsumeNewProducer);
+    socket.on("producer-closed", handleProducerClose);
+    socket.on("consumer-closed", handleRemoveConsumer);
+
+    return () => {
+      transportClose(currentPlayerId);
+      socket.off("new-producer", handleConsumeProducers);
+      socket.off("producer-closed", handleProducerClose);
+      socket.off("consumer-closed", handleRemoveConsumer);
+      socket.disconnect();
+    };
+  }, []);
 
   const screenCount = filterProducersByShareType("screen").length;
   const isCanShare = screenCount < MAX_SHARE_SCREEN_SIZE;
