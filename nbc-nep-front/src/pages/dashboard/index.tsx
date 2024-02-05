@@ -1,4 +1,5 @@
 import CustomHead from "@/SEO/CustomHead";
+import { BannerBg1, BannerBg2, BannerBg3, BannerBg4 } from "@/assets/banner";
 import Layout from "@/components/layout/Layout";
 import AvatarModalContainer from "@/components/layout/banner/AvatarModalContainer";
 import Banner from "@/components/layout/banner/Banner";
@@ -9,6 +10,7 @@ import useTourTooltip from "@/hooks/tooltip/useTourTooltip";
 import { Database, Tables } from "@/types/supabase.types";
 import { getCookie } from "@/utils/middlewareCookie";
 import { pathValidation } from "@/utils/middlewareValidate";
+import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltip";
 import { createClient } from "@supabase/supabase-js";
 import dynamic from "next/dynamic";
 import { StaticImageData } from "next/image";
@@ -17,10 +19,8 @@ import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
-import { Autoplay, Mousewheel, Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { BannerBg1, BannerBg2, BannerBg3, BannerBg4 } from "@/assets/banner";
-import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltip";
 
 const StSwiperWrapper = styled.div`
   max-width: 128rem;
@@ -81,11 +81,9 @@ export default function Dashboard({ spaces }: Props) {
       <StSwiperWrapper>
         <Swiper
           className="dashboard-banner"
-          modules={[Pagination, Mousewheel, Autoplay]}
+          modules={[Pagination, Autoplay]}
           spaceBetween={50}
           pagination={{ clickable: true }}
-          grabCursor
-          mousewheel
           autoplay={{ delay: 5000 }}
         >
           {spaces.map((space) => (

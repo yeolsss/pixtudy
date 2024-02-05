@@ -53,10 +53,10 @@ export default function PixelBackground() {
       [...Array(numberOfBlocks)].map((_, index) => index)
     );
 
-    return shuffledArray.map((randomIndex, index) => (
+    return shuffledArray.map((randomIndex) => (
       <motion.div
         key={`random Array randomIndex${randomIndex}`}
-        variants={anim(index)}
+        variants={anim(randomIndex)}
         initial="initial"
         animate={section === "intro" ? "hide" : "show"}
         custom={randomIndex}
