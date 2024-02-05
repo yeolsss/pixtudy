@@ -43,8 +43,8 @@ import {
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
-  Space_members,
+  KanbanCategories,
+  SpaceMembers,
   Spaces,
 } from "@/types/supabase.tables.types";
 import { Database, Tables } from "@/types/supabase.types";
@@ -174,7 +174,7 @@ export function useGetUserSpaces(currentUserId: string) {
     queryFn: () => getUserSpaces(currentUserId),
     enabled: !!currentUserId,
   };
-  return useCustomQuery<Space_members[], Error>(getUserSpacesOptions);
+  return useCustomQuery<SpaceMembers[], Error>(getUserSpacesOptions);
 }
 
 export function useRemoveSpace(onSuccess: () => void) {
@@ -322,7 +322,7 @@ export function useGetCategories(spaceId: string) {
     options: { staleTime: Infinity },
   };
 
-  return useCustomQuery<Kanban_categories[], Error>(queryOptions);
+  return useCustomQuery<KanbanCategories[], Error>(queryOptions);
 }
 
 export function useGetCategoryItems(categoryId: string) {

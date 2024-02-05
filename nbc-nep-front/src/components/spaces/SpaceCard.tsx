@@ -1,15 +1,15 @@
 import useGetUsersCount from "@/hooks/query/useGetUsersCount";
-import { Space_members } from "@/types/supabase.tables.types";
+import { SpaceMembers } from "@/types/supabase.tables.types";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { copyIcon } from "@/assets/GNB";
 import SpaceThumb from "../common/SpaceThumb";
 import UserIcon from "../common/UserIcon";
-import { copyIcon } from "@/assets/GNB";
 
 interface Props {
-  space: Space_members | null;
+  space: SpaceMembers | null;
 }
 
 export default function SpaceCard({ space }: Props) {
@@ -45,7 +45,7 @@ export default function SpaceCard({ space }: Props) {
             src={copyIcon}
             width={10}
             height={12}
-            alt={"copy code"}
+            alt="copy code"
             onClick={handleCaptureClipboard}
           />
         </h1>

@@ -2,7 +2,7 @@ import { useGetSpaceMembers } from "@/hooks/query/useSupabase";
 import { supabase } from "@/supabase";
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
+  KanbanCategories,
 } from "@/types/supabase.tables.types";
 import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import {
@@ -15,7 +15,7 @@ import { useEffect } from "react";
 
 export default function useScrumBardItemsSubscribe(
   spaceId: string,
-  categories: Kanban_categories[]
+  categories: KanbanCategories[]
 ) {
   const setSpaceMembers = useScrumBoardMemberSearchStore.use.setSpaceMembers();
   const queryClient = useQueryClient();
