@@ -1,8 +1,8 @@
 import { Session } from "@supabase/supabase-js";
 
 import { supabase } from "@/supabase";
-import { Tables } from "@/types/supabase.types";
 import { ForgetPasswordMessageType } from "@/types/auth.types";
+import { Tables } from "@/types/supabase.types";
 
 /**
  * Supabase 회원가입을 위한 함수
@@ -20,7 +20,7 @@ export const signUpHandler = async ({
   password,
   nickname,
 }: SignUpHandlerArgs) => {
-  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+  const { error: signUpError } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -49,14 +49,13 @@ interface SignInHandlerArgs {
   platform: SignInPlatformType;
 }
 
-const err = (e: never) => {};
 export const signInHandler = async ({
   email,
   password,
   platform,
 }: SignInHandlerArgs) => {
   switch (platform) {
-    case "email":
+    case "email": {
       const { data: emailLoginData, error: emailLoginError } =
         await supabase.auth.signInWithPassword({
           email: email!,
@@ -67,9 +66,10 @@ export const signInHandler = async ({
         throw emailLoginError;
       }
       return emailLoginData;
+    }
     case "google":
     case "kakao":
-    case "github":
+    case "github": {
       const { data: oAuthLoginData, error: oAuthLoginError } =
         await supabase.auth.signInWithOAuth({
           provider: platform,
@@ -80,12 +80,13 @@ export const signInHandler = async ({
             },
           },
         });
+
       if (oAuthLoginError) {
         throw oAuthLoginError;
       }
       return oAuthLoginData;
+    }
     default:
-      err(platform);
       throw new Error("LoginError: 올바른 케이스가 아닙니다.");
   }
 };
@@ -171,9 +172,8 @@ export const forgottenPasswordHandler = async (
       message: `${userEmail} 계정에 메일을 발송하였습니다. 
       확인 후 비밀번호를 초기화하세요.`,
     };
-  } else {
-    return { response: "fail", message: "등록되지 않은 유저입니다." };
   }
+  return { response: "fail", message: "등록되지 않은 유저입니다." };
 };
 
 // 비밀번호를 변경시키는 함수

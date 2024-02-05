@@ -36,19 +36,18 @@ import {
   getSpaceData,
   joinSpaceHandler,
   leavingSpace,
-  removeSpace,
   removeSpace as removeSpaceSupabase,
   updateSpace,
   updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
-import { Database, Tables } from "@/types/supabase.types";
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
-  Space_members,
+  KanbanCategories,
+  SpaceMembers,
   Spaces,
 } from "@/types/supabase.tables.types";
+import { Database, Tables } from "@/types/supabase.types";
 import { authValidation } from "@/utils/authValidate";
 import useAuthStore from "@/zustand/authStore";
 
@@ -153,7 +152,7 @@ export function useGetSpace() {
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ["userSpaces"] });
     },
-    onError: (error: any) => console.error(error),
+    onError: (error: Error) => console.error(error),
   });
   return getSpace;
 }
@@ -175,7 +174,7 @@ export function useGetUserSpaces(currentUserId: string) {
     queryFn: () => getUserSpaces(currentUserId),
     enabled: !!currentUserId,
   };
-  return useCustomQuery<Space_members[], Error>(getUserSpacesOptions);
+  return useCustomQuery<SpaceMembers[], Error>(getUserSpacesOptions);
 }
 
 export function useRemoveSpace(onSuccess: () => void) {
@@ -323,7 +322,7 @@ export function useGetCategories(spaceId: string) {
     options: { staleTime: Infinity },
   };
 
-  return useCustomQuery<Kanban_categories[], Error>(queryOptions);
+  return useCustomQuery<KanbanCategories[], Error>(queryOptions);
 }
 
 export function useGetCategoryItems(categoryId: string) {

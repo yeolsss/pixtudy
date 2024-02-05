@@ -14,21 +14,21 @@ export default function IconButton({
   const { dmChatStates, globalChatState } = useChatAlarm();
   const [alarmState, setAlarmState] = useState<boolean>(
     globalChatState ||
-      (!!dmChatStates ? dmChatStates.some((dm) => dm.state) : false)
+      (dmChatStates ? dmChatStates.some((dm) => dm.state) : false)
   );
 
   useEffect(() => {
     setAlarmState(
       globalChatState ||
-        (!!dmChatStates ? dmChatStates.some((dm) => dm.state) : false)
+        (dmChatStates ? dmChatStates.some((dm) => dm.state) : false)
     );
   }, [dmChatStates, globalChatState]);
 
   return (
     <StButton onClick={handleOnClick} $isClose={type === "close"}>
-      <Image src={buttonImage} alt={description} width={"32"} height={"32"} />
+      <Image src={buttonImage} alt={description} width="32" height="32" />
       {alarmState && type === "chat" && (
-        <StBadge color={"var(--state-online)"} x={30} y={30} />
+        <StBadge color="var(--state-online)" x={30} y={30} />
       )}
       <span>{description}</span>
     </StButton>

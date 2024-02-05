@@ -19,7 +19,7 @@ export default function useLayout() {
     const filteredConsumers = consumers.filter(
       (consumer) => consumer.appData.playerId === layoutPlayerId
     );
-    const [_, screenConsumers] = splitVideoSource(filteredConsumers);
+    const [, screenConsumers] = splitVideoSource(filteredConsumers);
 
     const newConsumers = screenConsumers.map((consumer) => {
       const prevVideo = videos.find(
@@ -35,8 +35,8 @@ export default function useLayout() {
 
   // 현재 active 상태인 영상 개수
   const countSelectVideos = videos.reduce((acc, val) => {
-    if (!!val.isActive) return acc + 1;
-    else return acc;
+    if (val.isActive) return acc + 1;
+    return acc;
   }, 0);
 
   const handleInactive = (id: string) => {

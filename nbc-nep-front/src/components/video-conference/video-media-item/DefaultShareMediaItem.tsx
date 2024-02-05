@@ -22,3 +22,8 @@ export default function DefaultShareMediaItem({
     </StDefaultShareMediaItemWrapper>
   );
 }
+
+DefaultShareMediaItem.defaultProps = {
+  nickname: "",
+  avatar: "NPC1",
+};
