@@ -1,20 +1,22 @@
+import { useParams } from 'next/navigation'
+import { ChangeEvent, useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+import styled from 'styled-components'
+
 import { StFormCTAButton } from '@/components/common/button/button.styles'
 import DefaultSpanText from '@/components/common/text/DefaultSpanText'
 import { StErrorMessage } from '@/components/spaces/JoinSpaceForm'
 import useModal from '@/hooks/modal/useModal'
 import { useCreateCategory, useGetCategories } from '@/hooks/query/useSupabase'
-import { useParams } from 'next/navigation'
-import { ChangeEvent, useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
-import styled from 'styled-components'
+
 import { options } from '../constants/constants'
 
 export default function CreateCategoryForm() {
-  const { space_id } = useParams()
-  const spaceId = space_id as string
+  const params = useParams()
+  const spaceId = params.space_id as string
   const categories = useGetCategories(spaceId)
   const categoryNames = categories?.map((category) => category.name)
-  const { create, isError, isSuccess } = useCreateCategory(spaceId)
+  const { create } = useCreateCategory(spaceId)
   const [selectedColor, setSelectedColor] = useState<string>('')
   const { closeModal } = useModal()
 

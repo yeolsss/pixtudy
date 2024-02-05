@@ -1,9 +1,11 @@
-import DefaultSpanText from '@/components/common/text/DefaultSpanText'
-import { useGetCategories, useUpdateCategory } from '@/hooks/query/useSupabase'
 import { useParams } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
-import { Controller, FieldValues, useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
+
+import DefaultSpanText from '@/components/common/text/DefaultSpanText'
+import { useGetCategories, useUpdateCategory } from '@/hooks/query/useSupabase'
+
 import { options } from '../constants/constants'
 
 /**
@@ -15,6 +17,11 @@ interface Props {
   color: string
   id: string
   setIsEdit: Dispatch<SetStateAction<boolean>>
+}
+
+interface FormData {
+  name: string
+  color: string
 }
 
 export default function EditCategoryForm({
@@ -37,7 +44,7 @@ export default function EditCategoryForm({
     watch,
     setFocus,
     formState: { errors }
-  } = useForm({ mode: 'onChange' })
+  } = useForm<FormData>({ mode: 'onChange' })
 
   const selectedOption = watch<'color'>('color', currentColor) as string
 
@@ -61,7 +68,8 @@ export default function EditCategoryForm({
     }
   }, [])
 
-  const handleEditSubmit = (data: FieldValues) => {
+  // ERROR : 좆도 모르겠음
+  const handleEditSubmit = (data: FormData) => {
     if (data.name === currentName && data.color === currentColor) {
       setIsEdit(false)
       return
