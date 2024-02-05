@@ -1,11 +1,17 @@
 import useModal from "@/hooks/modal/useModal";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import ModalPortal from "../modal/ModalPortal";
 import CreateSpaceModal from "../modal/spaceModals/createSpaceModal/CreateSpaceModal";
 import JoinSpaceModal from "../modal/spaceModals/joinSpaceModal/JoinSpaceModal";
 import SpaceSearchForm from "./SpaceSearchForm";
+import {
+  StButtonContainer,
+  StHeaderWrapper,
+  StLine,
+  StLink,
+  StLinkWrapper,
+  StNavContainer,
+} from "./styles/spaceListHeader.style";
 
 export default function SpaceListHeader() {
   const {
@@ -49,10 +55,10 @@ export default function SpaceListHeader() {
         <StButtonContainer>
           <SpaceSearchForm />
           <div className="dashboard-join-buttons">
-            <button onClick={handleOpenCreateSpaceModal}>
+            <button type="button" onClick={handleOpenCreateSpaceModal}>
               새로운 스페이스 만들기
             </button>
-            <button onClick={handleOpenJoinSpaceModal}>
+            <button type="button" onClick={handleOpenJoinSpaceModal}>
               초대 코드로 입장하기
             </button>
           </div>
@@ -71,75 +77,3 @@ export default function SpaceListHeader() {
     </>
   );
 }
-const StHeaderWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: ${(props) => props.theme.spacing[16]};
-  padding: 0 ${(props) => props.theme.spacing[16]};
-  button {
-    height: ${(props) => props.theme.unit[48]};
-    padding-top: ${(props) => props.theme.spacing[12]};
-    padding-bottom: ${(props) => props.theme.spacing[12]};
-    padding-right: ${(props) => props.theme.spacing[24]};
-    padding-left: ${(props) => props.theme.spacing[24]};
-    font-size: ${(props) => props.theme.body.lg.regular.fontSize};
-  }
-`;
-
-const StNavContainer = styled.div`
-  display: flex;
-  gap: ${(props) => props.theme.spacing[32]};
-  align-items: center;
-  button {
-    position: relative;
-    border: none;
-    font-family: var(--point-font);
-    font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
-    color: ${(props) => props.theme.color.text.disabled};
-    padding: 0;
-    &:hover {
-      background-color: #fff;
-      color: ${(props) =>
-        props.theme.color.text.interactive["secondary-pressed"]};
-    }
-  }
-`;
-
-export const StButtonContainer = styled.div`
-  display: flex;
-  gap: ${(props) => props.theme.spacing[12]};
-  & > div {
-    display: flex;
-    gap: ${(props) => props.theme.spacing[12]};
-  }
-`;
-
-const StLinkWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const StLine = styled.div`
-  width: 0px;
-  height: ${(props) => props.theme.body.md.medium.fontSize};
-  border: 1px solid
-    ${(props) => props.theme.color.text.interactive["secondary-pressed"]};
-`;
-
-const StLink = styled(Link)<{ $isSelected: boolean }>`
-  position: relative;
-  border: none;
-
-  font-family: var(--point-font);
-  ${(props) => props.$isSelected && `color: var(--color-neutral-400);`};
-
-  font-size: ${(props) => props.theme.body.lg.medium.fontSize};
-  font-weight: ${(props) => props.theme.body.lg.medium.fontWeight};
-
-  vertical-align: bottom;
-  padding: 0;
-
-  display: inline-block;
-`;
