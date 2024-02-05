@@ -81,7 +81,7 @@ export default function ProfileForm({
             닉네임
             <input
               id="nickname"
-              defaultValue="user.display_name!"
+              defaultValue={user.displayName!}
               type="text"
               name={nicknameRegister.name}
               onBlur={nicknameRegister.onBlur}
