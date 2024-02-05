@@ -1,9 +1,5 @@
 import styled from "styled-components";
 
-export default function AuthDivider() {
-  return <StAuthDivider>또는</StAuthDivider>;
-}
-
 const StAuthDivider = styled.span`
   display: flex;
   align-items: center;
@@ -27,3 +23,7 @@ const StAuthDivider = styled.span`
     margin-left: ${(props) => props.theme.spacing["12"]};
   }
 `;
+
+export default function AuthDivider() {
+  return <StAuthDivider>또는</StAuthDivider>;
+}

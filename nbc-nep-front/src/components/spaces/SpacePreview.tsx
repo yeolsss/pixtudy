@@ -19,7 +19,7 @@ export default function SpacePreview() {
             <Image src="/assets/card.png" alt="card" width={180} height={135} />
             <StPreviewContents>
               <h2>{joinSpaceInfo.title}</h2>
-              <h3>{ownerInfo?.display_name}의 스페이스</h3>
+              <h3>{ownerInfo?.displayName}의 스페이스</h3>
               <p>{joinSpaceInfo.description}</p>
             </StPreviewContents>
           </div>

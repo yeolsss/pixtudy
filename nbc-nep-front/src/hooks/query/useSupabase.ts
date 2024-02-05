@@ -1,3 +1,7 @@
+import { Session } from "@supabase/supabase-js";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
 import {
   forgottenPasswordHandler,
   getOtherUserHandler,
@@ -47,9 +51,6 @@ import {
 } from "@/types/supabase.tables.types";
 import { authValidation } from "@/utils/authValidate";
 import useAuthStore from "@/zustand/authStore";
-import { Session } from "@supabase/supabase-js";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 
 /* Auth */
 /* user */
@@ -76,7 +77,7 @@ export function useLogoutUser() {
   const { mutate: logout } = useMutation({
     mutationFn: logoutHandler,
     onError: (error) => {
-      console.log("로그아웃에러: ", error);
+      console.error("로그아웃에러: ", error);
     },
   });
   return logout;

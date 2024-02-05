@@ -50,7 +50,7 @@ export default function ProfileForm({
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     const newUserProfile: UserProfile = {
       avatar: data.avatar,
-      display_name: data.nickname,
+      displayName: data.nickname,
       owner: user.id,
     };
     setUserProfile(newUserProfile);
@@ -69,7 +69,7 @@ export default function ProfileForm({
           <label htmlFor="nickname">닉네임</label>
           <input
             id="nickname"
-            defaultValue={user.display_name!}
+            defaultValue={user.displayName!}
             type="text"
             placeholder="닉네임"
             {...register("nickname", {

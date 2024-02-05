@@ -11,7 +11,9 @@ const PLAYER_NAME_OFFSET = 30;
 
 export class OtherPlayersGroup {
   group: Phaser.Physics.Arcade.Group;
+
   scene: Phaser.Scene;
+
   private otherPlayerNames: Map<string, Phaser.GameObjects.Text>;
 
   constructor(scene: Phaser.Scene) {

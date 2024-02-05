@@ -1,12 +1,20 @@
 import { PropsWithChildren } from "react";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
-import styled from "styled-components";
+import {
+  StErrorText,
+  StHeader,
+} from "@/components/metaverse/styles/config.styles";
+
+interface FormFields {
+  name: string;
+  description: string;
+}
 
 interface Props {
   title: string;
   maxLength: number;
   curLength: number;
-  error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<FormFields>>;
 }
 
 export default function ConfigSpaceFormItem({
@@ -30,21 +38,6 @@ export default function ConfigSpaceFormItem({
   );
 }
 
-const StHeader = styled.header`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-
-  span:last-child {
-    font-size: 1.125rem;
-    font-weight: normal;
-  }
-`;
-
-const StErrorText = styled.span`
-  font-size: 1.125rem !important;
-  font-weight: normal !important;
-  color: ${(props) => props.theme.color.danger[500]};
-  font-family: var(--default-font);
-`;
+ConfigSpaceFormItem.defaultProps = {
+  error: "",
+};

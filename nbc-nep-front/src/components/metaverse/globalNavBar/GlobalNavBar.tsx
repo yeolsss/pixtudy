@@ -1,10 +1,13 @@
-import { logoSection } from "@/assets/GNB";
 import CloseButton from "@/components/metaverse/globalNavBar/CloseButton";
 import GlobalNavBarIconWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/GlobalNavBarIconWrapper";
 import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
-import styled from "styled-components";
+import { logoSection } from "@/assets/GNB";
+import {
+  StGlobalNavBar,
+  StHomeLink,
+} from "@/components/metaverse/styles/metaverse.styles";
 
 export default function GlobalNavBar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -47,7 +50,7 @@ export default function GlobalNavBar() {
     <StGlobalNavBar>
       <audio ref={audioRef} src={sound} />
       <StHomeLink href="/dashboard">
-        <Image src={logoSection} alt={"홈 버튼"} width={24} height={24} />
+        <Image src={logoSection} alt="홈 버튼" width={24} height={24} />
       </StHomeLink>
       <div>
         <GlobalNavBarIconWrapper />
@@ -56,35 +59,3 @@ export default function GlobalNavBar() {
     </StGlobalNavBar>
   );
 }
-
-const StGlobalNavBar = styled.nav`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 68px;
-  justify-content: space-between;
-  padding: 32px 12px 24px;
-  border-right: 1px solid rgba(0, 0, 0, 0.5);
-  background-color: ${({ theme }) => theme.color.metaverse.primary};
-  color: ${({ theme }) => theme.color.icon.interactive.primary};
-  > div:last-child {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-`;
-
-const StHomeLink = styled.a`
-  display: flex;
-
-  font-size: 24px;
-  color: #fff;
-  cursor: pointer;
-  text-decoration: none;
-  width: 44px;
-  height: 44px;
-  background-color: ${({ theme }) => theme.color.bg.primary};
-  justify-content: center;
-  align-items: center;
-  border-radius: ${({ theme }) => theme.border.radius[16]};
-`;

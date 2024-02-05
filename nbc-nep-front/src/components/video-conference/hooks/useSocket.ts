@@ -1,5 +1,7 @@
-import useConferenceSocketStore from "@/zustand/conferenceSocketStore";
 import { AppData, RtpCapabilities } from "mediasoup-client/lib/types";
+
+import useConferenceSocketStore from "@/zustand/conferenceSocketStore";
+
 import {
   Consumer,
   MediaConsumeParams,
@@ -39,7 +41,9 @@ export default function useSocket() {
       async (params: MediaConsumeParams) => {
         const consumer = await onConsume({ ...params, appData });
 
-        if (!consumer) throw new Error("no consumer");
+        if (!consumer) {
+          throw new Error("no consumer");
+        }
 
         socket.emit("consumer-resume", {
           consumerId: consumer.id,

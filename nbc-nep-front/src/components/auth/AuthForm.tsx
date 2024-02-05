@@ -1,18 +1,22 @@
+import styledComponents from "styled-components";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+
+import useAuthStore from "@/zustand/authStore";
 import {
   useLogoutUser,
   useSignInUser,
   useSignUpUser,
   useUpdateUserPw,
 } from "@/hooks/query/useSupabase";
-import useAuthStore from "@/zustand/authStore";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import styled from "styled-components";
-import AuthInput from "./AuthInput";
-import SignInOptions from "./SignInOptions";
 import { AuthFormType, FormValues } from "@/types/auth.types";
 import { getInputs } from "@/components/auth/utils/authUtils";
+
+import SignInOptions from "./SignInOptions";
+import AuthInput from "./AuthInput";
+
+const styled = styledComponents;
 
 interface Props {
   formType: AuthFormType;
