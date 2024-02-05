@@ -53,35 +53,35 @@ export async function middleware(request: NextRequest) {
 
   if (!isDynamicPath && !isStaticPath) {
     const url = new URL("/", request.url);
-    const response = NextResponse.redirect(url);
+    const newResponse = NextResponse.redirect(url);
     response.cookies.set("message", "invalid_path");
-    return response;
+    return newResponse;
   }
 
   if (isMobile) {
     if (pathname.startsWith("/metaverse")) {
       const url = new URL("/", request.url);
-      const response = NextResponse.redirect(url);
+      const newResponse = NextResponse.redirect(url);
       response.cookies.set("message", "mobile_error");
-      return response;
+      return newResponse;
     }
   }
 
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse")) {
     if (!session && request.headers.get("Purpose") !== "prefetch") {
       const url = new URL("/signin", request.url);
-      const response = NextResponse.redirect(url);
+      const newResponse = NextResponse.redirect(url);
       response.cookies.set("message", "login_first");
-      return response;
+      return newResponse;
     }
   }
 
   if (pathname.startsWith("/signin") || pathname.startsWith("/signup")) {
     if (session && request.headers.get("Purpose") !== "prefetch") {
       const url = new URL("/", request.url);
-      const response = NextResponse.redirect(url);
+      const newResponse = NextResponse.redirect(url);
       response.cookies.set("message", "login_already");
-      return response;
+      return newResponse;
     }
   }
 
@@ -90,9 +90,9 @@ export async function middleware(request: NextRequest) {
     const checkResult = await checkSpace(spaceId!);
     if (!checkResult) {
       const url = new URL("/dashboard", request.url);
-      const response = NextResponse.redirect(url);
+      const newResponse = NextResponse.redirect(url);
       response.cookies.set("message", "invalid_space");
-      return response;
+      return newResponse;
     }
   }
 
@@ -105,9 +105,9 @@ export async function middleware(request: NextRequest) {
     ) {
       if (user.amr[0].method !== "recovery") {
         const url = new URL("/", request.url);
-        const response = NextResponse.redirect(url);
+        const newResponse = NextResponse.redirect(url);
         response.cookies.set("message", "invalid_path");
-        return response;
+        return newResponse;
       }
     }
   }

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StContentsContainer } from "../JoinSpaceForm";
+import { StContentsContainer } from "./joinSpaceForm.styles";
 
 export const StCreateSpaceForm = styled.form`
   display: flex;

@@ -14,15 +14,15 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
+import { CreateSpaceInfo } from "../../types/space.types";
 import { StFormCTAButton } from "../common/button/button.styles";
 import DefaultSpanText from "../common/text/DefaultSpanText";
-import { StErrorMessage } from "./JoinSpaceForm";
-import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { CreateSpaceInfo } from "../../types/space.types";
 import {
   StCreateContentsContainer,
   StCreateSpaceForm,
-} from "./styles/createSpaceFrom.styles";
+} from "./styles/createSpaceForm.styles";
+import { StErrorMessage } from "./styles/joinSpaceForm.styles";
+import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 
 interface Props {
   handleSubmit: UseFormHandleSubmit<FieldValues>;

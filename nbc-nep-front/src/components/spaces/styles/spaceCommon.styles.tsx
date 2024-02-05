@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StInputWrapper } from "../JoinSpaceForm";
+import { StInputWrapper } from "./joinSpaceForm.styles";
 
 // prettier-ignore
 export const StCreateInputWrapper = styled(StInputWrapper)<{$isError: boolean}>`
