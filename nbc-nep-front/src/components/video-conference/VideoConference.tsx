@@ -3,6 +3,7 @@ import { StaticImageData } from "next/image";
 import useLayout from "@/hooks/conference/useLayout";
 import usePlayerListStore from "@/zustand/metaversePlayerStore";
 
+import useVideoSource from "@/hooks/conference/useVideoSource";
 import {
   CameraOff,
   CameraOn,
@@ -23,13 +24,8 @@ import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayCo
 export default function VideoConference() {
   const { isOpen } = useLayout();
 
-  const {
-    handleStopShare,
-    handleShare,
-    screenCount,
-    isCanShare,
-    currentPlayer,
-  } = useVideoConference();
+  const { handleStopShare, handleShare, currentPlayer } = useVideoConference();
+  const { isCanShare, screenCount } = useVideoSource();
 
   const playerList = usePlayerListStore.use.playerList();
 
