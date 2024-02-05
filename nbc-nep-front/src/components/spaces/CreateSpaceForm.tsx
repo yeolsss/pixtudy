@@ -4,6 +4,7 @@ import {
   SPACE_NAME_MAX_LENGTH,
 } from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
+import { CreateSpaceInfo } from "@/types/space.types";
 import { Tables } from "@/types/supabase.types";
 import useSpaceStore from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
@@ -14,9 +15,7 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
-import { CreateSpaceInfo } from "@/types/space.types";
 import { StFormCTAButton } from "../common/button/button.styles";
-import DefaultSpanText from "../common/text/DefaultSpanText";
 import {
   StCreateContentsContainer,
   StCreateSpaceForm,
@@ -109,9 +108,9 @@ export default function CreateSpaceForm({
                   </label>
 
                   {errors.spaceDescription && (
-                    <DefaultSpanText>
+                    <StErrorMessage>
                       {errors.spaceDescription?.message as string}
-                    </DefaultSpanText>
+                    </StErrorMessage>
                   )}
                 </StCreateInputWrapper>
               </div>

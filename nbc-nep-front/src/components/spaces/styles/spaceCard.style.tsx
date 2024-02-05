@@ -87,11 +87,9 @@ export const StUserIcon = styled(UserIcon)`
 
 export const StButtonContainer = styled.div`
   padding-bottom: ${(props) => props.theme.spacing[12]};
-  padding-right: ${(props) => props.theme.spacing[12]};
-  padding-left: ${(props) => props.theme.spacing[12]};
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   gap: 8px;
   button {
@@ -104,8 +102,8 @@ export const StButtonContainer = styled.div`
     border-color: ${(props) => props.theme.color.border.interactive.secondary};
     border-radius: ${(props) => props.theme.border.radius[8]};
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: ${(props) => props.theme.spacing[16]};
+    padding-right: ${(props) => props.theme.spacing[16]};
     &:hover {
       /* border: none; */
       background-color: ${(props) =>
