@@ -1,18 +1,5 @@
 import styled from "styled-components";
 
-interface Props {
-  closeModal?: () => void;
-  isBackground?: boolean;
-}
-export default function BackDrop({ closeModal, isBackground = true }: Props) {
-  return (
-    <StBackDrop
-      $isBackground={isBackground}
-      onClick={closeModal && closeModal}
-    />
-  );
-}
-
 const StBackDrop = styled.div<{ $isBackground?: boolean }>`
   position: fixed;
   top: 0;
@@ -23,3 +10,16 @@ const StBackDrop = styled.div<{ $isBackground?: boolean }>`
   backdrop-filter: blur(4px);
   z-index: 2010;
 `;
+interface Props {
+  closeModal?: () => void;
+  isBackground?: boolean;
+}
+
+export default function BackDrop({ closeModal, isBackground }: Props) {
+  return <StBackDrop $isBackground={isBackground} onClick={closeModal} />;
+}
+
+BackDrop.defaultProps = {
+  closeModal: () => {},
+  isBackground: true,
+};

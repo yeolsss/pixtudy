@@ -1,4 +1,3 @@
-//@ts-nocheck
 import useModal from "@/hooks/modal/useModal";
 import {
   useGetSpace,
@@ -18,6 +17,8 @@ import {
   UseFormReset,
 } from "react-hook-form";
 import styled from "styled-components";
+import { JoinSpaceInfo } from "@/types/space.types";
+import { Spaces } from "@/types/supabase.tables.types";
 import { StFormCTAButton } from "../common/button/button.styles";
 import SpacePreview from "./SpacePreview";
 
@@ -51,18 +52,17 @@ export default function InvitationCodeForm({
   const router = useRouter();
   const getSpace = useGetSpace();
 
+  const handleToSpace = async (spaceId: string) => {
+    await router.replace(`/metaverse/${spaceId!}`);
+  };
+
   useEffect(() => {
-    if (joinSuccess) {
-      handleToSpace(joinSpaceInfo?.id!);
+    if (joinSuccess && joinSpaceInfo?.id) {
+      handleToSpace(joinSpaceInfo.id);
       resetJoinSpaceInfo();
       closeModal();
-      return;
     }
   }, [joinSuccess]);
-
-  const handleToSpace = async (space_id: string) => {
-    await router.replace(`/metaverse/${space_id!}`);
-  };
 
   const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
     getSpace(data.invitationCode, {

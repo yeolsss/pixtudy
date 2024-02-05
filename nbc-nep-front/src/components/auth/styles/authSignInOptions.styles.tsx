@@ -1,45 +1,6 @@
-import useModal from "@/hooks/modal/useModal";
-import useAuthStore from "@/zustand/authStore";
 import styled from "styled-components";
 
-export default function SignInOptions() {
-  const isCheck = useAuthStore.use.isSaveLoginInfo();
-  const setSaveLoginInfo = useAuthStore.use.setSaveLoginInfo();
-  const { openForgetPasswordModal } = useModal();
-
-  const handleIsCheck = () => {
-    setSaveLoginInfo(!isCheck);
-  };
-
-  const handleOpenForgetPasswordModal = () => {
-    openForgetPasswordModal();
-  };
-
-  return (
-    <StSignInOptions>
-      <section>
-        <input
-          type="checkbox"
-          id="save-login-info"
-          checked={isCheck}
-          onChange={handleIsCheck}
-        />
-        <StSaveLoginInfoToggleCheckBox
-          htmlFor="save-login-info"
-          $isCheck={isCheck}
-        >
-          <div>
-            <div />
-          </div>
-          <span>로그인 정보 저장하기</span>
-        </StSaveLoginInfoToggleCheckBox>
-      </section>
-      <span onClick={handleOpenForgetPasswordModal}>비밀번호 찾기</span>
-    </StSignInOptions>
-  );
-}
-
-const StSignInOptions = styled.div`
+export const StSignInOptions = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,12 +15,18 @@ const StSignInOptions = styled.div`
       font-size: ${(props) => props.theme.unit["12"]};
     }
   }
-  & > span {
+  & > button {
+    background: none;
+    border: none;
+    font-weight: normal;
+    padding: 0;
     font-size: ${(props) => props.theme.unit["14"]};
     cursor: pointer;
     color: #d93f21;
     &:hover {
       text-decoration: underline;
+      color: #d93f21;
+      background: none;
     }
   }
   & input {
@@ -67,7 +34,9 @@ const StSignInOptions = styled.div`
   }
 `;
 
-const StSaveLoginInfoToggleCheckBox = styled.label<{ $isCheck: boolean }>`
+export const StSaveLoginInfoToggleCheckBox = styled.label<{
+  $isCheck: boolean;
+}>`
   display: flex;
   align-items: center;
   cursor: pointer;

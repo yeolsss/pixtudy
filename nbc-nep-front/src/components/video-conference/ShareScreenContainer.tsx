@@ -12,7 +12,6 @@ import { GridStatusType, GuideStatusType } from "../../types/conference.types";
 
 import ShareMediaItem from "./ShareMediaItem";
 import ShareScreenDragItem from "./ShareScreenDragItem";
-import { EDGE_AREA_RATE } from "./constants";
 import {
   StLayoutContainer,
   StLayoutGuide,
@@ -20,6 +19,7 @@ import {
   StPreviewContainer,
   StVideosLayoutContainer,
 } from "./styles/shareScreenContainer.styles";
+import { EDGE_AREA_RATE } from "./constants";
 
 export default function ShareScreenContainer() {
   const {
@@ -59,7 +59,6 @@ export default function ShareScreenContainer() {
       if (hoverTimer.current) {
         clearTimeout(hoverTimer.current);
       }
-
       // 부모 컴포넌트의 좌표
       const parentRect = dropParentRef.current.getBoundingClientRect();
       // 현재 마우스 좌표
