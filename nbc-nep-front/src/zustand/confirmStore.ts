@@ -34,8 +34,8 @@ const confirmStore = create<ConfirmType>()((set) => ({
     set(() => ({
       title,
       message,
-      denyButtonText: denyButtonText ? denyButtonText : "취소",
-      confirmButtonText: confirmButtonText ? confirmButtonText : "확인",
+      denyButtonText: denyButtonText || "취소",
+      confirmButtonText: confirmButtonText || "확인",
       isOpen: true,
     })),
   closeConfirm: () =>

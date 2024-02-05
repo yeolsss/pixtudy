@@ -10,7 +10,7 @@ interface ConferenceSocketStoreProps {
 interface ConferenceSocketStoreState extends ConferenceSocketStoreProps {}
 
 const useConferenceSocketStoreBase = create<ConferenceSocketStoreState>()(
-  (set, get) => ({
+  () => ({
     socket: io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/conference`, {
       withCredentials: true,
     }),

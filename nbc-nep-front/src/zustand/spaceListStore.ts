@@ -1,14 +1,14 @@
-import { Space_members } from "@/types/supabase.tables.types";
+import { SpaceMembers } from "@/types/supabase.tables.types";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
 
 interface SpaceListStoreState {
-  spaces: (Space_members | null)[];
-  filteredSpaces: (Space_members | null)[];
+  spaces: (SpaceMembers | null)[];
+  filteredSpaces: (SpaceMembers | null)[];
   searchValue: string;
   changeSearchValue: (searchValue: string) => void;
   filterSpaces: () => void;
-  setSpaces: (spaces: (Space_members | null)[]) => void;
+  setSpaces: (spaces: (SpaceMembers | null)[]) => void;
 }
 
 const spaceSearchStore = create<SpaceListStoreState>()((set) => ({
@@ -24,9 +24,10 @@ const spaceSearchStore = create<SpaceListStoreState>()((set) => ({
             .spaces!.title.toLowerCase()
             .includes(state.searchValue.toLowerCase());
         }
+        return false;
       }),
     })),
-  setSpaces: (spaces: (Space_members | null)[]) =>
+  setSpaces: (spaces: (SpaceMembers | null)[]) =>
     set(() => ({ spaces, filteredSpaces: spaces })),
 }));
 

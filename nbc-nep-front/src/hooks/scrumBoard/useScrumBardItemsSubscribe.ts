@@ -6,7 +6,7 @@ import {
 } from "@supabase/realtime-js";
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
+  KanbanCategories,
 } from "@/types/supabase.tables.types";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
 import { supabase } from "@/supabase";
@@ -15,7 +15,7 @@ import { useGetSpaceMembers } from "@/hooks/query/useSupabase";
 
 export default function useScrumBardItemsSubscribe(
   spaceId: string,
-  categories: Kanban_categories[]
+  categories: KanbanCategories[]
 ) {
   const setSpaceMembers = useScrumBoardMemberSearchStore.use.setSpaceMembers();
   const queryClient = useQueryClient();

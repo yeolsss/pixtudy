@@ -1,6 +1,6 @@
 import { supabase } from "@/supabase";
 import { Database, Tables } from "@/types/supabase.types";
-import { Space_members } from "@/types/supabase.tables.types";
+import { SpaceMembers } from "@/types/supabase.tables.types";
 
 /**
  * 유저의 space 정보를 가져오는 함수
@@ -9,12 +9,12 @@ import { Space_members } from "@/types/supabase.tables.types";
  */
 export const getUserSpaces = async (
   currentUserId: string
-): Promise<Space_members[]> => {
+): Promise<SpaceMembers[]> => {
   const { data: userSpaces, error } = await supabase
     .from("space_members")
     .select(`*,spaces(*)`)
     .eq("user_id", currentUserId)
-    .returns<Space_members[]>();
+    .returns<SpaceMembers[]>();
   if (error) throw error;
   return userSpaces;
 };
@@ -161,11 +161,10 @@ export const sendMessage = async ({
       await send(newDmChannel.id);
     }
     return newDmChannel;
-  } else {
-    // (2) 채팅방이 기존에 있는 경우
-    // 해당 채팅방으로 메시지 바로 전송
-    await send(currentDmChannel);
   }
+  // (2) 채팅방이 기존에 있는 경우
+  // 해당 채팅방으로 메시지 바로 전송
+  await send(currentDmChannel);
 };
 
 export const getLastDmMessageList = async (

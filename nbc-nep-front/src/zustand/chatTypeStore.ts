@@ -20,10 +20,10 @@ const initialState: ChatTypeState = {
 const chatType = create<ChatTypeStoreState>()((set) => ({
   ...initialState,
   closeChat: () => set(() => ({ ...initialState })),
-  openChat: (chatType: ChatType) =>
+  openChat: (type: ChatType) =>
     set(() => ({
       isOpenChat: true,
-      chatType,
+      type,
     })),
 }));
 
