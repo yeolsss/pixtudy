@@ -177,6 +177,21 @@ export interface Neutral {
   "900": string;
 }
 
+export interface Interactive {
+  primary: string;
+  "primary-hovered": string;
+  "primary-pressed": string;
+  secondary: string;
+  "secondary-hovered": string;
+  "secondary-pressed": string;
+  danger: string;
+  "danger-hovered": string;
+  "danger-pressed": string;
+  selected: string;
+  "selected-hovered": string;
+  "selected-press": string;
+}
+
 export interface Bg {
   primary: string;
   secondary: string;
@@ -195,20 +210,6 @@ export interface Bg {
   interactive: Interactive;
 }
 
-export interface Interactive {
-  primary: string;
-  "primary-hovered": string;
-  "primary-pressed": string;
-  secondary: string;
-  "secondary-hovered": string;
-  "secondary-pressed": string;
-  danger: string;
-  "danger-hovered": string;
-  "danger-pressed": string;
-  selected: string;
-  "selected-hovered": string;
-  "selected-press": string;
-}
 export interface Interactive2 {
   primary: string;
   "primary-hovered": string;
@@ -303,21 +304,6 @@ export interface Lg {
 export interface Base {
   black: string;
   white: string;
-}
-
-export interface Root {
-  color: Color;
-  unit: Unit;
-  spacing: Spacing;
-  border: Border2;
-  heading: Heading;
-  body: Body;
-  elevation: Elevation;
-  desktop: Desktop2;
-  tablet: Tablet;
-  mobile: Mobile2;
-  docs: Docs;
-  video: Video;
 }
 
 export interface Metaverse {
@@ -510,10 +496,29 @@ export interface Sm {
   textDecoration: string;
 }
 
-export interface Lg3 {
-  regular: Regular;
-  medium: Medium;
-  semibold: Semibold;
+export interface Regular3 {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface Medium3 {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface Sm2 {
+  regular: Regular3;
+  medium: Medium3;
 }
 
 export interface Regular {
@@ -546,12 +551,10 @@ export interface Semibold {
   textDecoration: string;
 }
 
-export interface Md2 {
-  regular: Regular2;
-  medium: Medium2;
-  semibold: Semibold2;
-  underline: Underline;
-  encode: Encode;
+export interface Lg3 {
+  regular: Regular;
+  medium: Medium;
+  semibold: Semibold;
 }
 
 export interface Regular2 {
@@ -594,9 +597,22 @@ export interface Underline {
   textDecoration: string;
 }
 
-export interface Heading {
-  mobile: Mobile;
-  desktop: Desktop;
+export interface Encode {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface Md2 {
+  regular: Regular2;
+  medium: Medium2;
+  semibold: Semibold2;
+  underline: Underline;
+  encode: Encode;
 }
 
 export interface Mobile {
@@ -617,6 +633,10 @@ export interface Desktop {
   sm: Sm;
 }
 
+export interface Heading {
+  mobile: Mobile;
+  desktop: Desktop;
+}
 export interface Body {
   lg: Lg3;
   md: Md2;
@@ -646,44 +666,31 @@ export interface Color {
   border: Border;
 }
 
-export interface Encode {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
+export interface Color2 {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
 }
 
-export interface Sm2 {
-  regular: Regular3;
-  medium: Medium3;
+export interface Color3 {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
 }
 
-export interface Regular3 {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
+export interface Color4 {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
 }
-
-export interface Medium3 {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
-}
-
-export interface Elevation {
-  Light: Light;
-  Dark: Dark;
+export interface Color5 {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
 }
 
 export interface Light {
@@ -700,10 +707,6 @@ export interface Dark {
   shadow16: string;
 }
 
-export interface Desktop2 {
-  layoutGrids: LayoutGrid[];
-}
-
 export interface LayoutGrid {
   pattern: string;
   color: Color2;
@@ -711,17 +714,6 @@ export interface LayoutGrid {
   gutterSize: number;
   offset: number;
   count: number;
-}
-
-export interface Color2 {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
-export interface Tablet {
-  layoutGrids: LayoutGrid2[];
 }
 
 export interface LayoutGrid2 {
@@ -733,17 +725,6 @@ export interface LayoutGrid2 {
   count: number;
 }
 
-export interface Color3 {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
-export interface Mobile2 {
-  layoutGrids: LayoutGrid3[];
-}
-
 export interface LayoutGrid3 {
   pattern: string;
   color: Color4;
@@ -751,17 +732,6 @@ export interface LayoutGrid3 {
   gutterSize: number;
   offset: number;
   count: number;
-}
-
-export interface Color4 {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
-export interface Docs {
-  layoutGrids: LayoutGrid4[];
 }
 
 export interface LayoutGrid4 {
@@ -774,14 +744,41 @@ export interface LayoutGrid4 {
   sectionSize?: number;
 }
 
-export interface Color5 {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
 export interface Video {
   width: string;
   height: string;
+}
+
+export interface Elevation {
+  Light: Light;
+  Dark: Dark;
+}
+
+export interface Desktop2 {
+  layoutGrids: LayoutGrid[];
+}
+
+export interface Tablet {
+  layoutGrids: LayoutGrid2[];
+}
+export interface Mobile2 {
+  layoutGrids: LayoutGrid3[];
+}
+export interface Docs {
+  layoutGrids: LayoutGrid4[];
+}
+
+export interface Root {
+  color: Color;
+  unit: Unit;
+  spacing: Spacing;
+  border: Border2;
+  heading: Heading;
+  body: Body;
+  elevation: Elevation;
+  desktop: Desktop2;
+  tablet: Tablet;
+  mobile: Mobile2;
+  docs: Docs;
+  video: Video;
 }
