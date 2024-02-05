@@ -3,7 +3,9 @@ import { StDangerButton } from '@/components/common/button/button.styles'
 import useConfirm from '@/hooks/confirm/useConfirm'
 import useMetaversePlayer from '@/hooks/metaverse/useMetaversePlayer'
 import { useLeavingSpace } from '@/hooks/query/useSupabase'
+
 import { StSectionMain } from '../styles/config.styles'
+
 import ConfigSpaceOwner from './ConfigSpaceOwner'
 
 export default function ConfigSpace() {
@@ -20,7 +22,11 @@ export default function ConfigSpace() {
     })
 
     if (result) {
-      leavingSpace({ spaceId: spaceInfo?.id!, userId: currentUserId })
+      if (spaceInfo?.id && currentUserId) {
+        leavingSpace({ spaceId: spaceInfo.id, userId: currentUserId })
+      } else {
+        // handle the case where spaceInfo?.id or currentUserId is undefined
+      }
     }
   }
 

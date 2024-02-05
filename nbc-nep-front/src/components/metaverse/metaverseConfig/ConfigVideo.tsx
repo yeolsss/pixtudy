@@ -1,8 +1,10 @@
-import { DEVICE_STORAGE_KEY } from '@/components/video-conference/constants/constants'
-import { LocalStorageDeviceInputs } from '@/types/conference.types'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
+
+import { LocalStorageDeviceInputs } from '@/types/conference.types'
+import { DEVICE_STORAGE_KEY } from '@/components/video-conference/constants/constants'
+
 import { StSectionMain } from '../styles/config.styles'
 
 export default function ConfigVideo() {
@@ -56,7 +58,7 @@ export default function ConfigVideo() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!settings) return
+    if (!settings) {return}
     localStorage.setItem(DEVICE_STORAGE_KEY, JSON.stringify(settings))
     toast.success('저장에 성공했습니다.')
   }

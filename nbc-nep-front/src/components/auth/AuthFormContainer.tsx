@@ -1,15 +1,8 @@
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
-import styled from 'styled-components'
+import styledComponents from 'styled-components'
 
-export default function AuthFormContainer({ children }: PropsWithChildren) {
-  return (
-    <StFormContainer>
-      <Link href={'/'}>pixtudy</Link>
-      <div>{children}</div>
-    </StFormContainer>
-  )
-}
+const styled = styledComponents
 export const StFormContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,3 +65,12 @@ export const StFormContainer = styled.div`
     }
   }
 `
+
+export default function AuthFormContainer({ children }: PropsWithChildren) {
+  return (
+    <StFormContainer>
+      <Link href="/">pixtudy</Link>
+      <div>{children}</div>
+    </StFormContainer>
+  )
+}

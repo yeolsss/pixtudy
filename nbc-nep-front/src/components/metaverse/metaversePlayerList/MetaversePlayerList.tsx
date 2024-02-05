@@ -1,3 +1,5 @@
+import styledComponents from 'styled-components'
+
 import MetaverseChatHeader from '@/components/metaverse/metaverseChat/metaverseChatBar/MetaverseChatHeader'
 import MetaversePlayerCard from '@/components/metaverse/metaversePlayerList/MetaversePlayerCard'
 import useChatTypeStore from '@/zustand/chatTypeStore'
@@ -5,9 +7,28 @@ import useDmStore from '@/zustand/dmStore'
 import useGlobalNavBarStore, {
   changeSectionVisibility
 } from '@/zustand/globalNavBarStore'
-import styled from 'styled-components'
 import useMetaversePlayer from '@/hooks/metaverse/useMetaversePlayer'
 import { HandleOpenDmContainerPrams } from '@/types/metaverse.types'
+
+const styled = styledComponents
+const StMetaversePlayerListWrapper = styled.div<{ $isPlayerListOn: boolean }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: ${({ $isPlayerListOn }) => ($isPlayerListOn ? '240px' : '0')};
+  padding: ${({ $isPlayerListOn }) => ($isPlayerListOn ? '10px' : '0')};
+  overflow: ${({ $isPlayerListOn }) => ($isPlayerListOn ? 'scroll' : 'hidden')};
+  transition:
+    width 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+  z-index: ${({ $isPlayerListOn }) => ($isPlayerListOn ? '100' : '-1')};
+  background-color: ${({ theme }) => theme.color.metaverse.secondary};
+  color: white;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
 
 export default function MetaversePlayerList() {
   const isPlayerListOn = useGlobalNavBarStore.use.isPlayerListOn()
@@ -44,42 +65,21 @@ export default function MetaversePlayerList() {
   }
 
   return (
-    <>
-      <StMetaversePlayerListWrapper $isPlayerListOn={isPlayerListOn}>
-        {isPlayerListOn && (
-          <MetaverseChatHeader
-            title={'Player List'}
-            handler={handleOnClickClosePlayerList}
+    <StMetaversePlayerListWrapper $isPlayerListOn={isPlayerListOn}>
+      {isPlayerListOn && (
+        <MetaverseChatHeader
+          title="Player List"
+          handler={handleOnClickClosePlayerList}
+        />
+      )}
+      {isPlayerListOn &&
+        playerList?.map((player) => (
+          <MetaversePlayerCard
+            key={player.playerId}
+            player={player}
+            handleOpenDmContainer={handleOpenDmContainer}
           />
-        )}
-        {isPlayerListOn &&
-          playerList?.map((player) => (
-            <MetaversePlayerCard
-              key={player.playerId}
-              player={player}
-              handleOpenDmContainer={handleOpenDmContainer}
-            />
-          ))}
-      </StMetaversePlayerListWrapper>
-    </>
+        ))}
+    </StMetaversePlayerListWrapper>
   )
 }
-
-const StMetaversePlayerListWrapper = styled.div<{ $isPlayerListOn: boolean }>`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: ${({ $isPlayerListOn }) => ($isPlayerListOn ? '240px' : '0')};
-  padding: ${({ $isPlayerListOn }) => ($isPlayerListOn ? '10px' : '0')};
-  overflow: ${({ $isPlayerListOn }) => ($isPlayerListOn ? 'scroll' : 'hidden')};
-  transition:
-    width 0.3s ease-in-out,
-    transform 0.3s ease-in-out;
-  z-index: ${({ $isPlayerListOn }) => ($isPlayerListOn ? '100' : '-1')};
-  background-color: ${({ theme }) => theme.color.metaverse.secondary};
-  color: white;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`

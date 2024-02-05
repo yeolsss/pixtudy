@@ -1,3 +1,7 @@
+import Phaser from 'phaser'
+import { useEffect, useRef } from 'react'
+import styledComponents from 'styled-components'
+
 import GlobalNavBar from '@/components/metaverse/globalNavBar/GlobalNavBar'
 import PhaserSceneManager from '@/components/metaverse/libs/phaserSceneManager'
 import { SceneClass } from '@/components/metaverse/libs/sceneClass'
@@ -10,11 +14,11 @@ import useMetaversePlayer from '@/hooks/metaverse/useMetaversePlayer'
 import useSocket from '@/hooks/socket/useSocket'
 import usePlayerListStore from '@/zustand/metaversePlayerStore'
 import useMetaverseScrumIsOpenStore from '@/zustand/metaverseScrumIsOpenStore'
-import Phaser from 'phaser'
-import { useEffect, useRef } from 'react'
-import styled from 'styled-components'
+import { Game, Player, PlayerState } from '@/types/metaverse.types'
+
 import ConfirmModal from '../modal/confirmModal/ConfirmModal'
 import VideoConference from '../video-conference/VideoConference'
+
 import {
   GAME_FPS,
   GAME_GRAVITY,
@@ -23,7 +27,17 @@ import {
   VERTICAL_BORDER_OFFSET
 } from './constants/constant'
 import MetaverseConfigModal from './metaverseConfig/MetaverseConfig'
-import { Game, Player, PlayerState } from '@/types/metaverse.types'
+
+const styled = styledComponents
+
+const StMetaverseWrapper = styled.div`
+  overflow: hidden;
+  display: flex;
+  position: relative;
+`
+const StMetaverseMain = styled.div`
+  overflow: hidden;
+`
 
 const MetaverseComponent = () => {
   const { isOpen } = useConfirm()
@@ -123,14 +137,5 @@ const MetaverseComponent = () => {
     </StMetaverseWrapper>
   )
 }
-
-const StMetaverseWrapper = styled.div`
-  overflow: hidden;
-  display: flex;
-  position: relative;
-`
-const StMetaverseMain = styled.div`
-  overflow: hidden;
-`
 
 export default MetaverseComponent

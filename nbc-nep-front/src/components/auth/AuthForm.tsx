@@ -1,18 +1,20 @@
+import styledComponents from 'styled-components'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+
+import useAuthStore from '@/zustand/authStore'
 import {
   useLogoutUser,
   useSignInUser,
   useSignUpUser,
   useUpdateUserPw
 } from '@/hooks/query/useSupabase'
-import useAuthStore from '@/zustand/authStore'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import AuthInput from './AuthInput'
-import SignInOptions from './SignInOptions'
 import { AuthFormType, FormValues } from '@/types/auth.types'
 import { getInputs } from '@/components/auth/utils/authUtils'
-import styledComponents from 'styled-components'
+
+import SignInOptions from './SignInOptions'
+import AuthInput from './AuthInput'
 
 const styled = styledComponents
 
@@ -29,7 +31,7 @@ export default function AuthForm({ formType }: Props) {
   const router = useRouter()
 
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(
-    formType === 'signUp' ? false : true
+    formType !== 'signUp'
   )
 
   const [isUpdatePw, setIsUpdatePw] = useState<boolean>(false)

@@ -1,3 +1,8 @@
+import { useEffect, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import styled from 'styled-components'
+
 import { deleteThumbnail, uploadThumbnail } from '@/api/supabase/storage'
 import SpaceThumb from '@/components/common/SpaceThumb'
 import { StDangerButton } from '@/components/common/button/button.styles'
@@ -12,10 +17,7 @@ import useConfirm from '@/hooks/confirm/useConfirm'
 import useKeyDownPrevent from '@/hooks/metaverse/useKeyDownPrevent'
 import useMetaversePlayer from '@/hooks/metaverse/useMetaversePlayer'
 import { useDeleteSpace, useUpdateSpaceInfo } from '@/hooks/query/useSupabase'
-import { useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
-import styled from 'styled-components'
+
 import {
   IMAGE_MAX_SIZE,
   SPACE_DESCRIPTION_FORM,
@@ -23,6 +25,7 @@ import {
   SPACE_THUMB_FORM
 } from '../constants/config.constant'
 import { StHiddenInput, StSectionMain } from '../styles/config.styles'
+
 import ConfigSpaceFormItem from './ConfigSpaceFormItem'
 
 export default function ConfigSpaceOwner() {
@@ -52,7 +55,7 @@ export default function ConfigSpaceOwner() {
   const { openConfirmHandler } = useConfirm()
 
   const handleRemoveSpace = async () => {
-    if (!spaceInfo) return
+    if (!spaceInfo) {return}
     const result = await openConfirmHandler({
       title: '스페이스 삭제',
       message: '스페이스를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.',
@@ -66,7 +69,7 @@ export default function ConfigSpaceOwner() {
   }
 
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
-    if (!spaceInfo) return
+    if (!spaceInfo) {return}
 
     const {
       [SPACE_THUMB_FORM]: thumb,
@@ -190,7 +193,7 @@ export default function ConfigSpaceOwner() {
             required: '스페이스의 설명이 필요합니다. '
           })}
           maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
-        ></textarea>
+         />
       </ConfigSpaceFormItem>
       <div>
         <button type="submit">수정하기</button>
