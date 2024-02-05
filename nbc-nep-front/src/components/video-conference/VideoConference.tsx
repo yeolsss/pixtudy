@@ -14,9 +14,9 @@ import {
 import BadgeNumber from "../common/badge/BadgeNumber";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 
+import useVideoConference from "../../hooks/conference/useVideoConference";
 import DockPlayer from "./DockPlayer";
 import ShareButton from "./ShareButton";
-import useVideoConference from "./hooks/useVideoConference";
 import { StDockContainer } from "./styles/videoConference.styles";
 import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 

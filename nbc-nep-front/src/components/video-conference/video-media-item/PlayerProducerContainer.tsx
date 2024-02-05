@@ -6,7 +6,7 @@ import {
 } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import useSocket from "@/components/video-conference/hooks/useSocket";
+import useSocket from "@/hooks/conference/useSocket";
 import useVideoSource from "@/hooks/conference/useVideoSource";
 import useAuthStore from "@/zustand/authStore";
 

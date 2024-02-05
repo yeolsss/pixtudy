@@ -10,13 +10,16 @@ import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useAuth from "@/zustand/authStore";
 
 import {
+  MAX_SHARE_SCREEN_SIZE,
+  videoParams,
+} from "../../components/video-conference/constants";
+import {
   AppData,
   Producer,
   ProducerForConsume,
   ShareType,
   TransPortParams,
-} from "../../../types/conference.types";
-import { MAX_SHARE_SCREEN_SIZE, videoParams } from "../constants";
+} from "../../types/conference.types";
 
 import useSocket from "./useSocket";
 
