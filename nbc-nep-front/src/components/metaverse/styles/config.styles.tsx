@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { StDangerButton } from "@/components/common/button/button.styles";
+import styled from "styled-components";
 
 export const StHiddenInput = styled.input`
   position: absolute;
