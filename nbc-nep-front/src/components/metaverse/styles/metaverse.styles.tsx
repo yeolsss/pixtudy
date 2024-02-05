@@ -207,7 +207,7 @@ export const StMetaverseDmHeader = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-  margin-bottom: ${(props) => props.theme.spacing["20"]};
+  margin-bottom: ${(props) => props.theme.spacing["16"]};
   > h1 {
     font-size: ${(props) => props.theme.unit["20"]};
     font-family: var(--point-font);

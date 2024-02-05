@@ -23,7 +23,7 @@ const chatType = create<ChatTypeStoreState>()((set) => ({
   openChat: (type: ChatType) =>
     set(() => ({
       isOpenChat: true,
-      type,
+      chatType: type,
     })),
 }));
 
