@@ -27,4 +27,5 @@ export const getUsersCount = async (spaceId: string) => {
   } catch (error) {
     console.error(error);
   }
+  return null;
 };
