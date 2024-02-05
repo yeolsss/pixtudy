@@ -24,15 +24,6 @@ export default function CustomHead({ title, description }: Props) {
       />
       <meta property="og:url" content="https://www.pixtudy.site" />
       <meta property="og:image" content={imageUrl} />
-
-      <link
-        href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
-        rel="stylesheet"
-      />
-      <link
-        href="https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@1.530/neodgm/style.css"
-        rel="stylesheet"
-      />
     </Head>
   );
 }
