@@ -41,7 +41,7 @@ const useMetaversePlayer = () => {
     spaceId,
     id,
     playerSpaceInfoData,
-    display_ame: displayName,
+    display_name,
     findPlayerById,
     spaceInfo,
     isOwner,

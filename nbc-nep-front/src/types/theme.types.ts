@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export interface Root {
   color: Color;
   unit: Unit;

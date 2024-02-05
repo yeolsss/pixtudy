@@ -6,17 +6,6 @@ import { IconButtonProperty } from "@/types/metaverse.types";
 interface Props {
   button: IconButtonProperty;
 }
-export default function IconButtonByPlayerList({ button }: Props) {
-  const { buttonImage, description, type, handleOnClick } = button;
-  // const { playerList } = usePlayerContext();
-  const { playerList } = useMetaversePlayer();
-  return (
-    <StIconButtonByPlayerListWrapper onClick={handleOnClick}>
-      <Image src={buttonImage} alt={description} width={"16"} height={"16"} />
-      <span>{playerList.length}</span>
-    </StIconButtonByPlayerListWrapper>
-  );
-}
 
 const StIconButtonByPlayerListWrapper = styled.div`
   height: 47px;
@@ -37,3 +26,14 @@ const StIconButtonByPlayerListWrapper = styled.div`
     letter-spacing: -0.12px;
   }
 `;
+
+export default function IconButtonByPlayerList({ button }: Props) {
+  const { buttonImage, description, handleOnClick } = button;
+  const { playerList } = useMetaversePlayer();
+  return (
+    <StIconButtonByPlayerListWrapper onClick={handleOnClick}>
+      <Image src={buttonImage} alt={description} width="16" height="16" />
+      <span>{playerList.length}</span>
+    </StIconButtonByPlayerListWrapper>
+  );
+}

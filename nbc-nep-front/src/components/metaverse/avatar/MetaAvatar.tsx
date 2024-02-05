@@ -38,9 +38,9 @@ export default function MetaAvatar({
 }
 
 MetaAvatar.defaultProps = {
+  spaceAvatar: "",
   width: 32,
   height: 32,
-  x: -1,
   y: 40,
-  spaceAvatar: "avatar_1",
+  x: -1,
 };

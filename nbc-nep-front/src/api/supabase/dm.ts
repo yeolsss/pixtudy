@@ -1,6 +1,6 @@
 import { supabase } from "@/supabase";
-import { Database, Tables } from "@/types/supabase.types";
 import { SpaceMembers } from "@/types/supabase.tables.types";
+import { Database, Tables } from "@/types/supabase.types";
 
 /**
  * 유저의 space 정보를 가져오는 함수

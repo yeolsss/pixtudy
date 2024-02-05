@@ -9,6 +9,7 @@ export type ChatType = "GLOBAL" | "DM";
 
 export type Config = "SPACE_CONFIG" | "VIDEO_CONFIG" | "CHAT_CONFIG";
 
+// eslint-disable-next-line no-shadow
 export enum PlayerState {
   ONLINE,
   EATING,
@@ -26,12 +27,6 @@ export type Player = {
   frame: string;
   spaceId: string;
   state: PlayerState;
-};
-
-export type MapData = {
-  objLayer: Phaser.Tilemaps.TilemapLayer | null;
-  tileLayer: Phaser.Tilemaps.TilemapLayer | null;
-  map: Phaser.Tilemaps.Tilemap;
 };
 
 export type Chat = {

@@ -1,9 +1,5 @@
 import styled from "styled-components";
 
-export const StHeaderWrapper = styled.div``;
-
-export const StSortTitleContainer = styled.div``;
-
 export const StScrumBoardHeader = styled.div`
   max-width: 1200px;
   width: 100%;

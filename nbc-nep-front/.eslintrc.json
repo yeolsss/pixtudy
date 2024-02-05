@@ -19,7 +19,12 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier", "import"],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier",
+    "import"
+  ],
   "rules": {
     "import/extensions": [
       "error",
@@ -29,28 +34,60 @@
         "jsx": "never",
         "ts": "never",
         "tsx": "never",
-        "json": "never"
+        "json": "always"
       }
     ],
     "react/jsx-filename-extension": [
       2,
-      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
     ],
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "import/prefer-default-export": "off",
     "react/react-in-jsx-scope": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "react/jsx-props-no-spreading": ["warn"],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "react/jsx-props-no-spreading": [
+      "warn"
+    ],
     "jsx-a11y/media-has-caption": "off",
-    "jsx-a11y/label-has-associated-control": [ 2, {
-      "some": [ "nesting", "id" ]
-    }]
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "some": [
+          "nesting",
+          "id"
+        ]
+      }
+    ],
+    "@typescript-eslint/naming-convention": "off",
+    "camelcase": "off"
   },
   "settings": {
     "import/resolver": {
       "typescript": {},
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
       }
     }
   }

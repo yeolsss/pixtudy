@@ -16,7 +16,7 @@ import usePlayerListStore from "@/zustand/metaversePlayerStore";
 import useSocket from "@/hooks/socket/useSocket";
 
 export default function useCreatePhaser() {
-  const { spaceId, playerSpaceInfoData, id, displayName, setPlayerList } =
+  const { spaceId, playerSpaceInfoData, id, display_name, setPlayerList } =
     useMetaversePlayer();
   const changePlayerState = usePlayerListStore.use.changePlayerState();
 
@@ -50,7 +50,7 @@ export default function useCreatePhaser() {
 
       gameRef.current.registry.set("player", {
         playerId: id,
-        nickname: playerSpaceInfoData?.space_display_name || displayName,
+        nickname: playerSpaceInfoData?.space_display_name || display_name,
         character: playerSpaceInfoData?.space_avatar || "pinkybonz",
         spaceId,
         state: PlayerState.ONLINE,

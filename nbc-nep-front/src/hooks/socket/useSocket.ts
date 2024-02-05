@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Socket, io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 import { PlayerState } from "@/types/metaverse.types";
 
