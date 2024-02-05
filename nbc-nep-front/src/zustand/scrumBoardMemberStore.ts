@@ -1,18 +1,18 @@
-import { Space_members } from "@/types/supabase.tables.types";
+import { SpaceMembers } from "@/types/supabase.tables.types";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
 
 interface SpaceListStoreState {
-  spaceMembers: Space_members[];
-  filteredSpaceMembers: Space_members[];
-  assignees: Space_members[];
+  spaceMembers: SpaceMembers[];
+  filteredSpaceMembers: SpaceMembers[];
+  assignees: SpaceMembers[];
   searchValue: string;
   backDropIsOpen: boolean;
   changeSearchValue: (searchValue: string) => void;
   filterSpaceMembers: () => void;
-  setSpaceMembers: (spaceMembers: Space_members[]) => void;
+  setSpaceMembers: (spaceMembers: SpaceMembers[]) => void;
   setBackDropIsOpen: (isOpen: boolean) => void;
-  setAssignees: (assign: Space_members) => void;
+  setAssignees: (assign: SpaceMembers) => void;
   deleteAssignees: (userId: string) => void;
   resetAssignees: () => void;
   resetBackDrop: () => void;
@@ -40,7 +40,7 @@ const scrumBoardMemberSearchStore = create<SpaceListStoreState>()((set) => ({
               .includes(state.searchValue.toLowerCase()))
       ),
     })),
-  setAssignees: (assign: Space_members) =>
+  setAssignees: (assign: SpaceMembers) =>
     set((state) => ({ assignees: [...state.assignees, assign] })),
   deleteAssignees: (userId: string) =>
     set((state) => ({
@@ -48,7 +48,7 @@ const scrumBoardMemberSearchStore = create<SpaceListStoreState>()((set) => ({
     })),
   setBackDropIsOpen: (isOpen: boolean) =>
     set(() => ({ backDropIsOpen: isOpen })),
-  setSpaceMembers: (spaceMembers: Space_members[]) =>
+  setSpaceMembers: (spaceMembers: SpaceMembers[]) =>
     set(() => ({ spaceMembers, filteredSpaceMembers: spaceMembers })),
   resetAssignees: () => set(() => ({ assignees: [] })),
   resetBackDrop: () =>

@@ -3,7 +3,7 @@ import { BACK_DROP_TYPE_DETAIL } from "@/components/scrumboard/constants";
 import useDragItem from "@/hooks/scrumBoard/useDragItem";
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
+  KanbanCategories,
 } from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import React from "react";
@@ -16,7 +16,7 @@ import {
 
 interface Props {
   item: GetKanbanItemsByAssignees;
-  category: Kanban_categories;
+  category: KanbanCategories;
 }
 
 function ScrumBoardItem({ category, item }: Props) {
