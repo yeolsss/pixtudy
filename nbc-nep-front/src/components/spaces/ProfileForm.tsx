@@ -12,13 +12,12 @@ import {
 import { FORM_SPACE, SRC_BASE } from "@/components/spaces/constants/constants";
 import useAuthStore from "@/zustand/authStore";
 import useSpaceStore from "@/zustand/spaceStore";
+import { Procedure, UserProfile } from "../../types/space.types";
 import {
   StFormCTAButton,
   StToPreviousButton,
 } from "../common/button/button.styles";
 import AvatarInput from "./AvatarInput";
-import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { Procedure, UserProfile } from "../../types/space.types";
 import {
   StAvatar,
   StAvatarWrapper,
@@ -26,6 +25,7 @@ import {
   StCurrentProfile,
   StProfileForm,
 } from "./styles/profileForm.styles";
+import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 
 interface ProfileFormProps {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
@@ -46,6 +46,7 @@ export default function ProfileForm({
 }: ProfileFormProps) {
   const setUserProfile = useSpaceStore.use.setUserProfile();
   const user = useAuthStore.use.user();
+  console.log(user.displayName);
 
   const handleToPrevious = () => {
     setProcedure(FORM_SPACE);
@@ -54,7 +55,7 @@ export default function ProfileForm({
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     const newUserProfile: UserProfile = {
       avatar: data.avatar,
-      displayName: data.nickname,
+      display_name: data.nickname,
       owner: user.id,
     };
     setUserProfile(newUserProfile);
@@ -80,9 +81,8 @@ export default function ProfileForm({
             닉네임
             <input
               id="nickname"
-              defaultValue={user.display_name!}
+              defaultValue="user.display_name!"
               type="text"
-              placeholder="닉네임"
               name={nicknameRegister.name}
               onBlur={nicknameRegister.onBlur}
               onChange={nicknameRegister.onChange}
