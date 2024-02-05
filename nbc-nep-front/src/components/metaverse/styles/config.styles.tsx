@@ -159,6 +159,7 @@ export const StErrorText = styled.span`
 
 export const StSection = styled(StSectionMain)`
   overflow: auto;
+  position: relative;
 
   div label {
     align-self: center;
