@@ -25,15 +25,15 @@ export default function ChangePassword() {
   return (
     <>
       <CustomHead
-        title={"비밀번호 재설정"}
-        description={"비밀번호 재설정 페이지입니다."}
+        title="비밀번호 재설정"
+        description="비밀번호 재설정 페이지입니다."
       />
       <StAuthOuterContainer>
         <AuthHeroBanner formType="changePassword" />
         <AuthFormContainer>
           <StChangeAuthPage>
             비밀번호가 떠오르셨나요?
-            <Link href={"/signin"}>지금 로그인하기</Link>
+            <Link href="/signin">지금 로그인하기</Link>
           </StChangeAuthPage>
           <h1>
             {user.display_name

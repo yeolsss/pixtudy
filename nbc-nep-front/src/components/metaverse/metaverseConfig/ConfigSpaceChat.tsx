@@ -32,7 +32,7 @@ export default function ConfigSpaceChat() {
         <div>
           <select defaultValue={sound} onChange={handleChangeSound}>
             {options.map((option, index) => (
-              <option key={index} value={option.src}>
+              <option key={`${index + option.src}`} value={option.src}>
                 {option.text}
               </option>
             ))}
@@ -60,7 +60,9 @@ export default function ConfigSpaceChat() {
           />
         </div>
 
-        <button onClick={handleTestSound}>테스트</button>
+        <button type="button" onClick={handleTestSound}>
+          테스트
+        </button>
       </div>
     </StSectionChatConfig>
   );

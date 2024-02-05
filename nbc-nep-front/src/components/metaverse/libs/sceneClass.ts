@@ -34,13 +34,21 @@ const LAYER_NAME = {
  */
 export class SceneClass extends Phaser.Scene {
   character?: CurrentPlayer;
+
   characterName?: Phaser.GameObjects.Text;
+
   otherPlayers?: OtherPlayersGroup;
+
   cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+
   runKey?: Phaser.Input.Keyboard.Key;
+
   lastDirection?: string;
+
   socket: Socket;
+
   isRunning: boolean = false;
+
   playerId: string;
 
   constructor(socket: Socket, playerId: string) {
@@ -85,7 +93,6 @@ export class SceneClass extends Phaser.Scene {
     // current player setting
     this.socket.on("current-players", (players: Player[]) => {
       players.forEach((player) => {
-        console.log("this player", player);
         if (player.playerId === this.playerId) {
           this.addPlayer(player, objLayer!);
         } else {
@@ -94,16 +101,16 @@ export class SceneClass extends Phaser.Scene {
       });
     });
 
-    this.socket.on("new-player", (playerInfo: Player) => {
-      this.addOtherPlayers(playerInfo);
+    this.socket.on("new-player", (newPlayerInfo: Player) => {
+      this.addOtherPlayers(newPlayerInfo);
+    });
+
+    this.socket.on("player-moved", (movedPlayerInfo: Player) => {
+      this.otherPlayers?.movePlayer(movedPlayerInfo);
     });
 
     this.socket.on("player-disconnected", (playerId: string) => {
       this.otherPlayers?.removePlayer(playerId);
-    });
-
-    this.socket.on("player-moved", (playerInfo: Player) => {
-      this.otherPlayers?.movePlayer(playerInfo);
     });
 
     this.socket.on("duplicated-user", (playerId: string) => {
@@ -125,8 +132,7 @@ export class SceneClass extends Phaser.Scene {
         _pointer: Phaser.Input.Pointer,
         _gameObjects: Phaser.GameObjects.GameObject[],
         _deltaX: number,
-        deltaY: number,
-        _deltaZ: number
+        deltaY: number
       ) => {
         this.onMouseWheel(deltaY);
       }
@@ -148,7 +154,7 @@ export class SceneClass extends Phaser.Scene {
     this.updateCharacterMovement(velocity);
     this.updateLastDirection();
 
-    let animationKey = this.lastDirection; // 마지막 방향을 기본값으로 설정한다.
+    const animationKey = this.lastDirection; // 마지막 방향을 기본값으로 설정한다.
 
     if (this.isAnyCursorKeyDown()) {
       // 이동 중인 경우 이동 방향에 맞는 애니메이션을 재생한다.
@@ -158,8 +164,9 @@ export class SceneClass extends Phaser.Scene {
     } else {
       // 이동 입력이 없는 경우 멈춘 상태의 프레임을 설정한다.
       this.character?.anims.stop();
-      let frameIndex = this.getFrameIndex(this.lastDirection ?? "down");
-      this.character?.setFrame(frameIndex);
+      this.character?.setFrame(
+        SceneClass.getFrameIndex(this.lastDirection ?? "down")
+      );
     }
 
     if (this.character && this.characterName) {
@@ -199,6 +206,7 @@ export class SceneClass extends Phaser.Scene {
     this.cameras.main.startFollow(this.character, true);
     this.cameras.main.setZoom(2);
   }
+
   /**
    * 다른 플레이어를 게임에 추가한다.
    * @param {Player} playerInfo - 추가할 플레이어의 정보.
@@ -236,7 +244,7 @@ export class SceneClass extends Phaser.Scene {
    * @returns {number} 커서 입력에 따라 변경된 x축, y축의 변화를 반환한다.
    */
   getMovementVector() {
-    let velocity = new Phaser.Math.Vector2();
+    const velocity = new Phaser.Math.Vector2();
 
     if (this.cursors?.left.isDown) {
       velocity.x = -1;
@@ -302,12 +310,7 @@ export class SceneClass extends Phaser.Scene {
     );
   }
 
-  /**
-   *
-   * @param {string} lastDirection
-   * @returns {number} 마지막에 입력한 방향키에 맞는 frame을 반환한다.
-   */
-  getFrameIndex(lastDirection: string) {
+  static getFrameIndex(lastDirection: string) {
     switch (lastDirection) {
       case "left":
         return 3;

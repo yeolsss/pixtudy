@@ -1,22 +1,22 @@
-import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
-import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
-import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
-import { useEffect } from "react";
 import {
   deleteCategoryItem,
   patchScrumBoardItem,
   postScrumBoardItem,
 } from "@/api/supabase/scrumBoard";
-import { useParams } from "next/navigation";
-import useAuthStore from "@/zustand/authStore";
 import {
   BACK_DROP_TYPE_CREATE,
   BACK_DROP_TYPE_DETAIL,
   BACK_DROP_TYPE_UPDATE,
-} from "@/components/scrumboard/constants/constants";
+} from "@/components/scrumboard/constants";
 import useConfirm from "@/hooks/confirm/useConfirm";
+import useAuthStore from "@/zustand/authStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
+import { useMutation } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 interface ReturnType {
   handleOnClickCreate: () => void;
@@ -27,7 +27,7 @@ interface ReturnType {
   handleOnClickDelete: () => void;
 }
 export default function useCreateScrumButtons(): ReturnType {
-  const { space_id } = useParams();
+  const { space_id: spaceId }: { space_id: string } = useParams();
   const user = useAuthStore.use.user();
   const scrumBoardText = useScrumBoardItemStore.use.scrumBoardText();
   const resetScrumBoardItem = useScrumBoardItemStore.use.resetScrumBoardItem();
@@ -68,17 +68,18 @@ export default function useCreateScrumButtons(): ReturnType {
       {
         description: scrumBoardText,
         categoryId: category.id,
-        space_id: space_id as string,
-        user_id: user?.id,
-        assignees: assignees,
+        spaceId: spaceId as string,
+        userId: user?.id,
+        assignees,
       },
       {
         onSuccess: () => {
           toast.success("스크럼 보드 아이템이 등록되었습니다.");
           closeBackDrop();
         },
-        onError: (error) => {
+        onError: (error: Error) => {
           toast.error("스크럼 보드 아이템 등록에 실패하였습니다.");
+          console.error(error);
         },
       }
     );
@@ -104,12 +105,13 @@ export default function useCreateScrumButtons(): ReturnType {
       denyButtonText: "아니요, 취소할게요",
     }).then((result) => {
       if (!result) return;
+      if (!kanbanItem) return;
       updateMutate.mutate(
         {
-          id: kanbanItem?.id!,
+          id: kanbanItem.id!,
           description: scrumBoardText,
-          space_id: space_id as string,
-          assignees: assignees,
+          spaceId,
+          assignees,
         },
         {
           onSuccess: async () => {
@@ -134,13 +136,15 @@ export default function useCreateScrumButtons(): ReturnType {
       denyButtonText: "아니요, 취소할게요",
     }).then((result) => {
       if (!result) return;
-      deleteMutate.mutate(kanbanItem?.id!, {
+      if (!kanbanItem) return;
+      deleteMutate.mutate(kanbanItem.id!, {
         onSuccess: () => {
           toast.dark("스크럼 보드 아이템이 삭제되었습니다.");
           closeBackDrop();
         },
         onError: (error) => {
           toast.error("스크럼 보드 아이템 삭제에 실패하였습니다.");
+          console.error(error);
         },
       });
     });

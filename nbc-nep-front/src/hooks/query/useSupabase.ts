@@ -1,3 +1,7 @@
+import { Session } from "@supabase/supabase-js";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
 import {
   forgottenPasswordHandler,
   getOtherUserHandler,
@@ -33,23 +37,18 @@ import {
   joinSpaceHandler,
   leavingSpace,
   removeSpace,
-  removeSpace as removeSpaceSupabase,
   updateSpace,
-  updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
-import { Database, Tables } from "@/types/supabase.types";
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
-  Space_members,
+  KanbanCategories,
+  SpaceMembers,
   Spaces,
 } from "@/types/supabase.tables.types";
+import { Database, Tables } from "@/types/supabase.types";
 import { authValidation } from "@/utils/authValidate";
 import useAuthStore from "@/zustand/authStore";
-import { Session } from "@supabase/supabase-js";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 
 /* Auth */
 /* user */
@@ -76,7 +75,7 @@ export function useLogoutUser() {
   const { mutate: logout } = useMutation({
     mutationFn: logoutHandler,
     onError: (error) => {
-      console.log("로그아웃에러: ", error);
+      console.error("로그아웃에러: ", error);
     },
   });
   return logout;
@@ -152,7 +151,7 @@ export function useGetSpace() {
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ["userSpaces"] });
     },
-    onError: (error: any) => console.error(error),
+    onError: (error: Error) => console.error(error),
   });
   return getSpace;
 }
@@ -174,44 +173,7 @@ export function useGetUserSpaces(currentUserId: string) {
     queryFn: () => getUserSpaces(currentUserId),
     enabled: !!currentUserId,
   };
-  return useCustomQuery<Space_members[], Error>(getUserSpacesOptions);
-}
-
-export function useRemoveSpace(onSuccess: () => void) {
-  const client = useQueryClient();
-  const {
-    mutate: removeSpace,
-    isSuccess: isRemovingSuccess,
-    isError: isRemovingError,
-  } = useMutation({
-    mutationFn: removeSpaceSupabase,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ["userSpaces"] });
-      onSuccess();
-    },
-    onError: (error) => {
-      console.error("remove space error: ", error);
-    },
-  });
-  return { removeSpace, isRemovingSuccess, isRemovingError };
-}
-
-export function useUpdateSpace() {
-  const client = useQueryClient();
-  const {
-    mutate: updateSpace,
-    isSuccess: isUpdatingSuccess,
-    isError: isUpdatingError,
-  } = useMutation({
-    mutationFn: updateSpaceSupabase,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ["userSpaces"] });
-    },
-    onError: (error) => {
-      console.error("update space error: ", error);
-    },
-  });
-  return { updateSpace, isUpdatingSuccess, isUpdatingError };
+  return useCustomQuery<SpaceMembers[], Error>(getUserSpacesOptions);
 }
 
 export function useLeavingSpace() {
@@ -261,16 +223,16 @@ export function useGetDmMessages(dmChannel: string | null) {
 // 메시지 보내기
 export function useSendMessage() {
   const { id: currentUserId } = useAuthStore.use.user();
-  const { mutate: message } = useMutation({
+  const { mutate: sendMessageMutation } = useMutation({
     mutationFn: ({
       currentDmChannel,
-      message,
+      message: msg,
       receiverId,
       spaceId,
     }: Omit<sendMessageArgs, "currentUserId">) =>
       sendMessage({
         currentDmChannel,
-        message,
+        message: msg,
         receiverId,
         spaceId,
         currentUserId,
@@ -279,7 +241,7 @@ export function useSendMessage() {
       console.log("sendError: ", error);
     },
   });
-  return message;
+  return sendMessageMutation;
 }
 
 export function useGetLastDMList(spaceId: string, userId: string) {
@@ -322,7 +284,7 @@ export function useGetCategories(spaceId: string) {
     options: { staleTime: Infinity },
   };
 
-  return useCustomQuery<Kanban_categories[], Error>(queryOptions);
+  return useCustomQuery<KanbanCategories[], Error>(queryOptions);
 }
 
 export function useGetCategoryItems(categoryId: string) {

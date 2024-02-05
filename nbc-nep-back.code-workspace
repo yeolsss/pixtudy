@@ -9,6 +9,9 @@
   ],
   "settings": {
     "cSpell.words": ["mediasoup", "Metaverse", "supabase"],
-    "commentTranslate.hover.enabled": false
+    "commentTranslate.hover.enabled": false,
+    "eslint.format.enable": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "eslint.run": "onSave"
   }
 }

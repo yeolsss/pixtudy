@@ -4,7 +4,7 @@ import AuthFooter from "@/components/auth/AuthFooter";
 import AuthForm from "@/components/auth/AuthForm";
 import AuthFormContainer from "@/components/auth/AuthFormContainer";
 import AuthHeroBanner from "@/components/auth/AuthHeroBanner";
-import SocialLogin from "@/components/auth/SocialLogin";
+import SocialLogin from "@/components/auth/AuthSocialLogin";
 import {
   StAuthOuterContainer,
   StChangeAuthPage,
@@ -32,13 +32,13 @@ export function SignIn() {
   }, []);
   return (
     <>
-      <CustomHead title={"로그인"} description={"로그인 페이지입니다."} />
+      <CustomHead title="로그인" description="로그인 페이지입니다." />
       <StAuthOuterContainer>
         <AuthHeroBanner formType="signIn" />
         <AuthFormContainer>
           <StChangeAuthPage>
             아직 계정을 만들기 전인가요?
-            <Link href={"/signup"}>지금 가입하기</Link>
+            <Link href="/signup">지금 가입하기</Link>
           </StChangeAuthPage>
           <h1>어서오세요 :)</h1>
           <SocialLogin subText="SNS 로그인" />

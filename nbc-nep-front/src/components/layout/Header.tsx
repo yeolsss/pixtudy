@@ -2,10 +2,15 @@ import useConfirm from "@/hooks/confirm/useConfirm";
 import { useLogoutUser } from "@/hooks/query/useSupabase";
 import { pathValidation } from "@/utils/middlewareValidate";
 import useAuthStore from "@/zustand/authStore";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import { StCTAButton } from "../common/button/button.styles";
+import {
+  StLogo,
+  StNavButton,
+  StNavContainer,
+  StNavLink,
+  StNavWrapper,
+} from "./styles/header.styles";
 
 export const GOOGLE_FORM_LINK = "https://forms.gle/mDpaz6tnSpTwcLVp7";
 
@@ -55,7 +60,9 @@ export default function Header() {
     <StNavWrapper>
       <StNavContainer>
         <div>
-          <Link href="/">Pixtudy</Link>
+          <StLogo href="/">
+            <h1>Pixtudy</h1>
+          </StLogo>
           <StNavLink href="/">서비스 소개</StNavLink>
           <StNavLink as="a" href={GOOGLE_FORM_LINK}>
             고객지원
@@ -63,8 +70,8 @@ export default function Header() {
         </div>
         <div>
           {isLogin && <p>{display_name}</p>}
-          {currentButton.map((btn, index) => (
-            <StNavButton key={index} onClick={btn.handler}>
+          {currentButton.map((btn) => (
+            <StNavButton type="button" key={btn.text} onClick={btn.handler}>
               {btn.text}
             </StNavButton>
           ))}
@@ -74,72 +81,3 @@ export default function Header() {
     </StNavWrapper>
   );
 }
-const StNavWrapper = styled.header`
-  width: 100%;
-  background-color: ${(props) => props.theme.color.bg.primary};
-  position: relative;
-  z-index: 2;
-`;
-
-const StNavContainer = styled.div`
-  display: flex;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  height: ${(props) => props.theme.unit[96]};
-  padding: ${(props) => props.theme.spacing[24]};
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--sub-font);
-  position: relative;
-  z-index: 100;
-
-  a {
-    display: block;
-    color: ${(props) => props.theme.color.text.interactive.primary};
-    font-family: var(--point-font);
-    font-size: ${(props) => props.theme.heading.desktop.lg.fontSize};
-    font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
-  }
-
-  div {
-    display: flex;
-    align-items: center;
-    gap: ${(props) => props.theme.spacing[32]};
-  }
-
-  p {
-    font-size: ${(props) => props.theme.body.lg.regular.fontSize};
-    font-weight: ${(props) => props.theme.body.lg.regular.fontWeight};
-    color: ${(props) => props.theme.color.text.primary};
-    font-family: var(--sub-font);
-    letter-spacing: ${(props) => props.theme.body.lg.regular.letterSpacing};
-  }
-`;
-
-const StNavLink = styled(Link)`
-  border: none !important;
-  padding: 0 !important;
-  font-family: var(--sub-font) !important;
-  font-size: ${(props) => props.theme.body.lg.regular.fontSize} !important;
-  font-weight: ${(props) => props.theme.body.lg.regular.fontWeight} !important;
-  color: ${(props) => props.theme.color.text.disabled} !important;
-  &:hover {
-    background-color: ${(props) => props.theme.color.bg.primary} !important;
-    color: ${(props) =>
-      props.theme.color.text.interactive["secondary-pressed"]} !important;
-  }
-`;
-const StNavButton = styled.button`
-  border: none;
-  padding: 0;
-  font-family: var(--sub-font);
-  font-size: ${(props) => props.theme.body.lg.regular.fontSize};
-  font-weight: ${(props) => props.theme.body.lg.regular.fontWeight};
-  color: ${(props) => props.theme.color.text.disabled};
-  &:hover {
-    background-color: ${(props) => props.theme.color.bg.primary};
-    color: ${(props) =>
-      props.theme.color.text.interactive["secondary-pressed"]};
-  }
-`;

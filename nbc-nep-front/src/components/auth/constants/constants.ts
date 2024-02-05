@@ -5,6 +5,9 @@ import {
   authHero5,
   authHero6,
   authHero7,
+  github,
+  google,
+  kakao,
 } from "@/assets/auth";
 
 export const IMAGE_ARRAY = [
@@ -24,4 +27,10 @@ export const TIPS_ARRAY = [
   "다자간 화상 회의 기능을 통해 얼굴을 마주보며 소통하세요. 생생한 음성과 함께, 마치 같은 공간에 있는 듯한 경험을 제공합니다.",
   "비밀번호를 잊어버리셨나요? 걱정하지 마세요. 로그인 페이지에서 비밀번호 찾기 기능을 사용하면, 이메일로 초기화 링크를 바로 받을 수 있습니다.",
   "스페이스별 스크럼보드로 프로젝트와 스터디 일정을 체계적으로 관리할 수 있습니다. 브레인스토밍 보드를 통해 아이디어를 모으고, 그 아이디어를 바로 스크럼보드로 옮겨 실행에 옮기세요!",
+];
+
+export const SOCIAL_LOGIN = [
+  { text: "구글", platform: "google", icon: google },
+  { text: "카카오", platform: "kakao", icon: kakao },
+  { text: "깃허브", platform: "github", icon: github },
 ];

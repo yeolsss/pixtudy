@@ -1,20 +1,20 @@
 import { supabase } from "@/supabase";
-import { TablesInsert, TablesUpdate } from "@/types/supabase.types";
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
-  Space_members,
+  KanbanCategories,
+  SpaceMembers,
 } from "@/types/supabase.tables.types";
+import { TablesInsert, TablesUpdate } from "@/types/supabase.types";
 
 export const getCategories = async (
   spaceId: string
-): Promise<Kanban_categories[]> => {
+): Promise<KanbanCategories[]> => {
   const { data, error } = await supabase
     .from("kanban_categories")
     .select("*")
     .eq("spaceId", spaceId)
     .order("order", { ascending: true })
-    .returns<Kanban_categories[]>();
+    .returns<KanbanCategories[]>();
   if (error) throw error;
   return data;
 };
@@ -29,7 +29,7 @@ export const getCategoryItems = async (
     })
     .returns<GetKanbanItemsByAssignees[]>();
   if (error) throw error;
-  return data ? data : [];
+  return data || [];
 };
 
 export const createCategory = async ({
@@ -71,7 +71,7 @@ export const getSpaceUsers = async (spaceId: string) => {
     .from("space_members")
     .select("*, users(*)")
     .eq("space_id", spaceId)
-    .returns<Space_members[]>();
+    .returns<SpaceMembers[]>();
 
   if (error) {
     throw new Error(error.message);
@@ -82,21 +82,27 @@ export const getSpaceUsers = async (spaceId: string) => {
 interface PostSpaceMemberPrams {
   description: string;
   categoryId: string;
-  space_id: string;
-  user_id: string;
-  assignees: Space_members[];
+  spaceId: string;
+  userId: string;
+  assignees: SpaceMembers[];
 }
 export const postScrumBoardItem = async ({
   description,
   categoryId,
   assignees,
-  space_id,
-  user_id,
+  spaceId,
+  userId,
 }: PostSpaceMemberPrams) => {
   const { data, error } = await supabase
     .from("kanban_items")
     .insert([
-      { description, categoryId, title: "", create_user_id: user_id, space_id },
+      {
+        description,
+        categoryId,
+        title: "",
+        create_user_id: userId,
+        space_id: spaceId,
+      },
     ])
     .select("*");
 
@@ -109,8 +115,8 @@ export const postScrumBoardItem = async ({
     .insert(
       assignees.map((assignee) => ({
         kanbanItemId: data?.[0].id,
-        userId: assignee.users?.id!,
-        space_id,
+        userId: assignee.users ? assignee.users.id! : "",
+        space_id: spaceId,
       }))
     );
   if (assigneesError) {
@@ -147,13 +153,13 @@ export const deleteCategoryItem = async (id: string) => {
 export interface PatchScrumBoardItemPrams {
   id: string;
   description: string;
-  space_id: string;
-  assignees: Space_members[];
+  spaceId: string;
+  assignees: SpaceMembers[];
 }
 export const patchScrumBoardItem = async ({
   id,
   description,
-  space_id,
+  spaceId,
   assignees,
 }: PatchScrumBoardItemPrams) => {
   const { error } = await supabase
@@ -174,14 +180,14 @@ export const patchScrumBoardItem = async ({
     throw new Error(assigneesDeleteError.message);
   }
 
-  //TODO: 함수로 뺄것.
+  // TODO: 함수로 뺄것.
   const { error: assigneesError } = await supabase
     .from("kanban_assignees")
     .insert(
       assignees.map((assignee) => ({
         kanbanItemId: id,
         userId: assignee.user_id,
-        space_id,
+        space_id: spaceId,
       }))
     );
   if (assigneesError) {

@@ -9,6 +9,14 @@ export type ChatType = "GLOBAL" | "DM";
 
 export type Config = "SPACE_CONFIG" | "VIDEO_CONFIG" | "CHAT_CONFIG";
 
+// eslint-disable-next-line no-shadow
+export enum PlayerState {
+  ONLINE,
+  EATING,
+  LEFT_SEAT,
+  DISTURB,
+}
+
 export type Player = {
   rotation: number;
   x: number;
@@ -21,12 +29,6 @@ export type Player = {
   state: PlayerState;
 };
 
-export type MapData = {
-  objLayer: Phaser.Tilemaps.TilemapLayer | null;
-  tileLayer: Phaser.Tilemaps.TilemapLayer | null;
-  map: Phaser.Tilemaps.Tilemap;
-};
-
 export type Chat = {
   userId: string;
   message: string;
@@ -34,13 +36,6 @@ export type Chat = {
   playerId: string;
   chatTime: Date;
 };
-
-export enum PlayerState {
-  ONLINE,
-  EATING,
-  LEFT_SEAT,
-  DISTURB,
-}
 
 export type DMListCard = {
   room_id: string;

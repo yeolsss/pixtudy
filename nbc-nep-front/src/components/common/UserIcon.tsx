@@ -5,7 +5,7 @@ interface Props {
 const USER_EXISTS = "#15E42A";
 const USER_NOT_EXISTS = "#FF001F";
 
-const UserIcon = ({ fill }: Props) => {
+function UserIcon({ fill }: Props) {
   return (
     <svg
       width="8"
@@ -36,6 +36,6 @@ const UserIcon = ({ fill }: Props) => {
       </defs>
     </svg>
   );
-};
+}
 
 export default UserIcon;

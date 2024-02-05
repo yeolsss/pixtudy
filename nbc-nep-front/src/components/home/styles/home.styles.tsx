@@ -2,30 +2,41 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export const StScrollSection = styled.section`
-  width: 100vw;
-  height: 600vh;
+  width: 100%;
+  height: 5000px;
 
   display: flex;
   flex-direction: row;
   z-index: 1;
+
+  position: relative;
 `;
 
 export const StStickyWrapper = styled.div`
   position: sticky;
-  width: 1350px;
-  margin: 0 auto;
   top: ${(props) => props.theme.spacing[16]};
+
+  max-width: 1300px;
+  width: 100%;
   height: 100vh;
 
-  background: url("/assets/home/sticky-bg.png") no-repeat 0 35% / contain;
+  margin: 0 auto;
   padding: ${(props) =>
     `${props.theme.spacing[16]} ${props.theme.spacing[32]}`};
+
+  background: url("/assets/home/sticky-bg.png") no-repeat 0 35% / contain;
+
+  @media screen and (max-width: 768px) {
+    padding: ${(props) =>
+      `${props.theme.spacing[8]} ${props.theme.spacing[16]}`};
+  }
 `;
 
 export const StStickyItem = styled.div`
   position: relative;
 
   width: 29rem;
+  max-width: 50%;
 
   top: 40%;
   transform: translateY(-50%);
@@ -41,7 +52,7 @@ export const StStickyItem = styled.div`
 
   h1 {
     font-family: var(--point-font);
-    font-weight: ${(props) => props.theme.heading.desktop["3xl"].fontWeight};
+    font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
     font-size: ${(props) => props.theme.heading.desktop["3xl"].fontSize};
     letter-spacing: ${(props) =>
       props.theme.heading.desktop["3xl"].letterSpacing};
@@ -53,6 +64,26 @@ export const StStickyItem = styled.div`
     font-size: ${(props) => props.theme.body.lg.medium.fontSize};
     letter-spacing: ${(props) => props.theme.body.lg.medium.letterSpacing};
     line-height: ${(props) => props.theme.heading.desktop.lg.lineHeight};
+  }
+
+  @media screen and (max-width: 768px) {
+    top: 20%;
+
+    width: calc(100% - ${(props) => props.theme.spacing[64]});
+    max-width: initial;
+
+    h1 {
+      font-weight: ${(props) => props.theme.heading.desktop["2xl"].fontWeight};
+      font-size: ${(props) => props.theme.heading.desktop["2xl"].fontSize};
+      letter-spacing: ${(props) =>
+        props.theme.heading.desktop["2xl"].letterSpacing};
+      line-height: ${(props) => props.theme.heading.desktop["2xl"].lineHeight};
+    }
+    p {
+      font-size: ${(props) => props.theme.body.md.medium.fontSize};
+      letter-spacing: ${(props) => props.theme.body.md.medium.letterSpacing};
+      line-height: ${(props) => props.theme.heading.desktop.md.lineHeight};
+    }
   }
 `;
 
@@ -67,8 +98,9 @@ export const StScrollItemWrapper = styled(motion.div)<{
   width: 34rem;
   height: 30rem;
 
-  display: flex;
   padding: ${(props) => props.theme.spacing[24]};
+
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: ${(props) => props.theme.spacing[16]};
@@ -95,12 +127,12 @@ export const StScrollItemWrapper = styled(motion.div)<{
 
     h2 {
       max-width: 100%;
-      font-size: ${(props) => props.theme.heading.desktop["sm"].fontSize};
+      font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
       letter-spacing: ${(props) =>
-        props.theme.heading.desktop["sm"].letterSpacing};
-      line-height: ${(props) => props.theme.heading.desktop["sm"].lineHeight};
+        props.theme.heading.desktop.sm.letterSpacing};
+      line-height: ${(props) => props.theme.heading.desktop.sm.lineHeight};
       font-family: var(--sub-font);
-      font-weight: ${(props) => props.theme.heading.desktop["sm"].fontWeight};
+      font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
       text-align: center;
       word-break: keep-all;
     }
@@ -113,5 +145,15 @@ export const StScrollItemWrapper = styled(motion.div)<{
     line-height: ${(props) => props.theme.body.md.medium.lineHeight};
     text-align: center;
     word-break: keep-all;
+  }
+
+  @media screen and (max-width: 786px) {
+    margin: auto;
+    top: calc(50% - 23rem);
+    left: calc(50% - 25rem);
+
+    width: 50rem;
+    height: 46rem;
+    gap: ${(props) => props.theme.spacing[64]};
   }
 `;

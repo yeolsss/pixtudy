@@ -6,26 +6,6 @@ interface Props {
   text?: string;
 }
 
-export default function NoContents({ text = "게시물이 없습니다" }: Props) {
-  const randomImage = useMemo(() => {
-    const random = Math.floor(Math.random() * 2 + 1);
-    return `/assets/no_contents_${random}.png`;
-  }, [text]);
-
-  return (
-    <StNoContents>
-      <Image
-        draggable="false"
-        src={randomImage}
-        alt="no contents"
-        width={70}
-        height={62}
-      />
-      <p>{text}</p>
-    </StNoContents>
-  );
-}
-
 const StNoContents = styled.div`
   display: flex;
   height: calc(92vh - 320px);
@@ -46,3 +26,29 @@ const StNoContents = styled.div`
     filter: saturate(0);
   }
 `;
+
+const IMAGE_COUNT = 2;
+
+export default function NoContents({ text = "게시물이 없습니다" }: Props) {
+  const randomImage = useMemo(() => {
+    const random = Date.now() % IMAGE_COUNT;
+    return `/assets/no_contents_${random}.png`;
+  }, [text]);
+
+  return (
+    <StNoContents>
+      <Image
+        draggable="false"
+        src={randomImage}
+        alt="no contents"
+        width={70}
+        height={62}
+      />
+      <p>{text}</p>
+    </StNoContents>
+  );
+}
+
+NoContents.defaultProps = {
+  text: "게시물이 없습니다.",
+};

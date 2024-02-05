@@ -15,7 +15,7 @@ export interface Spaces {
   space_thumb: string | null;
 }
 
-export interface Kanban_categories {
+export interface KanbanCategories {
   id: string /* primary key */;
   spaceId: string /* foreign key to spaces.id */;
   name: string;
@@ -24,7 +24,7 @@ export interface Kanban_categories {
   spaces?: Spaces;
 }
 
-export interface Dm_channels {
+export interface DmChannels {
   id: string /* primary key */;
   space_id: string /* foreign key to spaces.id */;
   user: string /* foreign key to users.id */;
@@ -33,39 +33,29 @@ export interface Dm_channels {
   users?: Users;
 }
 
-export interface Kanban_items {
+export interface KanbanItems {
   id: string /* primary key */;
   created_at: string;
   title: string;
   description: string;
   deadline?: string;
   type: string;
-  categoryId: string /* foreign key to kanban_categories.id */;
-  kanban_categories?: Kanban_categories;
-  kanban_assignees?: Kanban_assignees[];
+  categoryId: string;
+  kanban_categories?: KanbanCategories;
+  // eslint-disable-next-line no-use-before-define
+  kanban_assignees?: KanbanAssignees[];
 }
 
-export interface Kanban_assignees {
-  id: string /* primary key */;
-  kanbanItemId: string /* foreign key to kanban_items.id */;
-  userId: string /* foreign key to users.id */;
-  kanban_items?: Kanban_items;
+export interface KanbanAssignees {
+  assigneesId: string;
+  spaceAvatar: string;
+  userId: string;
+  space_display_name: string;
+  kanban_items?: KanbanItems;
   users?: Users;
 }
 
-export interface Dm_messages {
-  id: string /* primary key */;
-  created_at: string;
-  dm_id: string /* foreign key to dm_channels.id */;
-  receiver_id: string /* foreign key to users.id */;
-  message: string;
-  sender_id: string /* foreign key to users.id */;
-  checked: string;
-  dm_channels?: Dm_channels;
-  users?: Users;
-}
-
-export interface Space_members {
+export interface SpaceMembers {
   id: string /* primary key */;
   created_at: string;
   space_id: string /* foreign key to spaces.id */;
@@ -75,13 +65,6 @@ export interface Space_members {
   spaces?: Spaces;
   users?: Users;
 }
-
-export type SpaceMembers = {
-  space_id: string;
-  users: {
-    id: string;
-  };
-};
 
 export type GetKanbanItemsByAssignees = {
   id: string;
@@ -96,11 +79,4 @@ export type GetKanbanItemsByAssignees = {
   create_user_id: string;
   space_id?: string;
   assignees: KanbanAssignees[];
-};
-
-export type KanbanAssignees = {
-  assigneesId: string;
-  spaceAvatar: string;
-  userId: string;
-  space_display_name: string;
 };

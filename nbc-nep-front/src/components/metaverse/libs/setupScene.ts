@@ -57,6 +57,4 @@ export class SetupScene extends Phaser.Scene {
   create() {
     this.scene.start("SceneClass");
   }
-
-  update() {}
 }

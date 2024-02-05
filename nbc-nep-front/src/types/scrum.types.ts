@@ -15,4 +15,4 @@ export type AnimationInfo = {
   transition: { duration: number };
 };
 
-export type BackDropType = "create" | "detail" | "update";
+export type BackDropType = "create" | "detail" | "update" | null;

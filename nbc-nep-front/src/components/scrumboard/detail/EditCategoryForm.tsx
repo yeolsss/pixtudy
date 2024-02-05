@@ -1,10 +1,17 @@
-import DefaultSpanText from "@/components/common/text/DefaultSpanText";
 import { useGetCategories, useUpdateCategory } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
-import styled from "styled-components";
-import { options } from "../constants/constants";
+import {
+  StCategoryForm,
+  StColorOption,
+  StDropdownButton,
+  StDropdownWrapper,
+  StEditErrorMessage,
+  StEditSubmitButton,
+  StSelectedColor,
+} from "@/components/scrumboard/styles/category.styles";
+import { options } from "../constants";
 
 /**
  * TODO:
@@ -23,11 +30,10 @@ export default function EditCategoryForm({
   color: currentColor,
   setIsEdit,
 }: Props) {
-  const { space_id } = useParams();
-  const spaceId = space_id as string;
-  const categories = useGetCategories(spaceId);
+  const { space_id: spaceId } = useParams();
+  const categories = useGetCategories(spaceId as string);
   const [isOpen, setIsOpen] = useState(false);
-  const { update, isSuccess, isError } = useUpdateCategory(spaceId);
+  const { update } = useUpdateCategory(spaceId as string);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -99,10 +105,10 @@ export default function EditCategoryForm({
             </StDropdownButton>
             {isOpen && (
               <StDropdownWrapper>
-                {options.map((option, idx) => {
+                {options.map((option) => {
                   return (
                     <StColorOption
-                      key={idx}
+                      key={option}
                       $color={option}
                       $isSelected={selectedOption === option}
                       onClick={() => {
@@ -110,7 +116,7 @@ export default function EditCategoryForm({
                         setIsOpen(false);
                       }}
                     >
-                      <span key={idx} />
+                      <span key={`${option}span`} />
                     </StColorOption>
                   );
                 })}
@@ -134,124 +140,3 @@ export default function EditCategoryForm({
     </StCategoryForm>
   );
 }
-
-const StCategoryForm = styled.form`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing[12]};
-  height: ${(props) => props.theme.unit[20]};
-
-  & > input {
-    flex-shrink: 1;
-    width: 100%;
-    height: ${(props) => props.theme.unit[16]};
-    padding: ${(props) => props.theme.spacing[12]} 0;
-    border: none;
-    border-radius: 0;
-    background-color: transparent;
-    font-family: var(--point-font);
-    font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
-    font-weight: ${(props) => props.theme.heading.desktop.md.fontWeight};
-  }
-  & > input:focus {
-    outline: none;
-    border-bottom: 1px solid ${(props) => props.theme.color.border.focusRing};
-  }
-`;
-
-const StDropdownWrapper = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  top: ${(props) => props.theme.unit[24]};
-  left: -${(props) => props.theme.unit[4]};
-  box-shadow: ${(props) => props.theme.elevation.Light.shadow2};
-  border-radius: ${(props) => props.theme.border.radius[8]};
-`;
-
-const StDropdownButton = styled.div<{ $isOpen: boolean }>`
-  width: fit-content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: ${(props) => props.theme.unit[16]};
-  font-size: 0;
-  cursor: pointer;
-  & > span {
-    font-size: 0;
-    width: ${(props) => props.theme.unit[14]};
-    height: ${(props) => props.theme.unit[16]};
-    background-image: url("/assets/dropdownArrow.svg");
-    transform: ${(props) =>
-      props.$isOpen ? "rotateX(0deg)" : "rotateX(180deg)"};
-  }
-`;
-
-const StSelectedColor = styled.div<{ $color: string }>`
-  background-color: ${(props) => props.$color};
-  width: ${(props) => props.theme.unit[12]};
-  height: ${(props) => props.theme.unit[12]};
-  border-radius: ${(props) => props.theme.border.radius.circle};
-  font-size: 0;
-`;
-
-const StColorOption = styled.div<{ $color: string; $isSelected: boolean }>`
-  display: flex;
-  padding: ${(props) => props.theme.spacing[4]};
-  background-color: ${(props) =>
-    props.$isSelected
-      ? props.theme.color.blue[100]
-      : props.theme.color.bg.secondary};
-  cursor: pointer;
-  flex-direction: column;
-  &:hover {
-    background-color: ${(props) => props.theme.color.blue[300]};
-  }
-  & > span {
-    width: ${(props) => props.theme.unit[12]};
-    height: ${(props) => props.theme.unit[12]};
-    border-radius: ${(props) => props.theme.border.radius.circle};
-    font-size: 0;
-    background-color: ${(props) => props.$color};
-    background-image: ${(props) =>
-      props.$isSelected ? `url('/assets/selected.svg')` : "none"};
-    background-size: 12px;
-    background-repeat: no-repeat;
-    background-position: center 60%;
-  }
-  &:first-child {
-    padding-top: ${(props) => props.theme.spacing[8]};
-    border-top-left-radius: ${(props) => props.theme.border.radius[8]};
-    border-top-right-radius: ${(props) => props.theme.border.radius[8]};
-  }
-  &:last-child {
-    padding-bottom: ${(props) => props.theme.spacing[8]};
-    border-bottom-left-radius: ${(props) => props.theme.border.radius[8]};
-    border-bottom-right-radius: ${(props) => props.theme.border.radius[8]};
-  }
-`;
-
-const StEditSubmitButton = styled.button`
-  width: ${(props) => props.theme.unit[96]};
-  height: ${(props) => props.theme.unit[40]};
-  font-size: ${(props) => props.theme.body.sm.regular.fontSize};
-  background-color: ${(props) => props.theme.color.bg.interactive.primary};
-  color: ${(props) => props.theme.color.base.white};
-  border: 0;
-  &:hover {
-    background-color: ${(props) =>
-      props.theme.color.bg.interactive["primary-hovered"]};
-  }
-  &:active {
-    background-color: ${(props) =>
-      props.theme.color.bg.interactive["primary-pressed"]};
-  }
-`;
-
-const StEditErrorMessage = styled(DefaultSpanText)`
-  top: ${(props) => props.theme.unit[24]};
-  left: ${(props) => props.theme.unit[40]};
-`;

@@ -56,7 +56,7 @@ export default function CheckUserSession() {
     };
   }, []);
 
-  return <></>;
+  return <div />;
 }
 
 export const getServerSideProps = async () => {
