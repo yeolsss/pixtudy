@@ -174,3 +174,22 @@ export const StCreateBackDropHeader = styled.div`
     gap: ${(props) => props.theme.spacing[12]};
   }
 `;
+
+export const StCreateBackDropDescriptionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: ${(props) => props.theme.spacing[8]};
+`;
+
+export const StCreateBackDropDescriptionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  > span {
+    color: #5e6066;
+    font-family: var(--sub-font);
+    font-size: ${(props) => props.theme.unit[12]};
+    font-weight: 400;
+    line-height: 100%;
+  }
+`;

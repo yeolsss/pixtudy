@@ -44,3 +44,30 @@ export const StDeleteButton = styled.button`
     background-color: unset;
   }
 `;
+
+export const StCreateAssigneesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing[8]};
+`;
+
+export const StCreateAssigneesInputWrapper = styled.div`
+  position: relative;
+`;
+export const StCreateAssigneesInput = styled.input`
+  outline: none;
+  width: 100%;
+  font-family: var(--main-font);
+  font-size: ${(props) => props.theme.unit[14]};
+  border-radius: ${(props) => props.theme.border.radius[8]};
+  border: 1px solid ${(props) => props.theme.color.border.secondary};
+  background: ${(props) => props.theme.color.text.interactive.inverse};
+  color: ${(props) => props.theme.color.text.tertiary};
+  overflow: hidden;
+
+  line-height: 150%;
+  letter-spacing: -0.14px;
+  &:focus {
+    border-color: ${(props) => props.theme.color.border.focusRing};
+  }
+`;

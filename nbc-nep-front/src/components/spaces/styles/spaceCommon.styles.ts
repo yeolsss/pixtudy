@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { StInputWrapper } from "../JoinSpaceForm";
 
-//prettier-ignore
+// prettier-ignore
 export const StCreateInputWrapper = styled(StInputWrapper)<{$isError: boolean}>`
   display: flex;
   position: relative;

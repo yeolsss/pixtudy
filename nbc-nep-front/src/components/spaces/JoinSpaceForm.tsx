@@ -56,11 +56,11 @@ export default function InvitationCodeForm({
   const getSpace = useGetSpace();
 
   const handleToSpace = async (spaceId: string) => {
-    await router.replace(`/metaverse/${spaceId}`);
+    await router.replace(`/metaverse/${spaceId!}`);
   };
 
   useEffect(() => {
-    if (joinSuccess && joinSpaceInfo && joinSpaceInfo.id) {
+    if (joinSuccess && joinSpaceInfo?.id) {
       handleToSpace(joinSpaceInfo.id);
       resetJoinSpaceInfo();
       closeModal();

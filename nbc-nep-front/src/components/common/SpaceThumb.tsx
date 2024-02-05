@@ -7,13 +7,6 @@ interface Props {
   src: string | undefined;
 }
 
-const StImage = styled(Image)`
-  border-radius: ${(props) => props.theme.border.radius[8]};
-  padding: 0;
-  margin: 0;
-  object-fit: cover;
-`;
-
 export default function SpaceThumb({
   width = 250,
   height = 150,
