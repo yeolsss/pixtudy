@@ -1,13 +1,6 @@
 import Image from "next/image";
 import styled from "styled-components";
 
-const StImage = styled(Image)`
-  border-radius: ${(props) => props.theme.border.radius[8]};
-  padding: 0;
-  margin: 0;
-  object-fit: cover;
-`;
-
 interface Props {
   width?: number;
   height?: number;
