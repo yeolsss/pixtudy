@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import {
   StModalContainer,
   StModalContents,
-} from "../joinSpaceModal/JoinSpaceModalMainContainer";
+} from "../styles/spaceModalCommens.styles";
 
 export default function CreateSpaceModalMainContainer() {
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
