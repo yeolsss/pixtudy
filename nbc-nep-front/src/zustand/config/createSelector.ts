@@ -10,6 +10,7 @@ const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(
   const store = _store as WithSelectors<typeof _store>;
   store.use = {};
   Object.keys(store.getState()).forEach((k) => {
+    // eslint-disable-next-line
     (store.use as any)[k] = () => store((s) => s[k as keyof typeof s]);
   });
 

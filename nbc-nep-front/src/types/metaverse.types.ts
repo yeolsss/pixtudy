@@ -9,6 +9,13 @@ export type ChatType = "GLOBAL" | "DM";
 
 export type Config = "SPACE_CONFIG" | "VIDEO_CONFIG" | "CHAT_CONFIG";
 
+export enum PlayerState {
+  ONLINE,
+  EATING,
+  LEFT_SEAT,
+  DISTURB,
+}
+
 export type Player = {
   rotation: number;
   x: number;
@@ -34,13 +41,6 @@ export type Chat = {
   playerId: string;
   chatTime: Date;
 };
-
-export enum PlayerState {
-  ONLINE,
-  EATING,
-  LEFT_SEAT,
-  DISTURB,
-}
 
 export type DMListCard = {
   room_id: string;

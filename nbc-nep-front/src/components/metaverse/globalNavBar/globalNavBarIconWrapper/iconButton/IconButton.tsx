@@ -1,9 +1,35 @@
-import StBadge from "@/components/common/badge/Badge";
-import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import { IconButtonProperty } from "@/types/metaverse.types";
-import Image from "next/image";
+import useChatAlarm from "@/hooks/GNB/useChatAlarm";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { StBadge } from "@/components/common/badge/badge.styles";
 import styled from "styled-components";
+
+const StButton = styled.button<{ $isClose: boolean }>`
+  background-color: unset;
+  border: unset;
+  padding: unset;
+  cursor: pointer;
+  position: relative;
+  color: white;
+
+  & > span {
+    display: inline-block;
+    overflow: hidden;
+    height: ${(props) => (props.$isClose ? "100%" : "0")};
+    margin-top: 3px;
+    white-space: ${(props) => (props.$isClose ? "pre-line" : "nowrap")};
+    line-height: 1.5rem;
+    transition: 0.5s ease-in-out height;
+  }
+
+  &:hover {
+    & > span {
+      height: fit-content;
+    }
+    background-color: unset;
+  }
+`;
 
 export default function IconButton({
   buttonImage,
@@ -34,29 +60,3 @@ export default function IconButton({
     </StButton>
   );
 }
-
-const StButton = styled.button<{ $isClose: boolean }>`
-  background-color: unset;
-  border: unset;
-  padding: unset;
-  cursor: pointer;
-  position: relative;
-  color: white;
-
-  & > span {
-    display: inline-block;
-    overflow: hidden;
-    height: ${(props) => (props.$isClose ? "100%" : "0")};
-    margin-top: 3px;
-    white-space: ${(props) => (props.$isClose ? "pre-line" : "nowrap")};
-    line-height: 1.5rem;
-    transition: 0.5s ease-in-out height;
-  }
-
-  &:hover {
-    & > span {
-      height: fit-content;
-    }
-    background-color: unset;
-  }
-`;

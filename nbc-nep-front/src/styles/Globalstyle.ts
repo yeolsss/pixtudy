@@ -1,6 +1,6 @@
-import themeData from "@/styles/theme.json";
 import { Root } from "@/types/theme.types";
 import { createGlobalStyle } from "styled-components";
+import themeData from "@/styles/theme.json";
 
 const styled = { createGlobalStyle };
 

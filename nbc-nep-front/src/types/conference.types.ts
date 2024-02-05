@@ -29,14 +29,14 @@ export interface NewProducerParameter {
   isNewSocketHost: boolean;
 }
 
+export type ShareType = "screen" | "webcam" | "audio";
+
 export type AppData = {
   trackId: string;
   streamId: string;
   playerId: string;
   shareType: ShareType;
 } & types.AppData;
-
-export type ShareType = "screen" | "webcam" | "audio";
 
 export type SendTransportType = types.Transport<types.AppData>;
 
