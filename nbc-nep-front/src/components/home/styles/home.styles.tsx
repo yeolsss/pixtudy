@@ -52,7 +52,7 @@ export const StStickyItem = styled.div`
 
   h1 {
     font-family: var(--point-font);
-    font-weight: ${(props) => props.theme.heading.desktop["lg"].fontWeight};
+    font-weight: ${(props) => props.theme.heading.desktop.lg.fontWeight};
     font-size: ${(props) => props.theme.heading.desktop["3xl"].fontSize};
     letter-spacing: ${(props) =>
       props.theme.heading.desktop["3xl"].letterSpacing};
@@ -127,12 +127,12 @@ export const StScrollItemWrapper = styled(motion.div)<{
 
     h2 {
       max-width: 100%;
-      font-size: ${(props) => props.theme.heading.desktop["sm"].fontSize};
+      font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
       letter-spacing: ${(props) =>
-        props.theme.heading.desktop["sm"].letterSpacing};
-      line-height: ${(props) => props.theme.heading.desktop["sm"].lineHeight};
+        props.theme.heading.desktop.sm.letterSpacing};
+      line-height: ${(props) => props.theme.heading.desktop.sm.lineHeight};
       font-family: var(--sub-font);
-      font-weight: ${(props) => props.theme.heading.desktop["sm"].fontWeight};
+      font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
       text-align: center;
       word-break: keep-all;
     }
