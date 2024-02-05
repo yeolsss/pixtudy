@@ -51,7 +51,7 @@ export default function ShareScreenDragItem({
             activationKeys: ["Control", "Meta"],
             disabled: !active,
           }}
-          disablePadding={true}
+          disablePadding
         >
           <TransformComponent>{children}</TransformComponent>
         </TransformWrapper>
