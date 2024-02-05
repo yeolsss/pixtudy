@@ -41,6 +41,8 @@ export const currentLayoutIndex = (currentGuide: GuideStatusType): number => {
       return 4;
     case "center":
       return 1;
+    default:
+      return 0;
   }
 };
 

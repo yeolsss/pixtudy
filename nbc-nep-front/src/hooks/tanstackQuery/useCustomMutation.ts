@@ -20,6 +20,7 @@ export const useCustomMutation = <T>(mutationOptions: TMutationOptions<T>) => {
 
   useEffect(() => {
     if (isError) {
+      console.error(error);
     }
   }, [isError, error]);
 

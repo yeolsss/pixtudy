@@ -1,7 +1,7 @@
 import {
   SCRUM_BOARD_TEXT_AREA_FONT_SIZE,
   SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH,
-} from "@/components/scrumboard/constants/constants";
+} from "@/components/scrumboard/constants";
 import BackDropTextArea from "@/components/scrumboard/detail/BackDropTextArea";
 import CreateDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader";
 import useCreateScrumFormTextArea from "@/hooks/scrumBoard/useCreateScrumFormTextArea";

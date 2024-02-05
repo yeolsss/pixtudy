@@ -6,8 +6,8 @@ import { Player } from "@/types/metaverse.types";
 import useConferenceStore from "@/zustand/conferenceStore";
 
 import ShareMediaItem from "../ShareMediaItem";
-import { StStackItem, StVideoWrapper } from "../styles/videoConference.styles";
 import { SPACING } from "../constants";
+import { StStackItem, StVideoWrapper } from "../styles/videoConference.styles";
 
 import PlayerMediaDisplay from "./PlayerMediaDisplay";
 

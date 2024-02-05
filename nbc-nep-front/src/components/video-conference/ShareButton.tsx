@@ -79,7 +79,10 @@ export default function ShareButton({
   };
 
   const handleClickStopShareButton = () => {
-    onStopShare && onStopShare(type);
+    if (onStopShare) {
+      onStopShare(type);
+    }
+
     if (isCanShare === undefined) {
       setIsShare(false);
     }
@@ -102,3 +105,8 @@ export default function ShareButton({
     </StShareButtonWrapper>
   );
 }
+
+ShareButton.defaultProps = {
+  onStopShare: undefined,
+  isCanShare: undefined,
+};

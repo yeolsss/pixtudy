@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from "react";
 import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
+import { useCallback, useEffect } from "react";
 
 export default function useDebounceSpaceMemberSearch(timeout: number = 1000) {
   let timerId: NodeJS.Timeout | null = null;

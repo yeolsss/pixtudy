@@ -3,7 +3,7 @@ import { CallBackProps, STATUS } from "react-joyride";
 
 export default function useTourTooltip<T>(stepArray: T[]) {
   const [run, setRun] = useState<boolean>(false);
-  const [steps, setSteps] = useState<T[]>(stepArray);
+  const [steps] = useState<T[]>(stepArray);
   const [showTemporaryComponent, setShowTemporaryComponent] =
     useState<boolean>(false);
 

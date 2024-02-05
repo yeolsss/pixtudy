@@ -1,12 +1,12 @@
+import { Space_members } from "@/types/supabase.tables.types";
 import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
 import { useEffect } from "react";
-import { SpaceMembers } from "@/types/supabase.tables.types";
 
 interface ReturnType {
-  filteredSpaceMembers: SpaceMembers[];
+  filteredSpaceMembers: Space_members[];
   backDropIsOpen: boolean;
   setBackDropIsOpen: (isOpen: boolean) => void;
-  handleBackDropClickItem: (selectAssign: SpaceMembers) => void;
+  handleBackDropClickItem: (selectAssign: Space_members) => void;
 }
 
 export default function useCreateAssigneesBackDrop(): ReturnType {
@@ -29,7 +29,7 @@ export default function useCreateAssigneesBackDrop(): ReturnType {
       setBackDropIsOpen(false);
     }
   }, [searchValue]);
-  const handleBackDropClickItem = (selectAssign: SpaceMembers) => {
+  const handleBackDropClickItem = (selectAssign: Space_members) => {
     setAssignees(selectAssign);
     filterSpaceMembers();
     changeSearchValue("");
