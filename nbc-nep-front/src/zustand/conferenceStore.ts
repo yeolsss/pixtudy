@@ -11,7 +11,6 @@ interface ConferenceState {
   addProducer: (producer: Producer) => void;
   removeProducer: (producer: Producer) => void;
   findProducerByShareType: (type: ShareType) => Producer | undefined;
-  filterProducersByShareType: (type: ShareType) => Producer[];
   filterConsumersById: (playerId: string) => Consumer[];
   isAlreadyConsume: (removeProducerId: string) => boolean;
 }
@@ -64,13 +63,6 @@ const conferenceStore = create<ConferenceState>()((set, get) => ({
   findProducerByShareType: (shareType: ShareType) => {
     const { producers } = get();
     return producers.find(
-      (producer) => producer.appData.shareType === shareType
-    );
-  },
-
-  filterProducersByShareType: (shareType: ShareType) => {
-    const { producers } = get();
-    return producers.filter(
       (producer) => producer.appData.shareType === shareType
     );
   },
