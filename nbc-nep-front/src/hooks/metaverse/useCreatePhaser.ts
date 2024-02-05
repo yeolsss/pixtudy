@@ -23,10 +23,7 @@ export default function useCreatePhaser() {
   const gameRef = useRef<Game | null>();
   const { socket, connect } = useSocket({ namespace: "/metaverse" });
 
-  useEffect(() => {
-    console.log("여기는 useCreatePhaser");
-    console.table(socket);
-  }, []);
+  useEffect(() => {}, []);
   useEffect(() => {
     if (playerSpaceInfoData?.space_avatar) {
       connect();
