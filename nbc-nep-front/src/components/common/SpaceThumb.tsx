@@ -12,7 +12,7 @@ const StImage = styled(Image)`
   padding: 0;
   margin: 0;
   object-fit: cover;
-`
+`;
 
 export default function SpaceThumb({
   width = 250,
@@ -30,3 +30,7 @@ export default function SpaceThumb({
   );
 }
 
+SpaceThumb.defaultProps = {
+  width: 250,
+  height: 150,
+};

@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const StModalHeaderContainer = styled.div`
   display: flex;
@@ -16,9 +16,9 @@ export const StModalHeaderContainer = styled.div`
     height: ${(props) => props.theme.unit[20]};
     border: none;
     padding: 0;
-    background: url('/assets/close.svg') no-repeat center;
+    background: url("/assets/close.svg") no-repeat center;
     &:hover {
       background-color: transparent;
     }
   }
-`
+`;

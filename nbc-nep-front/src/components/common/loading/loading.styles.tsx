@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const rotate = keyframes`
   from {
@@ -7,7 +7,7 @@ const rotate = keyframes`
   to {
     transform: rotate(360deg);
   }
-`
+`;
 
 export const StModalBackground = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export const StModalBackground = styled.div`
   backdrop-filter: blur(5px);
   opacity: 1;
   z-index: 1000;
-`
+`;
 
 // 로딩 스피너 스타일 정의
 export const StLoadingSpinner = styled.div`
@@ -32,4 +32,4 @@ export const StLoadingSpinner = styled.div`
   width: 50px;
   height: 50px;
   animation: ${rotate} 2s linear infinite;
-`
+`;
