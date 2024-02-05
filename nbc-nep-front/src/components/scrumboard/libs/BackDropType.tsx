@@ -1,10 +1,10 @@
 import {
   BACK_DROP_TYPE_DETAIL,
-  BACK_DROP_TYPE_UPDATE
-} from '@/components/scrumboard/constants/constants'
-import CreateBackDropCtaButton from '@/components/scrumboard/detail/createBackDrop/CreateBackDropCTAButton'
-import useCreateScrumButtons from '@/hooks/scrumBoard/useCreateScrumButtons'
-import { BackDropType } from '@/types/scrum.types'
+  BACK_DROP_TYPE_UPDATE,
+} from "@/components/scrumboard/constants/constants";
+import CreateBackDropCtaButton from "@/components/scrumboard/detail/createBackDrop/CreateBackDropCTAButton";
+import useCreateScrumButtons from "@/hooks/scrumBoard/useCreateScrumButtons";
+import { BackDropType } from "@/types/scrum.types";
 
 export default function BackDropTypeButtonGroup(type: BackDropType) {
   const {
@@ -13,8 +13,8 @@ export default function BackDropTypeButtonGroup(type: BackDropType) {
     handleOnClickUpdate,
     handleOnClickUpdateConfirm,
     handleOnClickUpdateCancel,
-    handleOnClickDelete
-  } = useCreateScrumButtons()
+    handleOnClickDelete,
+  } = useCreateScrumButtons();
 
   switch (type) {
     case BACK_DROP_TYPE_DETAIL:
@@ -36,7 +36,7 @@ export default function BackDropTypeButtonGroup(type: BackDropType) {
             handle={handleOnClickBackDropClose}
           />
         </>
-      )
+      );
     case BACK_DROP_TYPE_UPDATE:
       return (
         <>
@@ -51,7 +51,7 @@ export default function BackDropTypeButtonGroup(type: BackDropType) {
             handle={handleOnClickUpdateCancel}
           />
         </>
-      )
+      );
     default:
       return (
         <>
@@ -66,6 +66,6 @@ export default function BackDropTypeButtonGroup(type: BackDropType) {
             handle={handleOnClickBackDropClose}
           />
         </>
-      )
+      );
   }
 }

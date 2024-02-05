@@ -1,21 +1,21 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 interface Props {
-  buttonType: 'button' | 'submit' | 'reset'
-  forwardText: string
-  handle: () => void
+  buttonType: "button" | "submit" | "reset";
+  forwardText: string;
+  handle: () => void;
 }
 
 export default function CreateBackDropCtaButton({
   buttonType,
   forwardText,
-  handle
+  handle,
 }: Props) {
   return (
     <StCreateBackDropCtaButton type={buttonType} onClick={handle}>
       {forwardText}
     </StCreateBackDropCtaButton>
-  )
+  );
 }
 
 const StCreateBackDropCtaButton = styled.button`
@@ -31,4 +31,4 @@ const StCreateBackDropCtaButton = styled.button`
     color: ${(props) => props.theme.color.text.primary};
     opacity: 1;
   }
-`
+`;

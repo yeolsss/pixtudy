@@ -1,19 +1,19 @@
-import useModal from '@/hooks/modal/useModal'
-import useAuthStore from '@/zustand/authStore'
-import styled from 'styled-components'
+import useModal from "@/hooks/modal/useModal";
+import useAuthStore from "@/zustand/authStore";
+import styled from "styled-components";
 
 export default function SignInOptions() {
-  const isCheck = useAuthStore.use.isSaveLoginInfo()
-  const setSaveLoginInfo = useAuthStore.use.setSaveLoginInfo()
-  const { openForgetPasswordModal } = useModal()
+  const isCheck = useAuthStore.use.isSaveLoginInfo();
+  const setSaveLoginInfo = useAuthStore.use.setSaveLoginInfo();
+  const { openForgetPasswordModal } = useModal();
 
   const handleIsCheck = () => {
-    setSaveLoginInfo(!isCheck)
-  }
+    setSaveLoginInfo(!isCheck);
+  };
 
   const handleOpenForgetPasswordModal = () => {
-    openForgetPasswordModal()
-  }
+    openForgetPasswordModal();
+  };
 
   return (
     <StSignInOptions>
@@ -36,7 +36,7 @@ export default function SignInOptions() {
       </section>
       <span onClick={handleOpenForgetPasswordModal}>비밀번호 찾기</span>
     </StSignInOptions>
-  )
+  );
 }
 
 const StSignInOptions = styled.div`
@@ -44,18 +44,18 @@ const StSignInOptions = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: ${(props) => props.theme.spacing['32']} 0
-    ${(props) => props.theme.spacing['16']} 0;
+  margin: ${(props) => props.theme.spacing["32"]} 0
+    ${(props) => props.theme.spacing["16"]} 0;
   & > section {
     display: flex;
     margin: unset;
     align-items: center;
     & label {
-      font-size: ${(props) => props.theme.unit['12']};
+      font-size: ${(props) => props.theme.unit["12"]};
     }
   }
   & > span {
-    font-size: ${(props) => props.theme.unit['14']};
+    font-size: ${(props) => props.theme.unit["14"]};
     cursor: pointer;
     color: #d93f21;
     &:hover {
@@ -65,7 +65,7 @@ const StSignInOptions = styled.div`
   & input {
     display: none;
   }
-`
+`;
 
 const StSaveLoginInfoToggleCheckBox = styled.label<{ $isCheck: boolean }>`
   display: flex;
@@ -73,24 +73,24 @@ const StSaveLoginInfoToggleCheckBox = styled.label<{ $isCheck: boolean }>`
   cursor: pointer;
   & > div {
     position: relative;
-    margin-right: ${(props) => props.theme.spacing['8']};
-    width: ${(props) => props.theme.unit['40']};
-    height: ${(props) => props.theme.unit['20']};
-    border-radius: ${(props) => props.theme.border.radius['36']};
+    margin-right: ${(props) => props.theme.spacing["8"]};
+    width: ${(props) => props.theme.unit["40"]};
+    height: ${(props) => props.theme.unit["20"]};
+    border-radius: ${(props) => props.theme.border.radius["36"]};
     background: ${(props) =>
-      props.$isCheck ? props.theme.color.success['400'] : '#ececec'};
+      props.$isCheck ? props.theme.color.success["400"] : "#ececec"};
     border: 0.5px solid #c9c9c9;
     & > div {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      left: ${(props) => (props.$isCheck ? 'unset' : props.theme.spacing['2'])};
+      left: ${(props) => (props.$isCheck ? "unset" : props.theme.spacing["2"])};
       right: ${(props) =>
-        props.$isCheck ? props.theme.spacing['2'] : 'unset'};
-      width: ${(props) => props.theme.unit['16']};
-      height: ${(props) => props.theme.unit['16']};
+        props.$isCheck ? props.theme.spacing["2"] : "unset"};
+      width: ${(props) => props.theme.unit["16"]};
+      height: ${(props) => props.theme.unit["16"]};
       border-radius: ${(props) => props.theme.border.radius.circle};
       background: var(--color-base-white);
     }
   }
-`
+`;

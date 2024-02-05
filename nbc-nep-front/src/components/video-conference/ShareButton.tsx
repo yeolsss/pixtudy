@@ -1,24 +1,22 @@
-import { StaticImport } from 'next/dist/shared/lib/get-img-props'
-import Image from 'next/image'
-import { PropsWithChildren, useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import Image from "next/image";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-import {
-  ShareType
-} from '../../types/conference.types'
+import { ShareType } from "../../types/conference.types";
 
-import { callToastDockError, getMediaStreamByType } from './libs/sharebutton'
-import { StShareButtonWrapper } from './styles/shareButton.styles'
+import { callToastDockError, getMediaStreamByType } from "./libs/sharebutton";
+import { StShareButtonWrapper } from "./styles/shareButton.styles";
 
 interface Props {
-  onShare: (stream: MediaStream, type: ShareType) => void
-  onStopShare?: (type: ShareType) => void
-  type: ShareType
-  shareButtonText: string
-  stopSharingButtonText: string
-  isCanShare?: boolean
-  shareSvg: StaticImport
-  stopShareSvg: StaticImport
+  onShare: (stream: MediaStream, type: ShareType) => void;
+  onStopShare?: (type: ShareType) => void;
+  type: ShareType;
+  shareButtonText: string;
+  stopSharingButtonText: string;
+  isCanShare?: boolean;
+  shareSvg: StaticImport;
+  stopShareSvg: StaticImport;
 }
 
 export default function ShareButton({
@@ -30,60 +28,62 @@ export default function ShareButton({
   isCanShare,
   stopShareSvg,
   shareSvg,
-  children
+  children,
 }: PropsWithChildren<Props>) {
-  const [isShare, setIsShare] = useState(false)
+  const [isShare, setIsShare] = useState(false);
 
-  const isScreenShareType = type === 'screen'
+  const isScreenShareType = type === "screen";
 
   useEffect(() => {
-    if (isCanShare === undefined) {return}
-    setIsShare(!isCanShare)
-  }, [isCanShare])
+    if (isCanShare === undefined) {
+      return;
+    }
+    setIsShare(!isCanShare);
+  }, [isCanShare]);
 
   const handleClickShareButton = async () => {
     try {
       if (isCanShare === undefined) {
-        setIsShare(true)
+        setIsShare(true);
       }
       const mediaStream: MediaStream | undefined =
-        await getMediaStreamByType(type)
+        await getMediaStreamByType(type);
 
       if (!mediaStream) {
-        setIsShare(false)
-        return
+        setIsShare(false);
+        return;
       }
-      onShare(mediaStream, type)
+      onShare(mediaStream, type);
     } catch (err: unknown) {
-      setIsShare(false)
+      setIsShare(false);
 
       if (err instanceof Error) {
-        if (err.name === 'NotAllowedError') {
+        if (err.name === "NotAllowedError") {
           callToastDockError(
-            '권한 설정이 돼있지 않습니다.\n 권한 설정을 해주시길 바랍니다.'
-          )
-          return
+            "권한 설정이 돼있지 않습니다.\n 권한 설정을 해주시길 바랍니다."
+          );
+          return;
         }
-        if (err.name === 'NotFoundError') {
+        if (err.name === "NotFoundError") {
           callToastDockError(
-            '사용자 웹캠정보를 찾을 수 없습니다. 웹캠의 작동 상태 및 연결 상태를 확인해주시길 바랍니다.'
-          )
-          return
+            "사용자 웹캠정보를 찾을 수 없습니다. 웹캠의 작동 상태 및 연결 상태를 확인해주시길 바랍니다."
+          );
+          return;
         }
 
         toast.error(
-          '사용자 웹 캠 정보를 가져오는 과정에서 오류가 발생했습니다. 개발자에게 문의 바랍니다.'
-        )
+          "사용자 웹 캠 정보를 가져오는 과정에서 오류가 발생했습니다. 개발자에게 문의 바랍니다."
+        );
       }
     }
-  }
+  };
 
   const handleClickStopShareButton = () => {
-    onStopShare && onStopShare(type)
+    onStopShare && onStopShare(type);
     if (isCanShare === undefined) {
-      setIsShare(false)
+      setIsShare(false);
     }
-  }
+  };
 
   return (
     <StShareButtonWrapper
@@ -100,8 +100,5 @@ export default function ShareButton({
       {isShare ? stopSharingButtonText : shareButtonText}
       {children}
     </StShareButtonWrapper>
-  )
+  );
 }
-
-
-

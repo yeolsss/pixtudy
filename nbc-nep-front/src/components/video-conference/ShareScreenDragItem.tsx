@@ -1,29 +1,33 @@
-import { PropsWithChildren } from 'react'
-import { useDrag } from 'react-dnd'
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import { PropsWithChildren } from "react";
+import { useDrag } from "react-dnd";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
-import { StDrag, StDragContainer, StShareScreenDragItemContainer } from './styles/shareScreenContainer.styles'
+import {
+  StDrag,
+  StDragContainer,
+  StShareScreenDragItemContainer,
+} from "./styles/shareScreenContainer.styles";
 
 interface Props {
-  id: string
-  active: boolean
-  handleInactive?: (id: string) => void
+  id: string;
+  active: boolean;
+  handleInactive?: (id: string) => void;
 }
 
 export default function ShareScreenDragItem({
   id,
   active,
   handleInactive,
-  children
+  children,
 }: PropsWithChildren<Props>) {
   const [{ isDragging }, drag, preview] = useDrag(() => ({
-    type: 'VIDEO',
+    type: "VIDEO",
     item: { id },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging()
+      isDragging: monitor.isDragging(),
     }),
-    canDrag: !active
-  }))
+    canDrag: !active,
+  }));
 
   return (
     <StShareScreenDragItemContainer>
@@ -32,23 +36,22 @@ export default function ShareScreenDragItem({
         {active && (
           <button
             onClick={() => {
-              handleInactive && handleInactive(id)
+              handleInactive && handleInactive(id);
             }}
           >
             레이아웃 제거
           </button>
         )}
         <TransformWrapper
-          wheel={{ activationKeys: ['Control', 'Meta'] }}
+          wheel={{ activationKeys: ["Control", "Meta"] }}
           panning={{
-            activationKeys: ['Control', 'Meta'],
-            disabled: !active
+            activationKeys: ["Control", "Meta"],
+            disabled: !active,
           }}
         >
           <TransformComponent>{children}</TransformComponent>
         </TransformWrapper>
       </StDragContainer>
     </StShareScreenDragItemContainer>
-  )
+  );
 }
-

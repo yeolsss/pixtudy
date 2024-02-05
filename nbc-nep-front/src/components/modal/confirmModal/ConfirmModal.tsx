@@ -1,16 +1,16 @@
-import useConfirm from '@/hooks/confirm/useConfirm'
-import styled from 'styled-components'
-import BackDrop from '../BackDrop'
-import ConfirmModalContainer from './ConfirmModalContainer'
+import useConfirm from "@/hooks/confirm/useConfirm";
+import styled from "styled-components";
+import BackDrop from "../BackDrop";
+import ConfirmModalContainer from "./ConfirmModalContainer";
 
 export default function ConfirmModal() {
-  const { closeConfirmHandler } = useConfirm()
+  const { closeConfirmHandler } = useConfirm();
   return (
     <StModalContainer>
       <BackDrop closeModal={closeConfirmHandler} />
       <ConfirmModalContainer />
     </StModalContainer>
-  )
+  );
 }
 
 const StModalContainer = styled.div`
@@ -20,4 +20,4 @@ const StModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 10000;
-`
+`;

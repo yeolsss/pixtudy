@@ -1,5 +1,5 @@
-import BackDrop from '../../BackDrop'
-import CreateSpaceModalMainContainer from './CreateSpaceModalMainContainer'
+import BackDrop from "../../BackDrop";
+import CreateSpaceModalMainContainer from "./CreateSpaceModalMainContainer";
 
 export default function CreateSpaceModal() {
   return (
@@ -7,5 +7,5 @@ export default function CreateSpaceModal() {
       <BackDrop />
       <CreateSpaceModalMainContainer />
     </>
-  )
+  );
 }

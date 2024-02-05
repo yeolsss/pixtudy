@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { StShareMediaItem, StVideoWrapper } from './videoConference.styles';
+import { StShareMediaItem, StVideoWrapper } from "./videoConference.styles";
 
 export const StDefaultShareMediaItemWrapper = styled(StShareMediaItem)`
   display: flex;
@@ -10,7 +10,7 @@ export const StDefaultShareMediaItemWrapper = styled(StShareMediaItem)`
   }
 
   position: relative;
-`
+`;
 
 export const StSwiperVideoWrapper = styled(StVideoWrapper)`
   .swiper-pagination {
@@ -26,10 +26,10 @@ export const StSwiperVideoWrapper = styled(StVideoWrapper)`
   .swiper-pagination-bullet-active {
     background-color: var(--color-brand-500);
   }
-`
+`;
 
 export const StRemoveProducerButton = styled.button`
-  background-color: ${(props) => props.theme.color.bg['danger-bold']};
+  background-color: ${(props) => props.theme.color.bg["danger-bold"]};
   width: 20px;
   height: 20px;
 
@@ -41,7 +41,7 @@ export const StRemoveProducerButton = styled.button`
 
   right: ${(props) => props.theme.spacing[4]};
   top: ${(props) => props.theme.spacing[4]};
-`
+`;
 
 export const StContainer = styled.div`
   display: flex;
@@ -70,4 +70,4 @@ export const StContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`
+`;

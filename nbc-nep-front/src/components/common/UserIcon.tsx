@@ -1,9 +1,9 @@
 interface Props {
-  fill: number
+  fill: number;
 }
 
-const USER_EXISTS = '#15E42A'
-const USER_NOT_EXISTS = '#FF001F'
+const USER_EXISTS = "#15E42A";
+const USER_NOT_EXISTS = "#FF001F";
 
 const UserIcon = ({ fill }: Props) => {
   return (
@@ -35,7 +35,7 @@ const UserIcon = ({ fill }: Props) => {
         </clipPath>
       </defs>
     </svg>
-  )
-}
+  );
+};
 
-export default UserIcon
+export default UserIcon;

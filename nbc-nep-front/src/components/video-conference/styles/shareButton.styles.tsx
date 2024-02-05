@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StShareButtonWrapper = styled.div<{
-  $isScreenShareType: boolean
-  $isShare: boolean
+  $isScreenShareType: boolean;
+  $isShare: boolean;
 }>`
   position: relative;
   display: flex;
@@ -14,5 +14,5 @@ export const StShareButtonWrapper = styled.div<{
   color: ${(props) => props.theme.color.text.interactive.inverse};
 
   ${(props) =>
-    props.$isScreenShareType && props.$isShare && 'cursor:not-allowed;'}
-`
+    props.$isScreenShareType && props.$isShare && "cursor:not-allowed;"}
+`;

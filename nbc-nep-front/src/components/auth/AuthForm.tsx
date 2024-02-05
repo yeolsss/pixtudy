@@ -1,40 +1,43 @@
-import { getInputs } from '@/components/auth/utils/authUtils'
+import styledComponents from "styled-components";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+
+import useAuthStore from "@/zustand/authStore";
 import {
   useLogoutUser,
   useSignInUser,
   useSignUpUser,
-  useUpdateUserPw
-} from '@/hooks/query/useSupabase'
-import { AuthFormType, FormValues } from '@/types/auth.types'
-import useAuthStore from '@/zustand/authStore'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import styled from 'styled-components'
-import AuthInput from './AuthInput'
-import SignInOptions from './SignInOptions'
+  useUpdateUserPw,
+} from "@/hooks/query/useSupabase";
+import { AuthFormType, FormValues } from "@/types/auth.types";
+import { getInputs } from "@/components/auth/utils/authUtils";
 
+import SignInOptions from "./SignInOptions";
+import AuthInput from "./AuthInput";
+
+const styled = styledComponents;
 
 interface Props {
-  formType: AuthFormType
+  formType: AuthFormType;
 }
 
 export default function AuthForm({ formType }: Props) {
-  const signUp = useSignUpUser()
-  const signIn = useSignInUser()
-  const updatePw = useUpdateUserPw()
-  const logout = useLogoutUser()
+  const signUp = useSignUpUser();
+  const signIn = useSignInUser();
+  const updatePw = useUpdateUserPw();
+  const logout = useLogoutUser();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(
-    formType === 'signUp' ? false : true
-  )
+    formType === "signUp" ? false : true
+  );
 
-  const [isUpdatePw, setIsUpdatePw] = useState<boolean>(false)
+  const [isUpdatePw, setIsUpdatePw] = useState<boolean>(false);
 
-  const isSaveLoginInfo = useAuthStore.use.isSaveLoginInfo()
-  const setSaveLoginInfo = useAuthStore.use.setSaveLoginInfo()
+  const isSaveLoginInfo = useAuthStore.use.isSaveLoginInfo();
+  const setSaveLoginInfo = useAuthStore.use.setSaveLoginInfo();
 
   const {
     handleSubmit,
@@ -42,103 +45,103 @@ export default function AuthForm({ formType }: Props) {
     reset,
     watch,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormValues>({
-    mode: 'onChange'
-  })
+    mode: "onChange",
+  });
 
   useEffect(() => {
-    const savedLogin = localStorage.getItem('saveLogin')
+    const savedLogin = localStorage.getItem("saveLogin");
 
     if (savedLogin) {
-      setSaveLoginInfo(true)
-      setValue('signIn_id', savedLogin)
+      setSaveLoginInfo(true);
+      setValue("signIn_id", savedLogin);
     } else {
-      setSaveLoginInfo(false)
+      setSaveLoginInfo(false);
     }
-  }, [])
+  }, []);
 
   const handleForm: SubmitHandler<FieldValues> = (values) => {
-    if (formType === 'signIn') {
+    if (formType === "signIn") {
       signIn(
         {
           email: values.signIn_id,
           password: values.signIn_pw,
-          platform: 'email'
+          platform: "email",
         },
         {
           onSuccess: async (data) => {
-            if ('user' in data) {
+            if ("user" in data) {
               if (isSaveLoginInfo) {
-                localStorage.setItem('saveLogin', data.user.email!)
+                localStorage.setItem("saveLogin", data.user.email!);
               } else {
-                localStorage.removeItem('saveLogin')
+                localStorage.removeItem("saveLogin");
               }
             }
-            router.push('/dashboard')
-          }
+            router.push("/dashboard");
+          },
         }
-      )
+      );
     }
-    if (formType === 'signUp') {
+    if (formType === "signUp") {
       signUp(
         {
           email: values.signUp_id,
           password: values.signUp_pw,
-          nickname: values.signUp_nickname
+          nickname: values.signUp_nickname,
         },
         {
           onSuccess: () => {
-            reset()
-            router.push('/')
-          }
+            reset();
+            router.push("/");
+          },
         }
-      )
+      );
     }
-    if (formType === 'changePassword') {
+    if (formType === "changePassword") {
       updatePw(values.findPw_pw, {
         onSuccess: () => {
-          setIsUpdatePw(true)
-        }
-      })
+          setIsUpdatePw(true);
+        },
+      });
     }
-  }
+  };
 
   const handleOpenSignUpForm = () => {
-    setIsSignUpFormOpen(true)
-  }
+    setIsSignUpFormOpen(true);
+  };
 
   const handleToSignIn = () => {
     logout(undefined, {
       onSuccess: async () => {
-        router.push('/signin')
-      }
-    })
-  }
+        router.push("/signin");
+      },
+    });
+  };
 
   const handleOnClick = () => {
-    if (formType === 'signUp' && !isSignUpFormOpen) {
-      return handleOpenSignUpForm
+    if (formType === "signUp" && !isSignUpFormOpen) {
+      return handleOpenSignUpForm;
     }
-    if (formType === 'changePassword' && isUpdatePw) {
-      return handleToSignIn
+    if (formType === "changePassword" && isUpdatePw) {
+      return handleToSignIn;
     }
-  }
+  };
 
   const buttonText = () => {
     switch (formType) {
-      case 'changePassword':
-        return isUpdatePw ? '로그인 하러 가기' : '비밀번호 업데이트'
-      case 'signIn':
-        return '로그인'
-      case 'signUp':
-        return '이메일로 계정 만들기'
+      case "changePassword":
+        return isUpdatePw ? "로그인 하러 가기" : "비밀번호 업데이트";
+      case "signIn":
+        return "로그인";
+      case "signUp":
+        return "이메일로 계정 만들기";
       default:
-        return ''
+        return "";
     }
-  }
+  };
 
-  const inputs = getInputs(formType)
+  const inputs = getInputs(formType);
 
   return (
     <StFormContainer
@@ -161,7 +164,7 @@ export default function AuthForm({ formType }: Props) {
         ))}
       </StInputContainer>
 
-      {formType === 'signIn' && <SignInOptions />}
+      {formType === "signIn" && <SignInOptions />}
 
       {isUpdatePw && (
         <StSuccessChangePw>
@@ -171,41 +174,41 @@ export default function AuthForm({ formType }: Props) {
 
       <button
         type={
-          (formType === 'signUp' && !isSignUpFormOpen) ||
-          (formType === 'changePassword' && isUpdatePw)
-            ? 'button'
-            : 'submit'
+          (formType === "signUp" && !isSignUpFormOpen) ||
+          (formType === "changePassword" && isUpdatePw)
+            ? "button"
+            : "submit"
         }
         onClick={handleOnClick()}
       >
         {buttonText()}
       </button>
     </StFormContainer>
-  )
+  );
 }
 
 const StFormContainer = styled.form<{
-  $isOpen: boolean
+  $isOpen: boolean;
 }>`
   width: 100%;
   & > button {
     margin-top: ${(props) =>
-      props.$isOpen ? props.theme.spacing['16'] : '0px'};
+      props.$isOpen ? props.theme.spacing["16"] : "0px"};
     width: 100%;
     font-family: var(--point-font);
     font-weight: bold;
-    font-size: ${(props) => props.theme.unit['15']};
-    height: ${(props) => props.theme.unit['56']};
+    font-size: ${(props) => props.theme.unit["15"]};
+    height: ${(props) => props.theme.unit["56"]};
     border: 1px solid
       ${(props) =>
         props.$isOpen
-          ? props.theme.color.border.interactive['secondary-pressed']
-          : 'transparent'};
+          ? props.theme.color.border.interactive["secondary-pressed"]
+          : "transparent"};
     background: ${(props) =>
-      props.$isOpen ? 'transparent' : props.theme.color.bg.brand};
+      props.$isOpen ? "transparent" : props.theme.color.bg.brand};
     color: ${(props) =>
       props.$isOpen
-        ? props.theme.color.text.interactive['secondary-pressed']
+        ? props.theme.color.text.interactive["secondary-pressed"]
         : props.theme.color.text.interactive.inverse};
     transition:
       margin ease-in-out 0.3s,
@@ -219,29 +222,29 @@ const StFormContainer = styled.form<{
       color: ${(props) => props.theme.color.text.interactive.inverse};
     }
   }
-`
+`;
 
 const StInputContainer = styled.section<{ $isOpen: boolean }>`
-  max-height: ${(props) => (props.$isOpen ? '100%' : '0px')};
+  max-height: ${(props) => (props.$isOpen ? "100%" : "0px")};
 
   overflow-y: hidden;
   transform-origin: top;
-  transform: ${(props) => (props.$isOpen ? 'scaleY(1)' : 'scaleY(0)')};
+  transform: ${(props) => (props.$isOpen ? "scaleY(1)" : "scaleY(0)")};
   transition:
     max-height ease-in-out 0.5s,
     transform ease-in-out 0.3s;
 
   & > div + div {
-    margin-top: ${(props) => props.theme.spacing['16']};
+    margin-top: ${(props) => props.theme.spacing["16"]};
     font-family: inherit;
   }
-`
+`;
 
 const StSuccessChangePw = styled.span`
   display: flex;
   justify-content: center;
-  margin: ${(props) => props.theme.spacing['16']} 0;
-  font-size: ${(props) => props.theme.unit['16']};
+  margin: ${(props) => props.theme.spacing["16"]} 0;
+  font-size: ${(props) => props.theme.unit["16"]};
   font-weight: bold;
   color: ${(props) => props.theme.color.text.brand};
-`
+`;

@@ -1,9 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { slideDown, slideUp } from '@/styles/animations';
+import { slideDown, slideUp } from "@/styles/animations";
 
-
-export const  StUlWrapper = styled.ul<{ $isRender: boolean }>`
+export const StUlWrapper = styled.ul<{ $isRender: boolean }>`
   position: absolute;
 
   border-radius: ${(props) => props.theme.border.radius[16]};
@@ -23,8 +22,8 @@ export const  StUlWrapper = styled.ul<{ $isRender: boolean }>`
   bottom: calc(100% + ${(props) => props.theme.spacing[24]});
 
   animation: ${(props) => (props.$isRender ? slideUp : slideDown)} 0.3s forwards;
-`
-export const  StItem = styled.li`
+`;
+export const StItem = styled.li`
   color: ${(props) => props.theme.color.text.disabled};
   display: flex;
   font-size: ${(props) => props.theme.body.md.medium.fontSize};
@@ -58,4 +57,4 @@ export const  StItem = styled.li`
   &:hover span:last-child {
     color: ${(props) => props.theme.color.text.interactive.inverse};
   }
-`
+`;

@@ -1,64 +1,64 @@
-import AssigneesBackDrop from '@/components/scrumboard/detail/createBackDrop/AssigneesBackDrop'
-import CreateBackDropTitle from '@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle'
-import SelectAssigneesList from '@/components/scrumboard/detail/createBackDrop/SelectAssigneesList'
-import useDebounceSpaceMemberSearch from '@/hooks/scrumBoard/useDebounceSpaceMemberSearch'
-import useScrumBoardMemberSearchStore from '@/zustand/scrumBoardMemberStore'
-import { useRef } from 'react'
-import styled from 'styled-components'
+import AssigneesBackDrop from "@/components/scrumboard/detail/createBackDrop/AssigneesBackDrop";
+import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
+import SelectAssigneesList from "@/components/scrumboard/detail/createBackDrop/SelectAssigneesList";
+import useDebounceSpaceMemberSearch from "@/hooks/scrumBoard/useDebounceSpaceMemberSearch";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
+import { useRef } from "react";
+import styled from "styled-components";
 
 export default function CreateAssignees() {
-  const searchValue = useScrumBoardMemberSearchStore.use.searchValue()
+  const searchValue = useScrumBoardMemberSearchStore.use.searchValue();
   const changeSearchValue =
-    useScrumBoardMemberSearchStore.use.changeSearchValue()
+    useScrumBoardMemberSearchStore.use.changeSearchValue();
   const setBackDropIsOpen =
-    useScrumBoardMemberSearchStore.use.setBackDropIsOpen()
-  const assignees = useScrumBoardMemberSearchStore.use.assignees()
+    useScrumBoardMemberSearchStore.use.setBackDropIsOpen();
+  const assignees = useScrumBoardMemberSearchStore.use.assignees();
 
-  const debounce = useDebounceSpaceMemberSearch(500)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const debounce = useDebounceSpaceMemberSearch(500);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFocus = () => {
-    if (searchValue.trim().length > 0) setBackDropIsOpen(true)
-  }
+    if (searchValue.trim().length > 0) setBackDropIsOpen(true);
+  };
   const handleBlur = () => {
     setTimeout(() => {
       if (!inputRef.current?.contains(document.activeElement)) {
-        setBackDropIsOpen(false)
+        setBackDropIsOpen(false);
       }
-    }, 500)
-  }
+    }, 500);
+  };
 
   return (
     <StCreateAssigneesWrapper>
-      <CreateBackDropTitle title={'담당자 등록'} />
+      <CreateBackDropTitle title={"담당자 등록"} />
       <StCreateAssigneesInputWrapper>
         <StCreateAssigneesInput
           type="text"
-          placeholder={'담당자를 검색해보세요.'}
+          placeholder={"담당자를 검색해보세요."}
           value={searchValue}
           onChange={(e) => {
-            changeSearchValue(e.target.value)
-            debounce()
+            changeSearchValue(e.target.value);
+            debounce();
           }}
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
         <AssigneesBackDrop />
       </StCreateAssigneesInputWrapper>
-      {assignees.length > 0 && <SelectAssigneesList tagType={'assignees'} />}
+      {assignees.length > 0 && <SelectAssigneesList tagType={"assignees"} />}
     </StCreateAssigneesWrapper>
-  )
+  );
 }
 
 const StCreateAssigneesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[8]};
-`
+`;
 
 const StCreateAssigneesInputWrapper = styled.div`
   position: relative;
-`
+`;
 const StCreateAssigneesInput = styled.input`
   outline: none;
   width: 100%;
@@ -75,4 +75,4 @@ const StCreateAssigneesInput = styled.input`
   &:focus {
     border-color: ${(props) => props.theme.color.border.focusRing};
   }
-`
+`;

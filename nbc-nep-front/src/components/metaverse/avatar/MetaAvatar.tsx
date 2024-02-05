@@ -1,11 +1,11 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 interface Props {
-  spaceAvatar?: string
-  width?: number
-  height?: number
-  y?: number
-  x?: number
+  spaceAvatar?: string;
+  width?: number;
+  height?: number;
+  y?: number;
+  x?: number;
 }
 
 /**
@@ -16,14 +16,14 @@ export default function MetaAvatar({
   width = 32,
   height = 32,
   x = -1,
-  y = 40
+  y = 40,
 }: Props) {
   return (
     <StAvatar
       space_avatar={spaceAvatar}
       style={{ width, height, backgroundPosition: `${x}px ${y}px` }}
     ></StAvatar>
-  )
+  );
 }
 
 const StAvatar = styled.span<{ space_avatar?: string }>`
@@ -35,4 +35,4 @@ const StAvatar = styled.span<{ space_avatar?: string }>`
   border-radius: ${(props) => props.theme.border.radius.circle};
   display: block;
   background-color: white;
-`
+`;

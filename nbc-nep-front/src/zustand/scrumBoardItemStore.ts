@@ -1,20 +1,20 @@
-import { create } from 'zustand'
-import createSelectors from '@/zustand/config/createSelector'
+import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface ScrumBoardItemState {
-  scrumBoardText: string
-  validBoardText: boolean
+  scrumBoardText: string;
+  validBoardText: boolean;
 }
 interface ScrumBoardItemStoreState extends ScrumBoardItemState {
-  setScrumBoardText: (scrumBoardText: string) => void
-  setValidBoardText: (validBoardText: boolean) => void
-  resetScrumBoardItem: () => void
+  setScrumBoardText: (scrumBoardText: string) => void;
+  setValidBoardText: (validBoardText: boolean) => void;
+  resetScrumBoardItem: () => void;
 }
 
 const initialState: ScrumBoardItemState = {
-  scrumBoardText: '',
-  validBoardText: false
-}
+  scrumBoardText: "",
+  validBoardText: false,
+};
 
 const scrumBoardItemStore = create<ScrumBoardItemStoreState>()((set) => ({
   ...initialState,
@@ -23,11 +23,11 @@ const scrumBoardItemStore = create<ScrumBoardItemStoreState>()((set) => ({
   resetScrumBoardItem: () =>
     set(() => {
       return {
-        scrumBoardText: '',
-        validBoardText: false
-      }
-    })
-}))
+        scrumBoardText: "",
+        validBoardText: false,
+      };
+    }),
+}));
 
-const useScrumBoardItemStore = createSelectors(scrumBoardItemStore)
-export default useScrumBoardItemStore
+const useScrumBoardItemStore = createSelectors(scrumBoardItemStore);
+export default useScrumBoardItemStore;

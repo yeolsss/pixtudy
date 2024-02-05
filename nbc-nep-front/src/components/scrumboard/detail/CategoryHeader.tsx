@@ -1,30 +1,28 @@
-import { AnimatePresence, motion } from 'framer-motion'
-import { useParams } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
-
-import useConfirm from '@/hooks/confirm/useConfirm'
-import { useDeleteCategory } from '@/hooks/query/useSupabase'
-import { fadeInOut } from '@/styles/animations'
-
-import CategoryDropdownMenu from './CategoryDropdownMenu'
-import EditCategoryForm from './EditCategoryForm'
+import useConfirm from "@/hooks/confirm/useConfirm";
+import { useDeleteCategory } from "@/hooks/query/useSupabase";
+import { fadeInOut } from "@/styles/animations";
+import { AnimatePresence, motion } from "framer-motion";
+import { useParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import CategoryDropdownMenu from "./CategoryDropdownMenu";
+import EditCategoryForm from "./EditCategoryForm";
 
 interface Props {
-  name: string
-  color: string
-  itemCount: number
-  id: string
+  name: string;
+  color: string;
+  itemCount: number;
+  id: string;
 }
 
 export default function CategoryHeader({ name, color, id, itemCount }: Props) {
-  const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const { openConfirmHandler } = useConfirm()
-  const { space_id } = useParams()
-  const spaceId = space_id as string
-  const { remove } = useDeleteCategory(spaceId)
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { openConfirmHandler } = useConfirm();
+  const { space_id } = useParams();
+  const spaceId = space_id as string;
+  const { remove } = useDeleteCategory(spaceId);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -32,30 +30,30 @@ export default function CategoryHeader({ name, color, id, itemCount }: Props) {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsDropdownOpen(false)
+        setIsDropdownOpen(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen)
-  }
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const handleDeleteCategory = async () => {
     openConfirmHandler({
-      title: '카테고리 삭제',
-      message: '이 카테고리를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.',
-      confirmButtonText: '네, 삭제할게요',
-      denyButtonText: '아니요, 취소할게요'
+      title: "카테고리 삭제",
+      message: "이 카테고리를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      confirmButtonText: "네, 삭제할게요",
+      denyButtonText: "아니요, 취소할게요",
     }).then((result) => {
-      if (result) remove(id)
-    })
-  }
+      if (result) remove(id);
+    });
+  };
 
   return (
     <StCategoryHeader>
@@ -90,7 +88,7 @@ export default function CategoryHeader({ name, color, id, itemCount }: Props) {
         </>
       )}
     </StCategoryHeader>
-  )
+  );
 }
 
 const StCategoryHeader = styled.div`
@@ -99,7 +97,7 @@ const StCategoryHeader = styled.div`
   align-items: center;
   //prettier-ignore
   padding: ${(props) => props.theme.spacing[20]};
-`
+`;
 
 const StCategoryInfo = styled.div`
   width: 100%;
@@ -111,7 +109,7 @@ const StCategoryInfo = styled.div`
     font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
     font-weight: ${(props) => props.theme.heading.desktop.md.fontWeight};
   }
-`
+`;
 
 const StItemCounter = styled.p`
   align-self: end;
@@ -122,7 +120,7 @@ const StItemCounter = styled.p`
   font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
   font-weight: ${(props) => props.theme.heading.desktop.md.fontWeight};
   font-weight: ${(props) => props.theme.heading.desktop.md.fontWeight};
-`
+`;
 
 const StCategoryColor = styled.span<{ $color: string }>`
   display: block;
@@ -132,7 +130,7 @@ const StCategoryColor = styled.span<{ $color: string }>`
   border-radius: ${(props) => props.theme.border.radius.circle};
   font-size: 0;
   background-color: ${(props) => props.$color};
-`
+`;
 
 const StDropDownMenuBtnWrapper = styled.div`
   position: relative;
@@ -141,7 +139,7 @@ const StDropDownMenuBtnWrapper = styled.div`
     display: block;
     opacity: 0.2;
     background-color: transparent;
-    background-image: url('/assets/dropdown.svg');
+    background-image: url("/assets/dropdown.svg");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -155,4 +153,4 @@ const StDropDownMenuBtnWrapper = styled.div`
       background-color: inherit;
     }
   }
-`
+`;

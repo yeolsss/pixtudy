@@ -1,58 +1,58 @@
-import { useGetUserSpaces } from '@/hooks/query/useSupabase'
-import useAuthStore from '@/zustand/authStore'
-import useSpaceSearchStore from '@/zustand/spaceListStore'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import styled from 'styled-components'
-import SpaceCard from './SpaceCard'
-import SpaceListHeader from './SpaceListHeader'
+import { useGetUserSpaces } from "@/hooks/query/useSupabase";
+import useAuthStore from "@/zustand/authStore";
+import useSpaceSearchStore from "@/zustand/spaceListStore";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import styled from "styled-components";
+import SpaceCard from "./SpaceCard";
+import SpaceListHeader from "./SpaceListHeader";
 
 interface Props {
-  currentUserId: string
-  setRunState: (isRun: boolean) => void
-  showTemporaryComponent: boolean
+  currentUserId: string;
+  setRunState: (isRun: boolean) => void;
+  showTemporaryComponent: boolean;
 }
 
 export default function SpaceList({
   currentUserId,
   setRunState,
-  showTemporaryComponent
+  showTemporaryComponent,
 }: Props) {
-  const getUserSpaces = useGetUserSpaces(currentUserId)
-  const spaces = useSpaceSearchStore.use.spaces()
-  const setSpaces = useSpaceSearchStore.use.setSpaces()
-  const filteredSpaces = useSpaceSearchStore.use.filteredSpaces()
-  const router = useRouter()
-  const user = useAuthStore.use.user()
+  const getUserSpaces = useGetUserSpaces(currentUserId);
+  const spaces = useSpaceSearchStore.use.spaces();
+  const setSpaces = useSpaceSearchStore.use.setSpaces();
+  const filteredSpaces = useSpaceSearchStore.use.filteredSpaces();
+  const router = useRouter();
+  const user = useAuthStore.use.user();
 
   useEffect(() => {
     if (getUserSpaces) {
-      const query = router.query.query
-      if (query === 'myspace') {
+      const query = router.query.query;
+      if (query === "myspace") {
         setSpaces(
           getUserSpaces.filter((space) => space.spaces?.owner === user.id)
-        )
-        return
+        );
+        return;
       }
-      setSpaces(getUserSpaces)
+      setSpaces(getUserSpaces);
       if (!getUserSpaces.length) {
-        setRunState(true)
+        setRunState(true);
       }
     }
-  }, [getUserSpaces, router.query.query])
+  }, [getUserSpaces, router.query.query]);
 
   useEffect(() => {
     if (showTemporaryComponent) {
-      setSpaces([null])
+      setSpaces([null]);
     } else {
       if (!!spaces.length) {
         if (!spaces[0]) {
-          const [drop, ...newSpaces] = spaces
-          setSpaces(newSpaces)
+          const [drop, ...newSpaces] = spaces;
+          setSpaces(newSpaces);
         }
       }
     }
-  }, [showTemporaryComponent])
+  }, [showTemporaryComponent]);
 
   return (
     <StCardListWrapper>
@@ -63,11 +63,11 @@ export default function SpaceList({
             <li key={space ? space.id : index}>
               <SpaceCard space={space ? space : null} />
             </li>
-          )
+          );
         })}
       </StSpaceList>
     </StCardListWrapper>
-  )
+  );
 }
 
 export const StCardListWrapper = styled.section`
@@ -80,7 +80,7 @@ export const StCardListWrapper = styled.section`
   padding-left: ${(props) => props.theme.spacing[40]};
   padding-right: ${(props) => props.theme.spacing[40]};
   margin-bottom: ${(props) => props.theme.spacing[64]};
-`
+`;
 
 const StSpaceList = styled.ul`
   display: grid;
@@ -93,4 +93,4 @@ const StSpaceList = styled.ul`
   li {
     width: 100%;
   }
-`
+`;
