@@ -1,4 +1,4 @@
-import { StCreateBackDropTitle } from "../../styles/backdrop.styles";
+import { StCreateBackDropTitle } from "@/components/scrumboard/styles/backdrop.styles";
 
 interface Props {
   title: string;

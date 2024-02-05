@@ -11,7 +11,7 @@ import {
   StAddItemBtn,
   StCategoryWrapper,
   StItemsContainer,
-} from "../styles/scrumBoardCategory.styles";
+} from "@/components/scrumboard/styles/scrumBoardCategory.styles";
 import CategoryHeader from "./CategoryHeader";
 import ScrumBoardItem from "./ScrumBoardItem";
 

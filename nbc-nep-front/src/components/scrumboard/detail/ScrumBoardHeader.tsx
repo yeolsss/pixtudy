@@ -1,4 +1,4 @@
-import { StScrumBoardHeader } from "../styles/scrumBoardHeader.styles";
+import { StScrumBoardHeader } from "@/components/scrumboard/styles/scrumBoardHeader.styles";
 
 interface Props {
   title: string;

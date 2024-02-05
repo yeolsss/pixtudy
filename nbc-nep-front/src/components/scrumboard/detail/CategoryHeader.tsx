@@ -10,7 +10,7 @@ import {
   StCategoryInfo,
   StDropDownMenuBtnWrapper,
   StItemCounter,
-} from "../styles/category.styles";
+} from "@/components/scrumboard/styles/category.styles";
 import CategoryDropdownMenu from "./CategoryDropdownMenu";
 import EditCategoryForm from "./EditCategoryForm";
 

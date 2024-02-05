@@ -8,7 +8,7 @@ import { KanbanCategories } from "@/types/supabase.tables.types";
 import {
   StCreateCategoryBackDrop,
   StCreateCategoryBackDropWrapper,
-} from "../../styles/backdrop.styles";
+} from "@/components/scrumboard/styles/backdrop.styles";
 
 interface Props {
   isOpen: boolean;

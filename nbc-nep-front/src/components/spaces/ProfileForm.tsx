@@ -12,14 +12,20 @@ import {
 import { FORM_SPACE, SRC_BASE } from "@/components/spaces/constants/constants";
 import useAuthStore from "@/zustand/authStore";
 import useSpaceStore from "@/zustand/spaceStore";
-import styled from "styled-components";
+import { Procedure, UserProfile } from "@/types/space.types";
 import {
   StFormCTAButton,
   StToPreviousButton,
 } from "../common/button/button.styles";
-import AvatarInput, { StAvatar } from "./AvatarInput";
+import AvatarInput from "./AvatarInput";
+import {
+  StAvatar,
+  StAvatarWrapper,
+  StButtonWrapper,
+  StCurrentProfile,
+  StProfileForm,
+} from "./styles/profileForm.styles";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { Procedure, UserProfile } from "../../types/space.types";
 
 interface ProfileFormProps {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
@@ -27,7 +33,6 @@ interface ProfileFormProps {
   register: UseFormRegister<FieldValues>;
   watch: UseFormWatch<FieldValues>;
   errors: FormState<FieldValues>["errors"];
-  mode: "createSpace" | "joinSpace";
   isValid: boolean;
 }
 
@@ -37,7 +42,6 @@ export default function ProfileForm({
   handleSubmit,
   register,
   errors,
-  mode,
   isValid,
 }: ProfileFormProps) {
   const setUserProfile = useSpaceStore.use.setUserProfile();
@@ -50,12 +54,18 @@ export default function ProfileForm({
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     const newUserProfile: UserProfile = {
       avatar: data.avatar,
-      displayName: data.nickname,
+      display_name: data.nickname,
       owner: user.id,
     };
     setUserProfile(newUserProfile);
     setProcedure(FORM_SPACE);
   };
+
+  const nicknameRegister = register("nickname", {
+    required: "닉네임을 입력해주십시오.",
+    validate: validateNickname,
+  });
+
   return (
     <StProfileForm onSubmit={handleSubmit(handleProfileSubmit)}>
       <StCurrentProfile>
@@ -66,17 +76,18 @@ export default function ProfileForm({
           />
         </StAvatarWrapper>
         <StCreateInputWrapper $isError={!!errors?.nickname}>
-          <label htmlFor="nickname">닉네임</label>
-          <input
-            id="nickname"
-            defaultValue={user.displayName!}
-            type="text"
-            placeholder="닉네임"
-            {...register("nickname", {
-              required: "닉네임을 입력해주십시오.",
-              validate: validateNickname,
-            })}
-          />
+          <label htmlFor="nickname">
+            닉네임
+            <input
+              id="nickname"
+              defaultValue={user.display_name!}
+              type="text"
+              name={nicknameRegister.name}
+              onBlur={nicknameRegister.onBlur}
+              onChange={nicknameRegister.onChange}
+              ref={nicknameRegister.ref}
+            />
+          </label>
           {errors.nickname && <span>{errors.nickname.message as string}</span>}
         </StCreateInputWrapper>
       </StCurrentProfile>
@@ -93,38 +104,3 @@ export default function ProfileForm({
     </StProfileForm>
   );
 }
-
-export const StProfileForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[32]};
-  align-items: stretch;
-`;
-
-export const StCurrentProfile = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing[16]};
-  label {
-    font-family: var(--sub-font);
-    font-size: ${(props) => props.theme.body.sm.regular.fontSize};
-  }
-`;
-
-export const StAvatarWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: ${(props) => props.theme.color.bg.secondary};
-  //prettier-ignore
-  padding: ${(props) => props.theme.spacing[16]} ${(props) =>
-    props.theme.spacing[64]};
-  border-radius: ${(props) => props.theme.border.radius[12]};
-`;
-
-export const StButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: ${(props) => props.theme.spacing[8]};
-  justify-content: center;
-`;

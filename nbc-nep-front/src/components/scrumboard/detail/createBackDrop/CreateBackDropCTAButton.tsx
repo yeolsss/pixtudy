@@ -1,4 +1,4 @@
-import { StCreateBackDropCtaButton } from "../../styles/backdrop.styles";
+import { StCreateBackDropCtaButton } from "@/components/scrumboard/styles/backdrop.styles";
 
 interface Props {
   buttonType: "button" | "submit" | "reset";

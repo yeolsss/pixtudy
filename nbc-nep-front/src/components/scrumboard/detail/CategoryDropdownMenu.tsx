@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import {
   StDropdownMenuContainer,
   StDropdownMenuItem,
-} from "../styles/category.styles";
+} from "@/components/scrumboard/styles/category.styles";
 
 interface Props {
   setIsEdit: Dispatch<SetStateAction<boolean>>;

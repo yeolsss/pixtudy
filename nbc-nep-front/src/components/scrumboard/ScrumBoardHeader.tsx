@@ -1,5 +1,5 @@
-import { StLine } from "@/components/spaces/SpaceListHeader";
 import SpaceSearchForm from "@/components/spaces/SpaceSearchForm";
+import { StLine } from "@/components/spaces/styles/spaceListHeader.style";
 import {
   StHeaderWrapper,
   StSortTitleContainer,

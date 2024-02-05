@@ -23,12 +23,13 @@ export default function MetaverseDmContainer() {
   const currentPlayer = findPlayerById(sessionUser.id);
   const currentUser = { ...sessionUser };
   if (sessionUser && currentPlayer) {
-    currentUser.displayName = currentPlayer.nickname || sessionUser.displayName;
+    currentUser.display_name =
+      currentPlayer.nickname || sessionUser.display_name;
   }
 
   const otherUserInfo: Partial<Tables<"users">> = {
     id: otherUserId,
-    displayName: otherUserName,
+    display_name: otherUserName,
   };
 
   // 메시지 정보를 저장하는 state

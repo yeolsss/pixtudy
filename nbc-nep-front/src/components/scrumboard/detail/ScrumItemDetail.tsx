@@ -6,7 +6,7 @@ import {
   StCreateDisplayName,
   StDescription,
   StScrumItemDetailWrapper,
-} from "../styles/scrumItemDetail.styles";
+} from "@/components/scrumboard/styles/scrumItemDetail.styles";
 
 export default function ScrumItemDetail() {
   const kanbanItem = useScrumBoardItemBackDropStore.use.kanbanItem();

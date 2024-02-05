@@ -5,7 +5,7 @@ import {
   StDeleteButton,
   StSelectAssigneesCard,
   StSelectAssigneesListWrapper,
-} from "../../styles/assignee.styles";
+} from "@/components/scrumboard/styles/assignee.styles";
 
 interface Props {
   tagType: "assignees" | "labels";

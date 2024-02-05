@@ -36,8 +36,8 @@ export default function ChangePassword() {
             <Link href="/signin">지금 로그인하기</Link>
           </StChangeAuthPage>
           <h1>
-            {user.displayName
-              ? `${user.displayName}님 안녕하세요`
+            {user.display_name
+              ? `${user.display_name}님 안녕하세요`
               : "세션이 만료되었습니다."}
           </h1>
           <h2>

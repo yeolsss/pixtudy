@@ -1,6 +1,6 @@
 import { SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH } from "@/components/scrumboard/constants";
 import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
-import styled from "styled-components";
+import { StCreateBackDropDescriptionHeader } from "../../styles/backdrop.styles";
 
 interface Props {
   text?: string;
@@ -18,14 +18,6 @@ export default function CreateDescriptionHeader({ text, countType }: Props) {
   );
 }
 
-const StCreateBackDropDescriptionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  > span {
-    color: #5e6066;
-    font-family: var(--sub-font);
-    font-size: ${(props) => props.theme.unit[12]};
-    font-weight: 400;
-    line-height: 100%;
-  }
-`;
+CreateDescriptionHeader.defaultProps = {
+  text: "",
+};

@@ -3,18 +3,30 @@ import BackDrop from "@/components/modal/BackDrop";
 import {
   StModalContainer,
   StModalContents,
-} from "@/components/modal/spaceModals/joinSpaceModal/JoinSpaceModalMainContainer";
+} from "@/components/modal/spaceModals/styles/spaceModalCommens.styles";
+// import {
+//   StModalContainer,
+//   StModalContents,
+// } from "@/components/modal/spaceModals/joinSpaceModal/JoinSpaceModalMainContainer";
+// import {
+//   StAvatar,
+//   StInputContainer,
+//   StInputWrapper,
+// } from "@/components/spaces/AvatarInput";
+// import {
+//   StButtonWrapper,
+//   StCurrentProfile,
+//   StProfileForm,
+// } from "@/components/spaces/ProfileForm";
+import { characterOptions } from "@/components/spaces/constants/constants";
 import {
   StAvatar,
-  StInputContainer,
-  StInputWrapper,
-} from "@/components/spaces/AvatarInput";
-import {
   StButtonWrapper,
   StCurrentProfile,
+  StInputContainer,
+  StInputWrapper,
   StProfileForm,
-} from "@/components/spaces/ProfileForm";
-import { characterOptions } from "@/components/spaces/constants/constants";
+} from "@/components/spaces/styles/profileForm.styles";
 import { StCreateInputWrapper } from "@/components/spaces/styles/spaceCommon.styles";
 import useModal from "@/hooks/modal/useModal";
 import { useJoinSpace } from "@/hooks/query/useSupabase";
@@ -98,7 +110,7 @@ export default function AvatarModalContainer() {
                   닉네임
                   <input
                     id="nickname"
-                    defaultValue={user.displayName!}
+                    defaultValue={user.display_name!}
                     type="text"
                     placeholder="닉네임"
                     aria-labelledby="nicknameLabel"

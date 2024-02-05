@@ -147,16 +147,19 @@ export const StCreateCategoryForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.theme.spacing[16]};
+
   & > div {
     display: flex;
     width: 100%;
     flex-direction: column;
     gap: ${(props) => props.theme.spacing[8]};
   }
+
   & > div > div {
     display: flex;
     gap: ${(props) => props.theme.spacing[2]};
   }
+
   & h3 {
     font-size: ${(props) => props.theme.body.lg.medium.fontSize};
     font-family: var(--sub-font);

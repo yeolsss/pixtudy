@@ -1,10 +1,10 @@
 import useAuthStore from "@/zustand/authStore";
 import useSpaceStore from "@/zustand/spaceStore";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import styled from "styled-components";
-import { StAvatar } from "./AvatarInput";
+import { Procedure } from "@/types/space.types";
 import { FORM_CHARACTER, SRC_BASE } from "./constants/constants";
-import { Procedure } from "../../types/space.types";
+import { StAvatar } from "./styles/profileForm.styles";
+import { StProfilePreview } from "./styles/profilePreview.style";
 
 interface Props {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
@@ -12,7 +12,7 @@ interface Props {
 
 export default function ProfilePreview({ setProcedure }: Props) {
   const user = useAuthStore.use.user();
-  const { avatar, displayName } = useSpaceStore.use.userProfile();
+  const { avatar, display_name: displayName } = useSpaceStore.use.userProfile();
   const setUserProfile = useSpaceStore.use.setUserProfile();
 
   const getAvatarResource = () => {
@@ -27,7 +27,7 @@ export default function ProfilePreview({ setProcedure }: Props) {
     if (user && !avatar) {
       setUserProfile({
         avatar: "NPC1",
-        displayName: user.displayName!,
+        display_name: user.display_name!,
         owner: user.id,
       });
     }
@@ -35,20 +35,11 @@ export default function ProfilePreview({ setProcedure }: Props) {
 
   return (
     <StProfilePreview>
-      <span>{displayName === "" ? user.displayName : displayName}</span>
+      <span>{displayName === "" ? user.display_name : displayName}</span>
       <StAvatar resource={getAvatarResource()} />
-      <button onClick={handleToProfileForm}>아바타 꾸미기</button>
+      <button type="button" onClick={handleToProfileForm}>
+        아바타 꾸미기
+      </button>
     </StProfilePreview>
   );
 }
-
-const StProfilePreview = styled.div`
-  background-color: ${(props) => props.theme.color.bg.secondary};
-  border-radius: ${(props) => props.theme.border.radius[12]};
-  padding: ${(props) => props.theme.spacing[12]};
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[4]};
-  align-items: center;
-  width: 100%;
-`;

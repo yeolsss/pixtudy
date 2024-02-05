@@ -62,7 +62,7 @@ export default function useDmChannel({
       message: payload.new.message,
       receiver: getUser(currentUser, otherUserInfo!),
       sender_id: getString(otherUserInfo?.id, currentUser.id),
-      sender_display_name: getString(otherUserName, currentUser.displayName!),
+      sender_display_name: getString(otherUserName, currentUser.display_name!),
       sender: getUser(otherUserInfo!, currentUser),
     };
 

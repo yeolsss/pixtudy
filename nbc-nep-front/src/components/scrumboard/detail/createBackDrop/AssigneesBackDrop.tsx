@@ -3,7 +3,7 @@ import {
   StAssigneesBackDropItem,
   StAssigneesBackDropItemNoSearch,
   StAssigneesBackDropWrapper,
-} from "../../styles/backdrop.styles";
+} from "@/components/scrumboard/styles/backdrop.styles";
 
 export default function AssigneesBackDrop() {
   const { filteredSpaceMembers, backDropIsOpen, handleBackDropClickItem } =

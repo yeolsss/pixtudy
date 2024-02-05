@@ -13,11 +13,8 @@ export type CreateSpaceInfo = Partial<
   TablesInsert<"spaces"> & TablesInsert<"space_members">
 >;
 
-export type JoinSpaceInfo = TablesInsert<"space_members"> &
-  Pick<TablesInsert<"spaces">, "title" | "description" | "owner">;
-
 export type UserProfile = {
   avatar: string;
-  displayName: string;
+  display_name: string;
   owner: string;
 };

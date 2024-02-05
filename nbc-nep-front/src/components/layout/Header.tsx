@@ -21,7 +21,7 @@ export default function Header() {
   const { openConfirmHandler } = useConfirm();
 
   const isLogin = useAuthStore.use.isLogin();
-  const { displayName } = useAuthStore.use.user();
+  const { display_name } = useAuthStore.use.user();
 
   const handleToLoginPage = () => {
     router.push("/signin");
@@ -69,7 +69,7 @@ export default function Header() {
           </StNavLink>
         </div>
         <div>
-          {isLogin && <p>{displayName}</p>}
+          {isLogin && <p>{display_name}</p>}
           {currentButton.map((btn) => (
             <StNavButton type="button" key={btn.text} onClick={btn.handler}>
               {btn.text}

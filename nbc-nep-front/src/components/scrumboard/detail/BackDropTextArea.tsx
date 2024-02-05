@@ -1,4 +1,4 @@
-import { StBackDropTextArea } from "../styles/backdrop.styles";
+import { StBackDropTextArea } from "@/components/scrumboard/styles/backdrop.styles";
 
 interface Props {
   fontSize: number;

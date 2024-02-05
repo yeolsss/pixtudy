@@ -2,7 +2,6 @@ import { useGetCategories, useUpdateCategory } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Controller, FieldValues, useForm } from "react-hook-form";
-import { options } from "../constants";
 import {
   StCategoryForm,
   StColorOption,
@@ -11,7 +10,8 @@ import {
   StEditErrorMessage,
   StEditSubmitButton,
   StSelectedColor,
-} from "../styles/category.styles";
+} from "@/components/scrumboard/styles/category.styles";
+import { options } from "../constants";
 
 /**
  * TODO:

@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import styled from "styled-components";
 
 interface Props {
@@ -8,10 +9,7 @@ interface Props {
 }
 
 const StImage = styled(Image)`
-  border-radius: ${(props) => props.theme.border.radius[8]};
-  padding: 0;
-  margin: 0;
-  object-fit: cover;
+  border-radius: 8px;
 `;
 
 export default function SpaceThumb({

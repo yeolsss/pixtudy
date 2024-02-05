@@ -12,7 +12,7 @@ import {
   StListItem,
   StMetaAvatarWrapper,
   StUserInfoWrapper,
-} from "../styles/scrumBoardItem.styles";
+} from "@/components/scrumboard/styles/scrumBoardItem.styles";
 
 interface Props {
   item: GetKanbanItemsByAssignees;

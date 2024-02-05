@@ -2,7 +2,7 @@ import { down } from "@/assets/boards";
 import CreateCategoryBackDrop from "@/components/scrumboard/detail/createBackDrop/CreateCategoryBackDrop";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import Image from "next/image";
-import { StCategoryWrapper } from "../../styles/category.styles";
+import { StCategoryWrapper } from "@/components/scrumboard/styles/category.styles";
 
 export default function CreateCategoryInputBox() {
   const { name } = useScrumBoardItemBackDropStore.use.category();

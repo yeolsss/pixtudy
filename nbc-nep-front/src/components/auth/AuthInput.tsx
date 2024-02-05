@@ -7,7 +7,7 @@ import {
   UseFormRegister,
   UseFormWatch,
 } from "react-hook-form";
-import styled from "styled-components";
+import { StAuthInputSection } from "./styles/authForm.styles";
 
 interface Props {
   placeholder: string;
@@ -45,6 +45,11 @@ export default function AuthInput({
     }
   };
 
+  const { ref, onChange, onBlur, name } = register(id, {
+    required: true,
+    validate: (value) => validate(value, pwCheckValidation()),
+  });
+
   return (
     <StAuthInputSection $isError={!!error[id]?.message}>
       <div>
@@ -52,10 +57,10 @@ export default function AuthInput({
           id={id}
           type={isPasswordVisible ? "text" : type}
           placeholder={placeholder}
-          {...register(id, {
-            required: true,
-            validate: (value) => validate(value, pwCheckValidation()),
-          })}
+          ref={ref}
+          onChange={onChange}
+          onBlur={onBlur}
+          name={name}
         />
 
         {type === "password" && (
@@ -78,45 +83,3 @@ export default function AuthInput({
     </StAuthInputSection>
   );
 }
-
-const StAuthInputSection = styled.div<{ $isError: boolean }>`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  & > div {
-    position: relative;
-
-    & input {
-      width: 100%;
-      height: ${(props) => props.theme.unit["48"]};
-      font-size: ${(props) => props.theme.unit["14"]};
-      font-family: inherit;
-      outline-color: ${(props) =>
-        props.$isError
-          ? props.theme.color.danger[400]
-          : props.theme.color.base.black};
-    }
-
-    & button {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      padding: unset;
-      border-radius: unset;
-      border: unset;
-      background: unset;
-      padding: ${(props) =>
-        `${props.theme.spacing[14]} ${props.theme.spacing[16]}`};
-    }
-  }
-  & span {
-    display: flex;
-    align-items: center;
-    font-size: ${(props) => props.theme.unit["12"]};
-    margin-top: ${(props) => props.theme.spacing["8"]};
-    & img {
-      margin: 0 ${(props) => props.theme.spacing[8]};
-    }
-  }
-`;

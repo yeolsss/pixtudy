@@ -1,17 +1,17 @@
 import { StFormCTAButton } from "@/components/common/button/button.styles";
 import DefaultSpanText from "@/components/common/text/DefaultSpanText";
-import { StErrorMessage } from "@/components/spaces/JoinSpaceForm";
 import useModal from "@/hooks/modal/useModal";
 import { useCreateCategory, useGetCategories } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { options } from "../constants";
+import { StErrorMessage } from "@/components/spaces/styles/joinSpaceForm.styles";
 import {
   StCategoryColorItem,
   StCategoryItemWrapper,
   StCreateCategoryForm,
-} from "../styles/category.styles";
+} from "@/components/scrumboard/styles/category.styles";
+import { options } from "../constants";
 
 export default function CreateCategoryForm() {
   const { space_id: spaceId } = useParams();

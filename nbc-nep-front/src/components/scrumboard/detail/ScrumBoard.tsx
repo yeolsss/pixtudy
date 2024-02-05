@@ -7,11 +7,11 @@ import { useGetCategories, useGetSpaceQuery } from "@/hooks/query/useSupabase";
 import useCategorySubscribe from "@/hooks/scrumBoard/useCategorySubscribe";
 import useScrumBardItemsSubscribe from "@/hooks/scrumBoard/useScrumBardItemsSubscribe";
 import useScrumBoard from "@/hooks/scrumBoard/useScrumBoard";
-import { Kanban_categories } from "@/types/supabase.tables.types";
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
 import { AnimatePresence } from "framer-motion";
 import { useParams } from "next/navigation";
-import { WheelEvent, useEffect } from "react";
+import { useEffect, WheelEvent } from "react";
+import { KanbanCategories } from "@/types/supabase.tables.types";
 import {
   StAddCategoryBtn,
   StScrumBoardContainer,
@@ -32,7 +32,7 @@ export default function ScrumBoard() {
   // items에 대한 구독 커스텀훅
   useScrumBardItemsSubscribe(
     spaceId as string,
-    categories as Kanban_categories[]
+    categories as KanbanCategories[]
   );
 
   useEffect(() => {
