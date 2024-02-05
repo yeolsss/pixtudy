@@ -15,6 +15,12 @@ export const StCreateInputWrapper = styled(StInputWrapper)<{$isError: boolean}>`
     ${(props) =>
       props.$isError && `border-color: ${props.theme.color.danger[500]}`};
   }
+  label {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: ${(props) => props.theme.spacing[8]};
+  }
 `;
 
 export const StFlexColumn = styled.div`
