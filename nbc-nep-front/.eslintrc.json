@@ -40,7 +40,11 @@
     "import/prefer-default-export": "off",
     "react/react-in-jsx-scope": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "react/jsx-props-no-spreading": ["warn"]
+    "react/jsx-props-no-spreading": ["warn"],
+    "jsx-a11y/media-has-caption": "off",
+    "jsx-a11y/label-has-associated-control": [ 2, {
+      "some": [ "nesting", "id" ]
+    }]
   },
   "settings": {
     "import/resolver": {

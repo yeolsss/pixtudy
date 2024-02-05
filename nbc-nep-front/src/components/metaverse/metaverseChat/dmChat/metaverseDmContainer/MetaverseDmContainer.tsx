@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 
 import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
@@ -11,6 +10,8 @@ import { Tables } from "@/types/supabase.types";
 import useAuthStore from "@/zustand/authStore";
 import useDmStore from "@/zustand/dmStore";
 
+import { StMessageWrapper } from "@/components/metaverse/styles/metaverse.styles";
+import { StMetaverseDmChannel } from "@/components/metaverse/styles/metaverseDm.styles";
 import MetaverseChatCard from "../../metaverseChatBar/MetaverseChatCard";
 
 export default function MetaverseDmContainer() {
@@ -22,13 +23,12 @@ export default function MetaverseDmContainer() {
   const currentPlayer = findPlayerById(sessionUser.id);
   const currentUser = { ...sessionUser };
   if (sessionUser && currentPlayer) {
-    currentUser.display_name =
-      currentPlayer.nickname || sessionUser.display_name;
+    currentUser.displayName = currentPlayer.nickname || sessionUser.displayName;
   }
 
   const otherUserInfo: Partial<Tables<"users">> = {
     id: otherUserId,
-    display_name: otherUserName,
+    displayName: otherUserName,
   };
 
   // 메시지 정보를 저장하는 state
@@ -66,28 +66,3 @@ export default function MetaverseDmContainer() {
     </>
   );
 }
-
-const StMetaverseDmChannel = styled.div`
-  height: 85%;
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing["4"]};
-  overflow: hidden;
-`;
-
-const StMessageWrapper = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing["12"]};
-  overflow-y: scroll;
-  font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
-  font-family: ${({ theme }) => theme.body.sm.regular.fontFamily};
-  word-break: break-all;
-  padding-top: ${(props) => props.theme.spacing[16]};
-  padding-bottom: ${(props) => props.theme.spacing[16]};
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;

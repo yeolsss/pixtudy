@@ -334,7 +334,7 @@ export interface Database {
       users: {
         Row: {
           created_at: string;
-          display_name: string | null;
+          displayName: string | null;
           email: string;
           id: string;
         };
