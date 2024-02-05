@@ -1,6 +1,6 @@
 import { supabase } from "@/supabase";
-import { Space_members } from "@/types/supabase.tables.types";
 import { Database, Tables } from "@/types/supabase.types";
+import { SpaceMembers } from "@/types/supabase.tables.types";
 
 /**
  * 유저의 space 정보를 가져오는 함수
@@ -9,12 +9,12 @@ import { Database, Tables } from "@/types/supabase.types";
  */
 export const getUserSpaces = async (
   currentUserId: string
-): Promise<Space_members[]> => {
+): Promise<SpaceMembers[]> => {
   const { data: userSpaces, error } = await supabase
     .from("space_members")
     .select(`*,spaces(*)`)
     .eq("user_id", currentUserId)
-    .returns<Space_members[]>();
+    .returns<SpaceMembers[]>();
   if (error) throw error;
   return userSpaces;
 };

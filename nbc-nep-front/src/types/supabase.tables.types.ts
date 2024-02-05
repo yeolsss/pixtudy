@@ -33,15 +33,6 @@ export interface DmChannels {
   users?: Users;
 }
 
-export type KanbanAssignees = {
-  assigneesId: string;
-  spaceAvatar: string;
-  userId: string;
-  space_display_name: string;
-  kanban_items?: KanbanItems;
-  users?: Users;
-};
-
 export interface KanbanItems {
   id: string /* primary key */;
   created_at: string;
@@ -49,9 +40,19 @@ export interface KanbanItems {
   description: string;
   deadline?: string;
   type: string;
-  categoryId: string /* foreign key to kanban_categories.id */;
+  categoryId: string;
   kanban_categories?: KanbanCategories;
+  // eslint-disable-next-line no-use-before-define
   kanban_assignees?: KanbanAssignees[];
+}
+
+export interface KanbanAssignees {
+  assigneesId: string;
+  spaceAvatar: string;
+  userId: string;
+  space_display_name: string;
+  kanban_items?: KanbanItems;
+  users?: Users;
 }
 
 export interface SpaceMembers {

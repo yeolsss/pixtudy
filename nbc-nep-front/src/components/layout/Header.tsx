@@ -21,7 +21,7 @@ export default function Header() {
   const { openConfirmHandler } = useConfirm();
 
   const isLogin = useAuthStore.use.isLogin();
-  const { display_name: displayName } = useAuthStore.use.user();
+  const { displayName } = useAuthStore.use.user();
 
   const handleToLoginPage = () => {
     router.push("/signin");

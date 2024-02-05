@@ -12,7 +12,7 @@ interface Props {
 
 export default function ProfilePreview({ setProcedure }: Props) {
   const user = useAuthStore.use.user();
-  const { avatar, display_name } = useSpaceStore.use.userProfile();
+  const { avatar, displayName } = useSpaceStore.use.userProfile();
   const setUserProfile = useSpaceStore.use.setUserProfile();
 
   const getAvatarResource = () => {
@@ -35,7 +35,7 @@ export default function ProfilePreview({ setProcedure }: Props) {
 
   return (
     <StProfilePreview>
-      <span>{display_name === "" ? user.displayName : display_name}</span>
+      <span>{displayName === "" ? user.displayName : displayName}</span>
       <StAvatar resource={getAvatarResource()} />
       <button onClick={handleToProfileForm}>아바타 꾸미기</button>
     </StProfilePreview>

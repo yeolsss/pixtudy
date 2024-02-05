@@ -98,7 +98,7 @@ export default function AvatarModalContainer() {
                   닉네임
                   <input
                     id="nickname"
-                    defaultValue={user.display_name!}
+                    defaultValue={user.displayName!}
                     type="text"
                     placeholder="닉네임"
                     aria-labelledby="nicknameLabel"

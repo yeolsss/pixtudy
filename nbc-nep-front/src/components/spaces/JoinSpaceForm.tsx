@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 import useModal from "@/hooks/modal/useModal";
 import {
   useGetSpace,
@@ -56,7 +56,6 @@ export default function InvitationCodeForm({
       handleToSpace(joinSpaceInfo?.id!);
       resetJoinSpaceInfo();
       closeModal();
-      return;
     }
   }, [joinSuccess]);
 
@@ -87,7 +86,7 @@ export default function InvitationCodeForm({
     joinSpace({
       space_id: joinSpaceInfo.id,
       space_avatar: userProfile.avatar,
-      space_display_name: userProfile.display_name,
+      space_display_name: userProfile.displayName,
       user_id: userProfile.owner,
     });
     reset({ invitationCode: "" });

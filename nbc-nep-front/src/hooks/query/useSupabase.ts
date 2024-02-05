@@ -36,9 +36,8 @@ import {
   getSpaceData,
   joinSpaceHandler,
   leavingSpace,
-  removeSpace as removeSpaceSupabase,
+  removeSpace,
   updateSpace,
-  updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
 import {
@@ -177,43 +176,6 @@ export function useGetUserSpaces(currentUserId: string) {
   return useCustomQuery<SpaceMembers[], Error>(getUserSpacesOptions);
 }
 
-export function useRemoveSpace(onSuccess: () => void) {
-  const client = useQueryClient();
-  const {
-    mutate: removeSpace,
-    isSuccess: isRemovingSuccess,
-    isError: isRemovingError,
-  } = useMutation({
-    mutationFn: removeSpaceSupabase,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ["userSpaces"] });
-      onSuccess();
-    },
-    onError: (error) => {
-      console.error("remove space error: ", error);
-    },
-  });
-  return { removeSpace, isRemovingSuccess, isRemovingError };
-}
-
-export function useUpdateSpace() {
-  const client = useQueryClient();
-  const {
-    mutate: updateSpace,
-    isSuccess: isUpdatingSuccess,
-    isError: isUpdatingError,
-  } = useMutation({
-    mutationFn: updateSpaceSupabase,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ["userSpaces"] });
-    },
-    onError: (error) => {
-      console.error("update space error: ", error);
-    },
-  });
-  return { updateSpace, isUpdatingSuccess, isUpdatingError };
-}
-
 export function useLeavingSpace() {
   const client = useQueryClient();
   const { mutate } = useMutation({
@@ -261,16 +223,16 @@ export function useGetDmMessages(dmChannel: string | null) {
 // 메시지 보내기
 export function useSendMessage() {
   const { id: currentUserId } = useAuthStore.use.user();
-  const { mutate: message } = useMutation({
+  const { mutate: sendMessageMutation } = useMutation({
     mutationFn: ({
       currentDmChannel,
-      message,
+      message: msg,
       receiverId,
       spaceId,
     }: Omit<sendMessageArgs, "currentUserId">) =>
       sendMessage({
         currentDmChannel,
-        message,
+        message: msg,
         receiverId,
         spaceId,
         currentUserId,
@@ -279,7 +241,7 @@ export function useSendMessage() {
       console.log("sendError: ", error);
     },
   });
-  return message;
+  return sendMessageMutation;
 }
 
 export function useGetLastDMList(spaceId: string, userId: string) {

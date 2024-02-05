@@ -49,7 +49,6 @@ export default function CreateSpaceForm({
 
   useEffect(() => {
     if (createSuccess) {
-      return;
     }
   }, [createSuccess]);
 
@@ -69,7 +68,7 @@ export default function CreateSpaceForm({
       owner: userProfile.owner,
       title: spaceInfo.title,
       space_avatar: userProfile.avatar,
-      space_display_name: userProfile.display_name,
+      space_display_name: userProfile.displayName,
       user_id: userProfile.owner,
     });
   };

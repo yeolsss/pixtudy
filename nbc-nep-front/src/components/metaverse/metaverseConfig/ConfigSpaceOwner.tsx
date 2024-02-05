@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 
 import { deleteThumbnail, uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
-import { StLoadingSpinner } from "@/components/common/loading/LoadingProgress";
 import {
   SPACE_DESCRIPTION_MAX_LENGTH,
   SPACE_NAME_MAX_LENGTH,
@@ -16,6 +15,7 @@ import useKeyDownPrevent from "@/hooks/metaverse/useKeyDownPrevent";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useDeleteSpace, useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
 
+import { StLoadingSpinner } from "@/components/common/loading/loading.styles";
 import {
   IMAGE_MAX_SIZE,
   SPACE_DESCRIPTION_FORM,

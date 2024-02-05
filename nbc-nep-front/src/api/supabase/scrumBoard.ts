@@ -1,20 +1,20 @@
 import { supabase } from "@/supabase";
 import {
   GetKanbanItemsByAssignees,
-  Kanban_categories,
-  Space_members,
+  KanbanCategories,
+  SpaceMembers,
 } from "@/types/supabase.tables.types";
 import { TablesInsert, TablesUpdate } from "@/types/supabase.types";
 
 export const getCategories = async (
   spaceId: string
-): Promise<Kanban_categories[]> => {
+): Promise<KanbanCategories[]> => {
   const { data, error } = await supabase
     .from("kanban_categories")
     .select("*")
     .eq("spaceId", spaceId)
     .order("order", { ascending: true })
-    .returns<Kanban_categories[]>();
+    .returns<KanbanCategories[]>();
   if (error) throw error;
   return data;
 };
@@ -71,7 +71,7 @@ export const getSpaceUsers = async (spaceId: string) => {
     .from("space_members")
     .select("*, users(*)")
     .eq("space_id", spaceId)
-    .returns<Space_members[]>();
+    .returns<SpaceMembers[]>();
 
   if (error) {
     throw new Error(error.message);
@@ -84,7 +84,7 @@ interface PostSpaceMemberPrams {
   categoryId: string;
   spaceId: string;
   userId: string;
-  assignees: Space_members[];
+  assignees: SpaceMembers[];
 }
 export const postScrumBoardItem = async ({
   description,
@@ -154,7 +154,7 @@ export interface PatchScrumBoardItemPrams {
   id: string;
   description: string;
   spaceId: string;
-  assignees: Space_members[];
+  assignees: SpaceMembers[];
 }
 export const patchScrumBoardItem = async ({
   id,
