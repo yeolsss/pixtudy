@@ -1,9 +1,9 @@
-import StBadge from "@/components/common/badge/Badge";
-import useChatAlarm from "@/hooks/GNB/useChatAlarm";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { IconButtonProperty } from "@/types/metaverse.types";
+import StBadge from '@/components/common/badge/badge.styles'
+import useChatAlarm from '@/hooks/GNB/useChatAlarm'
+import { IconButtonProperty } from '@/types/metaverse.types'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 export default function IconButton({
   buttonImage,

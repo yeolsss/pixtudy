@@ -1,16 +1,18 @@
-import Image from "next/image";
-import { useMemo } from "react";
-import styled from "styled-components";
+import Image from 'next/image';
+import { useMemo } from 'react';
+import styled from 'styled-components';
 
 interface Props {
   text?: string;
 }
 
-export default function NoContents({ text = "게시물이 없습니다" }: Props) {
+const IMAGE_COUNT = 2;
+
+export default function NoContents({ text = '게시물이 없습니다' }: Props) {
   const randomImage = useMemo(() => {
-    const random = Math.floor(Math.random() * 2 + 1);
-    return `/assets/no_contents_${random}.png`;
-  }, [text]);
+    const random = Date.now() % 2;
+    return `/assets/no_contents_${random}.png`
+  }, [text])
 
   return (
     <StNoContents>
