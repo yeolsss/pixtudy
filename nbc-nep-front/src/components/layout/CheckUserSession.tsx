@@ -26,7 +26,7 @@ export default function CheckUserSession() {
                 router.pathname !== "/dashboard" &&
                 !router.pathname.includes("/metaverse")
               ) {
-                toast.success(`${userData.display_name}님 로그인 성공`);
+                toast.success(`${userData.displayName}님 로그인 성공`);
                 sessionRef.current = session;
               }
               login(userData);

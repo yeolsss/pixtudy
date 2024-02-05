@@ -16,7 +16,7 @@ export default function ProfilePreview({ setProcedure }: Props) {
   const setUserProfile = useSpaceStore.use.setUserProfile();
 
   const getAvatarResource = () => {
-    return SRC_BASE + avatar + ".png";
+    return `${SRC_BASE + avatar}.png`;
   };
 
   const handleToProfileForm = () => {
@@ -27,7 +27,7 @@ export default function ProfilePreview({ setProcedure }: Props) {
     if (user && !avatar) {
       setUserProfile({
         avatar: "NPC1",
-        display_name: user.display_name!,
+        displayName: user.displayName!,
         owner: user.id,
       });
     }
@@ -35,7 +35,7 @@ export default function ProfilePreview({ setProcedure }: Props) {
 
   return (
     <StProfilePreview>
-      <span>{display_name === "" ? user.display_name : display_name}</span>
+      <span>{display_name === "" ? user.displayName : display_name}</span>
       <StAvatar resource={getAvatarResource()} />
       <button onClick={handleToProfileForm}>아바타 꾸미기</button>
     </StProfilePreview>

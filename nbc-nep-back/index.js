@@ -8,8 +8,8 @@ const chatServer = require("./chatServer");
 const conferenceServer = require("./conference/index");
 
 const app = express();
-let server = http.Server(app);
-let io = socketIO(server, {
+const server = http.Server(app);
+const io = socketIO(server, {
   pingTimeout: 60000,
   cors: {
     origin: [

@@ -30,30 +30,26 @@ export default function ConfigSpace() {
     }
   };
 
-  return (
-    <>
-      {!isOwner ? (
-        <StSectionMain>
-          <div>
-            <span>스페이스 썸네일</span>
-            <SpaceThumb src={spaceInfo?.space_thumb || undefined} />
-          </div>
-          <div>
-            <span>스페이스 이름</span>
-            <h1>{spaceInfo?.title}</h1>
-          </div>
-          <div>
-            <span>스페이스 설명</span>
-            <p>{spaceInfo?.description}</p>
-          </div>
+  return !isOwner ? (
+    <StSectionMain>
+      <div>
+        <span>스페이스 썸네일</span>
+        <SpaceThumb src={spaceInfo?.space_thumb || undefined} />
+      </div>
+      <div>
+        <span>스페이스 이름</span>
+        <h1>{spaceInfo?.title}</h1>
+      </div>
+      <div>
+        <span>스페이스 설명</span>
+        <p>{spaceInfo?.description}</p>
+      </div>
 
-          <StDangerButton onClick={handleLeavingSpace}>
-            스페이스 나가기
-          </StDangerButton>
-        </StSectionMain>
-      ) : (
-        <ConfigSpaceOwner />
-      )}
-    </>
+      <StDangerButton onClick={handleLeavingSpace}>
+        스페이스 나가기
+      </StDangerButton>
+    </StSectionMain>
+  ) : (
+    <ConfigSpaceOwner />
   );
 }
