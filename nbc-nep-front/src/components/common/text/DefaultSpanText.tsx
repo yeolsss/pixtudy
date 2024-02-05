@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 const DefaultSpanText = styled.span`
   position: absolute;
@@ -8,6 +8,6 @@ const DefaultSpanText = styled.span`
   font-size: ${(props) => props.theme.body.sm.medium.fontSize};
   line-height: ${(props) => props.theme.unit[24]};
   color: var(--color-red-500);
-`
+`;
 
-export default DefaultSpanText
+export default DefaultSpanText;

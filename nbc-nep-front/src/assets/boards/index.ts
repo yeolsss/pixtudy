@@ -1,4 +1,4 @@
-import closeIcon from './assingee-delete.svg'
-import down from './input-down.svg'
+import closeIcon from "./assingee-delete.svg";
+import down from "./input-down.svg";
 
-export { closeIcon, down }
+export { closeIcon, down };

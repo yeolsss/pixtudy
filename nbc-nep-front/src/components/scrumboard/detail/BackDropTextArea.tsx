@@ -1,18 +1,18 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 interface Props {
-  fontSize: number
-  forwardRef: React.RefObject<HTMLTextAreaElement>
-  value: string
-  handler: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
-  validState: boolean
+  fontSize: number;
+  forwardRef: React.RefObject<HTMLTextAreaElement>;
+  value: string;
+  handler: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  validState: boolean;
 }
 export default function BackDropTextArea({
   fontSize,
   forwardRef,
   value,
   handler,
-  validState
+  validState,
 }: Props) {
   return (
     <>
@@ -24,12 +24,12 @@ export default function BackDropTextArea({
         onChange={handler}
       ></StBackDropTextArea>
     </>
-  )
+  );
 }
 
 export const StBackDropTextArea = styled.textarea<{
-  $fontSize: number
-  $validState: boolean
+  $fontSize: number;
+  $validState: boolean;
 }>`
   outline: none;
   width: 100%;
@@ -50,4 +50,4 @@ export const StBackDropTextArea = styled.textarea<{
     border-color: ${({ theme, $validState }) =>
       $validState ? theme.color.border.danger : theme.color.border.focusRing};
   }
-`
+`;

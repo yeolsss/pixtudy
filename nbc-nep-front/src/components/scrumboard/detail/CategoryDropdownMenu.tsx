@@ -1,21 +1,21 @@
-import { Dispatch, SetStateAction } from 'react'
-import styled from 'styled-components'
+import { Dispatch, SetStateAction } from "react";
+import styled from "styled-components";
 
 interface Props {
-  setIsEdit: Dispatch<SetStateAction<boolean>>
-  setIsDropdownOpen: Dispatch<SetStateAction<boolean>>
-  handleDeleteCategory: () => Promise<void>
+  setIsEdit: Dispatch<SetStateAction<boolean>>;
+  setIsDropdownOpen: Dispatch<SetStateAction<boolean>>;
+  handleDeleteCategory: () => Promise<void>;
 }
 
 export default function CategoryDropdownMenu({
   setIsEdit,
   setIsDropdownOpen,
-  handleDeleteCategory
+  handleDeleteCategory,
 }: Props) {
   const handleEditCategoryButton = () => {
-    setIsEdit(true)
-    setIsDropdownOpen(false)
-  }
+    setIsEdit(true);
+    setIsDropdownOpen(false);
+  };
 
   return (
     <StDropdownMenuContainer>
@@ -28,7 +28,7 @@ export default function CategoryDropdownMenu({
         삭제
       </StDropdownMenuItem>
     </StDropdownMenuContainer>
-  )
+  );
 }
 
 const StDropdownMenuContainer = styled.ul`
@@ -41,7 +41,7 @@ const StDropdownMenuContainer = styled.ul`
   border-radius: ${(props) => props.theme.border.radius[12]};
   box-shadow: ${(props) => props.theme.elevation.Light.shadow2};
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: ${(props) => props.theme.unit[12]};
     left: ${(props) => props.theme.unit[0]};
@@ -52,7 +52,7 @@ const StDropdownMenuContainer = styled.ul`
     border-left: 0;
     margin-left: -${(props) => props.theme.unit[8]};
   }
-`
+`;
 
 const StDropdownMenuItem = styled.li<{ $type: string }>`
   display: flex;
@@ -66,7 +66,7 @@ const StDropdownMenuItem = styled.li<{ $type: string }>`
     display: inline-block;
     width: 16px;
     height: 16px;
-    background: url('/assets/${(props) => props.$type}.svg');
+    background: url("/assets/${(props) => props.$type}.svg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -84,4 +84,4 @@ const StDropdownMenuItem = styled.li<{ $type: string }>`
     border-bottom-right-radius: ${(props) => props.theme.border.radius[12]};
     padding-top: ${(props) => props.theme.spacing[8]};
   }
-`
+`;

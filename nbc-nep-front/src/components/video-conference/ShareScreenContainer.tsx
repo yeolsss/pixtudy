@@ -1,16 +1,18 @@
+import { useRef, useState } from "react";
+import { useDrop } from "react-dnd";
+
 import {
   currentLayoutIndex,
   formatGridTemplateVideos,
   getGridStyle,
 } from "@/components/video-conference/libs/dnd";
 import useLayout from "@/hooks/conference/useLayout";
-import { useRef, useState } from "react";
-import { useDrop } from "react-dnd";
 import styled from "styled-components";
 import { GridStatusType, GuideStatusType } from "../../types/conference.types";
 import ShareMediaItem from "./ShareMediaItem";
 import ShareScreenDragItem from "./ShareScreenDragItem";
-import { EDGE_AREA_RATE } from "./constants/constants";
+
+const EDGE_AREA_RATE = 220;
 
 export default function ShareScreenContainer() {
   const {
@@ -180,16 +182,14 @@ export default function ShareScreenContainer() {
             <ShareScreenDragItem
               key={video.id}
               id={video.id}
-              active={true}
+              active
               handleInactive={handleInactive}
             >
-              {
-                <ShareMediaItem
-                  key={video.id}
-                  nickname={layoutPlayerNickName}
-                  videoSource={video}
-                />
-              }
+              <ShareMediaItem
+                key={video.id}
+                nickname={layoutPlayerNickName}
+                videoSource={video}
+              />
             </ShareScreenDragItem>
           );
         })}

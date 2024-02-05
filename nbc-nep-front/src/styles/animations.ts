@@ -1,4 +1,4 @@
-import { keyframes } from 'styled-components'
+import { keyframes } from "styled-components";
 
 export const slideUp = keyframes`
   from {
@@ -7,7 +7,7 @@ export const slideUp = keyframes`
   to {
     transform: translateY(0);
   }
-`
+`;
 
 export const slideDown = keyframes`
   from {
@@ -17,7 +17,7 @@ export const slideDown = keyframes`
     transform: translateY(20px);
     opacity: 0;
   }
-`
+`;
 
 export const elasticPop = keyframes`
 from , to{
@@ -25,15 +25,15 @@ from , to{
 } 50% {
   transform: translate(-50%, -50%) scale(1.05)
 }
-`
+`;
 
 export const fadeInOut = ({ x, y }: { x?: number; y?: number } = {}) => {
-  const options: { x?: number; y?: number } = {}
+  const options: { x?: number; y?: number } = {};
   if (x !== undefined) {
-    options.x = x
+    options.x = x;
   }
   if (y !== undefined) {
-    options.y = y
+    options.y = y;
   }
 
   return {
@@ -43,8 +43,8 @@ export const fadeInOut = ({ x, y }: { x?: number; y?: number } = {}) => {
       opacity: 0.5,
       ...options,
       ...(y !== undefined && { y: -y }),
-      ...(x !== undefined && { x: -x })
+      ...(x !== undefined && { x: -x }),
     },
-    transition: { duration: 0.2 }
-  }
-}
+    transition: { duration: 0.2 },
+  };
+};

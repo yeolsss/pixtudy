@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 interface Props {
-  text: string
-  handler: () => void
+  text: string;
+  handler: () => void;
 }
 
 export default function ModalHeader({ text, handler }: Props) {
@@ -11,7 +11,7 @@ export default function ModalHeader({ text, handler }: Props) {
       <h2>{text}</h2>
       <button onClick={handler} />
     </StModalHeaderContainer>
-  )
+  );
 }
 
 const StModalHeaderContainer = styled.div`
@@ -30,9 +30,9 @@ const StModalHeaderContainer = styled.div`
     height: ${(props) => props.theme.unit[20]};
     border: none;
     padding: 0;
-    background: url('/assets/close.svg') no-repeat center;
+    background: url("/assets/close.svg") no-repeat center;
     &:hover {
       background-color: transparent;
     }
   }
-`
+`;

@@ -1,29 +1,29 @@
-import useChatAlarm from '@/hooks/GNB/useChatAlarm'
-import { StSectionChatConfig } from '../styles/config.styles'
+import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import { StSectionChatConfig } from "../styles/config.styles";
 
 export default function ConfigSpaceChat() {
   const options = [
-    { text: 'Blop', src: '/assets/alarm/Blop.mp3' },
-    { text: 'Cycle', src: '/assets/alarm/Cycle.mp3' },
-    { text: 'Pling', src: '/assets/alarm/Pling.mp3' }
-  ]
+    { text: "Blop", src: "/assets/alarm/Blop.mp3" },
+    { text: "Cycle", src: "/assets/alarm/Cycle.mp3" },
+    { text: "Pling", src: "/assets/alarm/Pling.mp3" },
+  ];
 
   const { sound, setAlarmSound, setAlarmPlayStatus, setAlarmVolume, volume } =
-    useChatAlarm()
+    useChatAlarm();
 
   const handleChangeSound = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAlarmSound(e.target.value)
-    setAlarmPlayStatus(true)
-  }
+    setAlarmSound(e.target.value);
+    setAlarmPlayStatus(true);
+  };
   const handleTestSound = () => {
-    setAlarmPlayStatus(true)
-  }
+    setAlarmPlayStatus(true);
+  };
   const handleChangeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let volumeValue = Number(e.target.value)
-    if (volumeValue < 0) volumeValue = 0
-    if (volumeValue > 100) volumeValue = 100
-    setAlarmVolume(volumeValue)
-  }
+    let volumeValue = Number(e.target.value);
+    if (volumeValue < 0) volumeValue = 0;
+    if (volumeValue > 100) volumeValue = 100;
+    setAlarmVolume(volumeValue);
+  };
   return (
     <StSectionChatConfig>
       <h1>DM 효과음 설정</h1>
@@ -63,5 +63,5 @@ export default function ConfigSpaceChat() {
         <button onClick={handleTestSound}>테스트</button>
       </div>
     </StSectionChatConfig>
-  )
+  );
 }

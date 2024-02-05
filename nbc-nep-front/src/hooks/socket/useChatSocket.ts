@@ -1,57 +1,57 @@
-import useChatAlarm from '@/hooks/GNB/useChatAlarm'
-import useAuthStore from '@/zustand/authStore'
-import useChatListStore from '@/zustand/chatListStore'
-import { useEffect, useRef } from 'react'
-import { toast } from 'react-toastify'
-import io, { Socket } from 'socket.io-client'
-import useMetaversePlayer from '../metaverse/useMetaversePlayer'
-import { Chat } from '@/types/metaverse.types'
+import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import useAuthStore from "@/zustand/authStore";
+import useChatListStore from "@/zustand/chatListStore";
+import { useEffect, useRef } from "react";
+import { toast } from "react-toastify";
+import io, { Socket } from "socket.io-client";
+import useMetaversePlayer from "../metaverse/useMetaversePlayer";
+import { Chat } from "@/types/metaverse.types";
 
-export default function useChatSocket(playerDisplayName: string | null = '') {
+export default function useChatSocket(playerDisplayName: string | null = "") {
   const socket = useRef<Socket>(
     io(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/chat`, {
       withCredentials: true,
-      autoConnect: false
+      autoConnect: false,
     })
-  )
-  const { spaceId } = useMetaversePlayer()
-  const user = useAuthStore.use.user()
-  const { handleSetGlobalChatAlarmState } = useChatAlarm()
-  const setChatList = useChatListStore.use.setChatList()
+  );
+  const { spaceId } = useMetaversePlayer();
+  const user = useAuthStore.use.user();
+  const { handleSetGlobalChatAlarmState } = useChatAlarm();
+  const setChatList = useChatListStore.use.setChatList();
 
   const handleConnect = () => {
-    socket.current!.emit('joinRoom', spaceId)
-  }
+    socket.current!.emit("joinRoom", spaceId);
+  };
   const handleReceiveMessage = (data: Chat) => {
-    setChatList(data)
-    handleSetGlobalChatAlarmState(true)
-  }
+    setChatList(data);
+    handleSetGlobalChatAlarmState(true);
+  };
   const handleRemoveRoom = () => {
-    toast.error('스페이스가 삭제됐습니다', {
-      position: 'top-center',
-      toastId: 'remove-room'
-    })
-    window.location.href = '/dashboard'
-  }
+    toast.error("스페이스가 삭제됐습니다", {
+      position: "top-center",
+      toastId: "remove-room",
+    });
+    window.location.href = "/dashboard";
+  };
 
   useEffect(() => {
-    if (!spaceId) return
+    if (!spaceId) return;
     if (socket.current && !socket.current.connected) {
-      socket.current.connect()
+      socket.current.connect();
     }
 
-    socket.current.on('connect', handleConnect)
+    socket.current.on("connect", handleConnect);
 
-    socket.current.on('receiveMessage', handleReceiveMessage)
+    socket.current.on("receiveMessage", handleReceiveMessage);
 
-    socket.current.on('removedRoom', handleRemoveRoom)
+    socket.current.on("removedRoom", handleRemoveRoom);
 
     return () => {
-      socket.current.off('connect', handleConnect)
-      socket.current.off('receiveMessage', handleReceiveMessage)
-      socket.current.off('removeRoom', handleRemoveRoom)
-    }
-  }, [spaceId, socket.current?.connected])
+      socket.current.off("connect", handleConnect);
+      socket.current.off("receiveMessage", handleReceiveMessage);
+      socket.current.off("removeRoom", handleRemoveRoom);
+    };
+  }, [spaceId, socket.current?.connected]);
 
   const sendChatMessage = (message: string) => {
     const newChat = {
@@ -59,14 +59,14 @@ export default function useChatSocket(playerDisplayName: string | null = '') {
       message,
       spaceId,
       playerId: user.id,
-      chatTime: new Date()
-    }
-    socket.current?.emit('sendMessage', newChat)
-  }
+      chatTime: new Date(),
+    };
+    socket.current?.emit("sendMessage", newChat);
+  };
 
   const emitRemoveSpace = () => {
-    socket.current?.emit('removeRoom')
-  }
+    socket.current?.emit("removeRoom");
+  };
 
-  return { sendChatMessage, emitRemoveSpace }
+  return { sendChatMessage, emitRemoveSpace };
 }

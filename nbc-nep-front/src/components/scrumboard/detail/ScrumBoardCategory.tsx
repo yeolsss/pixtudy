@@ -1,35 +1,35 @@
-import NoContents from '@/components/common/NoContents'
-import { StCTAButton } from '@/components/common/button/button.styles'
-import { BACK_DROP_TYPE_CREATE } from '@/components/scrumboard/constants/constants'
-import { useGetCategoryItems } from '@/hooks/query/useSupabase'
-import useDropItem from '@/hooks/scrumBoard/useDropItem'
-import { fadeInOut } from '@/styles/animations'
-import { Kanban_categories } from '@/types/supabase.tables.types'
-import useScrumBoardItemBackDropStore from '@/zustand/createScrumBoardItemStore'
-import { AnimatePresence, motion } from 'framer-motion'
-import { WheelEvent } from 'react'
-import styled from 'styled-components'
-import CategoryHeader from './CategoryHeader'
-import ScrumBoardItem from './ScrumBoardItem'
+import NoContents from "@/components/common/NoContents";
+import { StCTAButton } from "@/components/common/button/button.styles";
+import { BACK_DROP_TYPE_CREATE } from "@/components/scrumboard/constants/constants";
+import { useGetCategoryItems } from "@/hooks/query/useSupabase";
+import useDropItem from "@/hooks/scrumBoard/useDropItem";
+import { fadeInOut } from "@/styles/animations";
+import { Kanban_categories } from "@/types/supabase.tables.types";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
+import { AnimatePresence, motion } from "framer-motion";
+import { WheelEvent } from "react";
+import styled from "styled-components";
+import CategoryHeader from "./CategoryHeader";
+import ScrumBoardItem from "./ScrumBoardItem";
 
 interface Props {
-  category: Kanban_categories
+  category: Kanban_categories;
 }
 
 export default function ScrumBoardCategory({ category }: Props) {
-  const { id: categoryId, name, color } = category
-  const setIsOpen = useScrumBoardItemBackDropStore.use.setIsOpen()
+  const { id: categoryId, name, color } = category;
+  const setIsOpen = useScrumBoardItemBackDropStore.use.setIsOpen();
   const handleAddItem = () => {
-    setIsOpen(category, null, BACK_DROP_TYPE_CREATE)
-  }
-  const { drop, isOver } = useDropItem(category.id)
+    setIsOpen(category, null, BACK_DROP_TYPE_CREATE);
+  };
+  const { drop, isOver } = useDropItem(category.id);
 
-  const items = useGetCategoryItems(categoryId)
+  const items = useGetCategoryItems(categoryId);
 
   const handleWheel = (e: WheelEvent<HTMLUListElement>) => {
-    const element = e.currentTarget
-    if (element.scrollHeight > element.clientHeight) e.stopPropagation()
-  }
+    const element = e.currentTarget;
+    if (element.scrollHeight > element.clientHeight) e.stopPropagation();
+  };
 
   /**
    * TODO: item 배치하는 순서 기준이 뭐지?
@@ -50,7 +50,7 @@ export default function ScrumBoardCategory({ category }: Props) {
                 <motion.div key={index} {...fadeInOut({ y: 5 })}>
                   <ScrumBoardItem key={index} item={item} category={category} />
                 </motion.div>
-              )
+              );
             })}
           </AnimatePresence>
         </StItemsContainer>
@@ -64,7 +64,7 @@ export default function ScrumBoardCategory({ category }: Props) {
         Add Item
       </StAddItemBtn>
     </StCategoryWrapper>
-  )
+  );
 }
 
 const StCategoryWrapper = styled(motion.div)<{ $isOver: boolean }>`
@@ -81,7 +81,7 @@ const StCategoryWrapper = styled(motion.div)<{ $isOver: boolean }>`
       : `border : 2px solid ${props.theme.color.border.secondary}`};
   transition: border 0.2s ease-in-out;
   border-radius: ${(props) => props.theme.border.radius[12]};
-`
+`;
 
 const StItemsContainer = styled.ul`
   // 임의로 설정한 높이
@@ -96,7 +96,7 @@ const StItemsContainer = styled.ul`
   &::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 const StAddItemBtn = styled(StCTAButton)`
   width: 100%;
@@ -111,7 +111,7 @@ const StAddItemBtn = styled(StCTAButton)`
     width: ${(props) => props.theme.unit[14]};
     height: ${(props) => props.theme.unit[14]};
     margin-top: -${(props) => props.theme.unit[4]};
-    background: url('/assets/additem.svg') no-repeat center center;
+    background: url("/assets/additem.svg") no-repeat center center;
     background-size: contain;
   }
-`
+`;

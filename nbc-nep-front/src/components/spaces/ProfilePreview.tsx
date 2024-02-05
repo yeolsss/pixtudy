@@ -1,45 +1,45 @@
-import useAuthStore from '@/zustand/authStore'
-import useSpaceStore from '@/zustand/spaceStore'
-import { Dispatch, SetStateAction, useEffect } from 'react'
-import styled from 'styled-components'
-import { StAvatar } from './AvatarInput'
-import { FORM_CHARACTER, SRC_BASE } from './constants/constants'
-import { Procedure } from '../../types/space.types'
+import useAuthStore from "@/zustand/authStore";
+import useSpaceStore from "@/zustand/spaceStore";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import styled from "styled-components";
+import { StAvatar } from "./AvatarInput";
+import { FORM_CHARACTER, SRC_BASE } from "./constants/constants";
+import { Procedure } from "../../types/space.types";
 
 interface Props {
-  setProcedure: Dispatch<SetStateAction<Procedure>>
+  setProcedure: Dispatch<SetStateAction<Procedure>>;
 }
 
 export default function ProfilePreview({ setProcedure }: Props) {
-  const user = useAuthStore.use.user()
-  const { avatar, display_name } = useSpaceStore.use.userProfile()
-  const setUserProfile = useSpaceStore.use.setUserProfile()
+  const user = useAuthStore.use.user();
+  const { avatar, display_name } = useSpaceStore.use.userProfile();
+  const setUserProfile = useSpaceStore.use.setUserProfile();
 
   const getAvatarResource = () => {
-    return SRC_BASE + avatar + '.png'
-  }
+    return SRC_BASE + avatar + ".png";
+  };
 
   const handleToProfileForm = () => {
-    setProcedure(FORM_CHARACTER)
-  }
+    setProcedure(FORM_CHARACTER);
+  };
 
   useEffect(() => {
     if (user && !avatar) {
       setUserProfile({
-        avatar: 'NPC1',
+        avatar: "NPC1",
         display_name: user.display_name!,
-        owner: user.id
-      })
+        owner: user.id,
+      });
     }
-  }, [user])
+  }, [user]);
 
   return (
     <StProfilePreview>
-      <span>{display_name === '' ? user.display_name : display_name}</span>
+      <span>{display_name === "" ? user.display_name : display_name}</span>
       <StAvatar resource={getAvatarResource()} />
       <button onClick={handleToProfileForm}>아바타 꾸미기</button>
     </StProfilePreview>
-  )
+  );
 }
 
 const StProfilePreview = styled.div`
@@ -51,4 +51,4 @@ const StProfilePreview = styled.div`
   gap: ${(props) => props.theme.spacing[4]};
   align-items: center;
   width: 100%;
-`
+`;

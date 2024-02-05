@@ -1,18 +1,18 @@
-import { Space_members } from '@/types/supabase.tables.types'
-import { useRouter } from 'next/router'
-import styled from 'styled-components'
-import { StButtonContainer } from '@/components/spaces/SpaceListHeader'
+import { Space_members } from "@/types/supabase.tables.types";
+import { useRouter } from "next/router";
+import styled from "styled-components";
+import { StButtonContainer } from "@/components/spaces/SpaceListHeader";
 
 interface Props {
-  space: Space_members
+  space: Space_members;
 }
 
 export default function ScrumBoardCard({ space }: Props) {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleScrumBoardClick = async () => {
-    await router.push(`/boards/scrumboards/${space.spaces?.id}`)
-  }
+    await router.push(`/boards/scrumboards/${space.spaces?.id}`);
+  };
 
   return (
     <StCardWrapper>
@@ -24,7 +24,7 @@ export default function ScrumBoardCard({ space }: Props) {
         <button onClick={handleScrumBoardClick}>열기</button>
       </StScrumBoardOpenButtonContainer>
     </StCardWrapper>
-  )
+  );
 }
 
 const StCardWrapper = styled.li`
@@ -36,7 +36,7 @@ const StCardWrapper = styled.li`
   border-radius: ${(props) => props.theme.border.radius[12]};
   gap: ${(props) => props.theme.spacing[16]};
   padding: ${(props) => props.theme.spacing[16]};
-`
+`;
 
 const StContentsContainer = styled.div`
   width: 100%;
@@ -57,9 +57,9 @@ const StContentsContainer = styled.div`
     font-family: var(--main-font);
     font-size: ${(props) => props.theme.body.sm.regular.fontSize};
   }
-`
+`;
 
 const StScrumBoardOpenButtonContainer = styled(StButtonContainer)`
   padding: 0;
   font-size: 1.5rem;
-`
+`;

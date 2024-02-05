@@ -1,29 +1,29 @@
-import ModalHeader from '@/components/common/modal/ModalHeader'
-import BackDrop from '@/components/modal/BackDrop'
+import ModalHeader from "@/components/common/modal/ModalHeader";
+import BackDrop from "@/components/modal/BackDrop";
 import {
   StModalContainer,
-  StModalContents
-} from '@/components/modal/spaceModals/joinSpaceModal/JoinSpaceModalMainContainer'
+  StModalContents,
+} from "@/components/modal/spaceModals/joinSpaceModal/JoinSpaceModalMainContainer";
 import {
   StAvatar,
   StInputContainer,
-  StInputWrapper
-} from '@/components/spaces/AvatarInput'
+  StInputWrapper,
+} from "@/components/spaces/AvatarInput";
 import {
   StButtonWrapper,
   StCurrentProfile,
-  StProfileForm
-} from '@/components/spaces/ProfileForm'
-import { characterOptions } from '@/components/spaces/constants/constants'
-import { StCreateInputWrapper } from '@/components/spaces/styles/spaceCommon.styles'
-import useModal from '@/hooks/modal/useModal'
-import { useJoinSpace } from '@/hooks/query/useSupabase'
-import { validateNickname } from '@/utils/spaceValidate'
-import useAuthStore from '@/zustand/authStore'
-import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
+  StProfileForm,
+} from "@/components/spaces/ProfileForm";
+import { characterOptions } from "@/components/spaces/constants/constants";
+import { StCreateInputWrapper } from "@/components/spaces/styles/spaceCommon.styles";
+import useModal from "@/hooks/modal/useModal";
+import { useJoinSpace } from "@/hooks/query/useSupabase";
+import { validateNickname } from "@/utils/spaceValidate";
+import useAuthStore from "@/zustand/authStore";
+import { useRouter } from "next/router";
+import { ChangeEvent, useEffect } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function AvatarModalContainer() {
   const {
@@ -31,64 +31,64 @@ export default function AvatarModalContainer() {
     register,
     reset,
     watch,
-    formState: { errors }
-  } = useForm({ mode: 'onSubmit' })
+    formState: { errors },
+  } = useForm({ mode: "onSubmit" });
 
-  const { joinSpace, joinSuccess, joinError } = useJoinSpace()
-  const user = useAuthStore.use.user()
-  const { replace } = useRouter()
+  const { joinSpace, joinSuccess, joinError } = useJoinSpace();
+  const user = useAuthStore.use.user();
+  const { replace } = useRouter();
 
-  const { closeModal, space, clearSpace } = useModal()
+  const { closeModal, space, clearSpace } = useModal();
 
-  const { onChange, ...restParam } = register('avatar', {
-    required: '스페이스 아바타를 선택해주세요'
-  })
+  const { onChange, ...restParam } = register("avatar", {
+    required: "스페이스 아바타를 선택해주세요",
+  });
 
   const handleCloseModal = () => {
-    closeModal()
-    reset()
-    clearSpace()
-  }
+    closeModal();
+    reset();
+    clearSpace();
+  };
 
   const handleCustomChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e)
-  }
+    onChange(e);
+  };
 
   const handleEnterSpace: SubmitHandler<FieldValues> = (data) => {
     if (!space) {
-      console.error('space 정보 없음 없을리가 없는데...')
-      return
+      console.error("space 정보 없음 없을리가 없는데...");
+      return;
     }
 
     joinSpace({
       space_id: space.id,
       space_avatar: data.avatar,
       space_display_name: data.nickname,
-      user_id: user.id
-    })
-  }
+      user_id: user.id,
+    });
+  };
 
   const handleToSpace = async (spaceId: string) => {
-    await replace(`/metaverse/${spaceId}`)
-  }
+    await replace(`/metaverse/${spaceId}`);
+  };
 
   useEffect(() => {
-    if (!space) return
+    if (!space) return;
     if (joinSuccess) {
-      handleToSpace(space.id!)
-      clearSpace()
+      handleToSpace(space.id!);
+      clearSpace();
     }
     if (joinError) {
-      clearSpace()
-      toast.error('오류가 발생했습니다.')
-      closeModal()
+      clearSpace();
+      toast.error("오류가 발생했습니다.");
+      closeModal();
     }
-  }, [space, joinSuccess, joinError])
+  }, [space, joinSuccess, joinError]);
 
   return (
     <>
       <StModalContainer>
-        <ModalHeader text={'스페이스 입장하기'} handler={handleCloseModal} />
+        <ModalHeader text={"스페이스 입장하기"} handler={handleCloseModal} />
         <StModalContents>
           <StProfileForm onSubmit={handleSubmit(handleEnterSpace)}>
             <StCurrentProfile>
@@ -99,9 +99,9 @@ export default function AvatarModalContainer() {
                   defaultValue={user.display_name!}
                   type="text"
                   placeholder="닉네임"
-                  {...register('nickname', {
-                    required: '닉네임을 입력해주십시오.',
-                    validate: validateNickname
+                  {...register("nickname", {
+                    required: "닉네임을 입력해주십시오.",
+                    validate: validateNickname,
                   })}
                 />
                 {errors.nickname && (
@@ -113,7 +113,7 @@ export default function AvatarModalContainer() {
               {characterOptions.map((option) => (
                 <StInputWrapper
                   key={option.value}
-                  $isSelected={watch('avatar') === option.value}
+                  $isSelected={watch("avatar") === option.value}
                 >
                   <input
                     type="radio"
@@ -137,5 +137,5 @@ export default function AvatarModalContainer() {
       </StModalContainer>
       <BackDrop />
     </>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-import { create } from 'zustand'
-import createSelectors from '@/zustand/config/createSelector'
-import { Player, PlayerState } from '@/types/metaverse.types'
+import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
+import { Player, PlayerState } from "@/types/metaverse.types";
 
 interface PlayerListState {
-  playerList: Player[]
-  setPlayerList: (players: Player[]) => void
-  changePlayerState: (playerId: string, state: PlayerState) => void
+  playerList: Player[];
+  setPlayerList: (players: Player[]) => void;
+  changePlayerState: (playerId: string, state: PlayerState) => void;
 }
 
 const playerListStore = create<PlayerListState>()((set) => ({
@@ -15,11 +15,11 @@ const playerListStore = create<PlayerListState>()((set) => ({
     set((state) => ({
       playerList: state.playerList.map((prevPlayer) => {
         if (prevPlayer.playerId === playerId)
-          return { ...prevPlayer, state: playerState }
-        return prevPlayer
-      })
-    }))
-}))
+          return { ...prevPlayer, state: playerState };
+        return prevPlayer;
+      }),
+    })),
+}));
 
-const usePlayerListStore = createSelectors(playerListStore)
-export default usePlayerListStore
+const usePlayerListStore = createSelectors(playerListStore);
+export default usePlayerListStore;

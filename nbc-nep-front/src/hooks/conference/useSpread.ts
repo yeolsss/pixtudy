@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react";
 
 export default function useSpread() {
-  const [isSpreadMode, setSpreadMode] = useState<boolean>(false)
-  const toggleBoxRef = useRef<HTMLDivElement>(null)
+  const [isSpreadMode, setSpreadMode] = useState<boolean>(false);
+  const toggleBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (e: Event) => {
@@ -11,26 +11,26 @@ export default function useSpread() {
         e.target instanceof Node &&
         toggleBoxRef.current.contains(e.target)
       )
-        return
+        return;
 
-      if (isSpreadMode) setSpreadMode(false)
-      e.stopPropagation()
-    }
+      if (isSpreadMode) setSpreadMode(false);
+      e.stopPropagation();
+    };
 
-    window.addEventListener('mousedown', handleOutsideClick)
+    window.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      window.removeEventListener('mousedown', handleOutsideClick)
-    }
-  }, [isSpreadMode])
+      window.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isSpreadMode]);
 
   const handleToggleOnSpreadMode = () => {
-    setSpreadMode(true)
-  }
+    setSpreadMode(true);
+  };
 
   return {
     isSpreadMode,
     toggleBoxRef,
-    handleToggleOnSpreadMode
-  }
+    handleToggleOnSpreadMode,
+  };
 }

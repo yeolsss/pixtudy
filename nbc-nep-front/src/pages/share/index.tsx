@@ -1,5 +1,5 @@
-import VideoConference from '@/components/video-conference/VideoConference'
+import VideoConference from "@/components/video-conference/VideoConference";
 
 export default function Screen() {
-  return <VideoConference />
+  return <VideoConference />;
 }

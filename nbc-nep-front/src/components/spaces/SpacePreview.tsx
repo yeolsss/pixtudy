@@ -1,14 +1,14 @@
-import { useGetOtherUserInfo } from '@/hooks/query/useSupabase'
-import useSpaceStore from '@/zustand/spaceStore'
-import Image from 'next/image'
-import styled from 'styled-components'
+import { useGetOtherUserInfo } from "@/hooks/query/useSupabase";
+import useSpaceStore from "@/zustand/spaceStore";
+import Image from "next/image";
+import styled from "styled-components";
 
 /**
  * useGetOtherUserInfo, useGetUserSpaces,
  */
 export default function SpacePreview() {
-  const joinSpaceInfo = useSpaceStore.use.joinSpaceInfo()
-  const ownerInfo = useGetOtherUserInfo(joinSpaceInfo?.owner)
+  const joinSpaceInfo = useSpaceStore.use.joinSpaceInfo();
+  const ownerInfo = useGetOtherUserInfo(joinSpaceInfo?.owner);
 
   return (
     <StSpacePreview>
@@ -30,7 +30,7 @@ export default function SpacePreview() {
         </StPreviewDisabled>
       )}
     </StSpacePreview>
-  )
+  );
 }
 
 const StSpacePreview = styled.div`
@@ -43,7 +43,7 @@ const StSpacePreview = styled.div`
     font-family: var(--sub-font);
     font-size: ${(props) => props.theme.body.md.medium.fontSize};
   }
-`
+`;
 
 const StSpacePreviewContainer = styled.div`
   gap: ${(props) => props.theme.spacing[16]};
@@ -55,7 +55,7 @@ const StSpacePreviewContainer = styled.div`
     display: flex;
     gap: ${(props) => props.theme.spacing[12]};
   }
-`
+`;
 
 const StPreviewContents = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ const StPreviewContents = styled.div`
     margin-bottom: ${(props) => props.theme.spacing[8]};
   }
   h3::after {
-    content: '';
+    content: "";
     display: block;
     width: 100%;
     height: 1px;
@@ -87,7 +87,7 @@ const StPreviewContents = styled.div`
     line-height: ${(props) => props.theme.body.sm.regular.lineHeight};
     word-break: break-word;
   }
-`
+`;
 
 const StPreviewDisabled = styled.div`
   background-color: ${(props) => props.theme.color.bg.secondary};
@@ -98,4 +98,4 @@ const StPreviewDisabled = styled.div`
   align-items: center;
   margin-top: ${(props) => props.theme.spacing[8]};
   border-radius: ${(props) => props.theme.border.radius[16]};
-`
+`;
