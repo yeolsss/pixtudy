@@ -54,7 +54,7 @@ export default function ProfileForm({
   const handleProfileSubmit: SubmitHandler<FieldValues> = (data) => {
     const newUserProfile: UserProfile = {
       avatar: data.avatar,
-      display_name: data.nickname,
+      displayName: data.nickname,
       owner: user.id,
     };
     setUserProfile(newUserProfile);

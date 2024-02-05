@@ -5,10 +5,10 @@ import useGlobalNavBarStore, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
 import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
-import useModal from "../modal/useModal";
 import { useEffect } from "react";
 import usePhaserInput from "@/hooks/phaser/usePhaserInput";
 import { IconButtonProperty } from "@/types/metaverse.types";
+import useModal from "../modal/useModal";
 import {
   chatIcon,
   kanbanIcon,

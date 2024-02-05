@@ -2,9 +2,9 @@ import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useGetSpaceMember } from "@/hooks/query/useSupabase";
 import { formatDate } from "@/utils/dateFormat";
-import styled from "styled-components";
-import MetaAvatar from "../../avatar/MetaAvatar";
 import { Chat, ChatType } from "@/types/metaverse.types";
+import { StMetaverseChatCard } from "@/components/metaverse/styles/metaverseChat.styles";
+import MetaAvatar from "../../avatar/MetaAvatar";
 
 interface Props {
   type: ChatType;
@@ -16,7 +16,7 @@ export default function MetaverseChatCard({ chat, message, type }: Props) {
   const { currentUserInfo, spaceId } = useMetaversePlayer();
   const dmUserInfo = useGetSpaceMember({
     spaceId,
-    userId: type === "DM" ? message?.sender_id! : chat?.playerId!,
+    userId: type === "DM" ? message?.sender_id ?? "" : chat?.playerId ?? "",
   });
 
   const getFormatTime = () => {
@@ -74,41 +74,7 @@ export default function MetaverseChatCard({ chat, message, type }: Props) {
   );
 }
 
-const StMetaverseChatCard = styled.div<{ $isCurrentUser: boolean }>`
-  display: flex;
-  flex-direction: column;
-
-  > section {
-    display: flex;
-    align-items: center;
-    > span {
-      zoom: 0.8;
-      margin-right: ${(props) => props.theme.spacing["6"]};
-    }
-    > div {
-      display: flex;
-      flex-direction: column;
-      > span {
-        font-size: ${(props) => props.theme.unit["12"]};
-      }
-      > span:first-child {
-        color: ${(props) =>
-          props.$isCurrentUser ? props.theme.color.text.brand : "inherit"};
-        font-weight: bold;
-        margin-bottom: ${(props) => props.theme.spacing["2"]};
-      }
-      > span:last-child {
-        font-family: var(--default-font);
-      }
-    }
-    margin-bottom: ${(props) => props.theme.spacing["8"]};
-  }
-  > span:last-child {
-    word-break: break-all;
-    line-height: ${(props) => props.theme.spacing["20"]};
-    letter-spacing: -0.32px;
-    font-family: var(--default-font);
-    font-size: ${(props) => props.theme.unit["16"]};
-    margin-bottom: ${(props) => props.theme.spacing["12"]};
-  }
-`;
+MetaverseChatCard.defaultProps = {
+  chat: {} as Chat,
+  message: {} as getDmChannelMessagesReturns,
+};

@@ -7,10 +7,18 @@ import {
   getGridStyle,
 } from "@/components/video-conference/libs/dnd";
 import useLayout from "@/hooks/conference/useLayout";
-import styled from "styled-components";
+
 import { GridStatusType, GuideStatusType } from "../../types/conference.types";
+
 import ShareMediaItem from "./ShareMediaItem";
 import ShareScreenDragItem from "./ShareScreenDragItem";
+import {
+  StLayoutContainer,
+  StLayoutGuide,
+  StNoActiveLayoutDiv,
+  StPreviewContainer,
+  StVideosLayoutContainer,
+} from "./styles/shareScreenContainer.styles";
 
 const EDGE_AREA_RATE = 220;
 
@@ -48,7 +56,7 @@ export default function ShareScreenContainer() {
       if (!dropParentRef.current) {
         return;
       }
-      //마우스 호버 아웃 체크
+      // 마우스 호버 아웃 체크
       clearTimeout(hoverTimer?.current!);
       // 부모 컴포넌트의 좌표
       const parentRect = dropParentRef.current.getBoundingClientRect();
@@ -120,11 +128,10 @@ export default function ShareScreenContainer() {
         const newVideos = videos.map((video) => {
           if (video.isActive === activeIndex) {
             return { ...video, isActive: 0 };
-          } else {
-            return video.consumer.id === item.id
-              ? { ...video, isActive: activeIndex }
-              : video;
           }
+          return video.consumer.id === item.id
+            ? { ...video, isActive: activeIndex }
+            : video;
         });
         videosChange(newVideos);
       }

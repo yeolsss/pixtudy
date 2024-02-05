@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
 const useMetaversePlayer = () => {
-  const { id, display_name } = useAuthStore.use.user();
+  const { id, displayName } = useAuthStore.use.user();
   const playerList = usePlayerListStore.use.playerList();
   const setPlayerList = usePlayerListStore.use.setPlayerList();
 
@@ -41,7 +41,7 @@ const useMetaversePlayer = () => {
     spaceId,
     id,
     playerSpaceInfoData,
-    display_name,
+    displayName,
     findPlayerById,
     spaceInfo,
     isOwner,

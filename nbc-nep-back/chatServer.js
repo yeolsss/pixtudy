@@ -1,7 +1,7 @@
 module.exports = function (io) {
-  let chat = {};
+  const chat = {};
   io.on("connection", function (socket) {
-    console.log("chat [" + socket.id + "] connected");
+    console.log(`chat [${socket.id}] connected`);
 
     socket.on("joinRoom", (spaceId) => {
       console.log("joinRoom", spaceId, socket.id);
@@ -17,9 +17,9 @@ module.exports = function (io) {
     });
 
     socket.on("disconnect", function () {
-      console.log("chat [" + socket.id + "] disconnected");
+      console.log(`chat [${socket.id}] disconnected`);
       try {
-        const spaceId = chat[socket.id].spaceId;
+        const { spaceId } = chat[socket.id];
 
         io.to(spaceId).emit("chatDisconnected", socket.id);
       } catch (error) {
@@ -35,9 +35,9 @@ module.exports = function (io) {
         chat[socket.id] = {
           userId: socket.id,
           playerDisplayName: playerDisplayName || socket.id,
-          message: message,
-          playerId: playerId,
-          chatTime: chatTime,
+          message,
+          playerId,
+          chatTime,
           spaceId,
         };
         io.to(spaceId).emit("receiveMessage", chat[socket.id]);
@@ -47,7 +47,7 @@ module.exports = function (io) {
     socket.on("removeRoom", () => {
       try {
         const player = chat[socket.id];
-        const spaceId = player.spaceId;
+        const { spaceId } = player;
 
         io.to(spaceId).emit("removedRoom");
       } catch (error) {

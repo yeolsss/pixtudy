@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+function toCssValue(x: string | number | undefined) {
+  if (!x) {
+    return undefined;
+  }
+  if (typeof x === "string") {
+    return x;
+  }
+  return `${x}px`;
+}
+
 interface StBadgeProps {
   color?: string;
   x?: number | string;
@@ -18,15 +28,5 @@ const StBadge = styled.div<StBadgeProps>`
   ${(props) => (props.y ? `top: ${toCssValue(props?.y)}` : "")};
   ${(props) => (props.x ? `left: ${toCssValue(props?.x)}` : "")};
 `;
-
-function toCssValue(x: string | number | undefined) {
-  if (!x) {
-    return undefined;
-  }
-  if (typeof x === "string") {
-    return x;
-  }
-  return x + "px";
-}
 
 export default StBadge;
