@@ -1,4 +1,4 @@
-import { SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH } from "@/components/scrumboard/constants/constants";
+import { SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH } from "@/components/scrumboard/constants";
 import CreateBackDropTitle from "@/components/scrumboard/detail/createBackDrop/CreateBackDropTitle";
 import styled from "styled-components";
 
@@ -9,7 +9,7 @@ interface Props {
 export default function CreateDescriptionHeader({ text, countType }: Props) {
   return (
     <StCreateBackDropDescriptionHeader>
-      <CreateBackDropTitle title={"내용"} />
+      <CreateBackDropTitle title="내용" />
       <span>
         {countType === "C" &&
           `${text?.length}/${SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH}`}

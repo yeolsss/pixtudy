@@ -1,22 +1,22 @@
-import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
-import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
-import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
-import { useEffect } from "react";
 import {
   deleteCategoryItem,
   patchScrumBoardItem,
   postScrumBoardItem,
 } from "@/api/supabase/scrumBoard";
-import { useParams } from "next/navigation";
-import useAuthStore from "@/zustand/authStore";
 import {
   BACK_DROP_TYPE_CREATE,
   BACK_DROP_TYPE_DETAIL,
   BACK_DROP_TYPE_UPDATE,
-} from "@/components/scrumboard/constants/constants";
+} from "@/components/scrumboard/constants";
 import useConfirm from "@/hooks/confirm/useConfirm";
+import useAuthStore from "@/zustand/authStore";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
+import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
+import { useMutation } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 interface ReturnType {
   handleOnClickCreate: () => void;

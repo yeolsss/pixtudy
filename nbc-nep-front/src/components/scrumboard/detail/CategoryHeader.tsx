@@ -4,7 +4,13 @@ import { fadeInOut } from "@/styles/animations";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import {
+  StCategoryColor,
+  StCategoryHeader,
+  StCategoryInfo,
+  StDropDownMenuBtnWrapper,
+  StItemCounter,
+} from "../styles/category.styles";
 import CategoryDropdownMenu from "./CategoryDropdownMenu";
 import EditCategoryForm from "./EditCategoryForm";
 
@@ -20,9 +26,8 @@ export default function CategoryHeader({ name, color, id, itemCount }: Props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { openConfirmHandler } = useConfirm();
-  const { space_id } = useParams();
-  const spaceId = space_id as string;
-  const { remove } = useDeleteCategory(spaceId);
+  const { space_id: spaceId } = useParams();
+  const { remove } = useDeleteCategory(spaceId as string);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -73,7 +78,9 @@ export default function CategoryHeader({ name, color, id, itemCount }: Props) {
           <StItemCounter>{itemCount}items</StItemCounter>
           <StDropDownMenuBtnWrapper ref={dropdownRef}>
             <AnimatePresence>
-              <button onClick={handleDropdown}>open dropdown</button>
+              <button type="button" onClick={handleDropdown}>
+                open dropdown
+              </button>
               {isDropdownOpen && (
                 <motion.div {...fadeInOut({ y: 2 })}>
                   <CategoryDropdownMenu
@@ -90,67 +97,3 @@ export default function CategoryHeader({ name, color, id, itemCount }: Props) {
     </StCategoryHeader>
   );
 }
-
-const StCategoryHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  //prettier-ignore
-  padding: ${(props) => props.theme.spacing[20]};
-`;
-
-const StCategoryInfo = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing[8]};
-  & > h1 {
-    font-family: var(--point-font);
-    font-size: ${(props) => props.theme.heading.desktop.md.fontSize};
-    font-weight: ${(props) => props.theme.heading.desktop.md.fontWeight};
-  }
-`;
-
-const StItemCounter = styled.p`
-  align-self: end;
-  padding-right: ${(props) => props.theme.spacing[24]};
-  opacity: 0.3;
-  margin-bottom: -${(props) => props.theme.unit[2]};
-  font-family: var(--sub-font);
-  font-size: ${(props) => props.theme.heading.desktop.sm.fontSize};
-  font-weight: ${(props) => props.theme.heading.desktop.md.fontWeight};
-  font-weight: ${(props) => props.theme.heading.desktop.md.fontWeight};
-`;
-
-const StCategoryColor = styled.span<{ $color: string }>`
-  display: block;
-  width: ${(props) => props.theme.unit[12]};
-  height: ${(props) => props.theme.unit[12]};
-  margin-bottom: ${(props) => props.theme.unit[2]};
-  border-radius: ${(props) => props.theme.border.radius.circle};
-  font-size: 0;
-  background-color: ${(props) => props.$color};
-`;
-
-const StDropDownMenuBtnWrapper = styled.div`
-  position: relative;
-  & > button {
-    position: relative;
-    display: block;
-    opacity: 0.2;
-    background-color: transparent;
-    background-image: url("/assets/dropdown.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: ${(props) => props.theme.unit[20]};
-    height: ${(props) => props.theme.unit[20]};
-    padding: 0;
-    border: none;
-    font-size: 0;
-    &:hover {
-      opacity: 1;
-      background-color: inherit;
-    }
-  }
-`;
