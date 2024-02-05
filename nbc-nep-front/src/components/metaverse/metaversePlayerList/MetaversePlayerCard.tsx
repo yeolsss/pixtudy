@@ -1,12 +1,12 @@
-import styledComponents from 'styled-components'
+import styledComponents from "styled-components";
 
-import StBadge from '@/components/common/badge/Badge'
-import MetaAvatar from '@/components/metaverse/avatar/MetaAvatar'
-import { getPlayerStateValue } from '@/components/video-conference/DockPlayer'
-import useAuthStore from '@/zustand/authStore'
-import { HandleOpenDmContainerPrams, Player } from '@/types/metaverse.types'
+import StBadge from "@/components/common/badge/Badge";
+import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
+import { getPlayerStateValue } from "@/components/video-conference/DockPlayer";
+import useAuthStore from "@/zustand/authStore";
+import { HandleOpenDmContainerPrams, Player } from "@/types/metaverse.types";
 
-const styled = styledComponents
+const styled = styledComponents;
 
 const StMetaversePlayerCard = styled.div`
   display: flex;
@@ -26,42 +26,42 @@ const StMetaversePlayerCard = styled.div`
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   }
-`
+`;
 
 const StBadgeWrapper = styled.div`
   position: relative;
-`
+`;
 
 interface Props {
-  player: Player
+  player: Player;
   handleOpenDmContainer: ({
     otherUserId,
     otherUserName,
-    otherUserAvatar
-  }: HandleOpenDmContainerPrams) => void
+    otherUserAvatar,
+  }: HandleOpenDmContainerPrams) => void;
 }
 
 export default function MetaversePlayerCard({
   player,
-  handleOpenDmContainer
+  handleOpenDmContainer,
 }: Props) {
-  const { id } = useAuthStore.use.user()
+  const { id } = useAuthStore.use.user();
 
   const {
     playerId: otherUserId,
     nickname: otherUserName,
-    character: otherUserAvatar
-  } = player
+    character: otherUserAvatar,
+  } = player;
 
   const onClickDMMessageHandler = () => {
     if (otherUserId !== id) {
       handleOpenDmContainer({
         otherUserId,
         otherUserName,
-        otherUserAvatar
-      })
+        otherUserAvatar,
+      });
     }
-  }
+  };
 
   return (
     <StMetaversePlayerCard onClick={onClickDMMessageHandler}>
@@ -84,5 +84,5 @@ export default function MetaversePlayerCard({
         <span>{otherUserName}</span>
       </div>
     </StMetaversePlayerCard>
-  )
+  );
 }

@@ -1,14 +1,14 @@
-import useAuthStore from '@/zustand/authStore'
-import SpaceList from './SpaceList'
+import useAuthStore from "@/zustand/authStore";
+import SpaceList from "./SpaceList";
 
 interface Props {
-  setRunState: (isRun: boolean) => void
-  showTemporaryComponent: boolean
+  setRunState: (isRun: boolean) => void;
+  showTemporaryComponent: boolean;
 }
 
 export default function Spaces({ setRunState, showTemporaryComponent }: Props) {
-  const user = useAuthStore.use.user()
-  const currentUserId = user.id
+  const user = useAuthStore.use.user();
+  const currentUserId = user.id;
 
   return (
     <SpaceList
@@ -16,5 +16,5 @@ export default function Spaces({ setRunState, showTemporaryComponent }: Props) {
       setRunState={setRunState}
       showTemporaryComponent={showTemporaryComponent}
     />
-  )
+  );
 }

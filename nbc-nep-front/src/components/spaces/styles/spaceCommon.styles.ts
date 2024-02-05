@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { StInputWrapper } from '../JoinSpaceForm'
+import styled from "styled-components";
+import { StInputWrapper } from "../JoinSpaceForm";
 
 //prettier-ignore
 export const StCreateInputWrapper = styled(StInputWrapper)<{$isError: boolean}>`
@@ -20,4 +20,4 @@ export const StCreateInputWrapper = styled(StInputWrapper)<{$isError: boolean}>`
 export const StFlexColumn = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;

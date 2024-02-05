@@ -1,18 +1,18 @@
 export type Assign = {
-  id: string
-  displayName: string
-  avatar: string
-}
+  id: string;
+  displayName: string;
+  avatar: string;
+};
 
 export type DropItem = {
-  categoryId: string
-}
+  categoryId: string;
+};
 
 export type AnimationInfo = {
-  initial: { opacity: number; y?: number }
-  animate: { opacity: number; y?: number }
-  exit: { opacity: number; y?: number }
-  transition: { duration: number }
-}
+  initial: { opacity: number; y?: number };
+  animate: { opacity: number; y?: number };
+  exit: { opacity: number; y?: number };
+  transition: { duration: number };
+};
 
-export type BackDropType = 'create' | 'detail' | 'update'
+export type BackDropType = "create" | "detail" | "update";

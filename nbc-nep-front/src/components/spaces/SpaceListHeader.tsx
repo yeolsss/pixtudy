@@ -1,36 +1,36 @@
-import useModal from '@/hooks/modal/useModal'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import styled from 'styled-components'
-import ModalPortal from '../modal/ModalPortal'
-import CreateSpaceModal from '../modal/spaceModals/createSpaceModal/CreateSpaceModal'
-import JoinSpaceModal from '../modal/spaceModals/joinSpaceModal/JoinSpaceModal'
-import SpaceSearchForm from './SpaceSearchForm'
+import useModal from "@/hooks/modal/useModal";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import styled from "styled-components";
+import ModalPortal from "../modal/ModalPortal";
+import CreateSpaceModal from "../modal/spaceModals/createSpaceModal/CreateSpaceModal";
+import JoinSpaceModal from "../modal/spaceModals/joinSpaceModal/JoinSpaceModal";
+import SpaceSearchForm from "./SpaceSearchForm";
 
 export default function SpaceListHeader() {
   const {
     isCreateSpaceModalOpen,
     isJoinSpaceModalOpen,
     openJoinSpaceModal,
-    openCreateSpaceModal
-  } = useModal()
+    openCreateSpaceModal,
+  } = useModal();
 
   const handleOpenJoinSpaceModal = () => {
-    openJoinSpaceModal()
-  }
+    openJoinSpaceModal();
+  };
 
   const handleOpenCreateSpaceModal = () => {
-    openCreateSpaceModal()
-  }
+    openCreateSpaceModal();
+  };
 
-  const router = useRouter()
+  const router = useRouter();
   return (
     <>
       <StHeaderWrapper>
         <StNavContainer>
           <StLinkWrapper>
             <StLink
-              $isSelected={router.asPath !== '/dashboard'}
+              $isSelected={router.asPath !== "/dashboard"}
               href="/dashboard"
             >
               최근 방문
@@ -39,7 +39,7 @@ export default function SpaceListHeader() {
           <StLine />
           <StLinkWrapper>
             <StLink
-              $isSelected={router.asPath !== '/dashboard?query=myspace'}
+              $isSelected={router.asPath !== "/dashboard?query=myspace"}
               href="/dashboard?query=myspace"
             >
               나의 스페이스
@@ -69,7 +69,7 @@ export default function SpaceListHeader() {
         </ModalPortal>
       )}
     </>
-  )
+  );
 }
 const StHeaderWrapper = styled.div`
   width: 100%;
@@ -85,7 +85,7 @@ const StHeaderWrapper = styled.div`
     padding-left: ${(props) => props.theme.spacing[24]};
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
   }
-`
+`;
 
 const StNavContainer = styled.div`
   display: flex;
@@ -101,10 +101,10 @@ const StNavContainer = styled.div`
     &:hover {
       background-color: #fff;
       color: ${(props) =>
-        props.theme.color.text.interactive['secondary-pressed']};
+        props.theme.color.text.interactive["secondary-pressed"]};
     }
   }
-`
+`;
 
 export const StButtonContainer = styled.div`
   display: flex;
@@ -113,20 +113,20 @@ export const StButtonContainer = styled.div`
     display: flex;
     gap: ${(props) => props.theme.spacing[12]};
   }
-`
+`;
 
 const StLinkWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const StLine = styled.div`
   width: 0px;
   height: ${(props) => props.theme.body.md.medium.fontSize};
   border: 1px solid
-    ${(props) => props.theme.color.text.interactive['secondary-pressed']};
-`
+    ${(props) => props.theme.color.text.interactive["secondary-pressed"]};
+`;
 
 const StLink = styled(Link)<{ $isSelected: boolean }>`
   position: relative;
@@ -142,4 +142,4 @@ const StLink = styled(Link)<{ $isSelected: boolean }>`
   padding: 0;
 
   display: inline-block;
-`
+`;

@@ -1,25 +1,25 @@
-import { create } from 'zustand'
-import createSelectors from '@/zustand/config/createSelector'
+import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface LayoutState {
-  isOpen: boolean
-  layoutPlayerId: string
-  layoutPlayerNickName: string
+  isOpen: boolean;
+  layoutPlayerId: string;
+  layoutPlayerNickName: string;
   layoutOpen: ({
     playerId,
-    playerNickName
+    playerNickName,
   }: {
-    playerId: string
-    playerNickName: string
-  }) => void
-  layoutClose: () => void
+    playerId: string;
+    playerNickName: string;
+  }) => void;
+  layoutClose: () => void;
 }
 
 const initialLayoutState = {
   isOpen: false,
-  layoutPlayerId: '',
-  layoutPlayerNickName: ''
-}
+  layoutPlayerId: "",
+  layoutPlayerNickName: "",
+};
 
 const layoutStore = create<LayoutState>()((set) => ({
   ...initialLayoutState,
@@ -27,10 +27,10 @@ const layoutStore = create<LayoutState>()((set) => ({
     set(() => ({
       isOpen: true,
       layoutPlayerId: playerId,
-      layoutPlayerNickName: playerNickName
+      layoutPlayerNickName: playerNickName,
     })),
-  layoutClose: () => set(() => ({ ...initialLayoutState }))
-}))
+  layoutClose: () => set(() => ({ ...initialLayoutState })),
+}));
 
-const useLayoutStore = createSelectors(layoutStore)
-export default useLayoutStore
+const useLayoutStore = createSelectors(layoutStore);
+export default useLayoutStore;

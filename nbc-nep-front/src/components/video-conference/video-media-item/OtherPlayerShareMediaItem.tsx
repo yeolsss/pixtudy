@@ -1,45 +1,44 @@
-import { isEmpty } from 'lodash'
+import { isEmpty } from "lodash";
 
-import { splitVideoSource } from '@/components/video-conference/libs/util'
-import useLayout from '@/hooks/conference/useLayout'
-import { Player } from '@/types/metaverse.types'
-import useConferenceStore from '@/zustand/conferenceStore'
+import { splitVideoSource } from "@/components/video-conference/libs/util";
+import useLayout from "@/hooks/conference/useLayout";
+import { Player } from "@/types/metaverse.types";
+import useConferenceStore from "@/zustand/conferenceStore";
 
-import ShareMediaItem from '../ShareMediaItem'
-import {
-  StStackItem,
-  StVideoWrapper
-} from '../styles/videoConference.styles'
-import { SPACING } from '../constants'
+import ShareMediaItem from "../ShareMediaItem";
+import { StStackItem, StVideoWrapper } from "../styles/videoConference.styles";
+import { SPACING } from "../constants";
 
-import PlayerMediaDisplay from './PlayerMediaDisplay'
+import PlayerMediaDisplay from "./PlayerMediaDisplay";
 
 interface Props {
-  currentPlayerId: string
-  player: Player
+  currentPlayerId: string;
+  player: Player;
 }
 
 export default function OtherPlayerShareMediaItem({
   player,
-  currentPlayerId
+  currentPlayerId,
 }: Props) {
-  const { handleOpenLayout } = useLayout()
+  const { handleOpenLayout } = useLayout();
 
-  if (currentPlayerId === player.playerId) {return null}
-  const filterConsumerById = useConferenceStore.use.filterConsumersById()
-  const filteredConsumers = filterConsumerById(player.playerId)
+  if (currentPlayerId === player.playerId) {
+    return null;
+  }
+  const filterConsumerById = useConferenceStore.use.filterConsumersById();
+  const filteredConsumers = filterConsumerById(player.playerId);
 
   const [camAndAudioConsumers, screenConsumers] =
-    splitVideoSource(filteredConsumers)
+    splitVideoSource(filteredConsumers);
 
-  const isEmptyScreenConsumers = isEmpty(screenConsumers)
+  const isEmptyScreenConsumers = isEmpty(screenConsumers);
 
   const handleToggleVideosLayout = () => {
     handleOpenLayout({
       playerId: player.playerId,
-      playerNickName: player.nickname
-    })
-  }
+      playerNickName: player.nickname,
+    });
+  };
 
   return (
     <>
@@ -66,5 +65,5 @@ export default function OtherPlayerShareMediaItem({
         </StVideoWrapper>
       )}
     </>
-  )
+  );
 }

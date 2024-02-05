@@ -1,32 +1,32 @@
 //@ts-nocheck
-import useModal from '@/hooks/modal/useModal'
+import useModal from "@/hooks/modal/useModal";
 import {
   useGetSpace,
   useGetUserSpaces,
-  useJoinSpace
-} from '@/hooks/query/useSupabase'
-import useAuthStore from '@/zustand/authStore'
-import useSpaceStore from '@/zustand/spaceStore'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+  useJoinSpace,
+} from "@/hooks/query/useSupabase";
+import useAuthStore from "@/zustand/authStore";
+import useSpaceStore from "@/zustand/spaceStore";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import {
   FieldValues,
   FormState,
   SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister,
-  UseFormReset
-} from 'react-hook-form'
-import styled from 'styled-components'
-import { StFormCTAButton } from '../common/button/button.styles'
-import SpacePreview from './SpacePreview'
+  UseFormReset,
+} from "react-hook-form";
+import styled from "styled-components";
+import { StFormCTAButton } from "../common/button/button.styles";
+import SpacePreview from "./SpacePreview";
 
 interface Props {
-  handleSubmit: UseFormHandleSubmit<FieldValues, undefined>
-  register: UseFormRegister<FieldValues>
-  reset: UseFormReset<FieldValues>
-  isValid: boolean
-  errors: FormState<FieldValues>['errors']
+  handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
+  register: UseFormRegister<FieldValues>;
+  reset: UseFormReset<FieldValues>;
+  isValid: boolean;
+  errors: FormState<FieldValues>["errors"];
 }
 
 export default function InvitationCodeForm({
@@ -34,64 +34,64 @@ export default function InvitationCodeForm({
   register,
   reset,
   isValid,
-  errors
+  errors,
 }: Props) {
-  const user = useAuthStore.use.user()
-  const userId = user.id
+  const user = useAuthStore.use.user();
+  const userId = user.id;
 
-  const userProfile = useSpaceStore.use.userProfile()
-  const joinSpaceInfo = useSpaceStore.use.joinSpaceInfo()
-  const resetJoinSpaceInfo = useSpaceStore.use.resetJoinSpaceInfo()
-  const setJoinSpaceInfo = useSpaceStore.use.setJoinSpaceInfo()
+  const userProfile = useSpaceStore.use.userProfile();
+  const joinSpaceInfo = useSpaceStore.use.joinSpaceInfo();
+  const resetJoinSpaceInfo = useSpaceStore.use.resetJoinSpaceInfo();
+  const setJoinSpaceInfo = useSpaceStore.use.setJoinSpaceInfo();
 
-  const { joinSpace, joinSuccess } = useJoinSpace()
-  const userJoinedSpaces = useGetUserSpaces(userId)
-  const { closeModal } = useModal()
+  const { joinSpace, joinSuccess } = useJoinSpace();
+  const userJoinedSpaces = useGetUserSpaces(userId);
+  const { closeModal } = useModal();
 
-  const router = useRouter()
-  const getSpace = useGetSpace()
+  const router = useRouter();
+  const getSpace = useGetSpace();
 
   useEffect(() => {
     if (joinSuccess) {
-      handleToSpace(joinSpaceInfo?.id!)
-      resetJoinSpaceInfo()
-      closeModal()
-      return
+      handleToSpace(joinSpaceInfo?.id!);
+      resetJoinSpaceInfo();
+      closeModal();
+      return;
     }
-  }, [joinSuccess])
+  }, [joinSuccess]);
 
   const handleToSpace = async (space_id: string) => {
-    await router.replace(`/metaverse/${space_id!}`)
-  }
+    await router.replace(`/metaverse/${space_id!}`);
+  };
 
   const handleInvitationSubmit: SubmitHandler<FieldValues> = (data) => {
     getSpace(data.invitationCode, {
       onSuccess: (targetSpace) => {
-        setJoinSpaceInfo(targetSpace)
+        setJoinSpaceInfo(targetSpace);
       },
       onError: (error) => {
         // 에러 핸들링
-        alert('초대 코드가 올바르지 않습니다.')
-        console.error(error)
-      }
-    })
-  }
+        alert("초대 코드가 올바르지 않습니다.");
+        console.error(error);
+      },
+    });
+  };
 
   const onInvitationCodeChange = (invitationCode: string) => {
     return userJoinedSpaces?.some((space) => space.space_id === invitationCode)
-      ? '이미 멤버인 스페이스입니다.'
-      : true
-  }
+      ? "이미 멤버인 스페이스입니다."
+      : true;
+  };
 
   const handleJoinSpace = () => {
     joinSpace({
       space_id: joinSpaceInfo.id,
       space_avatar: userProfile.avatar,
       space_display_name: userProfile.display_name,
-      user_id: userProfile.owner
-    })
-    reset({ invitationCode: '' })
-  }
+      user_id: userProfile.owner,
+    });
+    reset({ invitationCode: "" });
+  };
 
   return (
     <StForm onSubmit={handleSubmit(handleInvitationSubmit)}>
@@ -104,9 +104,9 @@ export default function InvitationCodeForm({
               autoComplete="off"
               type="text"
               placeholder="초대 코드를 입력해주세요"
-              {...register('invitationCode', {
-                required: 'Space에 입장하려면 초대 코드가 필요합니다.',
-                validate: onInvitationCodeChange
+              {...register("invitationCode", {
+                required: "Space에 입장하려면 초대 코드가 필요합니다.",
+                validate: onInvitationCodeChange,
               })}
             />
             <button type="submit">확인</button>
@@ -127,12 +127,12 @@ export default function InvitationCodeForm({
         입장하기
       </StFormCTAButton>
     </StForm>
-  )
+  );
 }
 
 const StForm = styled.form`
   width: 100%;
-`
+`;
 export const StContentsContainer = styled.div`
   position: relative;
   display: flex;
@@ -152,7 +152,7 @@ export const StContentsContainer = styled.div`
     font-family: var(--sub-font);
     font-size: ${(props) => props.theme.body.md.medium.fontSize};
   }
-`
+`;
 
 export const StInputWrapper = styled.div<{ $isError: string }>`
   display: flex;
@@ -182,11 +182,11 @@ export const StInputWrapper = styled.div<{ $isError: string }>`
     padding: 0;
     font-size: ${(props) => props.theme.body.md.regular.fontSize};
   }
-`
+`;
 
 export const StErrorMessage = styled.p`
   position: absolute;
   top: 4px;
   right: 0;
   color: ${(props) => props.theme.color.danger[500]};
-`
+`;

@@ -1,41 +1,41 @@
-import { RtpCapabilities, TransPortParams } from '@/types/conference.types'
-import { Device } from 'mediasoup-client'
-import { useCallback, useEffect, useRef } from 'react'
+import { RtpCapabilities, TransPortParams } from "@/types/conference.types";
+import { Device } from "mediasoup-client";
+import { useCallback, useEffect, useRef } from "react";
 
 export default function useDevice() {
-  const deviceRef = useRef<Device>()
+  const deviceRef = useRef<Device>();
 
   useEffect(() => {
-    if (deviceRef.current) return
-    deviceRef.current = new Device()
-  }, [])
+    if (deviceRef.current) return;
+    deviceRef.current = new Device();
+  }, []);
 
   async function loadDevice(rtpCapabilities: RtpCapabilities) {
-    const device = deviceRef.current
-    if (device && device.loaded) return
+    const device = deviceRef.current;
+    if (device && device.loaded) return;
     try {
-      await device?.load({ routerRtpCapabilities: rtpCapabilities })
+      await device?.load({ routerRtpCapabilities: rtpCapabilities });
     } catch (error) {
-      console.error('load device error', error)
+      console.error("load device error", error);
     }
   }
 
   const createSendTransportWithDevice = useCallback(
     (params: TransPortParams) => {
-      return deviceRef.current!.createSendTransport(params)
+      return deviceRef.current!.createSendTransport(params);
     },
     [deviceRef.current]
-  )
+  );
 
   const createRecvTransportWithDevice = useCallback(
     (params: TransPortParams) => {
-      return deviceRef.current!.createRecvTransport(params)
+      return deviceRef.current!.createRecvTransport(params);
     },
     [deviceRef.current]
-  )
+  );
 
   function getRtpCapabilitiesFromDevice() {
-    return deviceRef.current!.rtpCapabilities
+    return deviceRef.current!.rtpCapabilities;
   }
 
   return {
@@ -43,6 +43,6 @@ export default function useDevice() {
     loadDevice,
     createSendTransportWithDevice,
     createRecvTransportWithDevice,
-    getRtpCapabilitiesFromDevice
-  }
+    getRtpCapabilitiesFromDevice,
+  };
 }

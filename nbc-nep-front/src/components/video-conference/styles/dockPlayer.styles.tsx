@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StDockPlayerWrapper = styled.div`
   display: flex;
@@ -10,16 +10,16 @@ export const StDockPlayerWrapper = styled.div`
   font-family: var(--sub-font);
 
   max-width: 200px;
-`
+`;
 
 export const StDockPlayerNickname = styled.p`
   font-size: ${(props) => props.theme.body.lg.regular.fontSize};
-`
+`;
 
 export const StDockPlayerState = styled.p`
   font-size: ${(props) => props.theme.body.sm.regular.fontSize};
   transition: all 0.8s ease-in;
-`
+`;
 
 export const StDockPlayerInfoWrapper = styled.div`
   display: flex;
@@ -32,4 +32,4 @@ export const StDockPlayerInfoWrapper = styled.div`
   position: relative;
 
   cursor: pointer;
-`
+`;

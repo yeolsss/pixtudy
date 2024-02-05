@@ -1,22 +1,22 @@
 import {
   BACK_DROP_TYPE_CREATE,
-  BACK_DROP_TYPE_UPDATE
-} from '@/components/scrumboard/constants/constants'
-import ScrumItemDetail from '@/components/scrumboard/detail/ScrumItemDetail'
-import CreateAssignees from '@/components/scrumboard/detail/createBackDrop/CreateAssignees'
-import CreateDescription from '@/components/scrumboard/detail/createBackDrop/CreateDescription'
-import CreateInput from '@/components/scrumboard/detail/createBackDrop/CreateInput'
-import BackDropTypeButtonGroup from '@/components/scrumboard/libs/BackDropType'
-import useFocusInput from '@/hooks/metaverse/useFocusInput'
-import { fadeInOut } from '@/styles/animations'
-import useScrumBoardItemBackDropStore from '@/zustand/createScrumBoardItemStore'
-import { motion } from 'framer-motion'
-import styled from 'styled-components'
+  BACK_DROP_TYPE_UPDATE,
+} from "@/components/scrumboard/constants/constants";
+import ScrumItemDetail from "@/components/scrumboard/detail/ScrumItemDetail";
+import CreateAssignees from "@/components/scrumboard/detail/createBackDrop/CreateAssignees";
+import CreateDescription from "@/components/scrumboard/detail/createBackDrop/CreateDescription";
+import CreateInput from "@/components/scrumboard/detail/createBackDrop/CreateInput";
+import BackDropTypeButtonGroup from "@/components/scrumboard/libs/BackDropType";
+import useFocusInput from "@/hooks/metaverse/useFocusInput";
+import { fadeInOut } from "@/styles/animations";
+import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
+import { motion } from "framer-motion";
+import styled from "styled-components";
 
 export default function CreateBackDrop() {
-  const backDropType = useScrumBoardItemBackDropStore.use.backDropType()
+  const backDropType = useScrumBoardItemBackDropStore.use.backDropType();
 
-  const [handleFocus, handleBlur] = useFocusInput()
+  const [handleFocus, handleBlur] = useFocusInput();
 
   return (
     <StCreateBackDrop
@@ -38,7 +38,7 @@ export default function CreateBackDrop() {
         <ScrumItemDetail />
       )}
     </StCreateBackDrop>
-  )
+  );
 }
 
 const StCreateBackDrop = styled(motion.div)`
@@ -57,7 +57,7 @@ const StCreateBackDrop = styled(motion.div)`
   box-shadow: ${(props) => props.theme.elevation.Light.shadow4};
   border: 1px solid ${(props) => props.theme.color.border.secondary};
   gap: ${(props) => props.theme.spacing[24]};
-`
+`;
 
 const StCreateBackDropHeader = styled.div`
   width: 100%;
@@ -69,4 +69,4 @@ const StCreateBackDropHeader = styled.div`
     display: flex;
     gap: ${(props) => props.theme.spacing[12]};
   }
-`
+`;

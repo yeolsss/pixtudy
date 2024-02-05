@@ -1,50 +1,50 @@
-import { useState } from 'react'
-import styled from 'styled-components'
+import { useState } from "react";
+import styled from "styled-components";
 
-import { getDmChannelMessagesReturns } from '@/api/supabase/dm'
-import MetaverseDmForm from '@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm'
-import useDmChannel from '@/hooks/dm/useDmChannel'
-import useDmMessage from '@/hooks/dm/useDmMessage'
-import useEndOfChat from '@/hooks/metaverse/useEndOfChat'
-import useMetaversePlayer from '@/hooks/metaverse/useMetaversePlayer'
-import { Tables } from '@/types/supabase.types'
-import useAuthStore from '@/zustand/authStore'
-import useDmStore from '@/zustand/dmStore'
+import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
+import MetaverseDmForm from "@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm";
+import useDmChannel from "@/hooks/dm/useDmChannel";
+import useDmMessage from "@/hooks/dm/useDmMessage";
+import useEndOfChat from "@/hooks/metaverse/useEndOfChat";
+import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
+import { Tables } from "@/types/supabase.types";
+import useAuthStore from "@/zustand/authStore";
+import useDmStore from "@/zustand/dmStore";
 
-import MetaverseChatCard from '../../metaverseChatBar/MetaverseChatCard'
+import MetaverseChatCard from "../../metaverseChatBar/MetaverseChatCard";
 
 export default function MetaverseDmContainer() {
-  const otherUserId = useDmStore.use.otherUserId()
-  const otherUserName = useDmStore.use.otherUserName()
+  const otherUserId = useDmStore.use.otherUserId();
+  const otherUserName = useDmStore.use.otherUserName();
   // 현재 세션의 유저정보
-  const sessionUser = useAuthStore.use.user()
-  const { findPlayerById } = useMetaversePlayer()
-  const currentPlayer = findPlayerById(sessionUser.id)
-  const currentUser = { ...sessionUser }
+  const sessionUser = useAuthStore.use.user();
+  const { findPlayerById } = useMetaversePlayer();
+  const currentPlayer = findPlayerById(sessionUser.id);
+  const currentUser = { ...sessionUser };
   if (sessionUser && currentPlayer) {
     currentUser.display_name =
-      currentPlayer.nickname || sessionUser.display_name
+      currentPlayer.nickname || sessionUser.display_name;
   }
 
-  const otherUserInfo: Partial<Tables<'users'>> = {
+  const otherUserInfo: Partial<Tables<"users">> = {
     id: otherUserId,
-    display_name: otherUserName
-  }
+    display_name: otherUserName,
+  };
 
   // 메시지 정보를 저장하는 state
-  const [messages, setMessages] = useState<getDmChannelMessagesReturns[]>([])
+  const [messages, setMessages] = useState<getDmChannelMessagesReturns[]>([]);
   // 상대방 유저 정보
   // dm 채널 정보 custom hook
   const { connectChannel, currentDmChannel } = useDmChannel({
     otherUserInfo,
     setMessages,
-    currentUser
-  })
+    currentUser,
+  });
 
-  const endOfChatRef = useEndOfChat([messages])
+  const endOfChatRef = useEndOfChat([messages]);
 
   // dm message 정보 custom hook
-  useDmMessage({ currentDmChannel, setMessages })
+  useDmMessage({ currentDmChannel, setMessages });
 
   return (
     <>
@@ -64,7 +64,7 @@ export default function MetaverseDmContainer() {
         currentUser={currentUser}
       />
     </>
-  )
+  );
 }
 
 const StMetaverseDmChannel = styled.div`
@@ -72,14 +72,14 @@ const StMetaverseDmChannel = styled.div`
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing['4']};
+  gap: ${({ theme }) => theme.spacing["4"]};
   overflow: hidden;
-`
+`;
 
 const StMessageWrapper = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing['12']};
+  gap: ${({ theme }) => theme.spacing["12"]};
   overflow-y: scroll;
   font-size: ${({ theme }) => theme.body.lg.regular.fontSize};
   font-family: ${({ theme }) => theme.body.sm.regular.fontFamily};
@@ -90,4 +90,4 @@ const StMessageWrapper = styled.ul`
   &::-webkit-scrollbar {
     display: none;
   }
-`
+`;

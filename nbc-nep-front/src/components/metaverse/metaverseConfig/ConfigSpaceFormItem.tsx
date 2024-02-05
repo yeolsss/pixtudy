@@ -1,12 +1,12 @@
-import { PropsWithChildren } from 'react'
-import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form'
-import styled from 'styled-components'
+import { PropsWithChildren } from "react";
+import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
+import styled from "styled-components";
 
 interface Props {
-  title: string
-  maxLength: number
-  curLength: number
-  error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>
+  title: string;
+  maxLength: number;
+  curLength: number;
+  error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
 
 export default function ConfigSpaceFormItem({
@@ -14,7 +14,7 @@ export default function ConfigSpaceFormItem({
   curLength,
   maxLength,
   children,
-  error
+  error,
 }: PropsWithChildren<Props>) {
   return (
     <div>
@@ -27,7 +27,7 @@ export default function ConfigSpaceFormItem({
       {children}
       {error && <StErrorText>{error as string}</StErrorText>}
     </div>
-  )
+  );
 }
 
 const StHeader = styled.header`
@@ -40,11 +40,11 @@ const StHeader = styled.header`
     font-size: 1.125rem;
     font-weight: normal;
   }
-`
+`;
 
 const StErrorText = styled.span`
   font-size: 1.125rem !important;
   font-weight: normal !important;
   color: ${(props) => props.theme.color.danger[500]};
   font-family: var(--default-font);
-`
+`;

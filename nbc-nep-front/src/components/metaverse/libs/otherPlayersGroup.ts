@@ -1,23 +1,23 @@
-import { CurrentPlayer } from '@/components/metaverse/libs/currentPlayer'
-import Phaser from 'phaser'
-import { Player } from '@/types/metaverse.types'
+import { CurrentPlayer } from "@/components/metaverse/libs/currentPlayer";
+import Phaser from "phaser";
+import { Player } from "@/types/metaverse.types";
 
-const PLAYER_NAME_DEPTH = 2000
-const PLAYER_BODY_SIZE_X = 32
-const PLAYER_BODY_SIZE_Y = 32
-const PLAYER_BODY_OFFSET_X = 0
-const PLAYER_BODY_OFFSET_Y = 25
-const PLAYER_NAME_OFFSET = 30
+const PLAYER_NAME_DEPTH = 2000;
+const PLAYER_BODY_SIZE_X = 32;
+const PLAYER_BODY_SIZE_Y = 32;
+const PLAYER_BODY_OFFSET_X = 0;
+const PLAYER_BODY_OFFSET_Y = 25;
+const PLAYER_NAME_OFFSET = 30;
 
 export class OtherPlayersGroup {
-  group: Phaser.Physics.Arcade.Group
-  scene: Phaser.Scene
-  private otherPlayerNames: Map<string, Phaser.GameObjects.Text>
+  group: Phaser.Physics.Arcade.Group;
+  scene: Phaser.Scene;
+  private otherPlayerNames: Map<string, Phaser.GameObjects.Text>;
 
   constructor(scene: Phaser.Scene) {
-    this.group = scene.physics.add.group()
-    this.scene = scene
-    this.otherPlayerNames = new Map()
+    this.group = scene.physics.add.group();
+    this.scene = scene;
+    this.otherPlayerNames = new Map();
   }
 
   /**
@@ -34,25 +34,25 @@ export class OtherPlayersGroup {
         playerInfo.y - PLAYER_NAME_OFFSET,
         playerInfo.nickname,
         {
-          fontFamily: 'PretendardVariable'
+          fontFamily: "PretendardVariable",
         }
       )
       .setOrigin(0.5, 0.5)
-      .setDepth(PLAYER_NAME_DEPTH)
+      .setDepth(PLAYER_NAME_DEPTH);
 
     const otherPlayer = this.scene.physics.add
       .sprite(playerInfo.x, playerInfo.y, playerInfo.character, 0)
-      .setCollideWorldBounds(true) as CurrentPlayer
+      .setCollideWorldBounds(true) as CurrentPlayer;
 
-    otherPlayer.body?.setSize(PLAYER_BODY_SIZE_X, PLAYER_BODY_SIZE_Y)
-    otherPlayer.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y)
-    otherPlayer.playerId = playerInfo.playerId
+    otherPlayer.body?.setSize(PLAYER_BODY_SIZE_X, PLAYER_BODY_SIZE_Y);
+    otherPlayer.body?.setOffset(PLAYER_BODY_OFFSET_X, PLAYER_BODY_OFFSET_Y);
+    otherPlayer.playerId = playerInfo.playerId;
 
     // otherPlayer 그룹에 새 플레이어를 추가한다.
-    this.group.add(otherPlayer)
+    this.group.add(otherPlayer);
 
     // otherPlayerNames에 otherPlayerNames gameObject를 추가한다.
-    this.otherPlayerNames.set(playerInfo.playerId, otherPlayerName)
+    this.otherPlayerNames.set(playerInfo.playerId, otherPlayerName);
   }
 
   /**
@@ -63,15 +63,15 @@ export class OtherPlayersGroup {
     this.group
       .getChildren()
       .forEach((gameObject: Phaser.GameObjects.GameObject) => {
-        const otherPlayer = gameObject as CurrentPlayer
-        const otherPlayerName = this.otherPlayerNames.get(playerId)
+        const otherPlayer = gameObject as CurrentPlayer;
+        const otherPlayerName = this.otherPlayerNames.get(playerId);
 
         if (playerId === otherPlayer.playerId && otherPlayerName) {
-          otherPlayerName.destroy()
-          otherPlayer.destroy()
-          this.otherPlayerNames.delete(playerId)
+          otherPlayerName.destroy();
+          otherPlayer.destroy();
+          this.otherPlayerNames.delete(playerId);
         }
-      })
+      });
   }
 
   /**
@@ -82,16 +82,16 @@ export class OtherPlayersGroup {
     this.group
       .getChildren()
       .forEach((gameObject: Phaser.GameObjects.GameObject) => {
-        const otherPlayer = gameObject as CurrentPlayer
-        const otherPlayerName = this.otherPlayerNames.get(playerInfo.playerId)
+        const otherPlayer = gameObject as CurrentPlayer;
+        const otherPlayerName = this.otherPlayerNames.get(playerInfo.playerId);
         if (playerInfo.playerId === otherPlayer.playerId && otherPlayerName) {
-          otherPlayer.setPosition(playerInfo.x, playerInfo.y)
+          otherPlayer.setPosition(playerInfo.x, playerInfo.y);
           otherPlayerName.setPosition(
             playerInfo.x,
             playerInfo.y - PLAYER_NAME_OFFSET
-          )
-          otherPlayer.setFrame(playerInfo.frame)
+          );
+          otherPlayer.setFrame(playerInfo.frame);
         }
-      })
+      });
   }
 }

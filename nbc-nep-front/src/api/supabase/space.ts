@@ -1,118 +1,118 @@
-import { CreateSpaceInfo } from '@/types/space.types'
-import { supabase } from '@/supabase'
-import { Tables, TablesInsert, TablesUpdate } from '@/types/supabase.types'
-import { Spaces } from '@/types/supabase.tables.types'
+import { CreateSpaceInfo } from "@/types/space.types";
+import { supabase } from "@/supabase";
+import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase.types";
+import { Spaces } from "@/types/supabase.tables.types";
 
 export const createSpaceHandler = async (
   spaceInfo: CreateSpaceInfo
-): Promise<Tables<'spaces'>> => {
-  const space: TablesInsert<'spaces'> = {
+): Promise<Tables<"spaces">> => {
+  const space: TablesInsert<"spaces"> = {
     description: spaceInfo.description!,
     owner: spaceInfo.owner!,
-    title: spaceInfo.title!
-  }
+    title: spaceInfo.title!,
+  };
   const { data: spaceData, error } = await supabase
-    .from('spaces')
+    .from("spaces")
     .insert(space)
-    .select('*')
-    .single()
-  if (error) return Promise.reject(error)
+    .select("*")
+    .single();
+  if (error) return Promise.reject(error);
 
   if (spaceData) {
-    const ownerInfo: TablesInsert<'space_members'> = {
+    const ownerInfo: TablesInsert<"space_members"> = {
       space_id: spaceData.id,
       user_id: spaceData.owner,
       space_avatar: spaceInfo.space_avatar,
-      space_display_name: spaceInfo.space_display_name
-    }
+      space_display_name: spaceInfo.space_display_name,
+    };
     const { data, error } = await supabase
-      .from('space_members')
-      .insert(ownerInfo)
-    if (error) return Promise.reject(error)
+      .from("space_members")
+      .insert(ownerInfo);
+    if (error) return Promise.reject(error);
   }
 
-  return spaceData
-}
+  return spaceData;
+};
 
 export const joinSpaceHandler = async (
-  user: TablesInsert<'space_members'>
-): Promise<Tables<'space_members'>> => {
+  user: TablesInsert<"space_members">
+): Promise<Tables<"space_members">> => {
   const { data, error } = await supabase
-    .from('space_members')
+    .from("space_members")
     .insert(user)
-    .select('*')
-    .single()
-  if (error) return Promise.reject(error)
+    .select("*")
+    .single();
+  if (error) return Promise.reject(error);
 
-  return data
-}
+  return data;
+};
 
 export const getSpaceData = async (spaceId: string): Promise<Spaces> => {
   const { data, error } = await supabase
-    .from('spaces')
-    .select('*')
-    .eq('id', spaceId)
-    .single()
+    .from("spaces")
+    .select("*")
+    .eq("id", spaceId)
+    .single();
 
-  if (error) return Promise.reject(error)
+  if (error) return Promise.reject(error);
 
-  return data
-}
+  return data;
+};
 
 export const getPlayerSpaceData = async (
   spaceId: string
-): Promise<Tables<'space_members'>> => {
-  const { data: currentUsersSession } = await supabase.auth.getSession()
+): Promise<Tables<"space_members">> => {
+  const { data: currentUsersSession } = await supabase.auth.getSession();
 
   const { data, error } = await supabase
-    .from('space_members')
-    .select('*')
-    .eq('user_id', currentUsersSession.session?.user.id!)
-    .eq('space_id', spaceId)
-    .single()
+    .from("space_members")
+    .select("*")
+    .eq("user_id", currentUsersSession.session?.user.id!)
+    .eq("space_id", spaceId)
+    .single();
 
-  if (error) return Promise.reject(error)
+  if (error) return Promise.reject(error);
 
-  return data
-}
+  return data;
+};
 
 export const removeSpace = async (spaceId: string): Promise<string> => {
-  const { error } = await supabase.from('spaces').delete().eq('id', spaceId)
+  const { error } = await supabase.from("spaces").delete().eq("id", spaceId);
 
-  if (error) return Promise.reject(error)
+  if (error) return Promise.reject(error);
 
-  return spaceId
-}
+  return spaceId;
+};
 
 export const updateSpace = async (
-  updatedSpace: TablesUpdate<'spaces'> & { id: string }
-): Promise<Tables<'spaces'>> => {
+  updatedSpace: TablesUpdate<"spaces"> & { id: string }
+): Promise<Tables<"spaces">> => {
   const { data, error } = await supabase
-    .from('spaces')
+    .from("spaces")
     .update(updatedSpace)
-    .eq('id', updatedSpace.id)
+    .eq("id", updatedSpace.id)
     .select()
-    .single()
+    .single();
 
-  if (error) return Promise.reject(error)
+  if (error) return Promise.reject(error);
 
-  return data
-}
+  return data;
+};
 
 export const leavingSpace = async ({
   spaceId,
-  userId
+  userId,
 }: {
-  spaceId: string
-  userId: string
+  spaceId: string;
+  userId: string;
 }) => {
   const { error } = await supabase
-    .from('space_members')
+    .from("space_members")
     .delete()
-    .eq('user_id', userId)
-    .eq('space_id', spaceId)
+    .eq("user_id", userId)
+    .eq("space_id", spaceId);
 
-  if (error) return Promise.reject(error)
+  if (error) return Promise.reject(error);
 
-  return true
-}
+  return true;
+};

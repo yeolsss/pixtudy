@@ -1,6 +1,6 @@
 export interface ConfirmTextState {
-  title: string
-  message: string
-  denyButtonText?: string
-  confirmButtonText?: string
+  title: string;
+  message: string;
+  denyButtonText?: string;
+  confirmButtonText?: string;
 }

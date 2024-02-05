@@ -1,8 +1,7 @@
+import { StaticImageData } from "next/image";
 
-import { StaticImageData } from 'next/image'
-
-import useLayout from '@/hooks/conference/useLayout'
-import usePlayerListStore from '@/zustand/metaversePlayerStore'
+import useLayout from "@/hooks/conference/useLayout";
+import usePlayerListStore from "@/zustand/metaversePlayerStore";
 
 import {
   CameraOff,
@@ -10,29 +9,29 @@ import {
   MicOff,
   MicOn,
   ScreenOff,
-  ScreenOn
-} from '../../assets/dock-icons'
-import BadgeNumber from '../common/badge/BadgeNumber'
-import BadgeWrapper from '../common/badge/BadgeWrapper'
+  ScreenOn,
+} from "../../assets/dock-icons";
+import BadgeNumber from "../common/badge/BadgeNumber";
+import BadgeWrapper from "../common/badge/BadgeWrapper";
 
-import DockPlayer from './DockPlayer'
-import ShareButton from './ShareButton'
-import useVideoConference from './hooks/useVideoConference'
-import { StDockContainer } from './styles/videoConference.styles'
-import VideoSourceDisplayContainer from './video-media-item/VideoSourceDisplayContainer'
+import DockPlayer from "./DockPlayer";
+import ShareButton from "./ShareButton";
+import useVideoConference from "./hooks/useVideoConference";
+import { StDockContainer } from "./styles/videoConference.styles";
+import VideoSourceDisplayContainer from "./video-media-item/VideoSourceDisplayContainer";
 
 export default function VideoConference() {
-  const { isOpen } = useLayout()
+  const { isOpen } = useLayout();
 
   const {
     handleStopShare,
     handleShare,
     screenCount,
     isCanShare,
-    currentPlayer
-  } = useVideoConference()
+    currentPlayer,
+  } = useVideoConference();
 
-  const playerList = usePlayerListStore.use.playerList()
+  const playerList = usePlayerListStore.use.playerList();
 
   return (
     <>
@@ -81,6 +80,5 @@ export default function VideoConference() {
         </>
       )}
     </>
-  )
+  );
 }
-

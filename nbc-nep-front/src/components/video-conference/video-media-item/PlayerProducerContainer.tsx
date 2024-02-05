@@ -1,37 +1,45 @@
-import { EffectCards, Mousewheel, Navigation, Pagination } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import {
+  EffectCards,
+  Mousewheel,
+  Navigation,
+  Pagination,
+} from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import useSocket from '@/components/video-conference/hooks/useSocket'
-import useVideoSource from '@/hooks/conference/useVideoSource'
-import useAuthStore from '@/zustand/authStore'
+import useSocket from "@/components/video-conference/hooks/useSocket";
+import useVideoSource from "@/hooks/conference/useVideoSource";
+import useAuthStore from "@/zustand/authStore";
 
-import 'swiper/css'
-import 'swiper/css/effect-cards'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
+import "swiper/css";
+import "swiper/css/effect-cards";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-import { Producer } from '../../../types/conference.types'
-import ShareMediaItem from '../ShareMediaItem'
-import { StRemoveProducerButton, StSwiperVideoWrapper } from '../styles/videoMedia.styles'
+import { Producer } from "../../../types/conference.types";
+import ShareMediaItem from "../ShareMediaItem";
+import {
+  StRemoveProducerButton,
+  StSwiperVideoWrapper,
+} from "../styles/videoMedia.styles";
 
 interface Props {
-  producers: Producer[]
-  nickname: string
+  producers: Producer[];
+  nickname: string;
 }
 
 export default function PlayerProducerContainer({
   producers,
-  nickname
+  nickname,
 }: Props) {
-  const { closeProducer } = useSocket()
+  const { closeProducer } = useSocket();
 
-  const { id: currentPlayerId } = useAuthStore.use.user()
+  const { id: currentPlayerId } = useAuthStore.use.user();
 
-  const { removeProducer } = useVideoSource()
+  const { removeProducer } = useVideoSource();
 
   function handleShareStop(producer: Producer) {
-    removeProducer(producer)
-    closeProducer(currentPlayerId, producer.appData.streamId)
+    removeProducer(producer);
+    closeProducer(currentPlayerId, producer.appData.streamId);
   }
 
   return (
@@ -41,10 +49,10 @@ export default function PlayerProducerContainer({
         grabCursor
         mousewheel
         pagination={{
-          clickable: true
+          clickable: true,
         }}
         hashNavigation={{
-          watchState: true
+          watchState: true,
         }}
         modules={[EffectCards, Pagination, Navigation, Mousewheel]}
       >
@@ -58,6 +66,5 @@ export default function PlayerProducerContainer({
         ))}
       </Swiper>
     </StSwiperVideoWrapper>
-  )
+  );
 }
-

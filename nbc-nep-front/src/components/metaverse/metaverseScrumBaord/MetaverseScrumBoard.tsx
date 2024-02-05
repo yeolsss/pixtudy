@@ -1,10 +1,10 @@
-import styledComponents from 'styled-components'
+import styledComponents from "styled-components";
 
-import ScrumBoard from '@/components/scrumboard/detail/ScrumBoard'
-import { StVideosLayoutContainer } from '@/components/video-conference/ShareScreenContainer'
-import useMetaverseScrumIsOpenStore from '@/zustand/metaverseScrumIsOpenStore'
+import ScrumBoard from "@/components/scrumboard/detail/ScrumBoard";
+import { StVideosLayoutContainer } from "@/components/video-conference/ShareScreenContainer";
+import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
 
-const styled = styledComponents
+const styled = styledComponents;
 
 const StMetaverseScrumBoardWrapper = styled(StVideosLayoutContainer)`
   color: black;
@@ -17,18 +17,18 @@ const StMetaverseScrumBoardWrapper = styled(StVideosLayoutContainer)`
     max-width: 2000px;
     padding: 20px;
   }
-`
+`;
 
 export default function MetaverseScrumBoard() {
   const closeMetaverseScrum =
-    useMetaverseScrumIsOpenStore.use.closeMetaverseScrum()
+    useMetaverseScrumIsOpenStore.use.closeMetaverseScrum();
   const handleOnClickClose = () => {
-    closeMetaverseScrum()
-  }
+    closeMetaverseScrum();
+  };
   return (
     <StMetaverseScrumBoardWrapper>
       <button onClick={handleOnClickClose}>닫기</button>
       <ScrumBoard />
     </StMetaverseScrumBoardWrapper>
-  )
+  );
 }

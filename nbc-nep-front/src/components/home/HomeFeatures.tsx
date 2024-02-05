@@ -1,16 +1,16 @@
-import useScroll from '@/hooks/scroll/useScroll'
-import { AnimatePresence } from 'framer-motion'
-import { forwardRef } from 'react'
-import ScrollItem from './ScrollItem'
+import useScroll from "@/hooks/scroll/useScroll";
+import { AnimatePresence } from "framer-motion";
+import { forwardRef } from "react";
+import ScrollItem from "./ScrollItem";
 import {
   StScrollSection,
   StStickyItem,
-  StStickyWrapper
-} from './styles/home.styles'
+  StStickyWrapper,
+} from "./styles/home.styles";
 
 const HomeFeatures = forwardRef<HTMLDivElement>(
   function HomeScrollContainer(props, ref) {
-    const { scrollIndex } = useScroll()
+    const { scrollIndex } = useScroll();
 
     return (
       <StScrollSection ref={ref}>
@@ -29,8 +29,8 @@ const HomeFeatures = forwardRef<HTMLDivElement>(
           </AnimatePresence>
         </StStickyWrapper>
       </StScrollSection>
-    )
+    );
   }
-)
+);
 
-export default HomeFeatures
+export default HomeFeatures;

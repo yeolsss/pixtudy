@@ -29,7 +29,6 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
-    "@titicaca/eslint-config-triple"
+    "node_modules"
   ]
 }

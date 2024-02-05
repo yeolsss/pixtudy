@@ -1,32 +1,32 @@
-import { characterOptions } from '@/components/spaces/constants/constants'
-import { ChangeEvent } from 'react'
+import { characterOptions } from "@/components/spaces/constants/constants";
+import { ChangeEvent } from "react";
 import {
   FieldValues,
   FormState,
   UseFormRegister,
-  UseFormWatch
-} from 'react-hook-form'
-import styled from 'styled-components'
+  UseFormWatch,
+} from "react-hook-form";
+import styled from "styled-components";
 
 interface Props {
-  watch: UseFormWatch<FieldValues>
-  register: UseFormRegister<FieldValues>
-  errors: FormState<FieldValues>['errors']
+  watch: UseFormWatch<FieldValues>;
+  register: UseFormRegister<FieldValues>;
+  errors: FormState<FieldValues>["errors"];
 }
 
 function AvatarInput({ register, errors, watch }: Props) {
-  const { onChange, ...restParam } = register('avatar')
+  const { onChange, ...restParam } = register("avatar");
 
   const handleCustomChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e)
-  }
+    onChange(e);
+  };
 
   return (
     <StInputContainer>
       {characterOptions.map((option) => (
         <StInputWrapper
           key={option.value}
-          $isSelected={watch('avatar') === option.value}
+          $isSelected={watch("avatar") === option.value}
         >
           <input
             type="radio"
@@ -42,10 +42,10 @@ function AvatarInput({ register, errors, watch }: Props) {
       ))}
       {errors.avatar && <span>{errors.avatar.message as string}</span>}
     </StInputContainer>
-  )
+  );
 }
 
-export default AvatarInput
+export default AvatarInput;
 
 export const StInputContainer = styled.div`
   position: relative;
@@ -60,7 +60,7 @@ export const StInputContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 export const StInputWrapper = styled.div<{ $isSelected: boolean }>`
   display: flex;
@@ -75,12 +75,12 @@ export const StInputWrapper = styled.div<{ $isSelected: boolean }>`
     props.$isSelected
       ? props.theme.color.border.focusRing
       : props.theme.color.border.secondary};
-  border-width: ${(props) => (props.$isSelected ? '2px' : '1px')};
+  border-width: ${(props) => (props.$isSelected ? "2px" : "1px")};
   border-style: solid;
-  input[type='radio'] {
+  input[type="radio"] {
     display: none;
   }
-`
+`;
 
 export const StAvatar = styled.span`
   background-image: url(${(props) => props.resource});
@@ -93,4 +93,4 @@ export const StAvatar = styled.span`
   margin-right: 10px;
   cursor: pointer;
   margin: 0;
-`
+`;

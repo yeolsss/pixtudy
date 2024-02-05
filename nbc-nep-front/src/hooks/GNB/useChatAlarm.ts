@@ -1,27 +1,27 @@
-import useChatAlarmStore from '@/zustand/chatAlarmStore'
-import { dmChatAlarmState } from '@/types/metaverse.types'
+import useChatAlarmStore from "@/zustand/chatAlarmStore";
+import { dmChatAlarmState } from "@/types/metaverse.types";
 
 export default function useChatAlarm() {
   // chat alarm state
-  const dmChatStates = useChatAlarmStore.use.dmChatStates()
-  const globalChatState = useChatAlarmStore.use.globalChatState()
-  const setChatAlarmState = useChatAlarmStore.use.setChatAlarmState()
-  const setAlarmSound = useChatAlarmStore.use.setAlarmSound()
-  const setAlarmVolume = useChatAlarmStore.use.setAlarmVolume()
-  const setAlarmPlayStatus = useChatAlarmStore.use.setAlarmPlayStatus()
-  const isPlay = useChatAlarmStore.use.isPlay()
-  const sound = useChatAlarmStore.use.sound()
-  const volume = useChatAlarmStore.use.volume()
+  const dmChatStates = useChatAlarmStore.use.dmChatStates();
+  const globalChatState = useChatAlarmStore.use.globalChatState();
+  const setChatAlarmState = useChatAlarmStore.use.setChatAlarmState();
+  const setAlarmSound = useChatAlarmStore.use.setAlarmSound();
+  const setAlarmVolume = useChatAlarmStore.use.setAlarmVolume();
+  const setAlarmPlayStatus = useChatAlarmStore.use.setAlarmPlayStatus();
+  const isPlay = useChatAlarmStore.use.isPlay();
+  const sound = useChatAlarmStore.use.sound();
+  const volume = useChatAlarmStore.use.volume();
 
   // 전체 채팅 알람
   const handleSetGlobalChatAlarmState = (state: boolean) => {
-    setChatAlarmState({ globalChatState: state, dmChatStates })
-  }
+    setChatAlarmState({ globalChatState: state, dmChatStates });
+  };
 
   // 배열을 받아올 수 있을듯.
   const handleSetDmChatAlarmState = (dm: dmChatAlarmState[]) => {
-    setChatAlarmState({ globalChatState: globalChatState, dmChatStates: dm })
-  }
+    setChatAlarmState({ globalChatState: globalChatState, dmChatStates: dm });
+  };
 
   return {
     handleSetGlobalChatAlarmState,
@@ -33,6 +33,6 @@ export default function useChatAlarm() {
     sound,
     volume,
     dmChatStates,
-    globalChatState
-  }
+    globalChatState,
+  };
 }
