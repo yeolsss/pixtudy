@@ -1,8 +1,12 @@
 export class CurrentPlayer extends Phaser.Physics.Arcade.Sprite {
   oldPosition?: { x: number; y: number; frame: string };
+
   playerId?: string;
+
   socketId?: string;
+
   nickname?: string;
+
   character?: string;
 
   constructor(
@@ -13,6 +17,6 @@ export class CurrentPlayer extends Phaser.Physics.Arcade.Sprite {
     frame: string
   ) {
     super(scene, x, y, texture, frame);
-    this.oldPosition = { x: x, y: y, frame: frame };
+    this.oldPosition = { x, y, frame };
   }
 }

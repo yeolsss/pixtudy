@@ -13,7 +13,7 @@ interface AuthState {
 
 const initialUser = {
   created_at: "",
-  display_name: "",
+  displayName: "",
   email: "",
   id: "",
 };

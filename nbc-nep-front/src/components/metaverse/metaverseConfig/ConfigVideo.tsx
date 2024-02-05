@@ -1,10 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import styled from "styled-components";
 import { DEVICE_STORAGE_KEY } from "@/components/video-conference/constants";
 import { LocalStorageDeviceInputs } from "@/types/conference.types";
 
-import { StSectionMain } from "../styles/config.styles";
+import { StForm, StSectionMain } from "../styles/config.styles";
 
 export default function ConfigVideo() {
   const [settings, setSettings] = useState<LocalStorageDeviceInputs>();
@@ -24,7 +23,9 @@ export default function ConfigVideo() {
         toast.error(
           "최신 브라우저를 이용해주세요. (enumerateDevices가 없습니다."
         );
-        return null;
+        return Promise.reject(
+          new Error("enumerateDevices가 지원되지 않습니다.")
+        );
       }
 
       try {
@@ -45,11 +46,15 @@ export default function ConfigVideo() {
             },
           });
         }
+        // 성공적으로 완료됨을 나타내는 Promise 반환
+        return Promise.resolve();
       } catch (error) {
         toast.error(
           "사용 가능한 media device를 불러오는데 에러가 발생했습니다."
         );
         console.error(error);
+        // 에러 처리를 위해 Promise.reject 사용
+        return Promise.reject(error);
       }
     };
 
@@ -129,14 +134,3 @@ export default function ConfigVideo() {
     </StSectionMain>
   );
 }
-
-const StForm = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  gap: ${(props) => props.theme.spacing[8]};
-
-  button {
-    align-self: flex-end;
-  }
-`;

@@ -2,27 +2,6 @@ import { Interactive, Interactive2 } from "@/types/theme.types";
 import styled from "styled-components";
 import StBadge from "./Badge";
 
-interface Props {
-  count: number;
-  maxCount?: number;
-  backgroundColor?: keyof Interactive;
-  color?: keyof Interactive2;
-}
-export default function BadgeNumber({
-  count,
-  maxCount = 10,
-  backgroundColor = "primary",
-  color = "inverse",
-}: Props) {
-  let displayCount = Math.min(count, maxCount);
-
-  return (
-    <StBadgeNumber $bg={backgroundColor} $color={color}>
-      <span>{displayCount}</span>
-    </StBadgeNumber>
-  );
-}
-
 const StBadgeNumber = styled(StBadge)<{
   $bg: keyof Interactive;
   $color: keyof Interactive2;
@@ -45,3 +24,23 @@ const StBadgeNumber = styled(StBadge)<{
     color: ${(props) => props.theme.color.text.interactive[props.$color]};
   }
 `;
+interface Props {
+  count: number;
+  maxCount?: number;
+  backgroundColor?: keyof Interactive;
+  color?: keyof Interactive2;
+}
+export default function BadgeNumber({
+  count,
+  maxCount = 10,
+  backgroundColor = "primary",
+  color = "inverse",
+}: Props) {
+  const displayCount = Math.min(count, maxCount);
+
+  return (
+    <StBadgeNumber $bg={backgroundColor} $color={color}>
+      <span>{displayCount}</span>
+    </StBadgeNumber>
+  );
+}

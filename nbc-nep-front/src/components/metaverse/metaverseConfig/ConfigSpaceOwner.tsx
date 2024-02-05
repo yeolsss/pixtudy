@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import styled from "styled-components";
 
 import { deleteThumbnail, uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
-import { StDangerButton } from "@/components/common/button/button.styles";
 import { StLoadingSpinner } from "@/components/common/loading/LoadingProgress";
 import {
   SPACE_DESCRIPTION_MAX_LENGTH,
@@ -24,7 +22,13 @@ import {
   SPACE_NAME_FORM,
   SPACE_THUMB_FORM,
 } from "../constants/config.constant";
-import { StHiddenInput, StSectionMain } from "../styles/config.styles";
+import {
+  StDanger,
+  StFloatingLoading,
+  StHelperSpan,
+  StHiddenInput,
+  StSection,
+} from "../styles/config.styles";
 
 import ConfigSpaceFormItem from "./ConfigSpaceFormItem";
 
@@ -146,16 +150,17 @@ export default function ConfigSpaceOwner() {
       ref={formRef}
     >
       <div>
-        <span>스페이스 썸네일</span>
         <label htmlFor={SPACE_THUMB_FORM}>
+          <span>스페이스 썸네일</span>
           <SpaceThumb src={thumbPreviewSrc} />
+          <StHiddenInput
+            id={SPACE_THUMB_FORM} // 이 id가 htmlFor과 일치해야 합니다.
+            type="file"
+            {...register(SPACE_THUMB_FORM)}
+            accept="image/*"
+          />
         </label>
-        <StHiddenInput
-          id={SPACE_THUMB_FORM}
-          type="file"
-          {...register(SPACE_THUMB_FORM)}
-          accept="image/*"
-        />
+
         {!!watch(SPACE_THUMB_FORM) || (
           <StHelperSpan>썸네일을 클릭하여 썸네일을 수정해보세요</StHelperSpan>
         )}
@@ -213,39 +218,3 @@ export default function ConfigSpaceOwner() {
     </StSection>
   );
 }
-
-const StSection = styled(StSectionMain)`
-  overflow: auto;
-
-  div label {
-    align-self: center;
-    cursor: pointer;
-  }
-
-  input,
-  textarea {
-    font-family: var(--default-font);
-  }
-  padding-top: 0 !important;
-`;
-
-const StDanger = styled(StDangerButton)`
-  padding: ${(props) => `${props.theme.spacing[8]} ${props.theme.spacing[16]}`};
-  font-size: inherit;
-  border-radius: ${(props) => props.theme.border.radius[8]};
-`;
-
-const StHelperSpan = styled.p`
-  font-size: 0.75rem;
-  font-weight: normal;
-  color: ${(props) => props.theme.color.text.info};
-  text-align: center;
-  opacity: 0.5;
-`;
-
-const StFloatingLoading = styled.div`
-  position: absolute;
-
-  right: ${(props) => props.theme.spacing[24]};
-  top: ${(props) => props.theme.spacing[64]};
-`;

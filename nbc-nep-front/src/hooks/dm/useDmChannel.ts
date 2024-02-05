@@ -40,24 +40,6 @@ export default function useDmChannel({
     spaceId,
   });
 
-  // 채널 id 정보를 통해 채널 구독을 시작하는 함수
-  const connectChannel = (currentChannelId: string) => {
-    const channel = supabase.channel(`dm_${currentChannelId}`);
-    currentSubscribeChannel.current = channel;
-    channel
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "dm_messages",
-          filter: `dm_id=eq.${currentChannelId}`,
-        },
-        newMessageInChannel
-      )
-      .subscribe();
-  };
-
   // 구독중인 채널에서 메시지를 인지하였을 떄 이벤트
   const newMessageInChannel = (
     payload: RealtimePostgresInsertPayload<Tables<"dm_messages">>
@@ -80,11 +62,29 @@ export default function useDmChannel({
       message: payload.new.message,
       receiver: getUser(currentUser, otherUserInfo!),
       sender_id: getString(otherUserInfo?.id, currentUser.id),
-      sender_display_name: getString(otherUserName, currentUser.display_name!),
+      sender_display_name: getString(otherUserName, currentUser.displayName!),
       sender: getUser(otherUserInfo!, currentUser),
     };
 
     setMessages((prev) => [...prev, newMessage]);
+  };
+
+  // 채널 id 정보를 통해 채널 구독을 시작하는 함수
+  const connectChannel = (currentChannelId: string) => {
+    const channel = supabase.channel(`dm_${currentChannelId}`);
+    currentSubscribeChannel.current = channel;
+    channel
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "dm_messages",
+          filter: `dm_id=eq.${currentChannelId}`,
+        },
+        newMessageInChannel
+      )
+      .subscribe();
   };
 
   // unMount 시 현재 구독중인 dm 채널 구독 취소

@@ -88,7 +88,7 @@ export default function AvatarModalContainer() {
   return (
     <>
       <StModalContainer>
-        <ModalHeader text={"스페이스 입장하기"} handler={handleCloseModal} />
+        <ModalHeader text="스페이스 입장하기" handler={handleCloseModal} />
         <StModalContents>
           <StProfileForm onSubmit={handleSubmit(handleEnterSpace)}>
             <StCurrentProfile>
@@ -96,7 +96,7 @@ export default function AvatarModalContainer() {
                 <label htmlFor="nickname">닉네임</label>
                 <input
                   id="nickname"
-                  defaultValue={user.display_name!}
+                  defaultValue={user.displayName!}
                   type="text"
                   placeholder="닉네임"
                   {...register("nickname", {
@@ -123,7 +123,7 @@ export default function AvatarModalContainer() {
                     {...restParam}
                   />
                   <label htmlFor={option.value} key={option.label}>
-                    <StAvatar resource={option.src}></StAvatar>
+                    <StAvatar resource={option.src} />
                   </label>
                 </StInputWrapper>
               ))}

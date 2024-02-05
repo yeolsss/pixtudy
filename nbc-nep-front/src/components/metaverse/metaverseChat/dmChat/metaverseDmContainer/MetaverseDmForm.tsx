@@ -8,6 +8,18 @@ import React from "react";
 import styled from "styled-components";
 import useDmStore from "@/zustand/dmStore";
 
+const StChatInput = styled.input`
+  width: 100%;
+  height: 30px;
+  outline: none;
+  padding: 0 10px;
+  background-color: #1f2542;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+`;
+
 interface Props {
   currentDmChannel: string | null | undefined;
   setMessages: React.Dispatch<
@@ -64,8 +76,8 @@ export default function MetaverseDmForm({
                 id: "first_send",
                 message,
                 sender_id: currentUser.id,
-                sender_display_name: currentUser.display_name!,
-                receiver_display_name: otherUserInfo!.display_name!,
+                sender_display_name: currentUser.displayName!,
+                receiver_display_name: otherUserInfo!.displayName!,
                 receiver_id: otherUserInfo!.id,
                 sender: currentUser,
                 receiver: otherUserInfo!,
@@ -95,14 +107,3 @@ export default function MetaverseDmForm({
     </form>
   );
 }
-const StChatInput = styled.input`
-  width: 100%;
-  height: 30px;
-  outline: none;
-  padding: 0 10px;
-  background-color: #1f2542;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  line-height: 24px;
-  letter-spacing: -0.32px;
-`;

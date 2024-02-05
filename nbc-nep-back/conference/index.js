@@ -14,14 +14,14 @@ const {
   await createWorker();
 })();
 
-let clients = {};
+const clients = {};
 
 module.exports = function (io, loginCheck) {
   io.on("connection", (socket) => {
     // socket이 연결이 된다면, 그 socket에 대한 정보를 여기서 초기화를 애초에 해줘야겠다.fc
     socket.on("disconnect", () => {
       try {
-        const playerId = socket.playerId;
+        const { playerId } = socket;
         const client = clients[playerId];
 
         if (!client) return;
@@ -54,7 +54,7 @@ module.exports = function (io, loginCheck) {
       socket.playerId = playerId;
 
       clients[playerId] = {
-        spaceId: spaceId,
+        spaceId,
         [SEND_TRANSPORT_KEY]: null,
         [RECV_TRANSPORT_KEY]: null,
         producers: [],

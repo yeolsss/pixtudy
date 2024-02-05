@@ -17,7 +17,7 @@ export default function useDmMessage({
   // 상대방 유저와 기존 메시지 가져오기
   const prevDmMessages = useGetDmMessages(currentDmChannel!);
 
-  const { mutate, isPending, isError } = useReadDMMessage();
+  const { mutate } = useReadDMMessage();
   const dmRoomId = useDmStore.use.dmRoomId();
 
   // 현재 세션의 유저정보

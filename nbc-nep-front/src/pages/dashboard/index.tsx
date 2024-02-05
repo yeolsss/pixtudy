@@ -10,7 +10,6 @@ import { Database, Tables } from "@/types/supabase.types";
 import { getCookie } from "@/utils/middlewareCookie";
 import { pathValidation } from "@/utils/middlewareValidate";
 import { createClient } from "@supabase/supabase-js";
-import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { StaticImageData } from "next/image";
 import { ReactElement, useEffect } from "react";
@@ -23,15 +22,34 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { BannerBg1, BannerBg2, BannerBg3, BannerBg4 } from "@/assets/banner";
 import { DASHBOARD_TOUR_TOOLTIP } from "@/utils/tooltip";
 
+const StSwiperWrapper = styled.div`
+  max-width: 128rem;
+  min-width: 128rem;
+  margin: 0 auto;
+  position: relative;
+
+  .swiper {
+    height: fit-content;
+    width: 100%;
+    padding: ${(props) =>
+      `${props.theme.spacing[24]} ${props.theme.spacing[32]}`};
+    padding-bottom: ${(props) => props.theme.spacing[36]};
+  }
+  .swiper-pagination {
+    span {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+`;
+
 interface Props {
   spaces: (Tables<"spaces"> & { bgSrc: StaticImageData })[];
 }
 
 const NoSSRJoyride = dynamic(() => import("react-joyride"), { ssr: false });
 
-const Dashboard: NextPage<Props> & {
-  getLayout?: (page: ReactElement) => ReactElement;
-} = ({ spaces }) => {
+export default function Dashboard({ spaces }: Props) {
   useEffect(() => {
     const message = getCookie("message");
     const localMessage = localStorage.getItem("message");
@@ -59,15 +77,15 @@ const Dashboard: NextPage<Props> & {
 
   return (
     <>
-      <CustomHead title={"Dashboard"} description={"Dashboard 페이지입니다."} />
+      <CustomHead title="Dashboard" description="Dashboard 페이지입니다." />
       <StSwiperWrapper>
         <Swiper
           className="dashboard-banner"
           modules={[Pagination, Mousewheel, Autoplay]}
           spaceBetween={50}
           pagination={{ clickable: true }}
-          grabCursor={true}
-          mousewheel={true}
+          grabCursor
+          mousewheel
           autoplay={{ delay: 5000 }}
         >
           {spaces.map((space) => (
@@ -115,7 +133,7 @@ const Dashboard: NextPage<Props> & {
       />
     </>
   );
-};
+}
 
 Dashboard.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
@@ -150,26 +168,3 @@ export const getStaticProps = async () => {
 
   return { props: { spaces } };
 };
-
-const StSwiperWrapper = styled.div`
-  max-width: 128rem;
-  min-width: 128rem;
-  margin: 0 auto;
-  position: relative;
-
-  .swiper {
-    height: fit-content;
-    width: 100%;
-    padding: ${(props) =>
-      `${props.theme.spacing[24]} ${props.theme.spacing[32]}`};
-    padding-bottom: ${(props) => props.theme.spacing[36]};
-  }
-  .swiper-pagination {
-    span {
-      width: 1.2rem;
-      height: 1.2rem;
-    }
-  }
-`;
-
-export default Dashboard;
