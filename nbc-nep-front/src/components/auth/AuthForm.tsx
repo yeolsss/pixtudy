@@ -31,7 +31,7 @@ export default function AuthForm({ formType }: Props) {
   const router = useRouter()
 
   const [isSignUpFormOpen, setIsSignUpFormOpen] = useState<boolean>(
-    formType !== 'signUp'
+    formType === 'signUp' ? false : true
   )
 
   const [isUpdatePw, setIsUpdatePw] = useState<boolean>(false)

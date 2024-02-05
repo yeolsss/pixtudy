@@ -1,13 +1,14 @@
+import { isEmpty } from 'lodash'
+import { RtpCapabilities } from 'mediasoup-client/lib/RtpParameters'
+import { useEffect } from 'react'
+
 import useDevice from '@/hooks/conference/useDevice'
 import useRecvTransport from '@/hooks/conference/useRecvTransport'
 import useSendTransport from '@/hooks/conference/useSendTransport'
 import useVideoSource from '@/hooks/conference/useVideoSource'
 import useMetaversePlayer from '@/hooks/metaverse/useMetaversePlayer'
 import useAuth from '@/zustand/authStore'
-import { isEmpty } from 'lodash'
-import { RtpCapabilities } from 'mediasoup-client/lib/RtpParameters'
-import { useEffect } from 'react'
-import { MAX_SHARE_SCREEN_SIZE, videoParams } from '../constants/constants'
+
 import {
   AppData,
   Producer,
@@ -15,6 +16,8 @@ import {
   ShareType,
   TransPortParams
 } from '../../../types/conference.types'
+import { MAX_SHARE_SCREEN_SIZE, videoParams } from '../constants'
+
 import useSocket from './useSocket'
 
 export default function useVideoConference() {
@@ -68,7 +71,6 @@ export default function useVideoConference() {
 
   useEffect(() => {
     socket.on('connect', () => {
-      console.log('video conference socket connected')
       joinRoom(spaceId, currentPlayerId)
       createTransport(currentPlayerId, handleCreatedTransport)
     })
@@ -98,12 +100,11 @@ export default function useVideoConference() {
     getProducers(spaceId, currentPlayerId, handleConsumeProducers)
   }
 
-  async function handleConsumeNewProducer(
+  function handleConsumeNewProducer(
     producerId: string,
     appData: AppData
   ) {
     if (isAlreadyConsume(producerId)) {
-      console.log('이미 consume 중인 producerId')
       return
     }
 
@@ -113,13 +114,12 @@ export default function useVideoConference() {
         { rtpCapabilities, producerId, appData, playerId: currentPlayerId },
         async (params) => {
           const consumer = await consume({ ...params })
-          if (!consumer) return null
+          if (!consumer) {return null}
           addConsumer(consumer)
           return consumer
         }
       )
     } catch (error) {
-      console.error('handle consume new producer error', error)
     }
   }
 
@@ -162,7 +162,6 @@ export default function useVideoConference() {
 
       addProducer(producer)
     } catch (error) {
-      console.log('handle share error', error)
     }
   }
 

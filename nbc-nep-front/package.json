@@ -8,7 +8,9 @@
     "s": "next build && next start",
     "start": "next start",
     "lint": "next lint",
-    "supabase-type": "supabase gen types typescript --project-id lrklhpcxbdiunpubmvio > src/types/supabase.types.ts"
+    "supabase-type": "supabase gen types typescript --project-id lrklhpcxbdiunpubmvio > src/types/supabase.types.ts",
+    "lint:es": "eslint .",
+    "lint:es:fix": "eslint . --fix"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.8.7",
@@ -46,6 +48,7 @@
     "eslint-config-next": "14.0.4",
     "eslint-plugin-n": "^16.6.2",
     "prettier": "^3.1.1",
+    "stylelint": "^16.2.1",
     "typescript": "^5"
   }
 }

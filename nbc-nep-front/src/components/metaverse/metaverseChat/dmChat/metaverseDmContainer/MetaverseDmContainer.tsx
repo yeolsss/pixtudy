@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import styled from 'styled-components'
+
 import { getDmChannelMessagesReturns } from '@/api/supabase/dm'
 import MetaverseDmForm from '@/components/metaverse/metaverseChat/dmChat/metaverseDmContainer/MetaverseDmForm'
 import useDmChannel from '@/hooks/dm/useDmChannel'
@@ -7,8 +10,7 @@ import useMetaversePlayer from '@/hooks/metaverse/useMetaversePlayer'
 import { Tables } from '@/types/supabase.types'
 import useAuthStore from '@/zustand/authStore'
 import useDmStore from '@/zustand/dmStore'
-import { useState } from 'react'
-import styled from 'styled-components'
+
 import MetaverseChatCard from '../../metaverseChatBar/MetaverseChatCard'
 
 export default function MetaverseDmContainer() {
@@ -18,7 +20,7 @@ export default function MetaverseDmContainer() {
   const sessionUser = useAuthStore.use.user()
   const { findPlayerById } = useMetaversePlayer()
   const currentPlayer = findPlayerById(sessionUser.id)
-  let currentUser = { ...sessionUser }
+  const currentUser = { ...sessionUser }
   if (sessionUser && currentPlayer) {
     currentUser.display_name =
       currentPlayer.nickname || sessionUser.display_name
@@ -51,7 +53,7 @@ export default function MetaverseDmContainer() {
           {messages?.map((message) => (
             <MetaverseChatCard message={message} key={message.id} type="DM" />
           ))}
-          <div ref={endOfChatRef}></div>
+          <div ref={endOfChatRef} />
         </StMessageWrapper>
       </StMetaverseDmChannel>
       <MetaverseDmForm

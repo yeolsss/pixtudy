@@ -1,7 +1,8 @@
 import { PropsWithChildren } from 'react'
 import { useDrag } from 'react-dnd'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import styled from 'styled-components'
+
+import { StDrag, StDragContainer, StShareScreenDragItemContainer } from './styles/shareScreenContainer.styles'
 
 interface Props {
   id: string
@@ -21,7 +22,7 @@ export default function ShareScreenDragItem({
     collect: (monitor) => ({
       isDragging: monitor.isDragging()
     }),
-    canDrag: active ? false : true
+    canDrag: !active
   }))
 
   return (
@@ -41,7 +42,7 @@ export default function ShareScreenDragItem({
           wheel={{ activationKeys: ['Control', 'Meta'] }}
           panning={{
             activationKeys: ['Control', 'Meta'],
-            disabled: active ? false : true
+            disabled: !active
           }}
         >
           <TransformComponent>{children}</TransformComponent>
@@ -51,46 +52,3 @@ export default function ShareScreenDragItem({
   )
 }
 
-const StShareScreenDragItemContainer = styled.div`
-  position: relative;
-`
-const StDrag = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  background: transparent;
-`
-
-const StDragContainer = styled.div<{ $active: boolean; $isDragging: boolean }>`
-  opacity: ${(props) => (props.$isDragging ? 0.2 : 1)};
-  width: 100%;
-  height: 100%;
-  margin: ${(props) => (props.$active ? '0' : '0 1rem')};
-  cursor: pointer;
-  & div {
-    width: ${(props) => props.$active && '100%'};
-    height: ${(props) => props.$active && '100%'};
-
-    & video {
-      width: ${(props) => props.$active && '100%'};
-      height: ${(props) => props.$active && '100%'};
-      object-fit: contain;
-    }
-  }
-  & button {
-    position: absolute;
-    z-index: 20;
-    right: 1rem;
-    top: 1rem;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    &:hover {
-      background: ${(props) =>
-        props.theme.color.bg.interactive['danger-hovered']};
-    }
-  }
-`
