@@ -68,9 +68,9 @@ export default function useCreateScrumButtons(): ReturnType {
       {
         description: scrumBoardText,
         categoryId: category.id,
-        space_id: space_id as string,
-        user_id: user?.id,
-        assignees: assignees,
+        spaceId: space_id as string,
+        userId: user?.id,
+        assignees,
       },
       {
         onSuccess: () => {
@@ -108,8 +108,8 @@ export default function useCreateScrumButtons(): ReturnType {
         {
           id: kanbanItem?.id!,
           description: scrumBoardText,
-          space_id: space_id as string,
-          assignees: assignees,
+          spaceId: space_id as string,
+          assignees,
         },
         {
           onSuccess: async () => {
