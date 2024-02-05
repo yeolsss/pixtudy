@@ -1,3 +1,4 @@
+import { mapSection } from "@/utils/layout";
 import { throttle } from "lodash";
 import { RefObject, useEffect, useState } from "react";
 import useScroll from "./useScroll";
@@ -76,16 +77,3 @@ export default function useHandleScroll(refs: RefObject<HTMLDivElement>[]) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollThresholds]);
 }
-
-const mapSection = (index: number) => {
-  switch (index) {
-    case 0:
-      return "banner";
-    case 1:
-      return "intro";
-    case 2:
-      return "feature";
-    default:
-      return "banner";
-  }
-};

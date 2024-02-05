@@ -27,7 +27,7 @@ interface ReturnType {
   handleOnClickDelete: () => void;
 }
 export default function useCreateScrumButtons(): ReturnType {
-  const { space_id } = useParams();
+  const { space_id: spaceId }: { space_id: string } = useParams();
   const user = useAuthStore.use.user();
   const scrumBoardText = useScrumBoardItemStore.use.scrumBoardText();
   const resetScrumBoardItem = useScrumBoardItemStore.use.resetScrumBoardItem();
@@ -68,7 +68,7 @@ export default function useCreateScrumButtons(): ReturnType {
       {
         description: scrumBoardText,
         categoryId: category.id,
-        spaceId: space_id as string,
+        spaceId: spaceId as string,
         userId: user?.id,
         assignees,
       },
@@ -77,8 +77,9 @@ export default function useCreateScrumButtons(): ReturnType {
           toast.success("스크럼 보드 아이템이 등록되었습니다.");
           closeBackDrop();
         },
-        onError: (error) => {
+        onError: (error: Error) => {
           toast.error("스크럼 보드 아이템 등록에 실패하였습니다.");
+          console.error(error);
         },
       }
     );
@@ -104,11 +105,12 @@ export default function useCreateScrumButtons(): ReturnType {
       denyButtonText: "아니요, 취소할게요",
     }).then((result) => {
       if (!result) return;
+      if (!kanbanItem) return;
       updateMutate.mutate(
         {
-          id: kanbanItem?.id!,
+          id: kanbanItem.id!,
           description: scrumBoardText,
-          spaceId: space_id as string,
+          spaceId,
           assignees,
         },
         {
@@ -134,13 +136,15 @@ export default function useCreateScrumButtons(): ReturnType {
       denyButtonText: "아니요, 취소할게요",
     }).then((result) => {
       if (!result) return;
-      deleteMutate.mutate(kanbanItem?.id!, {
+      if (!kanbanItem) return;
+      deleteMutate.mutate(kanbanItem.id!, {
         onSuccess: () => {
           toast.dark("스크럼 보드 아이템이 삭제되었습니다.");
           closeBackDrop();
         },
         onError: (error) => {
           toast.error("스크럼 보드 아이템 삭제에 실패하였습니다.");
+          console.error(error);
         },
       });
     });

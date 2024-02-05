@@ -1,9 +1,9 @@
-import useScrumBoardStore from "@/zustand/scrumBoardStore";
 import { Kanban_categories } from "@/types/supabase.tables.types";
+import useScrumBoardStore from "@/zustand/scrumBoardStore";
 
 interface ReturnType {
   categories: Kanban_categories[];
-  setCategories: (categories: any[]) => void;
+  setCategories: (categories: Kanban_categories[]) => void;
 }
 export default function useScrumBoard(): ReturnType {
   const categories = useScrumBoardStore.use.categories();
