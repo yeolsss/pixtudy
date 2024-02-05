@@ -150,8 +150,8 @@ export default function ConfigSpaceOwner() {
       ref={formRef}
     >
       <div>
+        <span>스페이스 썸네일</span>
         <label htmlFor={SPACE_THUMB_FORM}>
-          <span>스페이스 썸네일</span>
           <SpaceThumb src={thumbPreviewSrc} />
           <StHiddenInput
             id={SPACE_THUMB_FORM} // 이 id가 htmlFor과 일치해야 합니다.

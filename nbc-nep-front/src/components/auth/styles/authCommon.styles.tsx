@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const StAuthOuterContainer = styled.div`
   display: flex;
   height: auto;
-  min-height: 100%;
+  min-height: 100vh;
   min-width: 38rem;
 `;
 

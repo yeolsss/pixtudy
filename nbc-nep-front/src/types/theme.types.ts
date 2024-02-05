@@ -1,48 +1,3 @@
-/* eslint-disable */
-
-export interface Root {
-  color: Color;
-  unit: Unit;
-  spacing: Spacing;
-  border: Border2;
-  heading: Heading;
-  body: Body;
-  elevation: Elevation;
-  desktop: Desktop2;
-  tablet: Tablet;
-  mobile: Mobile2;
-  docs: Docs;
-  video: Video;
-}
-
-export interface Color {
-  metaverse: Metaverse;
-  blue: Blue;
-  red: Red;
-  green: Green;
-  yellow: Yellow;
-  orange: Orange;
-  indigo: Indigo;
-  teal: Teal;
-  grey: Grey;
-  base: Base;
-  brand: Brand;
-  info: Info;
-  success: Success;
-  warning: Warning;
-  danger: Danger;
-  neutral: Neutral;
-  bg: Bg;
-  text: Text;
-  icon: Icon;
-  border: Border;
-}
-
-export interface Metaverse {
-  primary: string;
-  secondary: string;
-}
-
 export interface Blue {
   "50": string;
   "100": string;
@@ -148,11 +103,6 @@ export interface Grey {
   "sub-line": string;
 }
 
-export interface Base {
-  black: string;
-  white: string;
-}
-
 export interface Brand {
   "50": string;
   "100": string;
@@ -227,6 +177,21 @@ export interface Neutral {
   "900": string;
 }
 
+export interface Interactive {
+  primary: string;
+  "primary-hovered": string;
+  "primary-pressed": string;
+  secondary: string;
+  "secondary-hovered": string;
+  "secondary-pressed": string;
+  danger: string;
+  "danger-hovered": string;
+  "danger-pressed": string;
+  selected: string;
+  "selected-hovered": string;
+  "selected-press": string;
+}
+
 export interface Bg {
   primary: string;
   secondary: string;
@@ -245,19 +210,105 @@ export interface Bg {
   interactive: Interactive;
 }
 
-export interface Interactive {
+export interface Interactive2 {
   primary: string;
   "primary-hovered": string;
   "primary-pressed": string;
   secondary: string;
   "secondary-hovered": string;
   "secondary-pressed": string;
-  danger: string;
-  "danger-hovered": string;
-  "danger-pressed": string;
   selected: string;
-  "selected-hovered": string;
-  "selected-press": string;
+  inverse: string;
+}
+export interface Interactive3 {
+  primary: string;
+  "primary-hovered": string;
+  "primary-pressed": string;
+  secondary: string;
+  "secondary-hovered": string;
+  "secondary-press": string;
+  selected: string;
+  inverse: string;
+}
+
+export interface Interactive4 {
+  primary: string;
+  "primary-hovered": string;
+  "primary-pressed": string;
+  secondary: string;
+  "secondary-hovered": string;
+  "secondary-pressed": string;
+}
+
+export interface Radius {
+  "0": string;
+  "2": string;
+  "4": string;
+  "8": string;
+  "12": string;
+  "16": string;
+  "36": string;
+  circle: string;
+}
+
+export interface N4xl {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface N3xl {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface N2xl {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface Xl {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface Lg {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface Base {
+  black: string;
+  white: string;
+}
+
+export interface Metaverse {
+  primary: string;
+  secondary: string;
 }
 
 export interface Text {
@@ -277,17 +328,6 @@ export interface Text {
   interactive: Interactive2;
 }
 
-export interface Interactive2 {
-  primary: string;
-  "primary-hovered": string;
-  "primary-pressed": string;
-  secondary: string;
-  "secondary-hovered": string;
-  "secondary-pressed": string;
-  selected: string;
-  inverse: string;
-}
-
 export interface Icon {
   primary: string;
   brand: string;
@@ -297,17 +337,6 @@ export interface Icon {
   danger: string;
   disabled: string;
   interactive: Interactive3;
-}
-
-export interface Interactive3 {
-  primary: string;
-  "primary-hovered": string;
-  "primary-pressed": string;
-  secondary: string;
-  "secondary-hovered": string;
-  "secondary-press": string;
-  selected: string;
-  inverse: string;
 }
 
 export interface Border {
@@ -325,15 +354,6 @@ export interface Border {
   disabled: string;
   "sub-line": string;
   interactive: Interactive4;
-}
-
-export interface Interactive4 {
-  primary: string;
-  "primary-hovered": string;
-  "primary-pressed": string;
-  secondary: string;
-  "secondary-hovered": string;
-  "secondary-pressed": string;
 }
 
 export interface Unit {
@@ -406,90 +426,6 @@ export interface Border2 {
   radius: Radius;
 }
 
-export interface Radius {
-  "0": string;
-  "2": string;
-  "4": string;
-  "8": string;
-  "12": string;
-  "16": string;
-  "36": string;
-  circle: string;
-}
-
-export interface Heading {
-  mobile: Mobile;
-  desktop: Desktop;
-}
-
-export interface Mobile {
-  "4xl": N4xl;
-  "3xl": N3xl;
-  "2xl": N2xl;
-  xl: Xl;
-  lg: Lg;
-}
-
-export interface N4xl {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
-}
-
-export interface N3xl {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
-}
-
-export interface N2xl {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
-}
-
-export interface Xl {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
-}
-
-export interface Lg {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
-}
-
-export interface Desktop {
-  "4xl": N4xl2;
-  "3xl": N3xl2;
-  "2xl": N2xl2;
-  xl: Xl2;
-  lg: Lg2;
-  md: Md;
-  sm: Sm;
-}
-
 export interface N4xl2 {
   fontSize: string;
   fontFamily: string;
@@ -560,16 +496,29 @@ export interface Sm {
   textDecoration: string;
 }
 
-export interface Body {
-  lg: Lg3;
-  md: Md2;
-  sm: Sm2;
+export interface Regular3 {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
 }
 
-export interface Lg3 {
-  regular: Regular;
-  medium: Medium;
-  semibold: Semibold;
+export interface Medium3 {
+  fontSize: string;
+  fontFamily: string;
+  fontWeight: string;
+  lineHeight: string;
+  letterSpacing: number;
+  textCase: string;
+  textDecoration: string;
+}
+
+export interface Sm2 {
+  regular: Regular3;
+  medium: Medium3;
 }
 
 export interface Regular {
@@ -602,12 +551,10 @@ export interface Semibold {
   textDecoration: string;
 }
 
-export interface Md2 {
-  regular: Regular2;
-  medium: Medium2;
-  semibold: Semibold2;
-  underline: Underline;
-  encode: Encode;
+export interface Lg3 {
+  regular: Regular;
+  medium: Medium;
+  semibold: Semibold;
 }
 
 export interface Regular2 {
@@ -660,34 +607,90 @@ export interface Encode {
   textDecoration: string;
 }
 
-export interface Sm2 {
-  regular: Regular3;
-  medium: Medium3;
+export interface Md2 {
+  regular: Regular2;
+  medium: Medium2;
+  semibold: Semibold2;
+  underline: Underline;
+  encode: Encode;
 }
 
-export interface Regular3 {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
+export interface Mobile {
+  "4xl": N4xl;
+  "3xl": N3xl;
+  "2xl": N2xl;
+  xl: Xl;
+  lg: Lg;
 }
 
-export interface Medium3 {
-  fontSize: string;
-  fontFamily: string;
-  fontWeight: string;
-  lineHeight: string;
-  letterSpacing: number;
-  textCase: string;
-  textDecoration: string;
+export interface Desktop {
+  "4xl": N4xl2;
+  "3xl": N3xl2;
+  "2xl": N2xl2;
+  xl: Xl2;
+  lg: Lg2;
+  md: Md;
+  sm: Sm;
 }
 
-export interface Elevation {
-  Light: Light;
-  Dark: Dark;
+export interface Heading {
+  mobile: Mobile;
+  desktop: Desktop;
+}
+export interface Body {
+  lg: Lg3;
+  md: Md2;
+  sm: Sm2;
+}
+
+export interface Color {
+  metaverse: Metaverse;
+  blue: Blue;
+  red: Red;
+  green: Green;
+  yellow: Yellow;
+  orange: Orange;
+  indigo: Indigo;
+  teal: Teal;
+  grey: Grey;
+  base: Base;
+  brand: Brand;
+  info: Info;
+  success: Success;
+  warning: Warning;
+  danger: Danger;
+  neutral: Neutral;
+  bg: Bg;
+  text: Text;
+  icon: Icon;
+  border: Border;
+}
+
+export interface Color2 {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
+export interface Color3 {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
+export interface Color4 {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+export interface Color5 {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
 }
 
 export interface Light {
@@ -704,10 +707,6 @@ export interface Dark {
   shadow16: string;
 }
 
-export interface Desktop2 {
-  layoutGrids: LayoutGrid[];
-}
-
 export interface LayoutGrid {
   pattern: string;
   color: Color2;
@@ -715,17 +714,6 @@ export interface LayoutGrid {
   gutterSize: number;
   offset: number;
   count: number;
-}
-
-export interface Color2 {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
-export interface Tablet {
-  layoutGrids: LayoutGrid2[];
 }
 
 export interface LayoutGrid2 {
@@ -737,17 +725,6 @@ export interface LayoutGrid2 {
   count: number;
 }
 
-export interface Color3 {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
-export interface Mobile2 {
-  layoutGrids: LayoutGrid3[];
-}
-
 export interface LayoutGrid3 {
   pattern: string;
   color: Color4;
@@ -755,17 +732,6 @@ export interface LayoutGrid3 {
   gutterSize: number;
   offset: number;
   count: number;
-}
-
-export interface Color4 {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
-export interface Docs {
-  layoutGrids: LayoutGrid4[];
 }
 
 export interface LayoutGrid4 {
@@ -778,14 +744,41 @@ export interface LayoutGrid4 {
   sectionSize?: number;
 }
 
-export interface Color5 {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
 export interface Video {
   width: string;
   height: string;
+}
+
+export interface Elevation {
+  Light: Light;
+  Dark: Dark;
+}
+
+export interface Desktop2 {
+  layoutGrids: LayoutGrid[];
+}
+
+export interface Tablet {
+  layoutGrids: LayoutGrid2[];
+}
+export interface Mobile2 {
+  layoutGrids: LayoutGrid3[];
+}
+export interface Docs {
+  layoutGrids: LayoutGrid4[];
+}
+
+export interface Root {
+  color: Color;
+  unit: Unit;
+  spacing: Spacing;
+  border: Border2;
+  heading: Heading;
+  body: Body;
+  elevation: Elevation;
+  desktop: Desktop2;
+  tablet: Tablet;
+  mobile: Mobile2;
+  docs: Docs;
+  video: Video;
 }
