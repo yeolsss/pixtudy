@@ -1,9 +1,9 @@
-import ScrumBoardHeader from "@/components/scrumboard/ScrumBoardHeader";
 import { useGetUserSpaces } from "@/hooks/query/useSupabase";
 import useAuthStore from "@/zustand/authStore";
-import styled from "styled-components";
 import { StCardListWrapper } from "../spaces/SpaceList";
 import ScrumBoardCard from "./ScrumBoardCard";
+import styled from "styled-components";
+import ScrumBoardHeader from "@/components/scrumboard/ScrumBoardHeader";
 
 export default function ScrumBoardList() {
   const user = useAuthStore.use.user();

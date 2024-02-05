@@ -1,14 +1,14 @@
 import { supabase } from "@/supabase";
+import { TablesInsert, TablesUpdate } from "@/types/supabase.types";
 import {
   GetKanbanItemsByAssignees,
   Kanban_categories,
   Space_members,
 } from "@/types/supabase.tables.types";
-import { TablesInsert, TablesUpdate } from "@/types/supabase.types";
 
 export const getCategories = async (
   spaceId: string
-): Promise<KanbanCategories[]> => {
+): Promise<Kanban_categories[]> => {
   const { data, error } = await supabase
     .from("kanban_categories")
     .select("*")
@@ -174,6 +174,7 @@ export const patchScrumBoardItem = async ({
     throw new Error(assigneesDeleteError.message);
   }
 
+  //TODO: 함수로 뺄것.
   const { error: assigneesError } = await supabase
     .from("kanban_assignees")
     .insert(

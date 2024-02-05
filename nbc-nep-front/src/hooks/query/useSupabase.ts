@@ -42,12 +42,13 @@ import {
   updateSpace as updateSpaceSupabase,
 } from "@/api/supabase/space";
 import { useCustomQuery } from "@/hooks/tanstackQuery/useCustomQuery";
+import { Database, Tables } from "@/types/supabase.types";
 import {
   GetKanbanItemsByAssignees,
+  Kanban_categories,
   Space_members,
   Spaces,
 } from "@/types/supabase.tables.types";
-import { Database, Tables } from "@/types/supabase.types";
 import { authValidation } from "@/utils/authValidate";
 import useAuthStore from "@/zustand/authStore";
 

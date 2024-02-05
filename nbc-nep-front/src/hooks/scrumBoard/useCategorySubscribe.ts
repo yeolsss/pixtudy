@@ -1,4 +1,5 @@
 import { supabase } from "@/supabase";
+import { Kanban_categories } from "@/types/supabase.tables.types";
 import {
   RealtimePostgresChangesPayload,
   RealtimePostgresDeletePayload,
@@ -12,9 +13,9 @@ export default function useCategorySubscribe(spaceId: string) {
   useEffect(() => {
     const handleChangeObserver = (
       payload:
-        | RealtimePostgresChangesPayload<KanbanCategories>
-        | RealtimePostgresInsertPayload<KanbanCategories>
-        | RealtimePostgresDeletePayload<KanbanCategories>
+        | RealtimePostgresChangesPayload<Kanban_categories>
+        | RealtimePostgresInsertPayload<Kanban_categories>
+        | RealtimePostgresDeletePayload<Kanban_categories>
     ) => {
       if ("space_id" in payload.new) {
         if (payload.new?.space_id === spaceId) {

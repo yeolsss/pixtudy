@@ -1,16 +1,13 @@
 import { StLine } from "@/components/spaces/SpaceListHeader";
-import SpaceSearchForm from "@/components/spaces/SpaceSearchForm";
 import styled from "styled-components";
-
-const StHeaderWrapper = styled.div``
-const StSortTitleContainer = styled.div``
+import SpaceSearchForm from "@/components/spaces/SpaceSearchForm";
 
 export default function ScrumBoardHeader() {
   return (
     <StHeaderWrapper>
       <StSortTitleContainer>
         <span>최근 순</span>
-        <StLine />
+        <StLine></StLine>
         <span>이름 순</span>
       </StSortTitleContainer>
       <SpaceSearchForm />

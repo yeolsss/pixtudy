@@ -1,6 +1,6 @@
 import { Kanban_categories } from "@/types/supabase.tables.types";
-import createSelectors from "@/zustand/config/createSelector";
 import { create } from "zustand";
+import createSelectors from "@/zustand/config/createSelector";
 
 interface ScrumBoardState {
   categories: Kanban_categories[];

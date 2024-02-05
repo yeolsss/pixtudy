@@ -17,31 +17,6 @@ import styled from "styled-components";
 import ScrumBoardCategory from "./ScrumBoardCategory";
 import ScrumBoardHeader from "./ScrumBoardHeader";
 
-const StScrumBoardWrapper = styled.div`
-  position: relative;
-`;
-
-const StScrumBoardContainer = styled.div`
-  max-width: 1200px;
-  width: 100%;
-  overflow: auto;
-  margin: 0 auto;
-  position: relative;
-  padding: 0 ${(props) => props.theme.spacing[24]};
-  > div {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: ${(props) => props.theme.spacing[12]};
-    position: relative;
-  }
-`;
-
-const StAddCategoryBtn = styled(StCTAButton)`
-  display: block;
-  width: 320px;
-  height: ${(props) => props.theme.unit[80]};
-`;
 export default function ScrumBoard() {
   const { space_id } = useParams();
   const spaceId = space_id as string;
@@ -65,7 +40,6 @@ export default function ScrumBoard() {
 
   const [handleFocus, handleBlur] = useFocusInput();
 
-  // 이거 strict equality 써도 되나?
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     if (e.deltaY != 0) {
       e.currentTarget.scrollLeft += e.deltaY;
@@ -74,7 +48,7 @@ export default function ScrumBoard() {
 
   return (
     <StScrumBoardWrapper>
-      <ScrumBoardHeader title={spaceData?.title || "Default title"} />
+      <ScrumBoardHeader title={spaceData?.title!} />
       <AnimatePresence>
         <StScrumBoardContainer onWheel={handleWheel}>
           <div onFocus={handleFocus} onBlur={handleBlur}>

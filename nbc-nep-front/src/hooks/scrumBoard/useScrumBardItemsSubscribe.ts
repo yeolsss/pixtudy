@@ -1,18 +1,21 @@
-import { useGetSpaceMembers } from "@/hooks/query/useSupabase";
-import { supabase } from "@/supabase";
-import { GetKanbanItemsByAssignees } from "@/types/supabase.tables.types";
-import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import {
   RealtimePostgresChangesPayload,
   RealtimePostgresDeletePayload,
 } from "@supabase/realtime-js";
+import {
+  GetKanbanItemsByAssignees,
+  Kanban_categories,
+} from "@/types/supabase.tables.types";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { supabase } from "@/supabase";
+import useScrumBoardMemberSearchStore from "@/zustand/scrumBoardMemberStore";
+import { useGetSpaceMembers } from "@/hooks/query/useSupabase";
 
 export default function useScrumBardItemsSubscribe(
   spaceId: string,
-  categories: KanbanCategories[]
+  categories: Kanban_categories[]
 ) {
   const setSpaceMembers = useScrumBoardMemberSearchStore.use.setSpaceMembers();
   const queryClient = useQueryClient();
