@@ -11,9 +11,36 @@ import CheckUserSession from "@/components/layout/CheckUserSession";
 import GlobalStyle, { theme } from "@/styles/Globalstyle";
 import { NextPageWithLayout } from "@/types/app.types";
 
+import localFont from "next/font/local";
+
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
+
+const localFonts = localFont({
+  src: [
+    {
+      path: "../assets/fonts/Galmuri11-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Galmuri11.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/Galmuri14.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../assets/fonts/NeoDunggeunmoPro-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+});
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const queryClient = new QueryClient();
@@ -25,8 +52,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <CheckUserSession />
-          {getLayout(<Component {...pageProps} />)}
-
+          <div className={localFonts.className}>
+            {getLayout(<Component {...pageProps} />)}
+          </div>
           <ToastContainer position="top-left" autoClose={2000} />
         </ThemeProvider>
       </DndProvider>
