@@ -1,5 +1,5 @@
-import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
 import useChatAlarmStore from "@/zustand/chatAlarmStore";
+import { dmChatAlarmState } from "@/types/metaverse.types";
 
 export default function useChatAlarm() {
   // chat alarm state
@@ -20,7 +20,7 @@ export default function useChatAlarm() {
 
   // 배열을 받아올 수 있을듯.
   const handleSetDmChatAlarmState = (dm: dmChatAlarmState[]) => {
-    setChatAlarmState({ globalChatState: globalChatState, dmChatStates: dm });
+    setChatAlarmState({ globalChatState, dmChatStates: dm });
   };
 
   return {

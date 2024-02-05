@@ -1,5 +1,5 @@
 import { updateCategoryItem } from "@/api/supabase/scrumBoard";
-import { GetKanbanItemsByAssignees } from "@/supabase/types/supabase.tables.type";
+import { GetKanbanItemsByAssignees } from "@/types/supabase.tables.types";
 import { useMutation } from "@tanstack/react-query";
 import { DropTargetMonitor, useDrop } from "react-dnd";
 import { toast } from "react-toastify";
@@ -15,20 +15,22 @@ export default function useDropItem(categoryId: string) {
     item: GetKanbanItemsByAssignees,
     targetCategoryId: string
   ) => {
-    updateMutate.mutate({
-      id: item.id,
-      updateCategoryId: targetCategoryId,
-    }),
+    updateMutate.mutate(
+      {
+        id: item.id,
+        updateCategoryId: targetCategoryId,
+      },
       {
         onSuccess: async () => {
           toast.success("카테고리가 변경되었습니다.");
         },
-      };
+      }
+    );
   };
 
   const dropSpec = {
     accept: "kanbanItem",
-    drop: (item: GetKanbanItemsByAssignees, monitor: DropTargetMonitor) => {
+    drop: (item: GetKanbanItemsByAssignees) => {
       handleDrop(item, categoryId);
       return item;
     },

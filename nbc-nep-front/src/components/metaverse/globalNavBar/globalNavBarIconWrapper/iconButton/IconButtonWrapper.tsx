@@ -1,24 +1,6 @@
 import IconButton from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/IconButton";
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import styled from "styled-components";
-
-interface Props {
-  button: IconButtonProperty;
-}
-export default function IconButtonWrapper({ button }: Props) {
-  const { buttonImage, description, type, handleOnClick } = button;
-
-  return (
-    <StIconButtonWrapper>
-      <IconButton
-        buttonImage={buttonImage}
-        description={description}
-        type={type}
-        handleOnClick={handleOnClick}
-      />
-    </StIconButtonWrapper>
-  );
-}
+import { IconButtonProperty } from "@/types/metaverse.types";
 
 const StIconButtonWrapper = styled.div`
   width: 32px;
@@ -37,3 +19,22 @@ const StIconButtonWrapper = styled.div`
     text-align: center;
   }
 `;
+
+interface Props {
+  button: IconButtonProperty;
+}
+
+export default function IconButtonWrapper({ button }: Props) {
+  const { buttonImage, description, type, handleOnClick } = button;
+
+  return (
+    <StIconButtonWrapper>
+      <IconButton
+        buttonImage={buttonImage}
+        description={description}
+        type={type}
+        handleOnClick={handleOnClick}
+      />
+    </StIconButtonWrapper>
+  );
+}

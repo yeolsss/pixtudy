@@ -1,11 +1,13 @@
 import { PropsWithChildren } from "react";
+
+import { VideoSource } from "../../types/conference.types";
+
 import {
   StAudio,
   StShareMediaItem,
   StShareMediaNickname,
   StVideo,
 } from "./styles/videoConference.styles";
-import { VideoSource } from "./types/ScreenShare.types";
 
 interface Props {
   videoSource: VideoSource;
@@ -21,7 +23,9 @@ export default function ShareMediaItem({
 }: PropsWithChildren<Props>) {
   const { track } = videoSource;
 
-  if (!track) return null;
+  if (!track) {
+    return null;
+  }
 
   const stream = new MediaStream([track]);
   const type = track.kind;
@@ -39,6 +43,7 @@ export default function ShareMediaItem({
             if (!videoRef) {
               return;
             }
+            // eslint-disable-next-line
             videoRef.srcObject = stream;
           }}
         />
@@ -51,6 +56,7 @@ export default function ShareMediaItem({
             if (!audioRef) {
               return;
             }
+            // eslint-disable-next-line
             audioRef.srcObject = stream;
           }}
         />
@@ -59,3 +65,6 @@ export default function ShareMediaItem({
     </StShareMediaItem>
   );
 }
+ShareMediaItem.defaultProps = {
+  isCurrentPlayer: false,
+};

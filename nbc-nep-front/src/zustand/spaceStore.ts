@@ -1,18 +1,15 @@
-import {
-  CreateSpaceInfo,
-  JoinSpaceInfo,
-  UserProfile,
-} from "@/components/spaces/types/space.types";
-import { create } from "zustand";
+import { CreateSpaceInfo, UserProfile } from "@/types/space.types";
+import { Spaces } from "@/types/supabase.tables.types";
 import createSelectors from "@/zustand/config/createSelector";
+import { create } from "zustand";
 
 interface SpaceState {
   createSpaceInfo: CreateSpaceInfo;
-  joinSpaceInfo: JoinSpaceInfo;
+  joinSpaceInfo: Spaces;
   userProfile: UserProfile;
   avatar: string;
   setCreateSpaceInfo: (spaceInfo: CreateSpaceInfo) => void;
-  setJoinSpaceInfo: (spaceInfo: JoinSpaceInfo) => void;
+  setJoinSpaceInfo: (spaceInfo: Spaces) => void;
   setUserProfile: (userProfile: UserProfile) => void;
   setAvatar: (avatar: string) => void;
   resetCreateSpaceInfo: () => void;
@@ -22,13 +19,12 @@ interface SpaceState {
 const initialState = {
   createSpaceInfo: {},
   joinSpaceInfo: {
-    space_id: "",
-    user_id: "",
-    space_avatar: "",
-    space_display_name: "",
+    created_at: "",
+    id: "",
     title: "",
     description: "",
     owner: "",
+    space_thumb: null,
   },
   userProfile: {
     avatar: "",
@@ -43,8 +39,7 @@ const spaceStore = create<SpaceState>()((set) => ({
   setAvatar: (avatar: string) => set({ avatar }),
   setCreateSpaceInfo: (spaceInfo: CreateSpaceInfo) =>
     set({ createSpaceInfo: spaceInfo }),
-  setJoinSpaceInfo: (spaceInfo: JoinSpaceInfo) =>
-    set({ joinSpaceInfo: spaceInfo }),
+  setJoinSpaceInfo: (spaceInfo: Spaces) => set({ joinSpaceInfo: spaceInfo }),
   setUserProfile: (userProfile: UserProfile) => set({ userProfile }),
   resetCreateSpaceInfo: () =>
     set(() => {

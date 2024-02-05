@@ -1,14 +1,23 @@
-import { Player, PlayerState } from "@/components/metaverse/types/metaverse";
-import useAnimated from "@/hooks/useAnimated";
 import { useState } from "react";
-import styled from "styled-components";
-import StBadge from "../common/badge/Badge";
+
+import { Player } from "@/types/metaverse.types";
+
+import { AnimatePresence } from "framer-motion";
 import BadgeWrapper from "../common/badge/BadgeWrapper";
 import MetaAvatar from "../metaverse/avatar/MetaAvatar";
+
+import { StBadge } from "../common/badge/badge.styles";
 import PlayerStateSelector from "./PlayerStateSelector";
+import { getPlayerStateToText, getPlayerStateValue } from "./libs/dock";
+import {
+  StDockPlayerInfoWrapper,
+  StDockPlayerNickname,
+  StDockPlayerState,
+  StDockPlayerWrapper,
+} from "./styles/dockPlayer.styles";
 
 interface Props {
-  player?: Player;
+  player: Player;
 }
 
 export default function DockPlayer({ player }: Props) {
@@ -19,9 +28,6 @@ export default function DockPlayer({ player }: Props) {
     setPlayerStateSelection(!isPlayerStateSelectionOpen);
   };
 
-  const [shouldRender, handleAnimatedEnd] = useAnimated(
-    isPlayerStateSelectionOpen
-  );
   return (
     <StDockPlayerWrapper>
       <BadgeWrapper>
@@ -43,63 +49,10 @@ export default function DockPlayer({ player }: Props) {
         <StDockPlayerState>
           {getPlayerStateToText(player?.state)}
         </StDockPlayerState>
-        {shouldRender && (
-          <PlayerStateSelector
-            isRender={isPlayerStateSelectionOpen}
-            handleAnimatedEnd={handleAnimatedEnd}
-          />
-        )}
+        <AnimatePresence>
+          {isPlayerStateSelectionOpen && <PlayerStateSelector />}
+        </AnimatePresence>
       </StDockPlayerInfoWrapper>
     </StDockPlayerWrapper>
   );
 }
-
-export const getPlayerStateValue = (playerState: PlayerState) => {
-  return [
-    "var(--state-online)",
-    "var(--state-eating)",
-    "var(--state-left-seat)",
-    "var(--state-disturb)",
-  ][playerState];
-};
-
-export const getPlayerStateToText = (playerState?: PlayerState) => {
-  if (playerState == undefined) {
-    return "온라인";
-  }
-  return ["온라인", "식사중", "자리비움", "방해금지"][playerState];
-};
-
-const StDockPlayerWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  gap: ${(props) => props.theme.spacing[8]};
-
-  color: ${(props) => props.theme.color.text.interactive.inverse};
-  font-family: var(--sub-font);
-
-  max-width: 200px;
-`;
-
-const StDockPlayerNickname = styled.p`
-  font-size: ${(props) => props.theme.body.lg.regular.fontSize};
-`;
-
-const StDockPlayerState = styled.p`
-  font-size: ${(props) => props.theme.body.sm.regular.fontSize};
-  transition: all 0.8s ease-in;
-`;
-
-const StDockPlayerInfoWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[6]};
-  margin-left: 40px;
-  padding-top: ${(props) => props.theme.spacing[4]};
-
-  position: relative;
-
-  cursor: pointer;
-`;

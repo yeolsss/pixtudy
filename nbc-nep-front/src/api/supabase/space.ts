@@ -1,7 +1,7 @@
-import { CreateSpaceInfo } from "@/components/spaces/types/space.types";
-import { supabase } from "@/supabase/supabase";
-import { Tables, TablesInsert, TablesUpdate } from "@/supabase/types/supabase";
-import { Spaces } from "@/supabase/types/supabase.tables.type";
+import { supabase } from "@/supabase";
+import { CreateSpaceInfo } from "@/types/space.types";
+import { Spaces } from "@/types/supabase.tables.types";
+import { Tables, TablesInsert, TablesUpdate } from "@/types/supabase.types";
 
 export const createSpaceHandler = async (
   spaceInfo: CreateSpaceInfo
@@ -25,10 +25,10 @@ export const createSpaceHandler = async (
       space_avatar: spaceInfo.space_avatar,
       space_display_name: spaceInfo.space_display_name,
     };
-    const { data, error } = await supabase
+    const { error: insertError } = await supabase
       .from("space_members")
       .insert(ownerInfo);
-    if (error) return Promise.reject(error);
+    if (insertError) return Promise.reject(insertError);
   }
 
   return spaceData;
@@ -67,7 +67,10 @@ export const getPlayerSpaceData = async (
   const { data, error } = await supabase
     .from("space_members")
     .select("*")
-    .eq("user_id", currentUsersSession.session?.user.id!)
+    .eq(
+      "user_id",
+      currentUsersSession.session ? currentUsersSession.session.user.id! : ""
+    )
     .eq("space_id", spaceId)
     .single();
 

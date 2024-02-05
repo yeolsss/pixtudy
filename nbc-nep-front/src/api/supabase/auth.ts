@@ -1,8 +1,8 @@
-import { ForgetPasswordMessageType } from "@/components/auth/utils/authUtils";
-import { supabase } from "@/supabase/supabase";
-import { Tables } from "@/supabase/types/supabase";
-
 import { Session } from "@supabase/supabase-js";
+
+import { supabase } from "@/supabase";
+import { ForgetPasswordMessageType } from "@/types/auth.types";
+import { Tables } from "@/types/supabase.types";
 
 /**
  * Supabase 회원가입을 위한 함수
@@ -10,7 +10,7 @@ import { Session } from "@supabase/supabase-js";
  * @param string password - 회원가입에 사용할 password
  * @param string nickname - 회원가입에 사용할 nickname
  */
-interface SignUpHandlerArgs {
+export interface SignUpHandlerArgs {
   email: string;
   password: string;
   nickname: string;
@@ -20,7 +20,7 @@ export const signUpHandler = async ({
   password,
   nickname,
 }: SignUpHandlerArgs) => {
-  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+  const { error: signUpError } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -30,7 +30,9 @@ export const signUpHandler = async ({
     },
   });
 
-  if (signUpError) throw signUpError;
+  if (signUpError) {
+    throw signUpError;
+  }
 };
 
 /**
@@ -47,25 +49,27 @@ interface SignInHandlerArgs {
   platform: SignInPlatformType;
 }
 
-const err = (e: never) => {};
 export const signInHandler = async ({
   email,
   password,
   platform,
 }: SignInHandlerArgs) => {
   switch (platform) {
-    case "email":
+    case "email": {
       const { data: emailLoginData, error: emailLoginError } =
         await supabase.auth.signInWithPassword({
           email: email!,
           password: password!,
         });
 
-      if (emailLoginError) throw emailLoginError;
+      if (emailLoginError) {
+        throw emailLoginError;
+      }
       return emailLoginData;
+    }
     case "google":
     case "kakao":
-    case "github":
+    case "github": {
       const { data: oAuthLoginData, error: oAuthLoginError } =
         await supabase.auth.signInWithOAuth({
           provider: platform,
@@ -76,10 +80,13 @@ export const signInHandler = async ({
             },
           },
         });
-      if (oAuthLoginError) throw oAuthLoginError;
+
+      if (oAuthLoginError) {
+        throw oAuthLoginError;
+      }
       return oAuthLoginData;
+    }
     default:
-      err(platform);
       throw new Error("LoginError: 올바른 케이스가 아닙니다.");
   }
 };
@@ -89,7 +96,9 @@ export const signInHandler = async ({
  */
 export const logoutHandler = async () => {
   const { error } = await supabase.auth.signOut();
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 };
 
 /**
@@ -105,10 +114,12 @@ export const getUserSessionHandler = async (
   const { data: currentUserInfo, error } = await supabase
     .from("users")
     .select(`*`)
-    .eq("id", session.user.id!)
+    .eq("id", session.user.id)
     .single();
 
-  if (error) return Promise.reject(error);
+  if (error) {
+    return Promise.reject(error);
+  }
   return currentUserInfo;
 };
 
@@ -142,24 +153,27 @@ export const forgottenPasswordHandler = async (
     .select(`*`)
     .eq("email", userEmail);
 
-  if (checkUserError) throw checkUserError;
+  if (checkUserError) {
+    throw checkUserError;
+  }
 
-  if (!!checkUserData.length) {
+  if (checkUserData.length) {
     const { error: sendMailError } = await supabase.auth.resetPasswordForEmail(
       userEmail,
       {
         redirectTo: "https://pixtudy.site/changepassword",
       }
     );
-    if (sendMailError) throw sendMailError;
+    if (sendMailError) {
+      throw sendMailError;
+    }
     return {
       response: "success",
       message: `${userEmail} 계정에 메일을 발송하였습니다. 
       확인 후 비밀번호를 초기화하세요.`,
     };
-  } else {
-    return { response: "fail", message: "등록되지 않은 유저입니다." };
   }
+  return { response: "fail", message: "등록되지 않은 유저입니다." };
 };
 
 // 비밀번호를 변경시키는 함수
@@ -167,13 +181,17 @@ export const updateUserPasswordHandler = async (newPw: string) => {
   const { data, error } = await supabase.auth.updateUser({
     password: newPw,
   });
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
   return data;
 };
 
 // 현재유저의 세션을 가져오는 함수
 export const getSession = async () => {
   const { data, error } = await supabase.auth.getSession();
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
   return data;
 };

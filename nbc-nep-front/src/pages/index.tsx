@@ -5,14 +5,21 @@ import HomeIntroduction from "@/components/home/HomeIntroduction";
 import PixelBackground from "@/components/home/PixelBackground";
 import Layout from "@/components/layout/Layout";
 import useHandleScroll from "@/hooks/scroll/useHandleScroll";
-import { getCookie } from "@/utils/middlewareUtils";
+import { getCookie } from "@/utils/middlewareCookie";
 import { pathValidation } from "@/utils/middlewareValidate";
 import useAuthStore from "@/zustand/authStore";
 import { ReactElement, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { NextPageWithLayout } from "./_app";
 
-const Home: NextPageWithLayout = () => {
+const StWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  z-index: 1;
+`;
+
+function Home() {
   const user = useAuthStore.use.user();
   const bannerRef = useRef<HTMLDivElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
@@ -32,7 +39,7 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <>
-      <CustomHead title={"Main"} description={"메인 페이지입니다."} />
+      <CustomHead title="Main" description="메인 페이지입니다." />
       <StWrapper>
         <HomeBanner isLoggedIn={!!user.email} ref={bannerRef} />
         <HomeIntroduction ref={introRef} />
@@ -41,18 +48,10 @@ const Home: NextPageWithLayout = () => {
       </StWrapper>
     </>
   );
-};
+}
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
 export default Home;
-
-const StWrapper = styled.div`
-  width: 100vw;
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  z-index: 1;
-`;

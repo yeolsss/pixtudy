@@ -1,22 +1,10 @@
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import Image from "next/image";
 import styled from "styled-components";
-// import { usePlayerContext } from "@/context/MetaversePlayerProvider";
+import { IconButtonProperty } from "@/types/metaverse.types";
 
 interface Props {
   button: IconButtonProperty;
-}
-export default function IconButtonByPlayerList({ button }: Props) {
-  const { buttonImage, description, type, handleOnClick } = button;
-  // const { playerList } = usePlayerContext();
-  const { playerList } = useMetaversePlayer();
-  return (
-    <StIconButtonByPlayerListWrapper onClick={handleOnClick}>
-      <Image src={buttonImage} alt={description} width={"16"} height={"16"} />
-      <span>{playerList.length}</span>
-    </StIconButtonByPlayerListWrapper>
-  );
 }
 
 const StIconButtonByPlayerListWrapper = styled.div`
@@ -38,3 +26,14 @@ const StIconButtonByPlayerListWrapper = styled.div`
     letter-spacing: -0.12px;
   }
 `;
+
+export default function IconButtonByPlayerList({ button }: Props) {
+  const { buttonImage, description, handleOnClick } = button;
+  const { playerList } = useMetaversePlayer();
+  return (
+    <StIconButtonByPlayerListWrapper onClick={handleOnClick}>
+      <Image src={buttonImage} alt={description} width="16" height="16" />
+      <span>{playerList.length}</span>
+    </StIconButtonByPlayerListWrapper>
+  );
+}

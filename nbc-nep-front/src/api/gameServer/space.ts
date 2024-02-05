@@ -22,10 +22,10 @@ export const getUsersCount = async (spaceId: string) => {
     if (response.data && response.data.count !== undefined) {
       const { count } = response.data as UserCount;
       return count;
-    } else {
-      throw new Error("invalid response");
     }
+    throw new Error("invalid response");
   } catch (error) {
     console.error(error);
   }
+  return null;
 };

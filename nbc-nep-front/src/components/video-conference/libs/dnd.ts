@@ -3,7 +3,7 @@ import {
   GuideStatusType,
   LayoutConsumersType,
   VideoSource,
-} from "../types/ScreenShare.types";
+} from "../../../types/conference.types";
 
 export const getGridStyle = (currentGuide: GuideStatusType): GridStatusType => {
   switch (currentGuide) {
@@ -41,27 +41,25 @@ export const currentLayoutIndex = (currentGuide: GuideStatusType): number => {
       return 4;
     case "center":
       return 1;
+    default:
+      return 0;
   }
 };
 
 export const formatGridTemplateVideos = (
   videos: LayoutConsumersType[]
 ): (VideoSource | null)[] => {
-  let resultVideos: (VideoSource | null)[] = [];
-
   const filterVideos = videos
     .filter((video) => !!video.isActive)
     .sort((a, b) => a.isActive - b.isActive);
 
-  for (let i = 0; i < filterVideos.at(-1)?.isActive!; i++) {
-    const checkVideo = filterVideos.find((videos) => videos.isActive - 1 === i);
-    if (checkVideo) {
-      const videoSource = checkVideo.consumer;
-      resultVideos.push(videoSource);
-    } else {
-      resultVideos.push(null);
-    }
-  }
+  const resultVideos = new Array(
+    filterVideos.length ? filterVideos[filterVideos.length - 1].isActive : 0
+  ).fill(null);
 
-  return resultVideos;
+  filterVideos.forEach((video) => {
+    resultVideos[video.isActive - 1] = video.consumer;
+  });
+
+  return resultVideos as (VideoSource | null)[];
 };

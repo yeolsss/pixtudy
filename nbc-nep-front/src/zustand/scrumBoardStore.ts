@@ -1,10 +1,10 @@
-import { Kanban_categories } from "@/supabase/types/supabase.tables.type";
+import { KanbanCategories } from "@/types/supabase.tables.types";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
 
 interface ScrumBoardState {
-  categories: Kanban_categories[];
-  setCategories: (fetchedCategories: Kanban_categories[]) => void;
+  categories: KanbanCategories[];
+  setCategories: (fetchedCategories: KanbanCategories[]) => void;
 }
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
 
 const scrumBoardStore = create<ScrumBoardState>((set) => ({
   ...initialState,
-  setCategories: (fetchedCategories: Kanban_categories[]) => {
+  setCategories: (fetchedCategories: KanbanCategories[]) => {
     set({ categories: fetchedCategories });
   },
 }));

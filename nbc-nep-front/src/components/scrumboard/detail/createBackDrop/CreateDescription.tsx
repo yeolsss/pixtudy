@@ -1,12 +1,12 @@
 import {
   SCRUM_BOARD_TEXT_AREA_FONT_SIZE,
   SCRUM_BOARD_TEXT_AREA_TEXT_MAX_LENGTH,
-} from "@/components/scrumboard/constants/constants";
+} from "@/components/scrumboard/constants";
 import BackDropTextArea from "@/components/scrumboard/detail/BackDropTextArea";
 import CreateDescriptionHeader from "@/components/scrumboard/detail/createBackDrop/CreateDescriptionHeader";
 import useCreateScrumFormTextArea from "@/hooks/scrumBoard/useCreateScrumFormTextArea";
 import useScrumBoardItemStore from "@/zustand/scrumBoardItemStore";
-import styled from "styled-components";
+import { StCreateBackDropDescriptionWrapper } from "../../styles/backdrop.styles";
 
 export default function CreateDescription() {
   const scrumBoardText = useScrumBoardItemStore.use.scrumBoardText();
@@ -20,7 +20,7 @@ export default function CreateDescription() {
 
   return (
     <StCreateBackDropDescriptionWrapper>
-      <CreateDescriptionHeader text={text} countType={"C"} />
+      <CreateDescriptionHeader text={text} countType="C" />
       <BackDropTextArea
         fontSize={SCRUM_BOARD_TEXT_AREA_FONT_SIZE}
         forwardRef={textAreaRef}
@@ -31,10 +31,3 @@ export default function CreateDescription() {
     </StCreateBackDropDescriptionWrapper>
   );
 }
-
-const StCreateBackDropDescriptionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: ${(props) => props.theme.spacing[8]};
-`;

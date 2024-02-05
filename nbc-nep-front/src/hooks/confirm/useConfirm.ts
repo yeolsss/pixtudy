@@ -1,4 +1,5 @@
-import useConfirmStore, { ConfirmTextState } from "@/zustand/confirmStore";
+import { ConfirmTextState } from "@/types/zustand.types";
+import useConfirmStore from "@/zustand/confirmStore";
 
 export default function useConfirm() {
   const closeConfirm = useConfirmStore.use.closeConfirm();
@@ -20,15 +21,15 @@ export default function useConfirm() {
     return new Promise((res) => {
       openConfirm(alertInfo);
       const unsubscribe = useConfirmStore.subscribe((state) => {
-        const result = state.result;
-        res(result);
+        const { result: confirmResult } = state;
+        res(confirmResult);
         unsubscribe();
       });
     });
   };
 
-  const setResult = (result: boolean) => {
-    resultConfirm(result);
+  const setResult = (confirmResult: boolean) => {
+    resultConfirm(confirmResult);
   };
 
   return {

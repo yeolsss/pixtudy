@@ -1,12 +1,6 @@
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
-
-export interface ConfirmTextState {
-  title: string;
-  message: string;
-  denyButtonText?: string;
-  confirmButtonText?: string;
-}
+import { ConfirmTextState } from "@/types/zustand.types";
 
 interface ConfirmType extends ConfirmTextState {
   result: boolean;
@@ -40,8 +34,8 @@ const confirmStore = create<ConfirmType>()((set) => ({
     set(() => ({
       title,
       message,
-      denyButtonText: denyButtonText ? denyButtonText : "취소",
-      confirmButtonText: confirmButtonText ? confirmButtonText : "확인",
+      denyButtonText: denyButtonText || "취소",
+      confirmButtonText: confirmButtonText || "확인",
       isOpen: true,
     })),
   closeConfirm: () =>

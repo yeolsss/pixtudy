@@ -6,8 +6,8 @@ import useChatTypeStore from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBarStore from "@/zustand/globalNavBarStore";
 import { useEffect } from "react";
-import styled from "styled-components";
 import useChatListStore from "@/zustand/chatListStore";
+import { StMetaverseChatList } from "@/components/metaverse/styles/metaverse.styles";
 
 export default function MetaverseChatList() {
   const { handleSetGlobalChatAlarmState } = useChatAlarm();
@@ -37,40 +37,17 @@ export default function MetaverseChatList() {
   return (
     <StMetaverseChatList>
       <MetaverseChatHeader
-        title={"Space Chat"}
+        title="Space Chat"
         handler={handleOnClickCloseChat}
       />
       <div>
-        {chatList?.map((chat, index) => {
+        {chatList?.map((chat) => {
           return (
-            <MetaverseChatCard
-              chat={chat}
-              key={chat.userId + index}
-              type="GLOBAL"
-            />
+            <MetaverseChatCard chat={chat} key={chat.userId} type="GLOBAL" />
           );
         })}
-        <div ref={endOfChatsRef}></div>
+        <div ref={endOfChatsRef} />
       </div>
     </StMetaverseChatList>
   );
 }
-
-const StMetaverseChatList = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  flex: 10;
-  height: 95%;
-
-  background-color: ${({ theme }) => theme.color.metaverse.secondary};
-  color: white;
-
-  > div:last-child {
-    overflow: scroll;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-`;

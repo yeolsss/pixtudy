@@ -3,7 +3,7 @@ import {
   MediaConsumeParams,
   RecvTransportType,
   TransPortParams,
-} from "@/components/video-conference/types/ScreenShare.types";
+} from "@/types/conference.types";
 import { useRef } from "react";
 import { Socket } from "socket.io-client";
 
@@ -20,6 +20,23 @@ export default function useRecvTransport({
 }: Props) {
   const recvTransportRef = useRef<RecvTransportType | null>(null);
 
+  const handleRecvConsumerTransportConnect = async (
+    { dtlsParameters }: DtlsParameters,
+    callback: () => void,
+    errorBack: (error: Error) => void
+  ) => {
+    try {
+      socket.emit("transport-recv-connect", {
+        dtlsParameters,
+        playerId,
+      });
+
+      callback();
+    } catch (error) {
+      errorBack(error as Error);
+    }
+  };
+
   const createRecvTransport = (params: TransPortParams) => {
     if (recvTransportRef.current) return recvTransportRef.current;
 
@@ -33,23 +50,7 @@ export default function useRecvTransport({
     } catch (error) {
       console.error("create recv transport error: ", error);
     }
-  };
-
-  const handleRecvConsumerTransportConnect = async (
-    { dtlsParameters }: DtlsParameters,
-    callback: Function,
-    errorBack: Function
-  ) => {
-    try {
-      socket.emit("transport-recv-connect", {
-        dtlsParameters,
-        playerId,
-      });
-
-      callback();
-    } catch (error) {
-      errorBack(error);
-    }
+    return null;
   };
 
   const consume = async (params: MediaConsumeParams) => {

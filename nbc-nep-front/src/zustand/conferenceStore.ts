@@ -1,9 +1,5 @@
 import { filterVideoSourcesByPlayerId } from "@/components/video-conference/libs/util";
-import {
-  Consumer,
-  Producer,
-  ShareType,
-} from "@/components/video-conference/types/ScreenShare.types";
+import { Consumer, Producer, ShareType } from "@/types/conference.types";
 import { create } from "zustand";
 import createSelectors from "./config/createSelector";
 
@@ -15,7 +11,6 @@ interface ConferenceState {
   addProducer: (producer: Producer) => void;
   removeProducer: (producer: Producer) => void;
   findProducerByShareType: (type: ShareType) => Producer | undefined;
-  filterProducersByShareType: (type: ShareType) => Producer[];
   filterConsumersById: (playerId: string) => Consumer[];
   isAlreadyConsume: (removeProducerId: string) => boolean;
 }
@@ -39,21 +34,19 @@ const conferenceStore = create<ConferenceState>()((set, get) => ({
   addProducer: (producer: Producer) =>
     set((state) => ({ producers: [...state.producers, producer] })),
 
-  removeProducer: (producer: Producer) =>
+  removeProducer: (prod: Producer) =>
     set((state) => {
-      const producerId = producer.id;
+      const { id: producerId, track } = prod;
 
       try {
-        const track = producer.track;
-
         if (!track) {
           throw new Error("no track", { cause: "no track" });
         }
 
         track.enabled = false;
 
-        producer.pause();
-        producer.close();
+        prod.pause();
+        prod.close();
 
         const updatedProducers = state.producers.filter(
           (producer) => producer.id !== producerId
@@ -68,25 +61,18 @@ const conferenceStore = create<ConferenceState>()((set, get) => ({
     }),
 
   findProducerByShareType: (shareType: ShareType) => {
-    const producers = get().producers;
+    const { producers } = get();
     return producers.find(
       (producer) => producer.appData.shareType === shareType
     );
   },
 
-  filterProducersByShareType: (shareType: ShareType) => {
-    const producers = get().producers;
-    return producers.filter(
-      (producer) => producer.appData.shareType === shareType
-    );
-  },
-
   isAlreadyConsume: (remoteProducerId: string) => {
-    const consumers = get().consumers;
+    const { consumers } = get();
     return consumers.some((consumer) => consumer.id === remoteProducerId);
   },
   filterConsumersById: (playerId: string) => {
-    const consumers = get().consumers;
+    const { consumers } = get();
     return filterVideoSourcesByPlayerId(consumers, playerId) as Consumer[];
   },
 }));

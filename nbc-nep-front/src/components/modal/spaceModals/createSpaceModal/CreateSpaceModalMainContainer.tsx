@@ -3,7 +3,7 @@ import CreateSpaceForm from "@/components/spaces/CreateSpaceForm";
 import ProfileForm from "@/components/spaces/ProfileForm";
 import ProfilePreview from "@/components/spaces/ProfilePreview";
 import { FORM_SPACE } from "@/components/spaces/constants/constants";
-import { Procedure } from "@/components/spaces/types/space.types";
+import { Procedure } from "@/types/space.types";
 import useModal from "@/hooks/modal/useModal";
 import useSpaceStore from "@/zustand/spaceStore";
 import { useState } from "react";
@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import {
   StModalContainer,
   StModalContents,
-} from "../joinSpaceModal/JoinSpaceModalMainContainer";
+} from "../styles/spaceModalCommens.styles";
 
 export default function CreateSpaceModalMainContainer() {
   const [procedure, setProcedure] = useState<Procedure>(FORM_SPACE);
@@ -21,7 +21,6 @@ export default function CreateSpaceModalMainContainer() {
   const {
     handleSubmit,
     register,
-    getValues,
     watch,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
@@ -41,7 +40,6 @@ export default function CreateSpaceModalMainContainer() {
             <CreateSpaceForm
               handleSubmit={handleSubmit}
               register={register}
-              getValues={getValues}
               isValid={isValid}
               errors={errors}
             />
@@ -53,7 +51,6 @@ export default function CreateSpaceModalMainContainer() {
             handleSubmit={handleSubmit}
             register={register}
             isValid={isValid}
-            mode="createSpace"
             errors={errors}
           />
         )}

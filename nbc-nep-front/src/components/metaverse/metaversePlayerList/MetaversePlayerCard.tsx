@@ -1,10 +1,12 @@
-import StBadge from "@/components/common/badge/Badge";
 import MetaAvatar from "@/components/metaverse/avatar/MetaAvatar";
-import { HandleOpenDmContainerPrams } from "@/components/metaverse/metaversePlayerList/MetaversePlayerList";
-import { Player } from "@/components/metaverse/types/metaverse";
-import { getPlayerStateValue } from "@/components/video-conference/DockPlayer";
+import {
+  StBadgeWrapper,
+  StMetaversePlayerCard,
+} from "@/components/metaverse/styles/metaverse.styles";
+import { getPlayerStateValue } from "@/components/video-conference/libs/dock";
+import { HandleOpenDmContainerPrams, Player } from "@/types/metaverse.types";
 import useAuthStore from "@/zustand/authStore";
-import styled from "styled-components";
+import { StBadge } from "@/components/common/badge/badge.styles";
 
 interface Props {
   player: Player;
@@ -34,7 +36,6 @@ export default function MetaversePlayerCard({
         otherUserName,
         otherUserAvatar,
       });
-      return;
     }
   };
 
@@ -61,27 +62,3 @@ export default function MetaversePlayerCard({
     </StMetaversePlayerCard>
   );
 }
-
-const StMetaversePlayerCard = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 30px;
-  cursor: pointer;
-  > div {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  > div > span {
-    font-size: 14px;
-    white-space: nowrap;
-  }
-  &:hover {
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-  }
-`;
-
-const StBadgeWrapper = styled.div`
-  position: relative;
-`;

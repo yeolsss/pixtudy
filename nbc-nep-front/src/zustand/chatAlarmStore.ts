@@ -1,6 +1,6 @@
-import { dmChatAlarmState } from "@/components/metaverse/types/ChatAlarmType";
 import { create } from "zustand";
 import createSelectors from "@/zustand/config/createSelector";
+import { dmChatAlarmState } from "@/types/metaverse.types";
 
 interface initialChatAlarmState {
   globalChatState: boolean;
@@ -29,7 +29,7 @@ const initialChatAlarm = {
     ? localStorage.getItem("sound")!
     : "/assets/alarm/Blop.mp3",
   volume: localStorage.getItem("volume")
-    ? parseInt(localStorage.getItem("volume")!)
+    ? parseInt(localStorage.getItem("volume")!, 10)
     : 50,
   isPlay: false,
 };

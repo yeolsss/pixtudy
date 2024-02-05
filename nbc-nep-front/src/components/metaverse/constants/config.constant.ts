@@ -1,4 +1,4 @@
-import { Config } from "../types/config.types";
+import { Config } from "@/types/metaverse.types";
 
 export const configModes: {
   mode: Config;

@@ -4,30 +4,29 @@ import {
   SPACE_NAME_MAX_LENGTH,
 } from "@/components/spaces/constants/constants";
 import { useCreateSpace } from "@/hooks/query/useSupabase";
-import { Tables } from "@/supabase/types/supabase";
+import { CreateSpaceInfo } from "@/types/space.types";
+import { Tables } from "@/types/supabase.types";
 import useSpaceStore from "@/zustand/spaceStore";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import {
   FieldValues,
   FormState,
   SubmitHandler,
-  UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
-import styled from "styled-components";
 import { StFormCTAButton } from "../common/button/button.styles";
-import DefaultSpanText from "../common/text/DefaultSpanText";
-import { StContentsContainer, StErrorMessage } from "./JoinSpaceForm";
+import {
+  StCreateContentsContainer,
+  StCreateSpaceForm,
+} from "./styles/createSpaceForm.styles";
+import { StErrorMessage } from "./styles/joinSpaceForm.styles";
 import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
-import { CreateSpaceInfo } from "./types/space.types";
 
 interface Props {
   handleSubmit: UseFormHandleSubmit<FieldValues>;
   register: UseFormRegister<FieldValues>;
   errors: FormState<FieldValues>["errors"];
-  getValues: UseFormGetValues<FieldValues>;
   isValid: boolean;
 }
 
@@ -35,27 +34,19 @@ export default function CreateSpaceForm({
   register,
   handleSubmit,
   errors,
-  getValues,
   isValid,
 }: Props) {
   const router = useRouter();
   const userProfile = useSpaceStore.use.userProfile();
   const setCreateSpaceInfo = useSpaceStore.use.setCreateSpaceInfo();
-  const { createSpace, createSuccess } = useCreateSpace(
-    (data: Tables<"spaces">) => {
-      handleToSpace(data.id);
-    }
-  );
 
-  useEffect(() => {
-    if (createSuccess) {
-      return;
-    }
-  }, [createSuccess]);
-
-  const handleToSpace = async (space_id: string) => {
-    await router.replace(`/metaverse/${space_id!}`);
+  const handleToSpace = async (spaceId: string) => {
+    await router.replace(`/metaverse/${spaceId!}`);
   };
+
+  const { createSpace } = useCreateSpace((data: Tables<"spaces">) => {
+    handleToSpace(data.id);
+  });
 
   const handleCreateSpaceSubmit: SubmitHandler<FieldValues> = (data) => {
     const spaceInfo: CreateSpaceInfo = {
@@ -105,17 +96,21 @@ export default function CreateSpaceForm({
                   key={fieldValue.name}
                   $isError={!!errors.spaceDescription?.message}
                 >
-                  <label htmlFor="">스페이스 설명 </label>
-                  <textarea
-                    key={fieldValue.name}
-                    placeholder={fieldValue.placeholder}
-                    maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
-                    {...register(fieldValue.name, fieldValue.register)}
-                  />
+                  <label htmlFor={fieldValue.name}>
+                    스페이스 설명
+                    <textarea
+                      key={fieldValue.name}
+                      id={fieldValue.name}
+                      placeholder={fieldValue.placeholder}
+                      maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
+                      {...register(fieldValue.name, fieldValue.register)}
+                    />
+                  </label>
+
                   {errors.spaceDescription && (
-                    <DefaultSpanText>
+                    <StErrorMessage>
                       {errors.spaceDescription?.message as string}
-                    </DefaultSpanText>
+                    </StErrorMessage>
                   )}
                 </StCreateInputWrapper>
               </div>
@@ -131,25 +126,3 @@ export default function CreateSpaceForm({
     </StCreateSpaceForm>
   );
 }
-
-const StCreateSpaceForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: fit-content;
-`;
-
-const StCreateContentsContainer = styled(StContentsContainer)`
-  width: 100%;
-
-  & > div {
-    display: flex;
-    flex-direction: column;
-    gap: ${(props) => props.theme.spacing[16]};
-  }
-
-  & + div {
-    width: 100%;
-  }
-`;

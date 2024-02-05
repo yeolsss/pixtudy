@@ -1,10 +1,13 @@
+import Image, { StaticImageData } from "next/image";
+
 import MicOff from "@/assets/dock-icons/mic-off.svg";
 import MicOn from "@/assets/dock-icons/mic-on.svg";
-import { Player } from "@/components/metaverse/types/metaverse";
-import Image from "next/image";
+import { Player } from "@/types/metaverse.types";
+
+import { VideoSource } from "../../../types/conference.types";
 import ShareMediaItem from "../ShareMediaItem";
 import { findVideoSourcesByType } from "../libs/util";
-import { VideoSource } from "../types/ScreenShare.types";
+
 import DefaultShareMediaItem from "./DefaultShareMediaItem";
 
 interface Props {
@@ -32,11 +35,11 @@ export default function PlayerMediaDisplay({
 
   const AudioBadge = (
     <Image
-      src={isAudioOn ? MicOn : MicOff}
+      src={isAudioOn ? (MicOn as StaticImageData) : (MicOff as StaticImageData)}
       width={20}
       height={20}
       style={{ position: "absolute", left: 10, bottom: 10 }}
-      alt={"mic image"}
+      alt="mic image"
     />
   );
   return (
@@ -54,7 +57,7 @@ export default function PlayerMediaDisplay({
           nickname={player.nickname}
           videoSource={audioVideoSource}
           isCurrentPlayer={isCurrentPlayer}
-        ></ShareMediaItem>
+        />
       )}
       {isVideoOn && (
         <ShareMediaItem

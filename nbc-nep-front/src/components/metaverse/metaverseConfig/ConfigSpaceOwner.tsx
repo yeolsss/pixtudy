@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
 import { deleteThumbnail, uploadThumbnail } from "@/api/supabase/storage";
 import SpaceThumb from "@/components/common/SpaceThumb";
-import { StDangerButton } from "@/components/common/button/button.styles";
-import { StLoadingSpinner } from "@/components/common/loading/LoadingProgress";
 import {
   SPACE_DESCRIPTION_MAX_LENGTH,
   SPACE_NAME_MAX_LENGTH,
@@ -12,17 +14,22 @@ import useConfirm from "@/hooks/confirm/useConfirm";
 import useKeyDownPrevent from "@/hooks/metaverse/useKeyDownPrevent";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import { useDeleteSpace, useUpdateSpaceInfo } from "@/hooks/query/useSupabase";
-import { useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import styled from "styled-components";
+
+import { StLoadingSpinner } from "@/components/common/loading/loading.styles";
 import {
   IMAGE_MAX_SIZE,
   SPACE_DESCRIPTION_FORM,
   SPACE_NAME_FORM,
   SPACE_THUMB_FORM,
 } from "../constants/config.constant";
-import { StHiddenInput, StSectionMain } from "../styles/config.styles";
+import {
+  StDanger,
+  StFloatingLoading,
+  StHelperSpan,
+  StHiddenInput,
+  StSection,
+} from "../styles/config.styles";
+
 import ConfigSpaceFormItem from "./ConfigSpaceFormItem";
 
 export default function ConfigSpaceOwner() {
@@ -52,7 +59,9 @@ export default function ConfigSpaceOwner() {
   const { openConfirmHandler } = useConfirm();
 
   const handleRemoveSpace = async () => {
-    if (!spaceInfo) return;
+    if (!spaceInfo) {
+      return;
+    }
     const result = await openConfirmHandler({
       title: "스페이스 삭제",
       message: "스페이스를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
@@ -66,7 +75,9 @@ export default function ConfigSpaceOwner() {
   };
 
   const handleUpdateSpace: SubmitHandler<FieldValues> = async (data) => {
-    if (!spaceInfo) return;
+    if (!spaceInfo) {
+      return;
+    }
 
     const {
       [SPACE_THUMB_FORM]: thumb,
@@ -138,17 +149,23 @@ export default function ConfigSpaceOwner() {
       onSubmit={handleSubmit(handleUpdateSpace)}
       ref={formRef}
     >
+      {isPendingUpdate && (
+        <StFloatingLoading>
+          <StLoadingSpinner as="div" />
+        </StFloatingLoading>
+      )}
       <div>
         <span>스페이스 썸네일</span>
         <label htmlFor={SPACE_THUMB_FORM}>
           <SpaceThumb src={thumbPreviewSrc} />
+          <StHiddenInput
+            id={SPACE_THUMB_FORM} // 이 id가 htmlFor과 일치해야 합니다.
+            type="file"
+            {...register(SPACE_THUMB_FORM)}
+            accept="image/*"
+          />
         </label>
-        <StHiddenInput
-          id={SPACE_THUMB_FORM}
-          type="file"
-          {...register(SPACE_THUMB_FORM)}
-          accept="image/*"
-        />
+
         {!!watch(SPACE_THUMB_FORM) || (
           <StHelperSpan>썸네일을 클릭하여 썸네일을 수정해보세요</StHelperSpan>
         )}
@@ -190,7 +207,7 @@ export default function ConfigSpaceOwner() {
             required: "스페이스의 설명이 필요합니다. ",
           })}
           maxLength={SPACE_DESCRIPTION_MAX_LENGTH}
-        ></textarea>
+        />
       </ConfigSpaceFormItem>
       <div>
         <button type="submit">수정하기</button>
@@ -198,47 +215,6 @@ export default function ConfigSpaceOwner() {
           삭제하기
         </StDanger>
       </div>
-      {isPendingUpdate && (
-        <StFloatingLoading>
-          <StLoadingSpinner as="div" />
-        </StFloatingLoading>
-      )}
     </StSection>
   );
 }
-
-const StSection = styled(StSectionMain)`
-  overflow: auto;
-
-  div label {
-    align-self: center;
-    cursor: pointer;
-  }
-
-  input,
-  textarea {
-    font-family: var(--default-font);
-  }
-  padding-top: 0 !important;
-`;
-
-const StDanger = styled(StDangerButton)`
-  padding: ${(props) => `${props.theme.spacing[8]} ${props.theme.spacing[16]}`};
-  font-size: inherit;
-  border-radius: ${(props) => props.theme.border.radius[8]};
-`;
-
-const StHelperSpan = styled.p`
-  font-size: 0.75rem;
-  font-weight: normal;
-  color: ${(props) => props.theme.color.text.info};
-  text-align: center;
-  opacity: 0.5;
-`;
-
-const StFloatingLoading = styled.div`
-  position: absolute;
-
-  right: ${(props) => props.theme.spacing[24]};
-  top: ${(props) => props.theme.spacing[64]};
-`;

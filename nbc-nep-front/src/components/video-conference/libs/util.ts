@@ -1,10 +1,11 @@
 import { filter, find } from "lodash";
+
 import {
   AppData,
   ShareType,
   SplitVideoSource,
   VideoSource,
-} from "../types/ScreenShare.types";
+} from "../../../types/conference.types";
 
 export function isEmptyTracks(tracks: MediaStreamTrack[]) {
   return tracks.length === 0;

@@ -2,11 +2,23 @@ import { getDmChannelMessagesReturns } from "@/api/supabase/dm";
 import useFocusOutInput from "@/hooks/phaser/useFocusOutInput";
 import { useSendMessage } from "@/hooks/query/useSupabase";
 import useInput from "@/hooks/useInput";
-import { Tables } from "@/supabase/types/supabase";
+import { Tables } from "@/types/supabase.types";
 import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import styled from "styled-components";
 import useDmStore from "@/zustand/dmStore";
+
+const StChatInput = styled.input`
+  width: 100%;
+  height: 30px;
+  outline: none;
+  padding: 0 10px;
+  background-color: #1f2542;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+`;
 
 interface Props {
   currentDmChannel: string | null | undefined;
@@ -95,14 +107,3 @@ export default function MetaverseDmForm({
     </form>
   );
 }
-const StChatInput = styled.input`
-  width: 100%;
-  height: 30px;
-  outline: none;
-  padding: 0 10px;
-  background-color: #1f2542;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  line-height: 24px;
-  letter-spacing: -0.32px;
-`;

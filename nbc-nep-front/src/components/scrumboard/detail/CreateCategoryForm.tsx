@@ -1,28 +1,29 @@
 import { StFormCTAButton } from "@/components/common/button/button.styles";
 import DefaultSpanText from "@/components/common/text/DefaultSpanText";
-import { StErrorMessage } from "@/components/spaces/JoinSpaceForm";
 import useModal from "@/hooks/modal/useModal";
 import { useCreateCategory, useGetCategories } from "@/hooks/query/useSupabase";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import styled from "styled-components";
-import { options } from "../constants/constants";
+import { StErrorMessage } from "@/components/spaces/styles/joinSpaceForm.styles";
+import {
+  StCategoryColorItem,
+  StCategoryItemWrapper,
+  StCreateCategoryForm,
+} from "@/components/scrumboard/styles/category.styles";
+import { options } from "../constants";
 
 export default function CreateCategoryForm() {
-  const { space_id } = useParams();
-  const spaceId = space_id as string;
-  const categories = useGetCategories(spaceId);
+  const { space_id: spaceId } = useParams();
+  const categories = useGetCategories(spaceId as string);
   const categoryNames = categories?.map((category) => category.name);
-  const { create, isError, isSuccess } = useCreateCategory(spaceId);
+  const { create } = useCreateCategory(spaceId as string);
   const [selectedColor, setSelectedColor] = useState<string>("");
   const { closeModal } = useModal();
 
   const {
-    control,
     handleSubmit,
     register,
-    watch,
     formState: { errors, isValid },
   } = useForm<FieldValues>({ mode: "onChange" });
 
@@ -38,7 +39,7 @@ export default function CreateCategoryForm() {
 
   const handleCreateCategory = (data: FieldValues) => {
     const newCategory = {
-      spaceId,
+      spaceId: spaceId as string,
       name: data.name,
       color: data.color,
     };
@@ -65,13 +66,13 @@ export default function CreateCategoryForm() {
       <div>
         <h3>카테고리 색상</h3>
         <div>
-          {options.map((option, index) => {
+          {options.map((option) => {
             return (
               <StCategoryItemWrapper
-                key={index}
+                key={option}
                 $isSelected={selectedColor === option}
               >
-                <StCategoryColor
+                <StCategoryColorItem
                   key={option}
                   $color={option}
                   $isSelected={selectedColor === option}
@@ -87,7 +88,7 @@ export default function CreateCategoryForm() {
                       })}
                     />
                   </label>
-                </StCategoryColor>
+                </StCategoryColorItem>
               </StCategoryItemWrapper>
             );
           })}
@@ -102,68 +103,3 @@ export default function CreateCategoryForm() {
     </StCreateCategoryForm>
   );
 }
-
-const StCreateCategoryForm = styled.form`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[16]};
-  & > div {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    gap: ${(props) => props.theme.spacing[8]};
-  }
-  & > div > div {
-    display: flex;
-    gap: ${(props) => props.theme.spacing[2]};
-  }
-  & h3 {
-    font-size: ${(props) => props.theme.body.lg.medium.fontSize};
-    font-family: var(--sub-font);
-    font-weight: ${(props) => props.theme.heading.desktop.sm.fontWeight};
-  }
-`;
-
-const StCategoryItemWrapper = styled.div<{ $isSelected: boolean }>`
-  opacity: ${(props) => (props.$isSelected ? 1 : 0.2)};
-  transition: opacity 0.2s all;
-
-  border-radius: ${(props) => props.theme.border.radius.circle};
-  input {
-    display: none;
-  }
-`;
-
-const StCategoryColor = styled.div<{ $color: string; $isSelected: boolean }>`
-  padding: ${(props) => props.theme.spacing[6]};
-  border-radius: ${(props) => props.theme.border.radius[8]};
-  background-color: ${(props) =>
-    props.$isSelected
-      ? props.theme.color.blue[100]
-      : props.theme.color.bg.secondary};
-  &:hover {
-    background-color: ${(props) => props.theme.color.blue[300]};
-  }
-  & > label {
-    display: block;
-    width: ${(props) => props.theme.unit[16]};
-    height: ${(props) => props.theme.unit[16]};
-    border-radius: ${(props) => props.theme.border.radius.circle};
-    padding: 12px;
-    background-color: ${(props) => props.$color};
-    background-image: ${(props) =>
-      props.$isSelected ? `url('/assets/selected.svg')` : "none"};
-    background-size: 12px;
-    background-repeat: no-repeat;
-    background-position: center 60%;
-  }
-`;
-
-const StSubmitBtn = styled(StFormCTAButton)`
-  &:disabled {
-    background-color: ${(props) =>
-      props.theme.color.bg.interactive["selected-press"]};
-    cursor: auto;
-  }
-`;

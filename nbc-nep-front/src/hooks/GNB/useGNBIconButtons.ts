@@ -1,19 +1,21 @@
-import SettingsIcon from "@/assets/icons/Cog.svg";
-import chartIcon from "@/assets/icons/Comments.svg";
-import reportIcon from "@/assets/icons/User Headset.svg";
-import usersIcon from "@/assets/icons/Users.svg";
-import kanbanIcon from "@/assets/icons/kanbanIcon.svg";
 import { GOOGLE_FORM_LINK } from "@/components/layout/Header";
-import { IconButtonProperty } from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/iconButton/types/iconButtonTypes";
 import useChatTypeStore from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBarStore, {
   changeSectionVisibility,
 } from "@/zustand/globalNavBarStore";
 import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
-import useModal from "../modal/useModal";
 import { useEffect } from "react";
 import usePhaserInput from "@/hooks/phaser/usePhaserInput";
+import { IconButtonProperty } from "@/types/metaverse.types";
+import useModal from "../modal/useModal";
+import {
+  chatIcon,
+  kanbanIcon,
+  reportIcon,
+  settingIcon,
+  usersIcon,
+} from "../../assets/GNB";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const isChatSectionOn = useGlobalNavBarStore.use.isChatSectionOn();
@@ -47,7 +49,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       },
     },
     {
-      buttonImage: chartIcon,
+      buttonImage: chatIcon,
       description: "채팅",
       type: "chat",
       handleOnClick: () => {
@@ -63,7 +65,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       },
     },
     {
-      buttonImage: SettingsIcon,
+      buttonImage: settingIcon,
       description: "설정",
       type: "settings",
       handleOnClick: () => {
