@@ -36,8 +36,8 @@ export default function useDropItem(categoryId: string) {
     },
     collect: (monitor: DropTargetMonitor) => ({
       isOver: monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
-      didDrop: !!monitor.didDrop(),
+      canDrop: monitor.canDrop(),
+      didDrop: monitor.didDrop(),
       dropResult: monitor.getDropResult(),
     }),
   };

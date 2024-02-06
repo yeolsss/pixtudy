@@ -59,7 +59,6 @@ export const StLayoutContainer = styled.div<{
 }>`
   background: rgba(0, 0, 0, 0.8);
   width: 100%;
-  height: 100%;
   height: ${(props) => (props.$isPreviewVideo ? "85%" : "93%")};
   display: grid;
   position: relative;

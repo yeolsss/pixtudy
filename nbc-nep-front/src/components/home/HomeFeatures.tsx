@@ -9,7 +9,7 @@ import {
 } from "./styles/home.styles";
 
 const HomeFeatures = forwardRef<HTMLDivElement>(
-  function HomeScrollContainer(props, ref) {
+  function HomeScrollContainer(_, ref) {
     const { scrollIndex } = useScroll();
 
     return (

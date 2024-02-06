@@ -24,15 +24,6 @@ export interface KanbanCategories {
   spaces?: Spaces;
 }
 
-export interface DmChannels {
-  id: string /* primary key */;
-  space_id: string /* foreign key to spaces.id */;
-  user: string /* foreign key to users.id */;
-  other_user?: string /* foreign key to users.id */;
-  spaces?: Spaces;
-  users?: Users;
-}
-
 export interface KanbanItems {
   id: string /* primary key */;
   created_at: string;

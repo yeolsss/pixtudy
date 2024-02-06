@@ -44,37 +44,6 @@ export const StAudio = styled.audio`
   height: 0;
 `;
 
-export const StMediaItemsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[20]};
-
-  padding-top: ${(props) => props.theme.spacing[8]};
-
-  position: absolute;
-  right: ${(props) => props.theme.spacing[8]};
-`;
-
-export const StMediaItemWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing[8]};
-
-  position: relative;
-`;
-
-export const StMediaItemProducerContainer = styled(StMediaItemsWrapper)<{
-  $isToggle?: boolean;
-}>`
-  transition: all 0.5s ease-in-out;
-
-  ${(props) =>
-    props.$isToggle &&
-    `
-    flex-direction: row-reverse;
-  `}
-`;
-
 export const StVideoWrapper = styled(StPositionRelative)`
   width: ${(props) => props.theme.video.width};
   height: ${(props) => props.theme.video.height};
