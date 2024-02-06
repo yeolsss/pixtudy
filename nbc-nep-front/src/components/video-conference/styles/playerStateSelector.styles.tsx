@@ -1,6 +1,7 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
-export const StUlWrapper = styled.ul`
+export const StUlWrapper = styled(motion.ul)`
   position: absolute;
 
   border-radius: ${(props) => props.theme.border.radius[16]};
