@@ -7,9 +7,9 @@ export default function useDragItem(item: GetKanbanItemsByAssignees) {
     type: "kanbanItem",
     item,
     collect: (monitor: DragSourceMonitor) => ({
-      isDragging: !!monitor.isDragging(),
+      isDragging: monitor.isDragging(),
       targetCategoryId: monitor.getDropResult<DropItem>(),
-      didDrop: !!monitor.didDrop(),
+      didDrop: monitor.didDrop(),
     }),
     end: () => {},
   };

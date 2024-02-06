@@ -29,7 +29,7 @@ import { StCreateInputWrapper } from "./styles/spaceCommon.styles";
 
 interface ProfileFormProps {
   setProcedure: Dispatch<SetStateAction<Procedure>>;
-  handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
+  handleSubmit: UseFormHandleSubmit<FieldValues>;
   register: UseFormRegister<FieldValues>;
   watch: UseFormWatch<FieldValues>;
   errors: FormState<FieldValues>["errors"];

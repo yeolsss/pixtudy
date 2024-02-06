@@ -54,23 +54,25 @@ export const StDropdownMenuItem = styled.li<{ $type: string }>`
   cursor: pointer;
   font-family: var(--sub-font);
   font-size: ${(props) => props.theme.body.lg.semibold.fontSize};
+
   & > span {
     display: inline-block;
     width: 16px;
     height: 16px;
-    background: url("/assets/${(props) => props.$type}.svg");
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url("/assets/${(props) => props.$type}.svg") no-repeat center;
     background-size: contain;
   }
+
   &:hover {
     background-color: ${(props) => props.theme.color.bg.primary};
   }
+
   &:nth-child(1) {
     border-top-left-radius: ${(props) => props.theme.border.radius[12]};
     border-top-right-radius: ${(props) => props.theme.border.radius[12]};
     padding-bottom: ${(props) => props.theme.spacing[8]};
   }
+
   &:nth-child(2) {
     border-bottom-left-radius: ${(props) => props.theme.border.radius[12]};
     border-bottom-right-radius: ${(props) => props.theme.border.radius[12]};

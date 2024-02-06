@@ -8,7 +8,7 @@ import {
 } from "@/components/video-conference/libs/dnd";
 import useLayout from "@/hooks/conference/useLayout";
 
-import { GridStatusType, GuideStatusType } from "../../types/conference.types";
+import { GridStatusType, GuideStatusType } from "@/types/conference.types";
 
 import ShareMediaItem from "./ShareMediaItem";
 import ShareScreenDragItem from "./ShareScreenDragItem";
@@ -51,7 +51,7 @@ export default function ShareScreenContainer() {
 
   const [, drop] = useDrop({
     accept: "VIDEO",
-    hover: (item, monitor) => {
+    hover: (_, monitor) => {
       if (!dropParentRef.current) {
         return;
       }

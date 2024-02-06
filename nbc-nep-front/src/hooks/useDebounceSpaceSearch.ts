@@ -13,7 +13,7 @@ export default function useDebounceSpaceSearch(timeout: number = 1000) {
     };
   }, [timerId]);
 
-  const debounce = useCallback(() => {
+  return useCallback(() => {
     if (timerId) {
       clearTimeout(timerId);
     }
@@ -22,6 +22,4 @@ export default function useDebounceSpaceSearch(timeout: number = 1000) {
       clearTimeout(timerId as NodeJS.Timeout);
     }, timeout);
   }, []);
-
-  return debounce;
 }

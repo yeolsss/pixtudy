@@ -9,14 +9,14 @@ import useVideoSource from "@/hooks/conference/useVideoSource";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useAuth from "@/zustand/authStore";
 
-import { videoParams } from "../../components/video-conference/constants";
+import { videoParams } from "@/components/video-conference/constants";
 import {
   AppData,
   Producer,
   ProducerForConsume,
   ShareType,
   TransPortParams,
-} from "../../types/conference.types";
+} from "@/types/conference.types";
 
 import useSocket from "./useSocket";
 
