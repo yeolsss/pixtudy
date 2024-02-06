@@ -5,8 +5,9 @@ import {
   GetKanbanItemsByAssignees,
   KanbanCategories,
 } from "@/types/supabase.tables.types";
+
 import useScrumBoardItemBackDropStore from "@/zustand/createScrumBoardItemStore";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StAssigneesWrapper,
   StListItem,
@@ -26,6 +27,12 @@ function ScrumBoardItem({ category, item }: Props) {
     setIsOpen(category, kanbanItem, BACK_DROP_TYPE_DETAIL);
   };
   const { drag, isDragging } = useDragItem(item);
+
+  const setCategory = useScrumBoardItemBackDropStore.use.setCategory();
+
+  useEffect(() => {
+    setCategory(category);
+  }, [category]);
 
   return (
     <StListItem
