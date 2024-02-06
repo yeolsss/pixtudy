@@ -24,7 +24,7 @@ const HomeFeatures = forwardRef<HTMLDivElement>(
           </StStickyItem>
           <AnimatePresence>
             {Array.from({ length: scrollIndex + 1 })
-              .map((_, i) => i)
+              .map((props, i) => i)
               .map((index) => (
                 <ScrollItem key={`scroll-item${index}`} index={index} />
               ))}
