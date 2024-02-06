@@ -3,7 +3,7 @@ import Image from "next/image";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { ShareType } from "../../types/conference.types";
+import { ShareType } from "@/types/conference.types";
 
 import { callToastDockError, getMediaStreamByType } from "./libs/sharebutton";
 import { StShareButtonWrapper } from "./styles/shareButton.styles";

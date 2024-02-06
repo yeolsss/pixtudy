@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-import { VideoSource } from "../../types/conference.types";
+import { VideoSource } from "@/types/conference.types";
 
 import {
   StAudio,

@@ -9,7 +9,7 @@ import {
 } from "./styles/homeIntroduction.styles";
 
 const HomeIntroduction = forwardRef<HTMLDivElement>(
-  function HomeSection(props, ref) {
+  function HomeSection(_, ref) {
     const { section } = useScroll();
     return (
       <StSectionWrapper ref={ref}>

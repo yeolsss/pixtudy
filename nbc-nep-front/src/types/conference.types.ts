@@ -1,8 +1,6 @@
 import { types } from "mediasoup-client";
 import { RtpParameters } from "mediasoup-client/lib/RtpParameters";
 
-import { Player } from "@/types/metaverse.types";
-
 export type RtpCapabilities = types.RtpCapabilities;
 
 export interface DtlsParameters {
@@ -20,13 +18,6 @@ export interface TransPortParams {
   iceParameters: types.IceParameters;
   iceCandidates: types.IceCandidate[];
   dtlsParameters: types.DtlsParameters;
-}
-
-export interface NewProducerParameter {
-  producerId: string;
-  socketId: string;
-  socketName: string;
-  isNewSocketHost: boolean;
 }
 
 export type ShareType = "screen" | "webcam" | "audio";
@@ -67,25 +58,9 @@ export type GridStatusType =
 
 export type VideoSource = Producer | Consumer;
 
-export interface MediaStreamWithId {
-  stream: MediaStream;
-  id: string;
-}
-
-export type TrackKind = "video" | "audio";
-
 export interface ProducerForConsume {
   id: string;
   appData: AppData;
-}
-
-export type UserWithVideoSource = {
-  producers: Producer[];
-  consumers: Consumer[];
-} & Player;
-
-export interface UserVideoSourceMap {
-  [key: string]: UserWithVideoSource;
 }
 
 export type SplitVideoSource = [VideoSource[], VideoSource[]];
@@ -108,10 +83,6 @@ export interface MediaConsumeParamsForEmit {
   playerId: string;
   appData: AppData;
   producerId: string;
-}
-
-export interface DeviceInputs {
-  deviceId: string;
 }
 
 export interface LocalStorageDeviceInputs {
