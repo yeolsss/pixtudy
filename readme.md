@@ -269,6 +269,18 @@ if (pathname.startsWith("/dashboard") || pathname.startsWith("/metaverse")) {
 
 <br/>
 
+### # 6. socket 단일 인스턴스화
+
+> ❗ 한번에 여러 화면이 공유되거나 제대로 화면이 공유 중단이 되지 않는 문제 발생
+
+---
+
+### 💡 해결
+
+socket을 사용할 때 socket을 사용하는 컴포넌트마다 socket 인스턴스가 생성이 되서 여러 개의 중복된 socket이 서버와 연결되서 생긴 문제로, zustand를 이용하여 소켓 인스턴스를 하나만 만들어서 중복을 제어하여 중복되는 문제를 해결했다.
+
+<br/>
+
 ## <a id="팀원-소개"></a> 🧑🏻‍💻**👩🏻‍💻** 팀원 소개
 
 | 이름   | 태그     | github 주소                        |
