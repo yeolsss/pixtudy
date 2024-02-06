@@ -32,7 +32,7 @@ const IMAGE_COUNT = 2;
 export default function NoContents({ text = "게시물이 없습니다" }: Props) {
   const randomImage = useMemo(() => {
     const random = Date.now() % IMAGE_COUNT;
-    return `/assets/no_contents_${random}.png`;
+    return `/assets/no_contents_${random + 1}.png`;
   }, [text]);
 
   return (

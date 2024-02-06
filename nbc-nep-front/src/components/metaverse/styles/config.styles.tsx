@@ -158,7 +158,8 @@ export const StErrorText = styled.span`
 `;
 
 export const StSection = styled(StSectionMain)`
-  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
   position: relative;
 
   div label {

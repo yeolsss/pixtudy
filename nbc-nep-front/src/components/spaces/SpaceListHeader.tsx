@@ -38,6 +38,7 @@ export default function SpaceListHeader() {
             <StLink
               $isSelected={router.asPath !== "/dashboard"}
               href="/dashboard"
+              scroll={false}
             >
               최근 방문
             </StLink>
@@ -45,6 +46,7 @@ export default function SpaceListHeader() {
           <StLine />
           <StLinkWrapper>
             <StLink
+              scroll={false}
               $isSelected={router.asPath !== "/dashboard?query=myspace"}
               href="/dashboard?query=myspace"
             >
