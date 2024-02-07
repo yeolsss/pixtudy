@@ -76,7 +76,7 @@ Pixtudy는 발표자의 화면만을 일방적으로 공유받던 청취자들�
 ![Framer](https://img.shields.io/badge/Framer-black?style=for-the-badge&logo=framer&logoColor=blue)
 ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
 ![Mediasoup](https://img.shields.io/badge/Mediasoup-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
-![webRTC](https://img.shields.io/badge/webRTC-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
+![webRTC](https://img.shields.io/badge/webRTC-black.svg?style=for-the-badge&logo=webrtc&logoColor=%23F7DF1E)
 ![phaser](https://img.shields.io/badge/phaser3-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
 ![joyride](https://img.shields.io/badge/joyride-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
 ![react-dnd](https://img.shields.io/badge/reactdnd-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
@@ -87,7 +87,7 @@ Pixtudy는 발표자의 화면만을 일방적으로 공유받던 청취자들�
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
 ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
 ![Mediasoup](https://img.shields.io/badge/Mediasoup-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
-![webRTC](https://img.shields.io/badge/webRTC-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
+![webRTC](https://img.shields.io/badge/webRTC-black.svg?style=for-the-badge&logo=webrtc&logoColor=%23F7DF1E)
 
 ### BaaS
 
