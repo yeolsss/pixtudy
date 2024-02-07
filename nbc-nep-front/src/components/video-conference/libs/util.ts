@@ -5,15 +5,7 @@ import {
   ShareType,
   SplitVideoSource,
   VideoSource,
-} from "../../../types/conference.types";
-
-export function isEmptyTracks(tracks: MediaStreamTrack[]) {
-  return tracks.length === 0;
-}
-
-export function isVideoTrack(track: MediaStreamTrack) {
-  return track.kind === "video";
-}
+} from "@/types/conference.types";
 
 export function splitVideoSource(videoSources: VideoSource[]) {
   const CAM_AND_AUDIO_VIDEO_SOURCE = 0;

@@ -9,17 +9,14 @@ import useVideoSource from "@/hooks/conference/useVideoSource";
 import useMetaversePlayer from "@/hooks/metaverse/useMetaversePlayer";
 import useAuth from "@/zustand/authStore";
 
-import {
-  MAX_SHARE_SCREEN_SIZE,
-  videoParams,
-} from "../../components/video-conference/constants";
+import { videoParams } from "@/components/video-conference/constants";
 import {
   AppData,
   Producer,
   ProducerForConsume,
   ShareType,
   TransPortParams,
-} from "../../types/conference.types";
+} from "@/types/conference.types";
 
 import useSocket from "./useSocket";
 
@@ -44,7 +41,6 @@ export default function useVideoConference() {
     handleProducerClose,
     handleProducerRemoval,
     handleRemoveConsumer,
-    filterProducersByShareType,
     isAlreadyConsume,
     addProducer,
     addConsumer,
@@ -174,14 +170,9 @@ export default function useVideoConference() {
     };
   }, []);
 
-  const screenCount = filterProducersByShareType("screen").length;
-  const isCanShare = screenCount < MAX_SHARE_SCREEN_SIZE;
-
   return {
     handleStopShare,
     handleShare,
-    screenCount,
-    isCanShare,
     currentPlayer,
   };
 }

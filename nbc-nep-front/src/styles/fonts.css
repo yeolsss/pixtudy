@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Galmuri14';
+  src: url('/fonts/Galmuri14.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('/fonts/Galmuri11-Bold.ttf') format('ttf');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('/fonts/Galmuri11.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NeoDunggeunmo';
+  src: url('/fonts/neodgm.ttf') format('ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NeoDunggeunmo';
+  src: url('/fonts/neodgm.ttf') format('ttf');
+  font-weight: bold;
+  font-style: normal;
+}

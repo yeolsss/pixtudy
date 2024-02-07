@@ -4,7 +4,7 @@ import { Database, Tables } from "@/types/supabase.types";
 
 /**
  * 유저의 space 정보를 가져오는 함수
- * @param string currentUserId - space 정보를 가져올 현재유저
+ * @param {string} currentUserId - space 정보를 가져올 현재유저
  * @returns -> join table <space_members & users>
  */
 export const getUserSpaces = async (
@@ -61,7 +61,7 @@ export interface getDmChannelMessagesReturns {
 
 /**
  * 상대 유저 DM 채널에 따른 기존 메시지 가져오기
- * @param string|null dmChannel - 기존 메시지를 확인하기 위한 채널 id, 기존에 생성된 channel이 없다면 null
+ * @param {string|null} dmChannel - 기존 메시지를 확인하기 위한 채널 id, 기존에 생성된 channel이 없다면 null
  * @returns getDmChannelMessagesReturns[]|[] 채널이 이미 있었다면 메시지 정보를 담은 배열, 없었다면 빈 배열
  */
 export const getDmChannelMessages = async (
@@ -124,11 +124,12 @@ export interface sendMessageArgs {
  *    - channel 생성 후 메시지 전송
  * (2) 기존 해당 유저와 channel이 있었을 때
  *    - 메시지 전송
- * @param string|null currentDmChannel - 메시지가 전송될 dm 채널, 기존에 있으면 string, 없으면 null
- * @param string message - 메시지 내용
- * @param string receiver_id - 상대방 유저의 id (receiver)
- * @param string space_id - 현재 space의 id (create channel용)
- * @param string currentUserId - 현재 세션의 유저 id (sender)
+ *
+ * @param {string|null} currentDmChannel
+ * @param {string} message
+ * @param {string} receiverId
+ * @param {string} spaceId
+ * @param {string} currentUserId
  * @returns table <dm_channels> - 기존에 dm channel이 없어 생성한 경우에만 반환 (조건부)
  */
 export const sendMessage = async ({

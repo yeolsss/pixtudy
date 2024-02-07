@@ -1,4 +1,6 @@
 import { GOOGLE_FORM_LINK } from "@/components/layout/Header";
+import usePhaserInput from "@/hooks/phaser/usePhaserInput";
+import { IconButtonProperty } from "@/types/metaverse.types";
 import useChatTypeStore from "@/zustand/chatTypeStore";
 import useDmStore from "@/zustand/dmStore";
 import useGlobalNavBarStore, {
@@ -6,9 +8,6 @@ import useGlobalNavBarStore, {
 } from "@/zustand/globalNavBarStore";
 import useMetaverseScrumIsOpenStore from "@/zustand/metaverseScrumIsOpenStore";
 import { useEffect } from "react";
-import usePhaserInput from "@/hooks/phaser/usePhaserInput";
-import { IconButtonProperty } from "@/types/metaverse.types";
-import useModal from "../modal/useModal";
 import {
   chatIcon,
   kanbanIcon,
@@ -16,6 +15,7 @@ import {
   settingIcon,
   usersIcon,
 } from "../../assets/GNB";
+import useModal from "../modal/useModal";
 
 export default function useGNBIconButtons(): IconButtonProperty[] {
   const isChatSectionOn = useGlobalNavBarStore.use.isChatSectionOn();
@@ -24,7 +24,7 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
   const closeDm = useDmStore.use.closeDm();
   const openChat = useChatTypeStore.use.openChat();
   const closeChat = useChatTypeStore.use.closeChat();
-  const { openConfigModal } = useModal();
+  const { openConfigModal, isConfigModalOpen, closeModal } = useModal();
 
   const isScrumOpen = useMetaverseScrumIsOpenStore.use.isOpen();
   const openMetaverseScrum =
@@ -69,6 +69,10 @@ export default function useGNBIconButtons(): IconButtonProperty[] {
       description: "설정",
       type: "settings",
       handleOnClick: () => {
+        if (isConfigModalOpen) {
+          closeModal();
+          return;
+        }
         openConfigModal();
       },
     },

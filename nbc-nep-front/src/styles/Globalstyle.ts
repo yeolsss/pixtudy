@@ -1,6 +1,16 @@
-import { Root } from "@/types/theme.types";
-import { createGlobalStyle } from "styled-components";
 import themeData from "@/styles/theme.json";
+import { Root } from "@/types/theme.types";
+import localFont from "next/font/local";
+import { createGlobalStyle } from "styled-components";
+
+const gamuliBoldFont = localFont({
+  src: "../assets/fonts/Galmuri11-Bold.ttf",
+});
+const gamuli14Font = localFont({ src: "../assets/fonts/Galmuri14.ttf" });
+
+const neoFont = localFont({
+  src: "../assets/fonts/NeoDunggeunmoPro-Regular.ttf",
+});
 
 const styled = { createGlobalStyle };
 
@@ -463,9 +473,9 @@ const GlobalStyle = styled.createGlobalStyle`
     --color-border-interactive-secondary-hovered: var(--color-neutral-700);
     --color-border-interactive-secondary-pressed: var(--color-neutral-800);
 
-    --main-font: "Galmuri14", sans-serif;
-    --point-font: "Galmuri11", sans-serif;
-    --sub-font: "NeoDunggeunmo", sans-serif;
+    --main-font: ${gamuli14Font.style.fontFamily};
+    --point-font: ${gamuliBoldFont.style.fontFamily};
+    --sub-font: ${neoFont.style.fontFamily};
 
     --button-opacity: rgba(0, 0, 0, 0.5);
     --default-font: sans-serif;

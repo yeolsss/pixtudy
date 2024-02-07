@@ -1,3 +1,4 @@
+import { MAX_SHARE_SCREEN_SIZE } from "@/components/video-conference/constants";
 import { Producer, ShareType } from "@/types/conference.types";
 import useConferenceStore from "@/zustand/conferenceStore";
 import { toast } from "react-toastify";
@@ -7,11 +8,10 @@ const useVideoSource = () => {
   const removeProducer = useConferenceStore.use.removeProducer();
   const findProducerByShareType =
     useConferenceStore.use.findProducerByShareType();
-  const filterProducersByShareType =
-    useConferenceStore.use.filterProducersByShareType();
   const isAlreadyConsume = useConferenceStore.use.isAlreadyConsume();
   const addProducer = useConferenceStore.use.addProducer();
   const addConsumer = useConferenceStore.use.addConsumer();
+  const producers = useConferenceStore.use.producers();
 
   const handleProducerClose = (streamId: string) => {
     removeConsumer(streamId);
@@ -41,15 +41,21 @@ const useVideoSource = () => {
     }
   };
 
+  const screenCount = producers.filter(
+    (producer) => producer.appData.shareType === "screen"
+  ).length;
+  const isCanShare = screenCount < MAX_SHARE_SCREEN_SIZE;
+
   return {
     handleProducerClose,
     handleProducerRemoval,
-    filterProducersByShareType,
     handleRemoveConsumer: handleProducerClose,
     isAlreadyConsume,
     removeProducer,
     addProducer,
     addConsumer,
+    screenCount,
+    isCanShare,
   };
 };
 

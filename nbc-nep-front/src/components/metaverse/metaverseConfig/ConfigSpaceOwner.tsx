@@ -149,9 +149,14 @@ export default function ConfigSpaceOwner() {
       onSubmit={handleSubmit(handleUpdateSpace)}
       ref={formRef}
     >
+      {isPendingUpdate && (
+        <StFloatingLoading>
+          <StLoadingSpinner as="div" />
+        </StFloatingLoading>
+      )}
       <div>
+        <span>스페이스 썸네일</span>
         <label htmlFor={SPACE_THUMB_FORM}>
-          <span>스페이스 썸네일</span>
           <SpaceThumb src={thumbPreviewSrc} />
           <StHiddenInput
             id={SPACE_THUMB_FORM} // 이 id가 htmlFor과 일치해야 합니다.
@@ -210,11 +215,6 @@ export default function ConfigSpaceOwner() {
           삭제하기
         </StDanger>
       </div>
-      {isPendingUpdate && (
-        <StFloatingLoading>
-          <StLoadingSpinner as="div" />
-        </StFloatingLoading>
-      )}
     </StSection>
   );
 }

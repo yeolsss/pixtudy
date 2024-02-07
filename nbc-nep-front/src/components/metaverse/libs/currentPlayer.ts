@@ -3,8 +3,6 @@ export class CurrentPlayer extends Phaser.Physics.Arcade.Sprite {
 
   playerId?: string;
 
-  socketId?: string;
-
   nickname?: string;
 
   character?: string;

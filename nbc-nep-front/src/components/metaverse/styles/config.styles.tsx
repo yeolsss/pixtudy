@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { StDangerButton } from "@/components/common/button/button.styles";
+import styled from "styled-components";
 
 export const StHiddenInput = styled.input`
   position: absolute;
@@ -158,7 +158,9 @@ export const StErrorText = styled.span`
 `;
 
 export const StSection = styled(StSectionMain)`
-  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
 
   div label {
     align-self: center;

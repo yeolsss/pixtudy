@@ -1,6 +1,7 @@
 import useScroll from "@/hooks/scroll/useScroll";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { throttle } from "lodash";
+import { useEffect, useRef, useState } from "react";
 import {
   StPixelBackground,
   StPixelBackgroundContainer,
@@ -22,6 +23,7 @@ const anim = (i: number) => ({
 
 export default function PixelBackground() {
   const { section } = useScroll();
+  const pixelBackgroundRef = useRef<HTMLDivElement>(null);
   const [windowDimensions, setWindowDimensions] = useState({
     innerHeight: 0,
     innerWidth: 0,
@@ -30,6 +32,28 @@ export default function PixelBackground() {
   useEffect(() => {
     const { innerHeight, innerWidth } = window;
     setWindowDimensions({ innerHeight, innerWidth });
+  }, []);
+
+  useEffect(() => {
+    const handleScrollHeight = throttle(() => {
+      const scrollTop = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const totalHeight = document.documentElement.scrollHeight;
+
+      // Calculate the distance from the bottom of the page
+      const bottomThreshold = 60; // Distance from the bottom
+      const distanceFromBottom = totalHeight - (scrollTop + viewportHeight);
+
+      if (distanceFromBottom <= bottomThreshold) {
+        pixelBackgroundRef.current!.style.height = "calc(100vh - 60px)";
+      } else {
+        pixelBackgroundRef.current!.style.height = "100vh";
+      }
+    }, 1000);
+    window.addEventListener("scroll", handleScrollHeight);
+    return () => {
+      window.removeEventListener("scroll", handleScrollHeight);
+    };
   }, []);
 
   const { innerWidth, innerHeight } = windowDimensions;
@@ -66,7 +90,7 @@ export default function PixelBackground() {
 
   return (
     <StPixelBackgroundContainer>
-      <StPixelBackground>
+      <StPixelBackground ref={pixelBackgroundRef}>
         {[...Array(20)]
           .map((_, index) => index)
           .map((index) => {

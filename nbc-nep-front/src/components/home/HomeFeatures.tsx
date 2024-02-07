@@ -9,7 +9,7 @@ import {
 } from "./styles/home.styles";
 
 const HomeFeatures = forwardRef<HTMLDivElement>(
-  function HomeScrollContainer(props, ref) {
+  function HomeScrollContainer(_, ref) {
     const { scrollIndex } = useScroll();
 
     return (
@@ -24,7 +24,7 @@ const HomeFeatures = forwardRef<HTMLDivElement>(
           </StStickyItem>
           <AnimatePresence>
             {Array.from({ length: scrollIndex + 1 })
-              .map((_, i) => i)
+              .map((props, i) => i)
               .map((index) => (
                 <ScrollItem key={`scroll-item${index}`} index={index} />
               ))}

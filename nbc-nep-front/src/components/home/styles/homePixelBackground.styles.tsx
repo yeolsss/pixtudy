@@ -19,6 +19,8 @@ export const StPixelBackground = styled.div`
   z-index: 0;
   pointer-events: none;
 
+  transition: height 0.2s ease-in;
+
   & > div {
     display: flex;
     width: 100%;
