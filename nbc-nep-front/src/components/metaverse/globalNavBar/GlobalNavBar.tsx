@@ -1,13 +1,13 @@
+import { logoSection } from "@/assets/GNB";
 import CloseButton from "@/components/metaverse/globalNavBar/CloseButton";
 import GlobalNavBarIconWrapper from "@/components/metaverse/globalNavBar/globalNavBarIconWrapper/GlobalNavBarIconWrapper";
-import useChatAlarm from "@/hooks/GNB/useChatAlarm";
-import Image from "next/image";
-import { useCallback, useEffect, useRef } from "react";
-import { logoSection } from "@/assets/GNB";
 import {
   StGlobalNavBar,
   StHomeLink,
 } from "@/components/metaverse/styles/metaverse.styles";
+import useChatAlarm from "@/hooks/GNB/useChatAlarm";
+import Image from "next/image";
+import { useCallback, useEffect, useRef } from "react";
 
 export default function GlobalNavBar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -41,7 +41,7 @@ export default function GlobalNavBar() {
         audio.removeEventListener("ended", handleAudioEnd);
       }
     };
-  }, [isPlay, handleAudioEnd]);
+  }, [isPlay, handleAudioEnd, sound]);
 
   return (
     <StGlobalNavBar>
