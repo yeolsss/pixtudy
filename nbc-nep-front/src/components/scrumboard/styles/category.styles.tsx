@@ -25,25 +25,13 @@ export const StCategoryWrapper = styled.div`
 
 export const StDropdownMenuContainer = styled.ul`
   position: absolute;
-  bottom: -${(props) => props.theme.unit[40]};
+  bottom: -${(props) => props.theme.unit[24]};
   left: ${(props) => props.theme.unit[24]};
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.theme.color.bg.secondary};
   border-radius: ${(props) => props.theme.border.radius[12]};
   box-shadow: ${(props) => props.theme.elevation.Light.shadow2};
-  &:before {
-    content: "";
-    position: absolute;
-    top: ${(props) => props.theme.unit[12]};
-    left: ${(props) => props.theme.unit[0]};
-    width: 0;
-    height: 0;
-    border: ${(props) => props.theme.unit[8]} solid transparent;
-    border-right-color: ${(props) => props.theme.color.bg.secondary};
-    border-left: 0;
-    margin-left: -${(props) => props.theme.unit[8]};
-  }
 `;
 
 export const StDropdownMenuItem = styled.li<{ $type: string }>`

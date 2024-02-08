@@ -1,9 +1,3 @@
-import useConfirm from "@/hooks/confirm/useConfirm";
-import { useDeleteCategory } from "@/hooks/query/useSupabase";
-import { fadeInOut } from "@/styles/animations";
-import { AnimatePresence, motion } from "framer-motion";
-import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
 import {
   StCategoryColor,
   StCategoryHeader,
@@ -11,6 +5,12 @@ import {
   StDropDownMenuBtnWrapper,
   StItemCounter,
 } from "@/components/scrumboard/styles/category.styles";
+import useConfirm from "@/hooks/confirm/useConfirm";
+import { useDeleteCategory } from "@/hooks/query/useSupabase";
+import { fadeInOut } from "@/styles/animations";
+import { AnimatePresence, motion } from "framer-motion";
+import { useParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import CategoryDropdownMenu from "./CategoryDropdownMenu";
 import EditCategoryForm from "./EditCategoryForm";
 

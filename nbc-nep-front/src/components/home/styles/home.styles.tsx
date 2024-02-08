@@ -60,7 +60,7 @@ export const StStickyItem = styled.div`
   }
 
   p {
-    font-family: var(--point-font);
+    font-family: var(--main-font);
     font-size: ${(props) => props.theme.body.lg.medium.fontSize};
     letter-spacing: ${(props) => props.theme.body.lg.medium.letterSpacing};
     line-height: ${(props) => props.theme.heading.desktop.lg.lineHeight};
