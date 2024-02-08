@@ -10,14 +10,15 @@ import {
 } from "react-hook-form";
 
 import { FORM_SPACE, SRC_BASE } from "@/components/spaces/constants/constants";
+import { Procedure, UserProfile } from "@/types/space.types";
 import useAuthStore from "@/zustand/authStore";
 import useSpaceStore from "@/zustand/spaceStore";
-import { Procedure, UserProfile } from "@/types/space.types";
 import {
   StFormCTAButton,
   StToPreviousButton,
 } from "../common/button/button.styles";
 import AvatarInput from "./AvatarInput";
+import { StErrorMessage } from "./styles/joinSpaceForm.styles";
 import {
   StAvatar,
   StAvatarWrapper,
@@ -88,7 +89,9 @@ export default function ProfileForm({
               ref={nicknameRegister.ref}
             />
           </label>
-          {errors.nickname && <span>{errors.nickname.message as string}</span>}
+          {errors.nickname && (
+            <StErrorMessage>{errors.nickname.message as string}</StErrorMessage>
+          )}
         </StCreateInputWrapper>
       </StCurrentProfile>
       <AvatarInput watch={watch} register={register} errors={errors} />
