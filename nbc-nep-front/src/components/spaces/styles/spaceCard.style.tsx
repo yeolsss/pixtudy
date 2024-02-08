@@ -92,18 +92,19 @@ export const StButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 8px;
+  padding: ${(props) => props.theme.spacing[12]};
   button {
     padding: 12px;
     display: flex;
     width: fit-content;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 4px;
+    /* gap: 4px; */
     border-color: ${(props) => props.theme.color.border.interactive.secondary};
     border-radius: ${(props) => props.theme.border.radius[8]};
     font-size: ${(props) => props.theme.body.lg.regular.fontSize};
-    padding-left: ${(props) => props.theme.spacing[16]};
-    padding-right: ${(props) => props.theme.spacing[16]};
+    padding-left: ${(props) => props.theme.spacing[12]};
+    padding-right: ${(props) => props.theme.spacing[12]};
     &:hover {
       /* border: none; */
       background-color: ${(props) =>
