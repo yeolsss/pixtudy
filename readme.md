@@ -382,3 +382,4 @@ socket을 사용하는 컴포넌트마다 socket 인스턴스가 생성이 되�
 | 송용승 | 팀원     | https://github.com/yongseung-song  |
 | 김명섭 | 팀원     | https://github.com/kms99           |
 | 강보미 | 디자이너 | https://github.com/SpringintheFall |
+
