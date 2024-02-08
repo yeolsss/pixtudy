@@ -14,7 +14,7 @@ export const StBackDropTextArea = styled.textarea<{
   border-radius: ${(props) => props.theme.border.radius[8]};
   border: 1px solid
     ${({ theme, $validState }) =>
-      $validState ? theme.color.border.danger : theme.color.border.secondary};
+      !$validState ? theme.color.border.danger : theme.color.border.secondary};
   background: ${(props) => props.theme.color.text.interactive.inverse};
   color: ${(props) => props.theme.color.text.tertiary};
   overflow: hidden;
@@ -22,7 +22,7 @@ export const StBackDropTextArea = styled.textarea<{
   letter-spacing: -0.14px;
   &:focus {
     border-color: ${({ theme, $validState }) =>
-      $validState ? theme.color.border.danger : theme.color.border.focusRing};
+      !$validState ? theme.color.border.danger : theme.color.border.focusRing};
   }
 `;
 

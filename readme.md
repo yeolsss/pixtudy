@@ -79,7 +79,7 @@ Pixtudy는 발표자의 화면만을 일방적으로 공유받던 청취자들�
 ![webRTC](https://img.shields.io/badge/webRTC-black.svg?style=for-the-badge&logo=webrtc&logoColor=%23F7DF1E)
 ![phaser](https://img.shields.io/badge/phaser3-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
 ![joyride](https://img.shields.io/badge/joyride-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
-![react-dnd](https://img.shields.io/badge/reactdnd-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
+![react-dnd](https://img.shields.io/badge/react--dnd-%23323330.svg?style=for-the-badge&logo=&logoColor=%23F7DF1E)
 
 ### Backend
 
@@ -382,3 +382,4 @@ socket을 사용하는 컴포넌트마다 socket 인스턴스가 생성이 되�
 | 송용승 | 팀원     | https://github.com/yongseung-song  |
 | 김명섭 | 팀원     | https://github.com/kms99           |
 | 강보미 | 디자이너 | https://github.com/SpringintheFall |
+
