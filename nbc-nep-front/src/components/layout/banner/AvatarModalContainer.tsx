@@ -101,7 +101,6 @@ export default function AvatarModalContainer() {
     <>
       <StModalContainer>
         <ModalHeader text="스페이스 입장하기" handler={handleCloseModal} />
-        <ModalHeader text="스페이스 입장하기" handler={handleCloseModal} />
         <StModalContents>
           <StProfileForm onSubmit={handleSubmit(handleEnterSpace)}>
             <StCurrentProfile>
