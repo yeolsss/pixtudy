@@ -263,13 +263,9 @@ SSG로 변경하여 배너 스페이스에 대한 정보만 가져오고 클라�
 
 ### 문제 개선 스크린샷
 
-SSG만을 통한 대시보드 페이지 로딩 속도 (2000ms)
+SSR + Client 처리를 이용한 대시보드 페이지 로딩 속도 (2000ms)
 
 <img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F1eb9eff8-5346-4b47-9995-0ef17b8b5332%2FUntitled.png?table=block&id=6ab2e7e8-5f22-483c-9dd8-a6d79aeae56d&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2'/>
-
-SSR + Client 처리를 이용한 대시보드 페이지 로딩 속도(1009ms)
-
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F26020126-53ff-4fc6-a3f5-cf5e0d834739%2FUntitled.png?table=block&id=9b6bcb1e-95ee-41ee-9132-aedb7dfbc256&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v22'/>
 
 SSG + Client 처리를 이용한 대시보드 페이지 로딩 속도(44ms)
 <img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Ffc88d6c4-4b54-4aae-b07d-867421248559%2FUntitled.png?table=block&id=ff8fb7fe-d038-4b48-b5ad-26b56aa6f6b9&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2'/>
