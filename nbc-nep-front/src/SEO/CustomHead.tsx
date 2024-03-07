@@ -12,6 +12,7 @@ export default function CustomHead({ title, description }: Props) {
     <Head>
       <title>{`Pixtudy | ${title}`}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="keywords" content="픽스터디, pixtudy" />
       <meta name="description" content={description} />
       {/* Open Graph tags */}
       <meta
