@@ -1,9 +1,3 @@
-<div align="center">
-  <a href="https://www.pixtudy.site">
-    <img src='https://lrklhpcxbdiunpubmvio.supabase.co/storage/v1/object/public/openGraph_image/pixtudy.png' width='200px' height='200px' style='border-radius:999px;'>
-  </a>
-</div>
-
 # Pixtudy
 
 - [프로젝트 소개](#프로젝트-소개)
@@ -18,7 +12,7 @@
 
 <div align="center">
   <a href="https://www.pixtudy.site">
-    <img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F52713e58-36ce-4692-8885-e85bc086dd9f%2F0.png?table=block&id=e4afaaaa-0e48-446d-9099-a164314e2ce1&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2' width=300px/>
+    <img src='https://images.ctfassets.net/q56r6almlx86/1sWpLDSn96vfBjEvo3M0AB/56bc0ac228c0a8c5c0ac401bfc71db42/68747470733a2f2f7465616d7370617274612e6e6f74696f6e2e736974652f696d6167652f687474707325334125324625324670726f642d66696c65732d.png' width=300px/>
   </a>
 </div>
 
@@ -51,7 +45,7 @@ Pixtudy는 발표자의 화면만을 일방적으로 공유받던 청취자들�
 
 ## <a id="아키텍쳐"></a> 🏗 아키텍쳐
 
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F3c2c9cb2-b9dd-4d16-82a2-cf32e5a7dbbd%2FScreen_Shot_2024-02-04_at_3.19.10_PM.png?table=block&id=c8ec5b2d-f6e4-4ba9-91ab-76a3fa0f6327&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2'>
+<img src='https://images.ctfassets.net/q56r6almlx86/C40L9SFIGzQWlG8RV2J84/2ad689dcbbc3ed51659de1331162edf9/68747470733a2f2f7465616d7370617274612e6e6f74696f6e2e736974652f696d6167652f687474707325334125324625324670726f642d66696c65732d.png'>
 
 <br/>
 
@@ -117,7 +111,7 @@ Pixtudy 개발 과정에서 마주친 여러 선택지들과 그에 따른 결�
 
 <details>
 <summary>
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F3dca0226-56bb-4e4f-a55b-538875df409f%2Ftypescript-icon.svg?table=block&id=049b3af3-9822-40bb-a128-3e48f2570c2f&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&userId=&cache=v2' width="25px" height='25px' alt="Typescript" /> <strong>Typescript</strong>
+ <strong>Typescript</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 휴먼에러를 최소화, 런타임 이전에 컴파일 단계에서 미리 에러를 캐치, 협업할 때 공통된 타입을 사용하여 프로젝트 진행함에 있어 서로 미구현 상태에서도 빠른 진행이 가능함을 장점을 두고 Typescript를 선택하였다.
@@ -128,7 +122,7 @@ Pixtudy 개발 과정에서 마주친 여러 선택지들과 그에 따른 결�
 
 <details>
 <summary>
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F27a096a0-bb42-4616-bf20-2831474ab42c%2Freact-query.svg?table=block&id=a51eb1d4-1d54-44e7-bef1-c7e381773dbf&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&userId=&cache=v2' width="25px" height='25px' alt="React-Query" /> <strong>React-Query</strong>
+  <strong>React-Query</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 데이터 패칭, 캐싱, 동기화, 그리고 서버 상태 업데이트를 더욱 용이하게 만들어주는 라이브러리로 프로젝트의 유지 보수를 하기 쉽고, 새로운 기능을 쉽게 구축할 수 있는 장점이 있고,  개발자가 직접 구현하기 번거로운 부분을 쉽게 처리할 수 있기 때문에 선택하였다.
@@ -136,7 +130,7 @@ Pixtudy 개발 과정에서 마주친 여러 선택지들과 그에 따른 결�
 
 <details>
 <summary>
-<img src='https://img.stackshare.io/service/11559/zustand.png' width="25px" height='25px' alt="Zustand" /> <strong>Zustand</strong>
+ <strong>Zustand</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 Zustand는 React 애플리케이션을 위한 상태 관리 라이브러리로, 간결하고 직관적인 API를 제공하여 상태 관리를 간편하게 만든다. 작은 코드 풋프린트로 애플리케이션의 상태를 쉽게 설정, 업데이트 및 구독할 수 있으며, Redux나 MobX 같은 전통적인 상태 관리 라이브러리보다 더 간단하고 유연한 방식으로 상태를 관리할 수 있습니다. 초기에는 React-query, Redux RTK를 사용했으나 RTK에는 Redux Query가 있는데 React-query를 사용하는게 하나는 불필요한 종속성을 추가한다고 판단하여 복잡한 전역 상태 관리가 필요하지 않기에 React-query와 Zustand조합으로 바꾸었다.
@@ -147,7 +141,7 @@ Zustand는 React 애플리케이션을 위한 상태 관리 라이브러리로, 
 
 <details>
 <summary>
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fcb3e6c88-6ddc-40d2-b9a1-06a0f77c65ec%2Fnext-js.svg?table=block&id=c3434f9f-319e-4db5-b0d3-e9bcc12982f3&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&userId=&cache=v2' width="25px" height='25px' alt="next.js" /> <strong>NextJS</strong>
+ <strong>NextJS</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 프로젝트의 특성상 클라이언트 사이드 렌더링(CSR)을 주로 사용하면서도, NextJs의 다양한 기능, 특히 SEO, 이미지 최적화, 그리고 성능 향상을 위해 랜딩페이지에 SSG를 사용했다. 이를 통해 빠른 로딩 시간을 유지하면서도 CSR의 동적인 사용자 경험도 보존할 수 있었다. NextJs는 미들웨어를 통해 로그인 여부에 따른 페이지 처리 접근을 제한할 수 있어, 보안과 사용자 권한 관리에 효과적이고 CSS-In-JS를 지원하는 pages router의 선택은 안정성과 빠른 개발 속도를 달성하는데 중점을 두었다. 이러한 결정은 NextJS의 유연한 라우팅 시스템과 풍부한 기능 세트가 프로젝트의 요구 사항을 충족시키기 때문에 선택하였다.
@@ -158,7 +152,7 @@ Zustand는 React 애플리케이션을 위한 상태 관리 라이브러리로, 
 
 <details>
 <summary>
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F2fa7f391-a78d-436d-a2f2-cf7960bcfa88%2Fphaser.png?table=block&id=b2ce0910-443f-4484-9949-c01aa8fbdfb5&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=40&userId=&cache=v2' width="25px" height='25px' alt="phaser" /> <strong>Phaser</strong>
+ <strong>Phaser</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 가상환경을 만들기 위해 Canvas를 사용해야하는데 프로젝트 기간상 canvas로 구현하기에는 짧은 시간이라 판단하고 Phaser3를 사용하게 되었다. Phaser3는 HTML5와 JavaScript 기반의 웹 기술을 사용하여 메타버스 환경을 쉽고 빠르게 구현할 수 있으며, WebGL과 Canvas 지원으로 고성능 2D 그래픽을 제공하고, 직관적인 학습 곡선과 활발한 커뮤니티 지원을 바탕으로 개발자 친화적인 환경을 제공한다.
@@ -169,7 +163,7 @@ Zustand는 React 애플리케이션을 위한 상태 관리 라이브러리로, 
 
 <details>
 <summary>
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F6d126b88-abf1-489d-8258-59da093de654%2FSocket-io.svg.png?table=block&id=ecfedf89-bec5-4c1d-811c-2505acbc5a42&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&userId=&cache=v2' width="25px" height='25px' alt="socket.io" /> <strong>Socket.IO</strong>
+ <strong>Socket.IO</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 실시간 화상 회의를 위한 transport 연결, 가상환경 내 움직임 등 실시간 통신 기능을 구현하기 위한 선택으로, 웹소켓과 폴링을 결합하여 다양한 네트워크 환경에서도 안정적인 실시간 데이터 전송을 제공한다. 또한 사용 방법이 간단하고 서버와 클라이언트 간의 빠른 양방향 통신을 가능하기 때문에 선택하였다.
@@ -177,7 +171,7 @@ Zustand는 React 애플리케이션을 위한 상태 관리 라이브러리로, 
 
 <details>
 <summary>
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F66bab2a9-3389-4a37-9154-f6a5b3c485e6%2Fmediasoup.png?table=block&id=d5862220-f489-437f-8c78-ce508a392772&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=40&userId=&cache=v2' width="25px" height='25px' alt="mediasoup" /> <strong>Mediasoup</strong>
+ <strong>Mediasoup</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 실시간 화상 회의 기능이 필요하며 고화질 비디오 스트리밍, 저 지연성, 높은 동시 사용자 처리 능력이 요구된다. 그렇기 때문에 SFU 기술을 선택하여 위 요구사항을 해결하고자 했고, mediasoup은 러닝커브가 높은 편에도 불구하고 타 라이브러리보다 높은 성능의 SFU를 제공하고 앞서 필요한 기능들을 모두 처리할 수 있기 때문에 선택하였다.
@@ -185,7 +179,7 @@ Zustand는 React 애플리케이션을 위한 상태 관리 라이브러리로, 
 
 <details>
 <summary>
-<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvnD-fEZHj8eKTGjp0gCcA9WghSEk7BUF6m_lwY-ZUQg&s' width="25px" height='25px' alt="express" /> <strong>Express</strong>
+ <strong>Express</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 실시간 화상 회의 기능이 필요하며 고화질 비디오 스트리밍, 저 지연성, 높은 동시 사용자 처리 능력이 요구된다. 그렇기 때문에 SFU 기술을 선택하여 위 요구사항을 해결하고자 했고, mediasoup은 러닝커브가 높은 편에도 불구하고 타 라이브러리보다 높은 성능의 SFU를 제공하고 앞서 필요한 기능들을 모두 처리할 수 있기 때문에 선택하였다.
@@ -197,7 +191,7 @@ Zustand는 React 애플리케이션을 위한 상태 관리 라이브러리로, 
 <aside>
 <details>
 <summary>
-<img src='https://avatars.githubusercontent.com/u/54469796?s=200&v=4' width="25px" height='25px' alt="supabase" /> <strong>supabase</strong>
+ <strong>supabase</strong>
 </summary>
 <div markdown="1" style='padding:10px; margin-bottom:10px'>
 Supabase는 Firebase alternative 라는 캐치프레이즈를 내건 만큼 다양한 기능을 제공하고 모든 기능이 firebase보다 편리하고 뛰어난 BaaS 플랫폼이다. 우리 서비스는 테이블 간 Join이 많이 필요하고 user flow 에서 예상되는 데이터 수정 및 추가가 많기 때문에 NoSQL 보다는 RDBMS가 적절하다 판단했다. 
@@ -208,7 +202,7 @@ Supabase는 Firebase alternative 라는 캐치프레이즈를 내건 만큼 다�
 
 <details>
 <summary>
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F2d4d7fa2-c343-4386-94d4-42547c01c3b6%2Fstyled-components.png?table=block&id=e34ec18d-bca8-442c-b3d1-e2ee8d79ef26&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=40&userId=&cache=v2' width="25px" height='25px' alt="styled-components" /> <strong>Styled-Components</strong>
+ <strong>Styled-Components</strong>
 </summary>
 <div markdown="1">
 Next.js에서 권장하는 방식인 Tailwind는 클래스 기반 스타일링으로 빠른 개발이 가능하지만, 코드 가독성이 좋지 않고 팀원들 모두 비교적 사용경험이 적다는 단점이 있었다.
@@ -218,7 +212,7 @@ Next.js에서 권장하는 방식인 Tailwind는 클래스 기반 스타일링�
 
 <details>
 <summary>
-<img src='https://bestofjs.org/logos/motion.svg' width="25px" height='25px' alt="framer-motion" /> <strong>Framer-motion</strong>
+ <strong>Framer-motion</strong>
 </summary>
 <div markdown="1">
 Framer-motion은 컴포넌트 기반의 애니메이션 라이브러리로, 선언적 애니메이션을 통한 뛰어난 코드 가독성과 간단하고 직관적인 API를 통해 간편하게 애니메이션을 추가할 수 있으며, 또한, React 환경에서도 스크롤 이벤트 등 여러 애니메이션을 구현할 수 있기 때문에 선택하였다.
@@ -265,10 +259,7 @@ SSG로 변경하여 배너 스페이스에 대한 정보만 가져오고 클라�
 
 SSR + Client 처리를 이용한 대시보드 페이지 로딩 속도 (2000ms)
 
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F1eb9eff8-5346-4b47-9995-0ef17b8b5332%2FUntitled.png?table=block&id=6ab2e7e8-5f22-483c-9dd8-a6d79aeae56d&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2'/>
-
 SSG + Client 처리를 이용한 대시보드 페이지 로딩 속도(44ms)
-<img src='https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Ffc88d6c4-4b54-4aae-b07d-867421248559%2FUntitled.png?table=block&id=ff8fb7fe-d038-4b48-b5ad-26b56aa6f6b9&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2'/>
 
 <br>
 
